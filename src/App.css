@@ -1,0 +1,53 @@
+.App-logo {
+  height: 100px;
+}
+
+.App-header {
+  height: 100px;
+  padding: 0px;
+  color: white;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.popover {
+    max-width: 100%;
+}
+
+body {
+    background-color: #fafafa;
+}
+
+.panel > .panel-heading > .panel-title a {
+    display:block;
+    height: 100%;
+    margin: -15px;
+    padding: 15px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.react-datepicker__time-container ul {
+    padding: 0;
+}
+
+.path {
+  stroke-dasharray: 5000;
+  stroke-dashoffset: 5000;
+  animation: dash 2s linear forwards;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.tooltip-inner {
+    min-width: 450px;
+    /* If max-width does not work, try using width instead */
+    width: 450px;
+    text-align: left;
+}
