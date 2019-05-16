@@ -1,4 +1,4 @@
-export const API_URL_PREFIX = process.env.NODE_ENV === 'production'?window.location.origin:'http://127.0.0.1:5000';
+export const API_URL_PREFIX = process.env.NODE_ENV === 'production'?window.location.origin:'http://yaoh1.bxl.netaxis.be';
 export const API_URL_PROXY_PREFIX = '/api/v01/apio/sync';
 
 
