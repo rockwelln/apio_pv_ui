@@ -21,10 +21,13 @@
     "react-intl": "^2.8.0",
     "react-json-view": "^1.19.1",
     "react-notification-system": "^0.2.17",
+    "react-redux": "^7.0.3",
     "react-router": "^5.0.0",
     "react-router-bootstrap": "^0.25.0",
     "react-router-dom": "^5.0.0",
     "react-scripts": "^2.1.8",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
     "url-polyfill": "^1.1.5"
   },
   "scripts": {
