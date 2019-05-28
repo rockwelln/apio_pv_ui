@@ -12,13 +12,10 @@ import Form from "react-bootstrap/lib/Form";
 import FormControl from "react-bootstrap/lib/FormControl";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import Panel from "react-bootstrap/lib/Panel";
-import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Row from "react-bootstrap/lib/Row";
-import Nav from "react-bootstrap/lib/Nav";
-import Navbar from "react-bootstrap/lib/Navbar";
-import NavDropdown from "react-bootstrap/lib/NavDropdown";
-import MenuItem from "react-bootstrap/lib/MenuItem";
 import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
+//import Breadcrumb from "react-bootstrap/lib/Breadcrumb";
+import Grid from "react-bootstrap/lib/Grid";
 
 import {
   BrowserRouter as Router,
@@ -27,7 +24,6 @@ import {
   Switch,
   Redirect
 } from "react-router-dom";
-import { LinkContainer } from "react-router-bootstrap";
 import NotificationSystem from "react-notification-system";
 
 import { withCookies } from "react-cookie";
@@ -40,8 +36,11 @@ import { API_URL_PREFIX, fetch_get, checkStatus, parseJSON } from "./utils";
 import { isAllowed, pages } from "./utils/user";
 import { ResetPasswordPage, RESET_PASSWORD_PREFIX } from "./reset_password";
 
+import AsyncApioNavBar from "./components/Header";
+import Sidebar from "./components/Sidebar";
+import Breadcrumb from "./components/Breadcrumb";
+
 import "./App.css";
-import apio_brand from "./images/apio.png";
 import apio_logo from "./images/logo.png";
 import loading from "./loading.gif";
 
@@ -206,79 +205,6 @@ class LoginForm extends Component {
     );
   }
 }
-
-const AsyncApioNavBar = ({
-  user_group,
-  logoutUser,
-  database_status,
-  ...props
-}) => (
-  <Navbar staticTop collapseOnSelect inverse>
-    <Navbar.Header>
-      <Navbar.Brand style={{ color: "#ef0803", fontWeight: "bold" }}>
-        <img
-          src={apio_brand}
-          width="38"
-          height="42"
-          className="d-inline-block align-top"
-          style={{ padding: 0 }}
-          alt="apio"
-        />
-      </Navbar.Brand>
-      <Navbar.Toggle />
-    </Navbar.Header>
-    <Navbar.Collapse>
-      <Nav>
-        <ListItemLink to={"/dashboard"}>
-          <Glyphicon glyph="dashboard" />{" "}
-          <FormattedMessage id="dashboard" defaultMessage="Dashboard" />
-        </ListItemLink>
-
-        {isAllowed(user_group, pages.data) && (
-          <NavDropdown
-            eventKey={4}
-            title={
-              <span>
-                <Glyphicon glyph="hdd" />{" "}
-                <FormattedMessage id="data" defaultMessage="Data" />
-              </span>
-            }
-            id="nav-data-apio"
-          >
-            <LinkContainer to={"/apio/tenants"}>
-              <MenuItem>
-                <FormattedMessage id="tenants" defaultMessage="Tenants" />
-              </MenuItem>
-            </LinkContainer>
-          </NavDropdown>
-        )}
-
-        <NavDropdown title={<Glyphicon glyph="user" />} id="nav-local-user">
-          <MenuItem onClick={logoutUser}>
-            <FormattedMessage id="logout" defaultMessage="Logout" />
-          </MenuItem>
-        </NavDropdown>
-      </Nav>
-      <Navbar.Text
-        pullRight
-        style={{
-          color:
-            database_status && database_status.env === "TEST"
-              ? "#ef0803"
-              : "#777",
-          fontWeight:
-            database_status && database_status.env === "TEST"
-              ? "bold"
-              : "normal"
-        }}
-      >
-        {database_status && database_status.env
-          ? database_status.env
-          : "unknown"}
-      </Navbar.Text>
-    </Navbar.Collapse>
-  </Navbar>
-);
 
 const NotFound = ({ match }) => (
   <div>
@@ -515,70 +441,82 @@ class App extends Component {
               auth_token={auth_token}
             />
           </div>
-          <Col mdOffset={1} md={10}>
-            <Switch>
-              <Route
-                path="/dashboard"
-                component={props => (
-                  <div
-                    auth_token={auth_token}
-                    notifications={this._notificationSystem.current}
-                    {...props}
+          <Grid>
+            <Row>
+              <Col mdOffset={1} md={10}>
+                <Breadcrumb mdOffset={1} md={10} />
+              </Col>
+            </Row>
+            <Row>
+              <Col mdOffset={1} md={2}>
+                <Sidebar />
+              </Col>
+              <Col md={8} style={{ borderLeft: "2px solid #dddddd" }}>
+                <Switch>
+                  <Route
+                    path="/dashboard"
+                    component={props => (
+                      <div
+                        auth_token={auth_token}
+                        notifications={this._notificationSystem.current}
+                        {...props}
+                      />
+                    )}
+                    exact
                   />
-                )}
-                exact
-              />
-              <Route
-                path="/apio/tenants"
-                component={props =>
-                  isAllowed(ui_profile, pages.data_tenants) ? (
-                    <TenantsManagement
-                      auth_token={auth_token}
-                      notifications={this._notificationSystem.current}
-                      {...props}
-                    />
-                  ) : (
-                    <NotAllowed />
-                  )
-                }
-                exact
-              />
-              <Route
-                path="/apio/tenants/:tenantId/groups"
-                component={props =>
-                  isAllowed(ui_profile, pages.data_tenants) ? (
-                    <GroupsManagement
-                      auth_token={auth_token}
-                      notifications={this._notificationSystem.current}
-                      {...props}
-                    />
-                  ) : (
-                    <NotAllowed />
-                  )
-                }
-                exact
-              />
-              <Route
-                path="/apio/tenants/:tenantId/groups/:siteId/numbers"
-                component={props =>
-                  isAllowed(ui_profile, pages.data_tenants) ? (
-                    <NumbersManagement
-                      auth_token={auth_token}
-                      notifications={this._notificationSystem.current}
-                      {...props}
-                    />
-                  ) : (
-                    <NotAllowed />
-                  )
-                }
-                exact
-              />
-              <Route path="/" exact>
-                <Redirect to="/dashboard" />
-              </Route>
-              <Route component={NotFound} />
-            </Switch>
-          </Col>
+                  <Route
+                    path="/apio/tenants"
+                    component={props =>
+                      isAllowed(ui_profile, pages.data_tenants) ? (
+                        <TenantsManagement
+                          auth_token={auth_token}
+                          notifications={this._notificationSystem.current}
+                          {...props}
+                        />
+                      ) : (
+                        <NotAllowed />
+                      )
+                    }
+                    exact
+                  />
+                  <Route
+                    path="/apio/tenants/:tenantId/groups"
+                    component={props =>
+                      isAllowed(ui_profile, pages.data_tenants) ? (
+                        <GroupsManagement
+                          auth_token={auth_token}
+                          notifications={this._notificationSystem.current}
+                          {...props}
+                        />
+                      ) : (
+                        <NotAllowed />
+                      )
+                    }
+                    exact
+                  />
+                  <Route
+                    path="/apio/tenants/:tenantId/groups/:siteId/numbers"
+                    component={props =>
+                      isAllowed(ui_profile, pages.data_tenants) ? (
+                        <NumbersManagement
+                          auth_token={auth_token}
+                          notifications={this._notificationSystem.current}
+                          {...props}
+                        />
+                      ) : (
+                        <NotAllowed />
+                      )
+                    }
+                    exact
+                  />
+                  <Route path="/" exact>
+                    <Redirect to="/dashboard" />
+                  </Route>
+                  <Route component={NotFound} />
+                </Switch>
+              </Col>
+            </Row>
+          </Grid>
         </div>
       </Router>
     );
