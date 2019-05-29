@@ -66,7 +66,7 @@ const AsyncApioNavBar = ({
             }
             id="nav-data-apio"
           >
-            <LinkContainer to={"/apio/tenants"}>
+            <LinkContainer to={"/data/tenants"}>
               <MenuItem>
                 <FormattedMessage id="tenants" defaultMessage="Tenants" />
               </MenuItem>

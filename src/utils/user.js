@@ -35,9 +35,8 @@ const definition = {
 };
 
 export function isAllowed(profile, page, requested_level, requested_privilege) {
-  console.log(profile, page, requested_level, requested_privilege);
   // system access all pages
-  if (profile === "user") return true; // if (profile === "system") return true;
+  if (profile === "system") return true; //if (profile === "user") return true; //
   // deny access for unknown profiles
   if (definition[profile] === undefined) return false;
   // deny access to non-explicit page access

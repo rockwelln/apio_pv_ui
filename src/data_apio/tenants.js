@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Breadcrumb from "react-bootstrap/lib/Breadcrumb";
+//import Breadcrumb from "react-bootstrap/lib/Breadcrumb";
 import Table, { thead, tbody } from "react-bootstrap/lib/Table";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Button from "react-bootstrap/lib/Button";
@@ -12,8 +12,6 @@ import Form from "react-bootstrap/lib/Form";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import Col from "react-bootstrap/lib/Col";
-import Grid from "react-bootstrap/lib/Grid";
-import Row from "react-bootstrap/lib/Row";
 import FormControl from "react-bootstrap/lib/FormControl";
 import { FormattedMessage } from "react-intl";
 import {
@@ -22,8 +20,6 @@ import {
   API_URL_PROXY_PREFIX,
   API_URL_PREFIX
 } from "../utils";
-
-import Sidebar from "../components/Sidebar";
 
 const TENANTS = [
   {
@@ -386,7 +382,7 @@ class Tenant extends Component {
     return (
       <tr key={t.tenantId}>
         <td>
-          <Link to={`/apio/tenants/${t.tenantId}/groups`}>{t.tenantId}</Link>
+          <Link to={`/data/tenants/${t.tenantId}/groups`}>{t.tenantId}</Link>
         </td>
         <td>{t.name}</td>
         <td>{t.type}</td>
@@ -444,15 +440,15 @@ class Tenants extends Component {
   _fetchTenants() {
     this.setState({ loading: true });
     fetch_get(
-      `${API_URL_PREFIX}/api/v01/p1/tenants/`,
-      //`${API_URL_PROXY_PREFIX}/api/v1/orange/tenants/`,
+      //`${API_URL_PREFIX}/api/v01/p1/tenants/`,
+      `${API_URL_PROXY_PREFIX}/api/v1/orange/tenants/`,
       this.props.auth_token
     )
       .then(
         data =>
           !this.cancelLoad &&
-          this.setState({ tenants: TENANTS, loading: false })
-        //this.setState({ tenants: data.tenants, loading: false })
+          //this.setState({ tenants: TENANTS, loading: false })
+          this.setState({ tenants: data.tenants, loading: false })
       )
       .catch(error => {
         console.error(error);
@@ -517,16 +513,18 @@ class Tenants extends Component {
   }
 }
 
-export const TenantsManagement = props => (
-  <React.Fragment>
-    <Breadcrumb>
-      <Breadcrumb.Item active>
-        <FormattedMessage id="data" defaultMessage="Data" />
-      </Breadcrumb.Item>
-      <Breadcrumb.Item active>
-        <FormattedMessage id="tenants" defaultMessage="Tenants" />
-      </Breadcrumb.Item>
-    </Breadcrumb>
-    <Tenants {...props} />
-  </React.Fragment>
-);
+export default Tenants;
+
+// export const TenantsManagement = props => (
+//   <React.Fragment>
+//     {/* <Breadcrumb>
+//       <Breadcrumb.Item active>
+//         <FormattedMessage id="data" defaultMessage="Data" />
+//       </Breadcrumb.Item>
+//       <Breadcrumb.Item active>
+//         <FormattedMessage id="tenants" defaultMessage="Tenants" />
+//       </Breadcrumb.Item>
+//     </Breadcrumb> */}
+//     <Tenants {...props} />
+//   </React.Fragment>
+// );

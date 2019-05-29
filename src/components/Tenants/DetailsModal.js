@@ -1,14 +1,30 @@
 import React, { Component } from "react";
 
-import Form from "react-bootstrap/lib/Form";
-import Modal from "react-bootstrap/lib/Modal";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import Col from "react-bootstrap/lib/Col";
+import FormControl from "react-bootstrap/lib/FormControl";
+import Modal from "react-bootstrap/lib/Modal";
+import Form from "react-bootstrap/lib/Form";
 import Button from "react-bootstrap/lib/Button";
+import ControlLabel from "react-bootstrap/lib/ControlLabel";
 
 import { FormattedMessage } from "react-intl";
 
-export class DetailsModal extends Component {
+import { fetch_get, API_URL_PROXY_PREFIX } from "../../utils";
+
+const DetailEntry = ({ label, value }) => (
+  <FormGroup>
+    <Col componentClass={ControlLabel} sm={2} md={3}>
+      {label}
+    </Col>
+
+    <Col sm={9} md={8}>
+      <FormControl.Static>{value}</FormControl.Static>
+    </Col>
+  </FormGroup>
+);
+
+class DetailsModal extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -16,23 +32,23 @@ export class DetailsModal extends Component {
 
   componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.show && !this.props.show) {
-      this.loadDetails(nextProps.tenantId, nextProps.groupId);
+      this.loadDetails(nextProps.tenantId);
     }
   }
 
-  loadDetails(tenantId, groupId) {
+  loadDetails(tenantId) {
     fetch_get(
-      `${API_URL_PROXY_PREFIX}/api/v1/orange/tenants/${tenantId}/groups/${groupId}/`,
+      `${API_URL_PROXY_PREFIX}/api/v1/orange/tenants/${tenantId}/`,
       this.props.auth_token
     )
-      .then(data => this.setState({ data: data.group }))
+      .then(data => this.setState({ data: data.tenant }))
       .catch(error => {
         this.setState({ deleting: false });
         this.props.notifications.addNotification({
           title: (
             <FormattedMessage
-              id="fetch-group-fail"
-              defaultMessage="Fail fetch group"
+              id="fetch-tenant-fail"
+              defaultMessage="Fail fetch tenant"
             />
           ),
           level: "error"
@@ -53,34 +69,42 @@ export class DetailsModal extends Component {
         <Modal.Body>
           {data ? (
             <Form horizontal>
-              <FormGroup>
-                <Col componentClass={ControlLabel} sm={2} md={3}>
-                  <FormattedMessage id="name" defaultMessage="Name" />
-                </Col>
-
-                <Col sm={9} md={8}>
-                  <FormControl.Static>{data.name}</FormControl.Static>
-                </Col>
-              </FormGroup>
-              <FormGroup>
-                <Col componentClass={ControlLabel} sm={2} md={3}>
+              <DetailEntry
+                label={<FormattedMessage id="name" defaultMessage="Name" />}
+                value={data.name}
+              />
+              <DetailEntry
+                label={
+                  <FormattedMessage
+                    id="default-domain"
+                    defaultMessage="Default domain"
+                  />
+                }
+                value={data.defaultDomain}
+              />
+              <DetailEntry
+                label={
                   <FormattedMessage
                     id="trunk-capacity"
                     defaultMessage="Trunk capacity"
                   />
-                </Col>
-
-                <Col sm={9} md={8}>
-                  <FormControl.Static>{data.trunkCapacity}</FormControl.Static>
-                </Col>
-              </FormGroup>
+                }
+                value={data.trunkCapacity}
+              />
               <FormGroup>
                 <Col componentClass={ControlLabel} sm={2} md={3}>
-                  <FormattedMessage id="type" defaultMessage="Type" />
+                  <FormattedMessage
+                    id="servie-packs"
+                    defaultMessage="Service packs"
+                  />
                 </Col>
 
                 <Col sm={9} md={8}>
-                  <FormControl.Static>{data.type}</FormControl.Static>
+                  {data.servicePacks.map(sp => (
+                    <FormControl.Static key={sp.name}>
+                      {`${sp.name} - ${sp.desc}`}
+                    </FormControl.Static>
+                  ))}
                 </Col>
               </FormGroup>
             </Form>

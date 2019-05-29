@@ -1,26 +1,31 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React from "react";
+
 import { withRouter } from "react-router";
 
-export class index extends Component {
-  static propTypes = {
-    prop: PropTypes
-  };
+import Breadcrumb from "react-bootstrap/lib/Breadcrumb";
+import { Link } from "react-router-dom";
 
-  render() {
-    console.log(this.props);
-    return <div />;
+import "./styles.css";
+
+const linkByCrumb = (item, lastItem) => {
+  if (item === "tenants" && !lastItem.includes(item)) {
+    return <Link to={"/data/tenants"}>{item}</Link>;
   }
-}
+  return item;
+};
 
-const mapStateToProps = state => ({});
+const BreadcrumbComponent = ({ location }) => {
+  const path = location.pathname.split("/").slice(1);
+  const lastItem = path.slice(-1);
+  return (
+    <Breadcrumb>
+      {path.map((item, i) => (
+        <Breadcrumb.Item active key={String(i)}>
+          {linkByCrumb(item, lastItem)}
+        </Breadcrumb.Item>
+      ))}
+    </Breadcrumb>
+  );
+};
 
-const mapDispatchToProps = {};
-
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(index)
-);
+export default withRouter(BreadcrumbComponent);
