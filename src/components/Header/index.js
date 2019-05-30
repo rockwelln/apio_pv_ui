@@ -61,14 +61,20 @@ const AsyncApioNavBar = ({
             title={
               <span>
                 <Glyphicon glyph="hdd" />{" "}
-                <FormattedMessage id="data" defaultMessage="Data" />
+                <FormattedMessage
+                  id="provisioning"
+                  defaultMessage="PROVISIONING"
+                />
               </span>
             }
             id="nav-data-apio"
           >
             <LinkContainer to={"/data/tenants"}>
               <MenuItem>
-                <FormattedMessage id="tenants" defaultMessage="Tenants" />
+                <FormattedMessage
+                  id="broadsoft_xsp1_as1"
+                  defaultMessage="Broadsoft XSP 1/As 1"
+                />
               </MenuItem>
             </LinkContainer>
           </NavDropdown>

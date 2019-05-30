@@ -4,6 +4,8 @@ export const API_URL_PREFIX =
     : "https://yaoh1.bxl.netaxis.be"; //"https://engo.netaxis.be"; //
 export const API_URL_PROXY_PREFIX = "/api/v01/apio/sync";
 
+export const API_BASE_URL = "/api/v01/p2";
+
 export function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;

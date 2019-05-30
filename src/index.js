@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import App from "./App";
 import { unregister } from "./registerServiceWorker";
+import Tenants from "./components/Tenants";
 
 import mainReducer from "./store/reducers";
 
@@ -82,6 +83,7 @@ ReactDOM.render(
   <Provider store={store}>
     <CookiesProvider>
       <AppWithIntlAndCookies />
+      {/*<Tenants />*/}
     </CookiesProvider>
   </Provider>,
   document.getElementById("root")
