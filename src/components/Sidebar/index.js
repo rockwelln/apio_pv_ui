@@ -8,7 +8,7 @@ export class Sidebar extends Component {
       <React.Fragment>
         <ListGroup>
           <div>
-            <Link to="/data/tenants">TENANTS</Link>
+            <Link to="/provisioning/broadsoft_xsp1_as1/tenants">TENANTS</Link>
           </div>
           <div>SEARCH</div>
           <div>TEMPLATES</div>

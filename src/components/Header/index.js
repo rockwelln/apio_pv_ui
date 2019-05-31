@@ -69,7 +69,7 @@ const AsyncApioNavBar = ({
             }
             id="nav-data-apio"
           >
-            <LinkContainer to={"/data/tenants"}>
+            <LinkContainer to={"/provisioning/broadsoft_xsp1_as1/tenants"}>
               <MenuItem>
                 <FormattedMessage
                   id="broadsoft_xsp1_as1"

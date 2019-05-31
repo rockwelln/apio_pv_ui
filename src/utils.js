@@ -6,6 +6,17 @@ export const API_URL_PROXY_PREFIX = "/api/v01/apio/sync";
 
 export const API_BASE_URL = "/api/v01/p2";
 
+function getCookie(name) {
+  var matches = document.cookie.match(
+    new RegExp(
+      "(?:^|; )" +
+        name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+        "=([^;]*)"
+    )
+  );
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
 export function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
@@ -45,7 +56,7 @@ export function fetch_get(url, token) {
     method: "GET",
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getCookie("auth_token")}`,
       "Content-Type": "application/json"
       //type: "application/json"
     }
@@ -65,7 +76,7 @@ export function fetch_put(url, body, token) {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getCookie("auth_token")}`
     },
     body: JSON.stringify(body)
   }).then(checkStatus);
@@ -82,7 +93,7 @@ export function fetch_post_raw(url, raw_body, token, content_type) {
     ? url
     : API_URL_PREFIX + url;
   let headers = {
-    Authorization: `Bearer ${token}`
+    Authorization: `Bearer ${getCookie("auth_token")}`
   };
   if (content_type) {
     headers["content-type"] = content_type;
@@ -103,7 +114,7 @@ export function fetch_delete(url, token) {
   return fetch(full_url, {
     method: "DELETE",
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getCookie("auth_token")}`
     }
   }).then(checkStatus);
 }

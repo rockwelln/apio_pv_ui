@@ -7,11 +7,19 @@ import { Link } from "react-router-dom";
 
 import "./styles.css";
 
-const linkByCrumb = (item, lastItem) => {
-  if (item === "tenants" && !lastItem.includes(item)) {
-    return <Link to={"/data/tenants"}>{item}</Link>;
+const convertCrumb = crumb => {
+  if (crumb === "broadsoft_xsp1_as1") {
+    return "broadsoft XSP 1 / AS 1";
   }
-  return item;
+  return crumb;
+};
+
+const linkByCrumb = (item, lastItem) => {
+  const crumb = convertCrumb(item);
+  if (crumb === "tenants" && !lastItem.includes(crumb)) {
+    return <Link to={"/provisioning/broadsoft_xsp1_as1/tenants"}>{crumb}</Link>;
+  }
+  return crumb;
 };
 
 const BreadcrumbComponent = ({ location }) => {

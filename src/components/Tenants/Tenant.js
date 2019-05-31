@@ -25,7 +25,11 @@ class Tenant extends Component {
     return (
       <tr key={t.tenantId}>
         <td>
-          <Link to={`/data/tenants/${t.tenantId}/groups`}>{t.tenantId}</Link>
+          <Link
+            to={`/provisioning/broadsoft_xsp1_as1/tenants/${t.tenantId}/groups`}
+          >
+            {t.tenantId}
+          </Link>
         </td>
         <td>{t.name}</td>
         <td>{t.type}</td>

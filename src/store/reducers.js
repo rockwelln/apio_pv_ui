@@ -1,10 +1,17 @@
+import * as actionType from "./constants";
+
 const initialState = {
-  test: true,
-  f: 1
+  tenants: []
 };
 
 function mainReducer(state = initialState, action) {
   switch (action.type) {
+    case actionType.GET_TENANTS: {
+      return {
+        ...state,
+        tenants: action.data.tenants
+      };
+    }
     default:
       return state;
   }

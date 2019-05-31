@@ -7,12 +7,7 @@ import Button from "react-bootstrap/lib/Button";
 
 import { FormattedMessage } from "react-intl";
 
-import {
-  fetch_delete,
-  fetch_get,
-  API_URL_PROXY_PREFIX,
-  API_BASE_URL
-} from "../../utils";
+import { fetch_delete, API_BASE_URL } from "../../utils";
 
 class DeleteModal extends Component {
   constructor(props) {
@@ -26,7 +21,7 @@ class DeleteModal extends Component {
     const { auth_token, onClose } = this.props;
     this.setState({ deleting: true });
 
-    fetch_delete(`${API_BASE_URL}/tenants/${tenantId}`, auth_token)
+    fetch_delete(`${API_BASE_URL}/tenants/${tenantId}`)
       .then(() => {
         this.props.notifications.addNotification({
           message: (

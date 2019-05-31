@@ -1,3 +1,9 @@
 .breadcrumb {
   text-transform: capitalize;
 }
+
+.breadcrumb > li + li:before {
+  color: #ccc;
+  content: ">\00a0";
+  padding: 0 5px;
+}

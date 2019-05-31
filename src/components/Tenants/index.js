@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+
+import { fetchTenants } from "../../store/actions";
 
 import Table from "react-bootstrap/lib/Table";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
@@ -7,141 +10,7 @@ import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import { FormattedMessage } from "react-intl";
 
-import { fetch_get, API_URL_PROXY_PREFIX, API_BASE_URL } from "../../utils";
 import Tenant from "./Tenant";
-
-const TENANTS = [
-  {
-    tenantId: "bc_ent_001",
-    name: "Coelmont NV",
-    type: "Enterprise"
-  },
-  {
-    tenantId: "ApioTenantPasswordTest",
-    name: "",
-    type: "ServiceProvider"
-  },
-  {
-    tenantId: "Amazon",
-    name: "",
-    type: "Enterprise"
-  },
-  {
-    tenantId: "02321052",
-    name: "Belga news agency",
-    type: "Enterprise"
-  },
-  {
-    tenantId: "0123345",
-    name: "JohnDoe",
-    type: "Enterprise"
-  },
-  {
-    tenantId: "10440",
-    name: "KMPG",
-    type: "Enterprise"
-  },
-  {
-    tenantId: "Telenet",
-    name: "Telenet",
-    type: "ServiceProvider"
-  },
-  {
-    tenantId: "nvision",
-    name: "nvision_demo",
-    type: "Enterprise"
-  },
-  {
-    tenantId: "ten_dev_1",
-    name: "ten_dev_1",
-    type: "Enterprise"
-  },
-  {
-    tenantId: "DemoTrunk",
-    name: "",
-    type: "Enterprise"
-  },
-  {
-    tenantId: "18284848",
-    name: "Mibit",
-    type: "Enterprise"
-  },
-  {
-    tenantId: "Enterprise1",
-    name: "",
-    type: "Enterprise"
-  },
-  {
-    tenantId: "TestPGW",
-    name: "",
-    type: "ServiceProvider"
-  },
-  {
-    tenantId: "Pie",
-    name: "Pie-Dev",
-    type: "ServiceProvider"
-  },
-  {
-    tenantId: "testPRA",
-    name: "testPRA",
-    type: "Enterprise"
-  },
-  {
-    tenantId: "Tango2",
-    name: "",
-    type: "ServiceProvider"
-  },
-  {
-    tenantId: "Pie-Demo",
-    name: "Pie-Demo",
-    type: "ServiceProvider"
-  },
-  {
-    tenantId: "Netaxis",
-    name: "",
-    type: "ServiceProvider"
-  },
-  {
-    tenantId: "focant",
-    name: "",
-    type: "Enterprise"
-  },
-  {
-    tenantId: "ApioSpTest",
-    name: "",
-    type: "ServiceProvider"
-  },
-  {
-    tenantId: "ApioSpSrvTest",
-    name: "",
-    type: "ServiceProvider"
-  },
-  {
-    tenantId: "ApioEntTest",
-    name: "",
-    type: "Enterprise"
-  },
-  {
-    tenantId: "Tango3",
-    name: "",
-    type: "ServiceProvider"
-  },
-  {
-    tenantId: "ENT000001",
-    name: "Test PRA Enterprise",
-    type: "Enterprise"
-  },
-  {
-    tenantId: "RBEN",
-    name: "",
-    type: "ServiceProvider"
-  },
-  {
-    tenantId: "023590531",
-    name: "nden-Belga - site 1",
-    type: "Enterprise"
-  }
-];
 
 class Tenants extends Component {
   constructor(props) {
@@ -152,49 +21,21 @@ class Tenants extends Component {
       loading: false,
       searchValue: ""
     };
-    this._fetchTenants = this._fetchTenants.bind(this);
   }
 
   componentWillUnmount() {
     this.cancelLoad = true;
   }
 
-  _fetchTenants() {
-    this.setState({ loading: true });
-    const data = {
-      username: "shark",
-      password: "Shark123!!"
-    };
-    fetch_get(
-      //`${API_URL_PREFIX}/api/v01/p1/tenants/`,
-      //`${API_URL_PROXY_PREFIX}/api/v1/orange/tenants/`,
-      `${API_BASE_URL}/tenants/`,
-      this.props.auth_token,
-      data
-    )
-      .then(
-        data =>
-          !this.cancelLoad &&
-          //this.setState({ tenants: TENANTS, loading: false })
-          this.setState({
-            tenants: data.tenants,
-            allTenants: data.tenants,
-            loading: false
-          })
-      )
-      .catch(error => {
-        console.error(error);
-        !this.cancelLoad && this.setState({ loading: false });
-      });
-  }
-
   componentDidMount() {
-    this._fetchTenants();
-    //this.setState({ tenants: TENANTS, allTenants: TENANTS, loading: false });
+    this.props
+      .fetchTenants(this.cancelLoad)
+      .then(() => this.setState({ tenants: this.props.tenants }));
   }
 
   render() {
     const { tenants, loading } = this.state;
+
     if (loading) {
       return (
         <div style={{ textAlign: "center" }}>
@@ -291,22 +132,28 @@ class Tenants extends Component {
   }
 
   handleSearchClick = () => {
-    // if (!this.state.searchValue) {
-    //   this.setState({ tenants: this.state.allTenants });
-    //   return;
-    // }
-    const re = new RegExp(this.state.searchValue);
-    const SearchArray = this.state.allTenants
+    const { searchValue } = this.state;
+    const SearchArray = this.props.tenants
       .filter(
-        tenant =>
-          tenant.tenantId.search(re) !== -1 ||
-          tenant.name.search(re) !== -1 ||
-          tenant.type.search(re) !== -1
+        tennant =>
+          tennant.tenantId.toLowerCase().includes(searchValue.toLowerCase()) ||
+          tennant.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+          tennant.type.toLowerCase().includes(searchValue.toLowerCase())
       )
       .map(tenant => tenant);
     this.setState({ tenants: SearchArray });
-    console.log(SearchArray);
   };
 }
 
-export default Tenants;
+const mapDispatchToProps = {
+  fetchTenants
+};
+
+const mapStateToProps = state => ({
+  tenants: state.tenants
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Tenants);

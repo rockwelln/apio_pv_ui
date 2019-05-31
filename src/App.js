@@ -71,8 +71,9 @@ const NotAllowed = ({ match }) => (
 class App extends Component {
   constructor(props) {
     super(props);
+    const auth_token = props.cookies.get("auth_token");
     this.state = {
-      auth_token: this.props.cookies.get("auth_token"),
+      auth_token,
       user_info: undefined,
       error_msg: undefined
     };
@@ -81,6 +82,7 @@ class App extends Component {
     this.getUserInfo = this.getUserInfo.bind(this);
     this.updateToken = this.updateToken.bind(this);
     this.logout = this.logout.bind(this);
+    window.sessionStorage.setItem("auth_token", auth_token);
   }
 
   getUserInfo(auth_token) {
@@ -232,8 +234,6 @@ class App extends Component {
 
     const ui_profile = user_info.ui_profile;
 
-    console.log("this.props", this.props);
-
     return (
       <Router>
         <div className="App">
@@ -271,11 +271,10 @@ class App extends Component {
                     exact
                   />
                   <Route
-                    path="/data/tenants"
+                    path="/provisioning/broadsoft_xsp1_as1/tenants"
                     component={props =>
                       isAllowed(ui_profile, pages.data_tenants) ? (
                         <Tenants
-                          auth_token={auth_token}
                           notifications={this._notificationSystem.current}
                           {...props}
                         />
@@ -286,7 +285,7 @@ class App extends Component {
                     exact
                   />
                   <Route
-                    path="/data/tenants/:tenantId/groups"
+                    path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/groups"
                     component={props =>
                       isAllowed(ui_profile, pages.data_tenants) ? (
                         <GroupsManagement
