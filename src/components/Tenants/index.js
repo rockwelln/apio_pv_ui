@@ -5,7 +5,6 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import FormControl from "react-bootstrap/lib/FormControl";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
-import Grid from "react-bootstrap/lib/Grid";
 import { FormattedMessage } from "react-intl";
 
 import { fetch_get, API_URL_PROXY_PREFIX, API_BASE_URL } from "../../utils";
@@ -162,32 +161,36 @@ class Tenants extends Component {
 
   _fetchTenants() {
     this.setState({ loading: true });
+    const data = {
+      username: "shark",
+      password: "Shark123!!"
+    };
     fetch_get(
       //`${API_URL_PREFIX}/api/v01/p1/tenants/`,
       //`${API_URL_PROXY_PREFIX}/api/v1/orange/tenants/`,
       `${API_BASE_URL}/tenants/`,
-      this.props.auth_token
+      this.props.auth_token,
+      data
     )
       .then(
         data =>
           !this.cancelLoad &&
           //this.setState({ tenants: TENANTS, loading: false })
-          this.setState({ tenants: data.tenants, loading: false })
+          this.setState({
+            tenants: data.tenants,
+            allTenants: data.tenants,
+            loading: false
+          })
       )
       .catch(error => {
         console.error(error);
         !this.cancelLoad && this.setState({ loading: false });
-        this.setState({
-          tenants: TENANTS,
-          allTenants: TENANTS,
-          loading: false
-        });
       });
   }
 
   componentDidMount() {
-    //this._fetchTenants();
-    this.setState({ tenants: TENANTS, allTenants: TENANTS, loading: false });
+    this._fetchTenants();
+    //this.setState({ tenants: TENANTS, allTenants: TENANTS, loading: false });
   }
 
   render() {
@@ -204,7 +207,7 @@ class Tenants extends Component {
       );
     }
     return (
-      <Grid>
+      <React.Fragment>
         <Row>
           <Col className={"text-right "} md={1}>
             <Glyphicon
@@ -283,7 +286,7 @@ class Tenants extends Component {
             </Table>
           </Col>
         </Row>
-      </Grid>
+      </React.Fragment>
     );
   }
 

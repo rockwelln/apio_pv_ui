@@ -10,7 +10,7 @@ import ControlLabel from "react-bootstrap/lib/ControlLabel";
 
 import { FormattedMessage } from "react-intl";
 
-import { fetch_get, API_URL_PROXY_PREFIX } from "../../utils";
+import { fetch_get, API_URL_PROXY_PREFIX, API_BASE_URL } from "../../utils";
 
 const DetailEntry = ({ label, value }) => (
   <FormGroup>
@@ -38,7 +38,8 @@ class DetailsModal extends Component {
 
   loadDetails(tenantId) {
     fetch_get(
-      `${API_URL_PROXY_PREFIX}/api/v1/orange/tenants/${tenantId}/`,
+      //`${API_URL_PROXY_PREFIX}/api/v1/orange/tenants/${tenantId}/`,
+      `${API_BASE_URL}/tenants/${this.props.tenantId}`,
       this.props.auth_token
     )
       .then(data => this.setState({ data: data.tenant }))

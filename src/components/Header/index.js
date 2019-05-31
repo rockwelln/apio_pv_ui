@@ -63,7 +63,7 @@ const AsyncApioNavBar = ({
                 <Glyphicon glyph="hdd" />{" "}
                 <FormattedMessage
                   id="provisioning"
-                  defaultMessage="PROVISIONING"
+                  defaultMessage="Provisioning"
                 />
               </span>
             }
@@ -73,7 +73,7 @@ const AsyncApioNavBar = ({
               <MenuItem>
                 <FormattedMessage
                   id="broadsoft_xsp1_as1"
-                  defaultMessage="Broadsoft XSP 1/As 1"
+                  defaultMessage="Broadsoft XSP 1/AS 1"
                 />
               </MenuItem>
             </LinkContainer>

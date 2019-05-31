@@ -45,7 +45,9 @@ export function fetch_get(url, token) {
     method: "GET",
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json"
+      //type: "application/json"
     }
   })
     .then(checkStatus)

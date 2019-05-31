@@ -17,7 +17,12 @@ import ControlLabel from "react-bootstrap/lib/ControlLabel";
 
 import { FormattedMessage } from "react-intl";
 
-import { API_URL_PROXY_PREFIX, fetch_delete, fetch_get } from "../utils";
+import {
+  API_URL_PROXY_PREFIX,
+  fetch_delete,
+  fetch_get,
+  API_BASE_URL
+} from "../utils";
 
 class DetailsModal extends Component {
   constructor(props) {
@@ -279,6 +284,7 @@ class Groups extends Component {
       loading: false
     };
     this._fetchGroups = this._fetchGroups.bind(this);
+    this._fetchTenants = this._fetchTenants.bind(this);
   }
 
   componentWillUnmount() {
@@ -291,6 +297,7 @@ class Groups extends Component {
       `${API_URL_PROXY_PREFIX}/api/v1/orange/tenants/${
         this.props.tenantId
       }/groups/`,
+      // `${API_BASE_URL}/tenants/${this.props.tenantId}`,
       this.props.auth_token
     )
       .then(
@@ -298,6 +305,26 @@ class Groups extends Component {
           !this.cancelLoad &&
           this.setState({ groups: data.groups, loading: false })
       )
+      .catch(error => {
+        console.error(error);
+        !this.cancelLoad && this.setState({ loading: false });
+      });
+  }
+
+  _fetchTenants() {
+    this.setState({ loading: true });
+    fetch_get(
+      // `${API_URL_PROXY_PREFIX}/api/v1/orange/tenants/${
+      //   this.props.tenantId
+      // }/groups/`,
+      `${API_BASE_URL}/tenants/${this.props.tenantId}`,
+      this.props.auth_token
+    )
+      .then
+      //data =>
+      //!this.cancelLoad &&
+      //this.setState({ groups: data.groups, loading: false })
+      ()
       .catch(error => {
         console.error(error);
         !this.cancelLoad && this.setState({ loading: false });

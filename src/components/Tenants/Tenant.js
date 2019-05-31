@@ -25,8 +25,7 @@ class Tenant extends Component {
     return (
       <tr key={t.tenantId}>
         <td>
-          {t.tenantId}
-          {/* <Link to={`/data/tenants/${t.tenantId}/groups`}>{t.tenantId}</Link> */}
+          <Link to={`/data/tenants/${t.tenantId}/groups`}>{t.tenantId}</Link>
         </td>
         <td>{t.name}</td>
         <td>{t.type}</td>
