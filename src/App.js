@@ -19,8 +19,6 @@ import NotificationSystem from "react-notification-system";
 import { withCookies } from "react-cookie";
 import { FormattedMessage } from "react-intl";
 
-import TenantsManagement from "./data_apio/tenants";
-import { GroupsManagement } from "./data_apio/groups";
 import { NumbersManagement } from "./data_apio/numbers";
 import { API_URL_PREFIX, fetch_get, checkStatus, parseJSON } from "./utils";
 import { isAllowed, pages } from "./utils/user";
@@ -31,6 +29,7 @@ import Sidebar from "./components/Sidebar";
 import Breadcrumb from "./components/Breadcrumb";
 import LoginPage from "./components/LoginPage";
 import Tenants from "./components/Tenants";
+import TenantPage from "./components/TenantPage";
 
 import "./App.css";
 import loading from "./loading.gif";
@@ -285,15 +284,16 @@ class App extends Component {
                     exact
                   />
                   <Route
-                    path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/groups"
+                    path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId"
                     component={props =>
                       isAllowed(ui_profile, pages.data_tenants) ? (
-                        <GroupsManagement
-                          auth_token={auth_token}
-                          notifications={this._notificationSystem.current}
-                          {...props}
-                        />
+                        <TenantPage />
                       ) : (
+                        // <GroupsManagement
+                        //   auth_token={auth_token}
+                        //   notifications={this._notificationSystem.current}
+                        //   {...props}
+                        // />
                         <NotAllowed />
                       )
                     }

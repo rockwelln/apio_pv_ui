@@ -5,7 +5,6 @@ import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 //import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
-import DetailsModal from "./DetailsModal";
 import DeleteModal from "./DeleteModal";
 
 import "./styles.css";
@@ -25,9 +24,7 @@ class Tenant extends Component {
     return (
       <tr key={t.tenantId}>
         <td>
-          <Link
-            to={`/provisioning/broadsoft_xsp1_as1/tenants/${t.tenantId}/groups`}
-          >
+          <Link to={`/provisioning/broadsoft_xsp1_as1/tenants/${t.tenantId}`}>
             {t.tenantId}
           </Link>
         </td>
@@ -36,28 +33,11 @@ class Tenant extends Component {
         <td>/</td>
         <td>
           <ButtonToolbar>
-            {/* <Button
-              onClick={() => this.setState({ showDetails: true })}
-              bsStyle="primary"
-            >
-              <Glyphicon glyph="menu-hamburger" />
-            </Button> */}
-            {/* <Button
-              onClick={() => this.setState({ showDelete: true })}
-              bsStyle="danger"
-            > */}
             <Glyphicon
               glyph="glyphicon glyphicon-remove"
               onClick={() => this.setState({ showDelete: true })}
             />
-            {/* </Button>*/}
           </ButtonToolbar>
-          <DetailsModal
-            tenantId={t.tenantId}
-            show={showDetails}
-            onClose={() => this.setState({ showDetails: false })}
-            {...this.props}
-          />
           <DeleteModal
             tenantId={t.tenantId}
             show={showDelete}

@@ -7,14 +7,13 @@ export const API_URL_PROXY_PREFIX = "/api/v01/apio/sync";
 export const API_BASE_URL = "/api/v01/p2";
 
 function getCookie(name) {
-  var matches = document.cookie.match(
-    new RegExp(
-      "(?:^|; )" +
-        name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-        "=([^;]*)"
-    )
-  );
-  return matches ? decodeURIComponent(matches[1]) : undefined;
+  var value = "; " + document.cookie;
+  var parts = value.split("; " + name + "=");
+  if (parts.length === 2)
+    return parts
+      .pop()
+      .split(";")
+      .shift();
 }
 
 export function checkStatus(response) {

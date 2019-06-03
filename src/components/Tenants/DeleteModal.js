@@ -1,16 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { fetchDeleteTenant, deleteTenant } from "../../store/actions";
+import { fetchDeleteTenant } from "../../store/actions";
 
 import Modal from "react-bootstrap/lib/Modal";
 import Alert from "react-bootstrap/lib/Alert";
-import Checkbox from "react-bootstrap/lib/Checkbox";
 import Button from "react-bootstrap/lib/Button";
 
 import { FormattedMessage } from "react-intl";
-
-import { fetch_delete, API_BASE_URL } from "../../utils";
 
 class DeleteModal extends Component {
   constructor(props) {
@@ -50,32 +47,6 @@ class DeleteModal extends Component {
           level: "error"
         });
       });
-    // fetch_delete(`${API_BASE_URL}/tenants/${tenantId}`)
-    //   .then(() => {
-    //     this.props.notifications.addNotification({
-    //       message: (
-    //         <FormattedMessage
-    //           id="delete-tenant-ok"
-    //           defaultMessage="Tenant deleted"
-    //         />
-    //       ),
-    //       level: "success"
-    //     });
-    //     this.setState({ deleting: false });
-    //     onClose && onClose(true);
-    //   })
-    //   .catch(error => {
-    //     this.setState({ deleting: false });
-    //     this.props.notifications.addNotification({
-    //       title: (
-    //         <FormattedMessage
-    //           id="delete-tenant-fail"
-    //           defaultMessage="Fail delete tenant"
-    //         />
-    //       ),
-    //       level: "error"
-    //     });
-    //   });
   }
 
   render() {
@@ -107,15 +78,6 @@ class DeleteModal extends Component {
               defaultMessage={`You are about to delete the tenant ${tenantId}!`}
             />
           </p>
-          {/* <Checkbox
-            checked={deleteNonEmpty}
-            onChange={e => this.setState({ deleteNonEmpty: e.target.checked })}
-          >
-            <FormattedMessage
-              id="delete-if-not-empty"
-              defaultMessage="Delete even if not empty"
-            />
-          </Checkbox> */}
         </Modal.Body>
         <Modal.Footer>
           <Button

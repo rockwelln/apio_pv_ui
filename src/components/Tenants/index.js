@@ -61,7 +61,7 @@ class Tenants extends Component {
             <Glyphicon
               className={"x-large"}
               glyph="glyphicon glyphicon-search"
-              onClick={this.handleSearchClick}
+              onClick={this.filterBySearchValue}
             />
           </Col>
           <Col md={10}>
@@ -80,7 +80,7 @@ class Tenants extends Component {
                       {
                         searchValue: e.target.value
                       },
-                      () => this.handleSearchClick()
+                      () => this.filterBySearchValue()
                     )
                   }
                 />
@@ -102,27 +102,27 @@ class Tenants extends Component {
                   <th style={{ width: "24%" }}>
                     <FormattedMessage id="tenant-id" defaultMessage="ID" />
                     <Glyphicon
-                      glyph="glyphicon glyphicon-transfer"
+                      glyph="glyphicon glyphicon-sort"
                       onClick={this.sortByID}
                     />
                   </th>
                   <th style={{ width: "24%" }}>
                     <FormattedMessage id="name" defaultMessage="Name" />
                     <Glyphicon
-                      glyph="glyphicon glyphicon-transfer"
+                      glyph="glyphicon glyphicon-sort"
                       onClick={this.sortByName}
                     />
                   </th>
                   <th style={{ width: "24%" }}>
                     <FormattedMessage id="type" defaultMessage="Type" />
                     <Glyphicon
-                      glyph="glyphicon glyphicon-transfer"
+                      glyph="glyphicon glyphicon-sort"
                       onClick={this.sortByType}
                     />
                   </th>
                   <th style={{ width: "24%" }}>
                     <FormattedMessage id="reseller" defaultMessage="Reseller" />
-                    <Glyphicon glyph="glyphicon glyphicon-transfer" />
+                    <Glyphicon glyph="glyphicon glyphicon-sort" />
                   </th>
                   <th style={{ width: "4%" }} />
                 </tr>
@@ -144,7 +144,7 @@ class Tenants extends Component {
     );
   }
 
-  handleSearchClick = () => {
+  filterBySearchValue = () => {
     const { searchValue } = this.state;
     const SearchArray = this.props.tenants
       .filter(
