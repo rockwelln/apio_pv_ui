@@ -19,7 +19,8 @@ class Tenants extends Component {
     this.state = {
       tenants: [],
       loading: false,
-      searchValue: ""
+      searchValue: "",
+      sortedBy: null
     };
   }
 
@@ -28,14 +29,20 @@ class Tenants extends Component {
   }
 
   componentDidMount() {
-    this.props
-      .fetchTenants(this.cancelLoad)
-      .then(() => this.setState({ tenants: this.props.tenants }));
+    this.props.fetchTenants(this.cancelLoad).then(() =>
+      this.setState({
+        tenants: this.props.tenants.sort((a, b) => {
+          if (a.tenantId < b.tenantId) return -1;
+          if (a.tenantId > b.tenantId) return 1;
+          return 0;
+        }),
+        sortedBy: "id"
+      })
+    );
   }
 
   render() {
     const { tenants, loading } = this.state;
-
     if (loading) {
       return (
         <div style={{ textAlign: "center" }}>
@@ -69,9 +76,12 @@ class Tenants extends Component {
                   value={this.state.searchValue}
                   placeholder={placeholder}
                   onChange={e =>
-                    this.setState({
-                      searchValue: e.target.value
-                    })
+                    this.setState(
+                      {
+                        searchValue: e.target.value
+                      },
+                      () => this.handleSearchClick()
+                    )
                   }
                 />
               )}
@@ -91,15 +101,24 @@ class Tenants extends Component {
                 <tr>
                   <th style={{ width: "24%" }}>
                     <FormattedMessage id="tenant-id" defaultMessage="ID" />
-                    <Glyphicon glyph="glyphicon glyphicon-transfer" />
+                    <Glyphicon
+                      glyph="glyphicon glyphicon-transfer"
+                      onClick={this.sortByID}
+                    />
                   </th>
                   <th style={{ width: "24%" }}>
                     <FormattedMessage id="name" defaultMessage="Name" />
-                    <Glyphicon glyph="glyphicon glyphicon-transfer" />
+                    <Glyphicon
+                      glyph="glyphicon glyphicon-transfer"
+                      onClick={this.sortByName}
+                    />
                   </th>
                   <th style={{ width: "24%" }}>
                     <FormattedMessage id="type" defaultMessage="Type" />
-                    <Glyphicon glyph="glyphicon glyphicon-transfer" />
+                    <Glyphicon
+                      glyph="glyphicon glyphicon-transfer"
+                      onClick={this.sortByType}
+                    />
                   </th>
                   <th style={{ width: "24%" }}>
                     <FormattedMessage id="reseller" defaultMessage="Reseller" />
@@ -109,20 +128,14 @@ class Tenants extends Component {
                 </tr>
               </thead>
               <tbody>
-                {tenants
-                  .sort((a, b) => {
-                    if (a.tenantId < b.tenantId) return -1;
-                    if (a.tenantId > b.tenantId) return 1;
-                    return 0;
-                  })
-                  .map(t => (
-                    <Tenant
-                      key={t.tenantId}
-                      t={t}
-                      onReload={this._fetchTenants}
-                      {...this.props}
-                    />
-                  ))}
+                {tenants.map(t => (
+                  <Tenant
+                    key={t.tenantId}
+                    t={t}
+                    onReload={this._fetchTenants}
+                    {...this.props}
+                  />
+                ))}
               </tbody>
             </Table>
           </Col>
@@ -142,6 +155,51 @@ class Tenants extends Component {
       )
       .map(tenant => tenant);
     this.setState({ tenants: SearchArray });
+  };
+
+  sortByID = () => {
+    const { tenants, sortedBy } = this.state;
+    if (sortedBy === "id") {
+      const tenansSortByID = tenants.reverse();
+      this.setState({ tenants: tenansSortByID });
+    } else {
+      const tenansSortByID = tenants.sort((a, b) => {
+        if (a.tenantId < b.tenantId) return -1;
+        if (a.tenantId > b.tenantId) return 1;
+        return 0;
+      });
+      this.setState({ tenants: tenansSortByID, sortedBy: "id" });
+    }
+  };
+
+  sortByName = () => {
+    const { tenants, sortedBy } = this.state;
+    if (sortedBy === "name") {
+      const tenansSortByID = tenants.reverse();
+      this.setState({ tenants: tenansSortByID });
+    } else {
+      const tenansSortByID = tenants.sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      });
+      this.setState({ tenants: tenansSortByID, sortedBy: "name" });
+    }
+  };
+
+  sortByType = () => {
+    const { tenants, sortedBy } = this.state;
+    if (sortedBy === "type") {
+      const tenansSortByID = tenants.reverse();
+      this.setState({ tenants: tenansSortByID });
+    } else {
+      const tenansSortByID = tenants.sort((a, b) => {
+        if (a.type < b.type) return -1;
+        if (a.type > b.type) return 1;
+        return 0;
+      });
+      this.setState({ tenants: tenansSortByID, sortedBy: "type" });
+    }
   };
 }
 

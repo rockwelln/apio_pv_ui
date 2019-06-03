@@ -78,7 +78,7 @@ class DeleteModal extends Component {
               defaultMessage={`You are about to delete the tenant ${tenantId}!`}
             />
           </p>
-          <Checkbox
+          {/* <Checkbox
             checked={deleteNonEmpty}
             onChange={e => this.setState({ deleteNonEmpty: e.target.checked })}
           >
@@ -86,7 +86,7 @@ class DeleteModal extends Component {
               id="delete-if-not-empty"
               defaultMessage="Delete even if not empty"
             />
-          </Checkbox>
+          </Checkbox> */}
         </Modal.Body>
         <Modal.Footer>
           <Button

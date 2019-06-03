@@ -3,3 +3,8 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.container-fluid {
+  margin-right: 10%;
+  margin-left: 10%;
+}

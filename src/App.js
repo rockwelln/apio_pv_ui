@@ -249,15 +249,15 @@ class App extends Component {
           </div>
           <Grid>
             <Row>
-              <Col mdOffset={1} md={10}>
-                <Breadcrumb mdOffset={1} md={10} />
+              <Col md={12}>
+                <Breadcrumb />
               </Col>
             </Row>
             <Row>
-              <Col mdOffset={1} md={2}>
+              <Col md={2}>
                 <Sidebar />
               </Col>
-              <Col md={8} style={{ borderLeft: "2px solid #dddddd" }}>
+              <Col md={10} style={{ borderLeft: "2px solid #dddddd" }}>
                 <Switch>
                   <Route
                     path="/dashboard"
