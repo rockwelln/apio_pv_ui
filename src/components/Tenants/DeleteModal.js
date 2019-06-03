@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+
+import { fetchDeleteTenant, deleteTenant } from "../../store/actions";
 
 import Modal from "react-bootstrap/lib/Modal";
 import Alert from "react-bootstrap/lib/Alert";
@@ -17,11 +20,11 @@ class DeleteModal extends Component {
   }
 
   onDelete(tenantId) {
-    const { deleteNonEmpty } = this.state;
-    const { auth_token, onClose } = this.props;
+    const { onClose } = this.props;
     this.setState({ deleting: true });
 
-    fetch_delete(`${API_BASE_URL}/tenants/${tenantId}`)
+    this.props
+      .fetchDeleteTenant(tenantId)
       .then(() => {
         this.props.notifications.addNotification({
           message: (
@@ -47,6 +50,32 @@ class DeleteModal extends Component {
           level: "error"
         });
       });
+    // fetch_delete(`${API_BASE_URL}/tenants/${tenantId}`)
+    //   .then(() => {
+    //     this.props.notifications.addNotification({
+    //       message: (
+    //         <FormattedMessage
+    //           id="delete-tenant-ok"
+    //           defaultMessage="Tenant deleted"
+    //         />
+    //       ),
+    //       level: "success"
+    //     });
+    //     this.setState({ deleting: false });
+    //     onClose && onClose(true);
+    //   })
+    //   .catch(error => {
+    //     this.setState({ deleting: false });
+    //     this.props.notifications.addNotification({
+    //       title: (
+    //         <FormattedMessage
+    //           id="delete-tenant-fail"
+    //           defaultMessage="Fail delete tenant"
+    //         />
+    //       ),
+    //       level: "error"
+    //     });
+    //   });
   }
 
   render() {
@@ -105,4 +134,11 @@ class DeleteModal extends Component {
   }
 }
 
-export default DeleteModal;
+const mapDispatchToProps = {
+  fetchDeleteTenant
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(DeleteModal);

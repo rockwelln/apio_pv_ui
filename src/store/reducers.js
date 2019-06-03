@@ -12,6 +12,11 @@ function mainReducer(state = initialState, action) {
         tenants: action.data.tenants
       };
     }
+    case actionType.DELETE_TENANT: {
+      return {
+        ...state
+      };
+    }
     default:
       return state;
   }

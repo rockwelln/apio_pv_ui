@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { fetchTenants } from "../../store/actions";
+import { fetchGetTenants } from "../../store/actions";
 
 import Table from "react-bootstrap/lib/Table";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
@@ -29,7 +29,7 @@ class Tenants extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchTenants(this.cancelLoad).then(() =>
+    this.props.fetchGetTenants(this.cancelLoad).then(() =>
       this.setState({
         tenants: this.props.tenants.sort((a, b) => {
           if (a.tenantId < b.tenantId) return -1;
@@ -204,7 +204,7 @@ class Tenants extends Component {
 }
 
 const mapDispatchToProps = {
-  fetchTenants
+  fetchGetTenants
 };
 
 const mapStateToProps = state => ({
