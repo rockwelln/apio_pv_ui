@@ -2,34 +2,26 @@ import React, { Component } from "react";
 
 import { Link } from "react-router-dom";
 import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
-//import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import DeleteModal from "./DeleteModal";
 
-import "./styles.css";
-
-class Tenant extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showDetails: false,
-      showDelete: false
-    };
-  }
-
+export default class Group extends Component {
+  state = { showDelete: false };
   render() {
-    const { t, onReload } = this.props;
+    const { group, onReload } = this.props;
     const { showDelete } = this.state;
     return (
-      <tr key={t.tenantId}>
+      <tr key={group.groupId}>
         <td>
-          <Link to={`/provisioning/broadsoft_xsp1_as1/tenants/${t.tenantId}`}>
-            {t.tenantId}
+          <Link
+            to={`/provisioning/broadsoft_xsp1_as1/tenants/${group.tenantId}`}
+          >
+            {group.groupId}
           </Link>
         </td>
-        <td>{t.name}</td>
-        <td>{t.type}</td>
+        <td>{group.groupName}</td>
+        <td>{group.userLimit}</td>
         <td>/</td>
         <td>
           <ButtonToolbar>
@@ -39,10 +31,10 @@ class Tenant extends Component {
             />
           </ButtonToolbar>
           <DeleteModal
-            tenantId={t.tenantId}
+            tenantId={group.groupId}
             show={showDelete}
             onClose={e => {
-              e && onReload && onReload();
+              onReload && onReload(group.tenantId);
               this.setState({ showDelete: false });
             }}
             {...this.props}
@@ -52,5 +44,3 @@ class Tenant extends Component {
     );
   }
 }
-
-export default Tenant;

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { fetchDeleteTenant } from "../../store/actions";
+//import { fetchDeleteTenant } from "../../store/actions";
 
 import Modal from "react-bootstrap/lib/Modal";
 import Alert from "react-bootstrap/lib/Alert";
@@ -75,7 +75,7 @@ class DeleteModal extends Component {
           <p>
             <FormattedMessage
               id="confirm-delete-warning"
-              defaultMessage={`You are about to delete the tenant ${tenantId}!`}
+              defaultMessage={`You are about to delete the group ${tenantId}!`}
             />
           </p>
         </Modal.Body>
@@ -83,7 +83,7 @@ class DeleteModal extends Component {
           <Button
             onClick={() => this.onDelete(tenantId)}
             bsStyle="danger"
-            disabled={deleting}
+            disabled={true}
           >
             <FormattedMessage id="delete" defaultMessage="Delete" />
           </Button>
@@ -97,7 +97,7 @@ class DeleteModal extends Component {
 }
 
 const mapDispatchToProps = {
-  fetchDeleteTenant
+  //fetchDeleteTenant
 };
 
 export default connect(

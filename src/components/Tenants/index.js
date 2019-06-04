@@ -132,7 +132,7 @@ class Tenants extends Component {
                   <Tenant
                     key={t.tenantId}
                     t={t}
-                    onReload={this._fetchTenants}
+                    onReload={this.props.fetchGetTenants}
                     {...this.props}
                   />
                 ))}
@@ -160,45 +160,45 @@ class Tenants extends Component {
   sortByID = () => {
     const { tenants, sortedBy } = this.state;
     if (sortedBy === "id") {
-      const tenansSortByID = tenants.reverse();
-      this.setState({ tenants: tenansSortByID });
+      const tenansSorted = tenants.reverse();
+      this.setState({ tenants: tenansSorted });
     } else {
-      const tenansSortByID = tenants.sort((a, b) => {
+      const tenansSorted = tenants.sort((a, b) => {
         if (a.tenantId < b.tenantId) return -1;
         if (a.tenantId > b.tenantId) return 1;
         return 0;
       });
-      this.setState({ tenants: tenansSortByID, sortedBy: "id" });
+      this.setState({ tenants: tenansSorted, sortedBy: "id" });
     }
   };
 
   sortByName = () => {
     const { tenants, sortedBy } = this.state;
     if (sortedBy === "name") {
-      const tenansSortByID = tenants.reverse();
-      this.setState({ tenants: tenansSortByID });
+      const tenansSorted = tenants.reverse();
+      this.setState({ tenants: tenansSorted });
     } else {
-      const tenansSortByID = tenants.sort((a, b) => {
+      const tenansSorted = tenants.sort((a, b) => {
         if (a.name < b.name) return -1;
         if (a.name > b.name) return 1;
         return 0;
       });
-      this.setState({ tenants: tenansSortByID, sortedBy: "name" });
+      this.setState({ tenants: tenansSorted, sortedBy: "name" });
     }
   };
 
   sortByType = () => {
     const { tenants, sortedBy } = this.state;
     if (sortedBy === "type") {
-      const tenansSortByID = tenants.reverse();
-      this.setState({ tenants: tenansSortByID });
+      const tenansSorted = tenants.reverse();
+      this.setState({ tenants: tenansSorted });
     } else {
-      const tenansSortByID = tenants.sort((a, b) => {
+      const tenansSorted = tenants.sort((a, b) => {
         if (a.type < b.type) return -1;
         if (a.type > b.type) return 1;
         return 0;
       });
-      this.setState({ tenants: tenansSortByID, sortedBy: "type" });
+      this.setState({ tenants: tenansSorted, sortedBy: "type" });
     }
   };
 }

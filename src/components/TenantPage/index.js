@@ -7,7 +7,7 @@ import Tab from "react-bootstrap/lib/Tab";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import Loading from "../Loading";
-import GroupsTab from "./Tabs/GroupsTab";
+import GroupsTab from "./Tabs/Groups";
 
 import { fetchGetTenantById } from "../../store/actions";
 
@@ -62,9 +62,8 @@ class TenantPage extends Component {
           </Tabs>
         </React.Fragment>
       );
-    } else {
-      return <Loading />;
     }
+    return <Loading />;
   }
 }
 

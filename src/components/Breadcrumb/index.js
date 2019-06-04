@@ -14,10 +14,17 @@ const convertCrumb = crumb => {
   return crumb;
 };
 
-const linkByCrumb = (item, lastItem) => {
+const linkByCrumb = (item, lastItem, i, path) => {
   const crumb = convertCrumb(item);
   if (crumb === "tenants" && !lastItem.includes(crumb)) {
     return <Link to={"/provisioning/broadsoft_xsp1_as1/tenants"}>{crumb}</Link>;
+  }
+  if (lastItem.includes(crumb) && path[i - 1] === "tenants") {
+    return (
+      <Link to={`/provisioning/broadsoft_xsp1_as1/tenants/${item}`}>
+        {crumb}
+      </Link>
+    );
   }
   return crumb;
 };
@@ -29,7 +36,7 @@ const BreadcrumbComponent = ({ location }) => {
     <Breadcrumb>
       {path.map((item, i) => (
         <Breadcrumb.Item active key={String(i)}>
-          {linkByCrumb(item, lastItem)}
+          {linkByCrumb(item, lastItem, i, path)}
         </Breadcrumb.Item>
       ))}
     </Breadcrumb>
