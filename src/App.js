@@ -81,7 +81,6 @@ class App extends Component {
     this.getUserInfo = this.getUserInfo.bind(this);
     this.updateToken = this.updateToken.bind(this);
     this.logout = this.logout.bind(this);
-    window.sessionStorage.setItem("auth_token", auth_token);
   }
 
   getUserInfo(auth_token) {
@@ -289,11 +288,6 @@ class App extends Component {
                       isAllowed(ui_profile, pages.data_tenants) ? (
                         <TenantPage />
                       ) : (
-                        // <GroupsManagement
-                        //   auth_token={auth_token}
-                        //   notifications={this._notificationSystem.current}
-                        //   {...props}
-                        // />
                         <NotAllowed />
                       )
                     }

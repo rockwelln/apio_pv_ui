@@ -17,15 +17,16 @@ export class GroupsTab extends Component {
   state = {
     searchValue: "",
     isLoading: true,
-    sortedBy: ""
+    sortedBy: "",
+    groups: []
   };
 
   componentDidMount() {
     this.props.fetchGetGroupsByTenantId(this.props.tenantId).then(() =>
       this.setState({
         groups: this.props.groups.sort((a, b) => {
-          if (a.groupsId < b.groupsId) return -1;
-          if (a.groupsId > b.groupsId) return 1;
+          if (a.groupId < b.groupId) return -1;
+          if (a.groupId > b.groupId) return 1;
           return 0;
         }),
         isLoading: false,

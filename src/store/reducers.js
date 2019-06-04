@@ -3,7 +3,8 @@ import * as actionType from "./constants";
 const initialState = {
   tenants: [],
   tenant: {},
-  groups: []
+  groups: [],
+  phoneNumbers: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -24,6 +25,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         groups: action.data.groups
+      };
+    }
+    case actionType.GET_PHONE_NUMBERS: {
+      return {
+        ...state,
+        phoneNumbers: action.data.assignement_phoneNumbers
       };
     }
     case actionType.DELETE_TENANT: {
