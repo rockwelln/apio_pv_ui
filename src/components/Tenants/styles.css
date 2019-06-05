@@ -21,3 +21,11 @@
 .glyphicon-search {
   margin-top: 15px;
 }
+
+.border-left {
+  border-left: 2px solid #dddddd;
+}
+
+.padding-left-3 {
+  padding-left: 30px;
+}

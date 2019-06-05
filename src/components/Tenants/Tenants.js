@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import { fetchGetTenants } from "../../store/actions";
+
 import Table from "react-bootstrap/lib/Table";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import FormControl from "react-bootstrap/lib/FormControl";
@@ -8,35 +10,43 @@ import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import { FormattedMessage } from "react-intl";
 
-import Loading from "../../../../common/Loading";
+import Loading from "../../common/Loading";
 
-import { fetchGetGroupsByTenantId } from "../../../../store/actions";
-import Group from "./Group";
+import Tenant from "./Tenant";
 
-export class GroupsTab extends Component {
-  state = {
-    searchValue: "",
-    isLoading: true,
-    sortedBy: "",
-    groups: []
-  };
+class Tenants extends Component {
+  constructor(props) {
+    super(props);
+    this.cancelLoad = false;
+    this.state = {
+      tenants: [],
+      searchValue: "",
+      sortedBy: null,
+      isLoading: true
+    };
+  }
+
+  componentWillUnmount() {
+    this.cancelLoad = true;
+  }
 
   componentDidMount() {
-    this.props.fetchGetGroupsByTenantId(this.props.tenantId).then(() =>
+    this.props.fetchGetTenants(this.cancelLoad).then(() =>
       this.setState({
-        groups: this.props.groups.sort((a, b) => {
-          if (a.groupId < b.groupId) return -1;
-          if (a.groupId > b.groupId) return 1;
+        tenants: this.props.tenants.sort((a, b) => {
+          if (a.tenantId < b.tenantId) return -1;
+          if (a.tenantId > b.tenantId) return 1;
           return 0;
         }),
-        isLoading: false,
-        sortedBy: "id"
+        sortedBy: "id",
+        isLoading: false
       })
     );
   }
 
   render() {
-    const { isLoading, groups } = this.state;
+    const { tenants, isLoading } = this.state;
+
     if (isLoading) {
       return <Loading />;
     }
@@ -44,17 +54,17 @@ export class GroupsTab extends Component {
     return (
       <React.Fragment>
         <Row>
-          <Col className={"text-right"} md={1}>
+          <Col className={"text-right "} md={1}>
             <Glyphicon
               className={"x-large"}
               glyph="glyphicon glyphicon-search"
-              onClick={this.handleSearchClick}
+              onClick={this.filterBySearchValue}
             />
           </Col>
           <Col md={10}>
             <FormattedMessage
               id="search_placeholder"
-              defaultMessage="Group ID or Name"
+              defaultMessage="Tenant ID or Name or Type or Resellers"
             >
               {placeholder => (
                 <FormControl
@@ -101,10 +111,10 @@ export class GroupsTab extends Component {
                     />
                   </th>
                   <th style={{ width: "24%" }}>
-                    <FormattedMessage id="type" defaultMessage="User limit" />
+                    <FormattedMessage id="type" defaultMessage="Type" />
                     <Glyphicon
                       glyph="glyphicon glyphicon-sort"
-                      onClick={this.sortByUserLimit}
+                      onClick={this.sortByType}
                     />
                   </th>
                   <th style={{ width: "24%" }}>
@@ -115,11 +125,12 @@ export class GroupsTab extends Component {
                 </tr>
               </thead>
               <tbody>
-                {groups.map(group => (
-                  <Group
-                    key={group.groupId}
-                    group={group}
-                    onReload={this.props.fetchGetGroupsByTenantId}
+                {tenants.map(t => (
+                  <Tenant
+                    key={t.tenantId}
+                    t={t}
+                    onReload={this.props.fetchGetTenants}
+                    {...this.props}
                   />
                 ))}
               </tbody>
@@ -132,71 +143,72 @@ export class GroupsTab extends Component {
 
   filterBySearchValue = () => {
     const { searchValue } = this.state;
-    const SearchArray = this.props.groups
+    const SearchArray = this.props.tenants
       .filter(
-        group =>
-          group.groupId.toLowerCase().includes(searchValue.toLowerCase()) ||
-          group.groupName.toLowerCase().includes(searchValue.toLowerCase())
+        tennant =>
+          tennant.tenantId.toLowerCase().includes(searchValue.toLowerCase()) ||
+          tennant.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+          tennant.type.toLowerCase().includes(searchValue.toLowerCase())
       )
-      .map(group => group);
-    this.setState({ groups: SearchArray });
+      .map(tenant => tenant);
+    this.setState({ tenants: SearchArray });
   };
 
   sortByID = () => {
-    const { groups, sortedBy } = this.state;
+    const { tenants, sortedBy } = this.state;
     if (sortedBy === "id") {
-      const groupsSorted = groups.reverse();
-      this.setState({ groups: groupsSorted });
+      const tenansSorted = tenants.reverse();
+      this.setState({ tenants: tenansSorted });
     } else {
-      const groupsSorted = groups.sort((a, b) => {
-        if (a.groupId < b.groupId) return -1;
-        if (a.groupId > b.groupId) return 1;
+      const tenansSorted = tenants.sort((a, b) => {
+        if (a.tenantId < b.tenantId) return -1;
+        if (a.tenantId > b.tenantId) return 1;
         return 0;
       });
-      this.setState({ groups: groupsSorted, sortedBy: "id" });
+      this.setState({ tenants: tenansSorted, sortedBy: "id" });
     }
   };
 
   sortByName = () => {
-    const { groups, sortedBy } = this.state;
+    const { tenants, sortedBy } = this.state;
     if (sortedBy === "name") {
-      const groupsSorted = groups.reverse();
-      this.setState({ groups: groupsSorted });
+      const tenansSorted = tenants.reverse();
+      this.setState({ tenants: tenansSorted });
     } else {
-      const groupsSorted = groups.sort((a, b) => {
-        if (a.groupName < b.groupName) return -1;
-        if (a.groupName > b.groupName) return 1;
+      const tenansSorted = tenants.sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
         return 0;
       });
-      this.setState({ groups: groupsSorted, sortedBy: "name" });
+      this.setState({ tenants: tenansSorted, sortedBy: "name" });
     }
   };
 
-  sortByUserLimit = () => {
-    const { groups, sortedBy } = this.state;
-    if (sortedBy === "limit") {
-      const groupsSorted = groups.reverse();
-      this.setState({ groups: groupsSorted });
+  sortByType = () => {
+    const { tenants, sortedBy } = this.state;
+    if (sortedBy === "type") {
+      const tenansSorted = tenants.reverse();
+      this.setState({ tenants: tenansSorted });
     } else {
-      const groupsSorted = groups.sort((a, b) => {
-        if (a.userLimit < b.userLimit) return -1;
-        if (a.userLimit > b.userLimit) return 1;
+      const tenansSorted = tenants.sort((a, b) => {
+        if (a.type < b.type) return -1;
+        if (a.type > b.type) return 1;
         return 0;
       });
-      this.setState({ groups: groupsSorted, sortedBy: "limit" });
+      this.setState({ tenants: tenansSorted, sortedBy: "type" });
     }
   };
 }
 
-const mapStateToProps = state => ({
-  groups: state.groups
-});
-
 const mapDispatchToProps = {
-  fetchGetGroupsByTenantId
+  fetchGetTenants
 };
+
+const mapStateToProps = state => ({
+  tenants: state.tenants
+});
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(GroupsTab);
+)(Tenants);

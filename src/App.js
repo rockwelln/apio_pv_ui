@@ -5,8 +5,6 @@ import React, { Component } from "react";
 
 import Alert from "react-bootstrap/lib/Alert";
 import Col from "react-bootstrap/lib/Col";
-import Row from "react-bootstrap/lib/Row";
-import Grid from "react-bootstrap/lib/Grid";
 
 import {
   BrowserRouter as Router,
@@ -25,8 +23,6 @@ import { isAllowed, pages } from "./utils/user";
 import { ResetPasswordPage, RESET_PASSWORD_PREFIX } from "./reset_password";
 
 import AsyncApioNavBar from "./components/Header";
-import Sidebar from "./components/Sidebar";
-import Breadcrumb from "./components/Breadcrumb";
 import LoginPage from "./components/LoginPage";
 import Tenants from "./components/Tenants";
 import TenantPage from "./components/TenantPage";
@@ -245,77 +241,65 @@ class App extends Component {
               auth_token={auth_token}
             />
           </div>
-          <Grid>
-            <Row>
-              <Col md={12}>
-                <Breadcrumb />
-              </Col>
-            </Row>
-            <Row>
-              <Col md={2}>
-                <Sidebar />
-              </Col>
-              <Col md={10} style={{ borderLeft: "2px solid #dddddd" }}>
-                <Switch>
-                  <Route
-                    path="/dashboard"
-                    component={props => (
-                      <div
-                        auth_token={auth_token}
-                        notifications={this._notificationSystem.current}
-                        {...props}
-                      />
-                    )}
-                    exact
+          <Col mdOffset={1} md={10}>
+            <Switch>
+              <Route
+                path="/dashboard"
+                component={props => (
+                  <div
+                    auth_token={auth_token}
+                    notifications={this._notificationSystem.current}
+                    {...props}
                   />
-                  <Route
-                    path="/provisioning/broadsoft_xsp1_as1/tenants"
-                    component={props =>
-                      isAllowed(ui_profile, pages.data_tenants) ? (
-                        <Tenants
-                          notifications={this._notificationSystem.current}
-                          {...props}
-                        />
-                      ) : (
-                        <NotAllowed />
-                      )
-                    }
-                    exact
-                  />
-                  <Route
-                    path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId"
-                    component={props =>
-                      isAllowed(ui_profile, pages.data_tenants) ? (
-                        <TenantPage />
-                      ) : (
-                        <NotAllowed />
-                      )
-                    }
-                    exact
-                  />
-                  <Route
-                    path="/data/tenants/:tenantId/groups/:siteId/numbers"
-                    component={props =>
-                      isAllowed(ui_profile, pages.data_tenants) ? (
-                        <NumbersManagement
-                          auth_token={auth_token}
-                          notifications={this._notificationSystem.current}
-                          {...props}
-                        />
-                      ) : (
-                        <NotAllowed />
-                      )
-                    }
-                    exact
-                  />
-                  <Route path="/" exact>
-                    <Redirect to="/dashboard" />
-                  </Route>
-                  <Route component={NotFound} />
-                </Switch>
-              </Col>
-            </Row>
-          </Grid>
+                )}
+                exact
+              />
+              <Route
+                path="/provisioning/broadsoft_xsp1_as1/tenants"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <Tenants
+                      notifications={this._notificationSystem.current}
+                      {...props}
+                    />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <TenantPage />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/data/tenants/:tenantId/groups/:siteId/numbers"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <NumbersManagement
+                      auth_token={auth_token}
+                      notifications={this._notificationSystem.current}
+                      {...props}
+                    />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route path="/" exact>
+                <Redirect to="/dashboard" />
+              </Route>
+              <Route component={NotFound} />
+            </Switch>
+          </Col>
         </div>
       </Router>
     );

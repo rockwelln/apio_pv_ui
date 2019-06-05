@@ -28,9 +28,21 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.GET_PHONE_NUMBERS: {
+      const phoneNumbers = action.data.assignement_phoneNumbers.map(phone => ({
+        ...phone,
+        rangeStart:
+          (phone.phoneNumbers && phone.phoneNumbers.split(" - ").slice(0)[0]) ||
+          phone.phoneNumber ||
+          "",
+        rangeEnd:
+          (phone.phoneNumbers &&
+            phone.phoneNumbers.split(" - ").slice(-1)[0]) ||
+          "",
+        phoneChecked: false
+      }));
       return {
         ...state,
-        phoneNumbers: action.data.assignement_phoneNumbers
+        phoneNumbers
       };
     }
     case actionType.DELETE_TENANT: {

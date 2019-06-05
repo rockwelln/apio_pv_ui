@@ -57,7 +57,6 @@ export function fetch_get(url, token) {
       Accept: "application/json",
       Authorization: `Bearer ${getCookie("auth_token")}`,
       "Content-Type": "application/json"
-      //type: "application/json"
     }
   })
     .then(checkStatus)

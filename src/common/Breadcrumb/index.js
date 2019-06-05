@@ -30,7 +30,7 @@ const linkByCrumb = (item, lastItem, i, path) => {
 };
 
 const BreadcrumbComponent = ({ location }) => {
-  const path = location.pathname.split("/").slice(1);
+  const path = location.pathname.split("/").slice(3);
   const lastItem = path.slice(-1);
   return (
     <Breadcrumb>
