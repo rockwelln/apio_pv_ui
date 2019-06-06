@@ -96,86 +96,107 @@ export class PhoneNumbersTab extends Component {
             />
           </Col>
         </Row>
-        <Row>
-          <Col mdOffset={1} md={10}>
-            <div style={{ display: "flex" }}>
-              <Checkbox
-                className={"margin-checbox"}
-                checked={this.state.selectAll}
-                onChange={this.handleSelectAllClick}
-              >
-                (Un)select all shown numbers
-              </Checkbox>
-              <Glyphicon
-                glyph="glyphicon glyphicon-trash"
-                onClick={this.deleteSlectedNumbers}
-              />
-              <div className={"margin-checbox"}>Delete selected numbers</div>
-              <DeleteModal
-                rangeStart={numbersForDelete.map(
-                  number => number.phoneNumbers || number.phoneNumber
-                )}
-                show={showDelete}
-                onClose={e => {
-                  onReload && onReload(numbersForDelete);
-                  this.setState({ showDelete: false });
-                }}
-                {...this.props}
-              />
-            </div>
-          </Col>
-        </Row>
-        <Row>
-          <Col mdOffset={1} md={10}>
-            <Table hover>
-              <thead>
-                <tr>
-                  <th style={{ width: "5%" }} />
-                  <th style={{ width: "30%" }}>
-                    <FormattedMessage
-                      id="tenant-id"
-                      defaultMessage="Range start"
-                    />
-                    <Glyphicon
-                      glyph="glyphicon glyphicon-sort"
-                      onClick={this.sortByRangeStart}
-                    />
-                  </th>
-                  <th style={{ width: "30%" }}>
-                    <FormattedMessage id="name" defaultMessage="Range end" />
-                    <Glyphicon
-                      glyph="glyphicon glyphicon-sort"
-                      onClick={this.sortByRangeEnd}
-                    />
-                  </th>
-                  <th style={{ width: "30%" }}>
-                    <FormattedMessage id="type" defaultMessage="Assigned to" />
-                    <Glyphicon
-                      glyph="glyphicon glyphicon-sort"
-                      onClick={this.sortByAssignedToGroup}
-                    />
-                  </th>
-                  <th style={{ width: "5%" }} />
-                </tr>
-              </thead>
-              <tbody>
-                {phoneNumbers.map((number, i) => (
-                  <PhoneNumber
-                    index={i}
-                    key={number.rangeStart}
-                    number={number}
-                    handleSingleCheckboxClick={this.handleSingleCheckboxClick}
-                    onReload={() =>
-                      this.props.fetchGetPhoneNumbersByTenantId(
-                        this.props.tenantId
-                      )
-                    }
+        {phoneNumbers.length ? (
+          <React.Fragment>
+            <Row>
+              <Col mdOffset={1} md={10}>
+                <div style={{ display: "flex" }}>
+                  <Checkbox
+                    className={"margin-checbox"}
+                    checked={this.state.selectAll}
+                    onChange={this.handleSelectAllClick}
+                  >
+                    (Un)select all shown numbers
+                  </Checkbox>
+                  <Glyphicon
+                    glyph="glyphicon glyphicon-trash"
+                    onClick={this.deleteSlectedNumbers}
                   />
-                ))}
-              </tbody>
-            </Table>
+                  <div className={"margin-checbox"}>
+                    Delete selected numbers
+                  </div>
+                  <DeleteModal
+                    rangeStart={numbersForDelete.map(
+                      number => number.phoneNumbers || number.phoneNumber
+                    )}
+                    show={showDelete}
+                    onClose={e => {
+                      onReload && onReload(numbersForDelete);
+                      this.setState({ showDelete: false });
+                    }}
+                    {...this.props}
+                  />
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col mdOffset={1} md={10}>
+                <Table hover>
+                  <thead>
+                    <tr>
+                      <th style={{ width: "5%" }} />
+                      <th style={{ width: "30%" }}>
+                        <FormattedMessage
+                          id="tenant-id"
+                          defaultMessage="Range start"
+                        />
+                        <Glyphicon
+                          glyph="glyphicon glyphicon-sort"
+                          onClick={this.sortByRangeStart}
+                        />
+                      </th>
+                      <th style={{ width: "30%" }}>
+                        <FormattedMessage
+                          id="name"
+                          defaultMessage="Range end"
+                        />
+                        <Glyphicon
+                          glyph="glyphicon glyphicon-sort"
+                          onClick={this.sortByRangeEnd}
+                        />
+                      </th>
+                      <th style={{ width: "30%" }}>
+                        <FormattedMessage
+                          id="type"
+                          defaultMessage="Assigned to"
+                        />
+                        <Glyphicon
+                          glyph="glyphicon glyphicon-sort"
+                          onClick={this.sortByAssignedToGroup}
+                        />
+                      </th>
+                      <th style={{ width: "5%" }} />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {phoneNumbers.map((number, i) => (
+                      <PhoneNumber
+                        index={i}
+                        key={number.rangeStart}
+                        number={number}
+                        handleSingleCheckboxClick={
+                          this.handleSingleCheckboxClick
+                        }
+                        onReload={() =>
+                          this.props.fetchGetPhoneNumbersByTenantId(
+                            this.props.tenantId
+                          )
+                        }
+                      />
+                    ))}
+                  </tbody>
+                </Table>
+              </Col>
+            </Row>
+          </React.Fragment>
+        ) : (
+          <Col mdOffset={1} md={10}>
+            <FormattedMessage
+              id="notFound"
+              defaultMessage="No phone numbers were found"
+            />
           </Col>
-        </Row>
+        )}
       </React.Fragment>
     );
   }

@@ -81,51 +81,63 @@ export class GroupsTab extends Component {
             />
           </Col>
         </Row>
-        <Row>
+        {groups.length ? (
+          <Row>
+            <Col mdOffset={1} md={10}>
+              <Table hover>
+                <thead>
+                  <tr>
+                    <th style={{ width: "24%" }}>
+                      <FormattedMessage id="tenant-id" defaultMessage="ID" />
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-sort"
+                        onClick={this.sortByID}
+                      />
+                    </th>
+                    <th style={{ width: "24%" }}>
+                      <FormattedMessage id="name" defaultMessage="Name" />
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-sort"
+                        onClick={this.sortByName}
+                      />
+                    </th>
+                    <th style={{ width: "24%" }}>
+                      <FormattedMessage id="type" defaultMessage="User limit" />
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-sort"
+                        onClick={this.sortByUserLimit}
+                      />
+                    </th>
+                    <th style={{ width: "24%" }}>
+                      <FormattedMessage
+                        id="reseller"
+                        defaultMessage="Reseller"
+                      />
+                      <Glyphicon glyph="glyphicon glyphicon-sort" />
+                    </th>
+                    <th style={{ width: "4%" }} />
+                  </tr>
+                </thead>
+                <tbody>
+                  {groups.map(group => (
+                    <Group
+                      key={group.groupId}
+                      group={group}
+                      onReload={this.props.fetchGetGroupsByTenantId}
+                    />
+                  ))}
+                </tbody>
+              </Table>
+            </Col>
+          </Row>
+        ) : (
           <Col mdOffset={1} md={10}>
-            <Table hover>
-              <thead>
-                <tr>
-                  <th style={{ width: "24%" }}>
-                    <FormattedMessage id="tenant-id" defaultMessage="ID" />
-                    <Glyphicon
-                      glyph="glyphicon glyphicon-sort"
-                      onClick={this.sortByID}
-                    />
-                  </th>
-                  <th style={{ width: "24%" }}>
-                    <FormattedMessage id="name" defaultMessage="Name" />
-                    <Glyphicon
-                      glyph="glyphicon glyphicon-sort"
-                      onClick={this.sortByName}
-                    />
-                  </th>
-                  <th style={{ width: "24%" }}>
-                    <FormattedMessage id="type" defaultMessage="User limit" />
-                    <Glyphicon
-                      glyph="glyphicon glyphicon-sort"
-                      onClick={this.sortByUserLimit}
-                    />
-                  </th>
-                  <th style={{ width: "24%" }}>
-                    <FormattedMessage id="reseller" defaultMessage="Reseller" />
-                    <Glyphicon glyph="glyphicon glyphicon-sort" />
-                  </th>
-                  <th style={{ width: "4%" }} />
-                </tr>
-              </thead>
-              <tbody>
-                {groups.map(group => (
-                  <Group
-                    key={group.groupId}
-                    group={group}
-                    onReload={this.props.fetchGetGroupsByTenantId}
-                  />
-                ))}
-              </tbody>
-            </Table>
+            <FormattedMessage
+              id="notFound"
+              defaultMessage="No groups were found"
+            />
           </Col>
-        </Row>
+        )}
       </React.Fragment>
     );
   }

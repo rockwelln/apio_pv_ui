@@ -79,56 +79,68 @@ export class Admins extends Component {
             />
           </Col>
         </Row>
-        <Row>
+        {admins.length ? (
+          <Row>
+            <Col mdOffset={1} md={10}>
+              <Table hover>
+                <thead>
+                  <tr>
+                    <th style={{ width: "24%" }}>
+                      <FormattedMessage
+                        id="tenant-id"
+                        defaultMessage="User ID"
+                      />
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-sort"
+                        onClick={this.sortByUserId}
+                      />
+                    </th>
+                    <th style={{ width: "24%" }}>
+                      <FormattedMessage id="name" defaultMessage="First name" />
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-sort"
+                        onClick={this.sortByFirstName}
+                      />
+                    </th>
+                    <th style={{ width: "24%" }}>
+                      <FormattedMessage id="type" defaultMessage="Last name" />
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-sort"
+                        onClick={this.sortByLastName}
+                      />
+                    </th>
+                    <th style={{ width: "24%" }}>
+                      <FormattedMessage id="type" defaultMessage="Language" />
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-sort"
+                        onClick={this.sortByAssignedToGroup}
+                      />
+                    </th>
+                    <th style={{ width: "4%" }} />
+                  </tr>
+                </thead>
+                <tbody>
+                  {admins.map(admin => (
+                    <Admin
+                      key={admin.userId}
+                      admin={admin}
+                      onReload={() =>
+                        this.props.fetchGetAdminsByTenantId(this.props.tenantId)
+                      }
+                    />
+                  ))}
+                </tbody>
+              </Table>
+            </Col>
+          </Row>
+        ) : (
           <Col mdOffset={1} md={10}>
-            <Table hover>
-              <thead>
-                <tr>
-                  <th style={{ width: "24%" }}>
-                    <FormattedMessage id="tenant-id" defaultMessage="User ID" />
-                    <Glyphicon
-                      glyph="glyphicon glyphicon-sort"
-                      onClick={this.sortByUserId}
-                    />
-                  </th>
-                  <th style={{ width: "24%" }}>
-                    <FormattedMessage id="name" defaultMessage="First name" />
-                    <Glyphicon
-                      glyph="glyphicon glyphicon-sort"
-                      onClick={this.sortByFirstName}
-                    />
-                  </th>
-                  <th style={{ width: "24%" }}>
-                    <FormattedMessage id="type" defaultMessage="Last name" />
-                    <Glyphicon
-                      glyph="glyphicon glyphicon-sort"
-                      onClick={this.sortByLastName}
-                    />
-                  </th>
-                  <th style={{ width: "24%" }}>
-                    <FormattedMessage id="type" defaultMessage="Language" />
-                    <Glyphicon
-                      glyph="glyphicon glyphicon-sort"
-                      onClick={this.sortByAssignedToGroup}
-                    />
-                  </th>
-                  <th style={{ width: "4%" }} />
-                </tr>
-              </thead>
-              <tbody>
-                {admins.map(admin => (
-                  <Admin
-                    key={admin.userId}
-                    admin={admin}
-                    onReload={() =>
-                      this.props.fetchGetAdminsByTenantId(this.props.tenantId)
-                    }
-                  />
-                ))}
-              </tbody>
-            </Table>
+            <FormattedMessage
+              id="notFound"
+              defaultMessage="No admins were found"
+            />
           </Col>
-        </Row>
+        )}
       </React.Fragment>
     );
   }

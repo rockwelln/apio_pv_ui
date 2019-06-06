@@ -91,52 +91,64 @@ class Tenants extends Component {
             />
           </Col>
         </Row>
-        <Row>
+        {tenants.length ? (
+          <Row>
+            <Col mdOffset={1} md={10}>
+              <Table hover>
+                <thead>
+                  <tr>
+                    <th style={{ width: "24%" }}>
+                      <FormattedMessage id="tenant-id" defaultMessage="ID" />
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-sort"
+                        onClick={this.sortByID}
+                      />
+                    </th>
+                    <th style={{ width: "24%" }}>
+                      <FormattedMessage id="name" defaultMessage="Name" />
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-sort"
+                        onClick={this.sortByName}
+                      />
+                    </th>
+                    <th style={{ width: "24%" }}>
+                      <FormattedMessage id="type" defaultMessage="Type" />
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-sort"
+                        onClick={this.sortByType}
+                      />
+                    </th>
+                    <th style={{ width: "24%" }}>
+                      <FormattedMessage
+                        id="reseller"
+                        defaultMessage="Reseller"
+                      />
+                      <Glyphicon glyph="glyphicon glyphicon-sort" />
+                    </th>
+                    <th style={{ width: "4%" }} />
+                  </tr>
+                </thead>
+                <tbody>
+                  {tenants.map(t => (
+                    <Tenant
+                      key={t.tenantId}
+                      t={t}
+                      onReload={this.props.fetchGetTenants}
+                      {...this.props}
+                    />
+                  ))}
+                </tbody>
+              </Table>
+            </Col>
+          </Row>
+        ) : (
           <Col mdOffset={1} md={10}>
-            <Table hover>
-              <thead>
-                <tr>
-                  <th style={{ width: "24%" }}>
-                    <FormattedMessage id="tenant-id" defaultMessage="ID" />
-                    <Glyphicon
-                      glyph="glyphicon glyphicon-sort"
-                      onClick={this.sortByID}
-                    />
-                  </th>
-                  <th style={{ width: "24%" }}>
-                    <FormattedMessage id="name" defaultMessage="Name" />
-                    <Glyphicon
-                      glyph="glyphicon glyphicon-sort"
-                      onClick={this.sortByName}
-                    />
-                  </th>
-                  <th style={{ width: "24%" }}>
-                    <FormattedMessage id="type" defaultMessage="Type" />
-                    <Glyphicon
-                      glyph="glyphicon glyphicon-sort"
-                      onClick={this.sortByType}
-                    />
-                  </th>
-                  <th style={{ width: "24%" }}>
-                    <FormattedMessage id="reseller" defaultMessage="Reseller" />
-                    <Glyphicon glyph="glyphicon glyphicon-sort" />
-                  </th>
-                  <th style={{ width: "4%" }} />
-                </tr>
-              </thead>
-              <tbody>
-                {tenants.map(t => (
-                  <Tenant
-                    key={t.tenantId}
-                    t={t}
-                    onReload={this.props.fetchGetTenants}
-                    {...this.props}
-                  />
-                ))}
-              </tbody>
-            </Table>
+            <FormattedMessage
+              id="notFound"
+              defaultMessage="No tenants were found"
+            />
           </Col>
-        </Row>
+        )}
       </React.Fragment>
     );
   }
