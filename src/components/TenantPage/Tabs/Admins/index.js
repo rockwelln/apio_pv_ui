@@ -109,7 +109,7 @@ export class Admins extends Component {
                     <FormattedMessage id="type" defaultMessage="Language" />
                     <Glyphicon
                       glyph="glyphicon glyphicon-sort"
-                      onClick={this.sortByLanguage}
+                      onClick={this.sortByAssignedToGroup}
                     />
                   </th>
                   <th style={{ width: "4%" }} />

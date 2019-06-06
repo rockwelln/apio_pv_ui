@@ -10,6 +10,7 @@ import Loading from "../../common/Loading";
 import GroupsTab from "./Tabs/Groups";
 import PhoneNumbersTab from "./Tabs/PhoneNumber";
 import Admins from "./Tabs/Admins";
+import Details from "./Tabs/Details";
 
 import { fetchGetTenantById } from "../../store/actions";
 
@@ -45,7 +46,7 @@ class TenantPage extends Component {
           </p>
           <p>{`Type: ${tenant.type}`}</p>
         </div>
-        <Tabs defaultActiveKey={4} id="tenant_tabs">
+        <Tabs defaultActiveKey={0} id="tenant_tabs">
           <Tab eventKey={0} title="LICENSES">
             LICENSES Tab
           </Tab>
@@ -62,7 +63,7 @@ class TenantPage extends Component {
             <Admins tenantId={this.props.match.params.tenantId} />
           </Tab>
           <Tab eventKey={5} title="DETAILS">
-            DETAILS Tab
+            <Details tenant={tenant} isLoading={isLoading} />
           </Tab>
         </Tabs>
       </React.Fragment>

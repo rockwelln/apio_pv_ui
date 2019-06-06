@@ -7,7 +7,7 @@
 }
 
 .margin-1 {
-  margin: 10px;
+  margin: 10px !important;
 }
 
 .x-large {
