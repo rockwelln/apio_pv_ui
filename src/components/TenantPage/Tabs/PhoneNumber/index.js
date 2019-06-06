@@ -14,6 +14,7 @@ import { fetchGetPhoneNumbersByTenantId } from "../../../../store/actions";
 
 import Loading from "../../../../common/Loading";
 import PhoneNumber from "./PhoneNumber";
+import DeleteModal from "./DeleteModal";
 
 import "./styles.css";
 
@@ -22,7 +23,10 @@ export class PhoneNumbersTab extends Component {
     searchValue: "",
     phoneNumbers: [],
     sortedBy: "",
-    isLoading: true
+    isLoading: true,
+    selectAll: false,
+    numbersForDelete: [],
+    showDelete: false
   };
 
   componentDidMount() {
@@ -34,18 +38,24 @@ export class PhoneNumbersTab extends Component {
           return 0;
         }),
         isLoading: false,
-        sortedBy: "phoneNumber"
+        sortedBy: "rangeStart"
       })
     );
   }
 
   render() {
-    const { phoneNumbers, isLoading } = this.state;
+    const {
+      phoneNumbers,
+      isLoading,
+      showDelete,
+      numbersForDelete
+    } = this.state;
+
+    const { onReload } = this.props;
 
     if (isLoading) {
       return <Loading />;
     }
-    console.log(phoneNumbers);
     return (
       <React.Fragment>
         <Row>
@@ -91,12 +101,27 @@ export class PhoneNumbersTab extends Component {
             <div style={{ display: "flex" }}>
               <Checkbox
                 className={"margin-checbox"}
-                onChange={this.handleCheckboxClick}
+                checked={this.state.selectAll}
+                onChange={this.handleSelectAllClick}
               >
                 (Un)select all shown numbers
               </Checkbox>
-              <Glyphicon glyph="glyphicon glyphicon-trash" />
+              <Glyphicon
+                glyph="glyphicon glyphicon-trash"
+                onClick={this.deleteSlectedNumbers}
+              />
               <div className={"margin-checbox"}>Delete selected numbers</div>
+              <DeleteModal
+                rangeStart={numbersForDelete.map(
+                  number => number.phoneNumbers || number.phoneNumber
+                )}
+                show={showDelete}
+                onClose={e => {
+                  onReload && onReload(numbersForDelete);
+                  this.setState({ showDelete: false });
+                }}
+                {...this.props}
+              />
             </div>
           </Col>
         </Row>
@@ -113,21 +138,21 @@ export class PhoneNumbersTab extends Component {
                     />
                     <Glyphicon
                       glyph="glyphicon glyphicon-sort"
-                      onClick={this.sortByID}
+                      onClick={this.sortByRangeStart}
                     />
                   </th>
                   <th style={{ width: "30%" }}>
                     <FormattedMessage id="name" defaultMessage="Range end" />
                     <Glyphicon
                       glyph="glyphicon glyphicon-sort"
-                      onClick={this.sortByName}
+                      onClick={this.sortByRangeEnd}
                     />
                   </th>
                   <th style={{ width: "30%" }}>
                     <FormattedMessage id="type" defaultMessage="Assigned to" />
                     <Glyphicon
                       glyph="glyphicon glyphicon-sort"
-                      onClick={this.sortByUserLimit}
+                      onClick={this.sortByAssignedToGroup}
                     />
                   </th>
                   <th style={{ width: "5%" }} />
@@ -139,7 +164,7 @@ export class PhoneNumbersTab extends Component {
                     index={i}
                     key={number.rangeStart}
                     number={number}
-                    handleCheckbox={this.handleCheckbox}
+                    handleSingleCheckboxClick={this.handleSingleCheckboxClick}
                     onReload={() =>
                       this.props.fetchGetPhoneNumbersByTenantId(
                         this.props.tenantId
@@ -155,22 +180,93 @@ export class PhoneNumbersTab extends Component {
     );
   }
 
-  handleCheckboxClick = e => {
+  filterBySearchValue = () => {
+    const { searchValue } = this.state;
+    const SearchArray = this.props.phoneNumbers
+      .filter(
+        phone =>
+          phone.rangeStart.toLowerCase().includes(searchValue.toLowerCase()) ||
+          phone.rangeEnd.toLowerCase().includes(searchValue.toLowerCase()) ||
+          phone.assignedToGroup
+            .toLowerCase()
+            .includes(searchValue.toLowerCase())
+      )
+      .map(phone => phone);
+    this.setState({ phoneNumbers: SearchArray });
+  };
+
+  sortByRangeStart = () => {
+    const { phoneNumbers, sortedBy } = this.state;
+    if (sortedBy === "rangeStart") {
+      const phonesSorted = phoneNumbers.reverse();
+      this.setState({ phoneNumbers: phonesSorted });
+    } else {
+      const phonesSorted = phoneNumbers.sort((a, b) => {
+        if (a.rangeStart < b.rangeStart) return -1;
+        if (a.rangeStart > b.rangeStart) return 1;
+        return 0;
+      });
+      this.setState({ phoneNumbers: phonesSorted, sortedBy: "rangeStart" });
+    }
+  };
+
+  sortByRangeEnd = () => {
+    const { phoneNumbers, sortedBy } = this.state;
+    if (sortedBy === "rangeEnd") {
+      const phonesSorted = phoneNumbers.reverse();
+      this.setState({ phoneNumbers: phonesSorted });
+    } else {
+      const phonesSorted = phoneNumbers.sort((a, b) => {
+        if (a.rangeEnd < b.rangeEnd) return -1;
+        if (a.rangeEnd > b.rangeEnd) return 1;
+        return 0;
+      });
+      this.setState({ phoneNumbers: phonesSorted, sortedBy: "rangeEnd" });
+    }
+  };
+
+  sortByAssignedToGroup = () => {
+    const { phoneNumbers, sortedBy } = this.state;
+    if (sortedBy === "assignedToGroup") {
+      const phonesSorted = phoneNumbers.reverse();
+      this.setState({ phoneNumbers: phonesSorted });
+    } else {
+      const phonesSorted = phoneNumbers.sort((a, b) => {
+        if (a.assignedToGroup < b.assignedToGroup) return -1;
+        if (a.assignedToGroup > b.assignedToGroup) return 1;
+        return 0;
+      });
+      this.setState({
+        phoneNumbers: phonesSorted,
+        sortedBy: "assignedToGroup"
+      });
+    }
+  };
+
+  deleteSlectedNumbers = () => {
+    const { phoneNumbers } = this.state;
+    const numbersForDelete = phoneNumbers.filter(phone => {
+      return !!phone.phoneChecked;
+    });
+    this.setState({ numbersForDelete, showDelete: true });
+  };
+
+  handleSelectAllClick = e => {
     const isChecked = e.target.checked;
     const newArr = this.state.phoneNumbers.map(el => ({
       ...el,
       phoneChecked: el.canBeDeleted ? isChecked : el.phoneChecked
     }));
-    this.setState({ phoneNumbers: newArr });
+    this.setState({ phoneNumbers: newArr, selectAll: !this.state.selectAll });
   };
 
-  handleCheckbox = index => {
+  handleSingleCheckboxClick = index => {
     const newArr = this.state.phoneNumbers.map((el, i) => ({
       ...el,
       phoneChecked:
         index === i && el.canBeDeleted ? !el.phoneChecked : el.phoneChecked
     }));
-    this.setState({ phoneNumbers: newArr });
+    this.setState({ phoneNumbers: newArr, selectAll: false });
   };
 }
 

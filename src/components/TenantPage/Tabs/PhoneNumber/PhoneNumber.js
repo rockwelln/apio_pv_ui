@@ -22,7 +22,7 @@ export default class PhoneNumber extends Component {
               checked={number.phoneChecked}
               className={"table-checkbox"}
               onChange={() => {
-                this.props.handleCheckbox(index);
+                this.props.handleSingleCheckboxClick(index);
               }}
             />
           )}
@@ -40,10 +40,10 @@ export default class PhoneNumber extends Component {
                 />
               </ButtonToolbar>
               <DeleteModal
-                tenantId={number.groupId}
+                rangeStart={number.rangeStart}
                 show={showDelete}
                 onClose={e => {
-                  onReload && onReload(number.tenantId);
+                  onReload && onReload(number.rangeStart);
                   this.setState({ showDelete: false });
                 }}
                 {...this.props}

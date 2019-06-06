@@ -16,18 +16,18 @@ class DeleteModal extends Component {
     this.onDelete = this.onDelete.bind(this);
   }
 
-  onDelete(tenantId) {
+  onDelete(rangeStart) {
     const { onClose } = this.props;
     this.setState({ deleting: true });
 
     this.props
-      .fetchDeleteTenant(tenantId)
+      .fetchDeleteTenant(rangeStart)
       .then(() => {
         this.props.notifications.addNotification({
           message: (
             <FormattedMessage
               id="delete-tenant-ok"
-              defaultMessage="Tenant deleted"
+              defaultMessage="Phone deleted"
             />
           ),
           level: "success"
@@ -41,7 +41,7 @@ class DeleteModal extends Component {
           title: (
             <FormattedMessage
               id="delete-tenant-fail"
-              defaultMessage="Fail delete tenant"
+              defaultMessage="Fail delete phone"
             />
           ),
           level: "error"
@@ -50,7 +50,7 @@ class DeleteModal extends Component {
   }
 
   render() {
-    const { tenantId, show, onClose } = this.props;
+    const { rangeStart, show, onClose } = this.props;
     const { deleting } = this.state;
     return (
       <Modal
@@ -75,13 +75,13 @@ class DeleteModal extends Component {
           <p>
             <FormattedMessage
               id="confirm-delete-warning"
-              defaultMessage={`You are about to delete the group ${tenantId}!`}
+              defaultMessage={`You are about to delete the phone ${rangeStart}!`}
             />
           </p>
         </Modal.Body>
         <Modal.Footer>
           <Button
-            onClick={() => this.onDelete(tenantId)}
+            onClick={() => this.onDelete(rangeStart)}
             bsStyle="danger"
             disabled={true}
           >
