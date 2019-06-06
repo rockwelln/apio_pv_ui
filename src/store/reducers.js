@@ -4,7 +4,8 @@ const initialState = {
   tenants: [],
   tenant: {},
   groups: [],
-  phoneNumbers: []
+  phoneNumbers: [],
+  admins: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -43,6 +44,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         phoneNumbers
+      };
+    }
+    case actionType.GET_ADMINS: {
+      return {
+        ...state,
+        admins: action.data.admins
       };
     }
     case actionType.DELETE_TENANT: {
