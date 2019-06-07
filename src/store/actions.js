@@ -26,6 +26,16 @@ export const getAdminsByTenantId = data => ({
   data
 });
 
+export const getGroupById = data => ({
+  type: actionType.GET_GROUP,
+  data
+});
+
+export const getUsersByGroupId = data => ({
+  type: actionType.GET_USERS,
+  data
+});
+
 export const deleteTenant = Id => ({
   type: actionType.DELETE_TENANT,
   Id
@@ -67,6 +77,24 @@ export function fetchGetAdminsByTenantId(Id) {
   return function(dispatch) {
     return fetch_get(`${API_BASE_URL}/tenants/${Id}/admins`)
       .then(data => dispatch(getAdminsByTenantId(data)))
+      .catch(error => console.error("An error occurred.", error));
+  };
+}
+
+export function fetchGetGroupById(tenantId, groupId) {
+  return function(dispatch) {
+    return fetch_get(`${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}`)
+      .then(data => dispatch(getGroupById(data)))
+      .catch(error => console.error("An error occurred.", error));
+  };
+}
+
+export function fetchGetUsersByGroupId(tenantId, groupId) {
+  return function(dispatch) {
+    return fetch_get(
+      `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/users`
+    )
+      .then(data => dispatch(getUsersByGroupId(data)))
       .catch(error => console.error("An error occurred.", error));
   };
 }

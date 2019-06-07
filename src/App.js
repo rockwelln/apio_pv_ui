@@ -26,6 +26,7 @@ import AsyncApioNavBar from "./components/Header";
 import LoginPage from "./components/LoginPage";
 import Tenants from "./components/Tenants";
 import TenantPage from "./components/TenantPage";
+import GroupPage from "./components/GroupPage";
 
 import "./App.css";
 import loading from "./loading.gif";
@@ -273,6 +274,17 @@ class App extends Component {
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <TenantPage />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/:groupId"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <GroupPage />
                   ) : (
                     <NotAllowed />
                   )

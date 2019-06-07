@@ -39,10 +39,7 @@ class TenantPage extends Component {
         <div>
           <p className={"header"}>
             {`TENANT: ${tenant.name} (id: ${tenant.tenantId})`}
-            <Glyphicon
-              glyph="glyphicon glyphicon-trash"
-              onClick={this.sortByID}
-            />
+            <Glyphicon glyph="glyphicon glyphicon-trash" />
           </p>
           <p>{`Type: ${tenant.type}`}</p>
         </div>

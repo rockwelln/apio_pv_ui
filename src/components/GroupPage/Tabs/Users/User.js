@@ -9,22 +9,16 @@ import DeleteModal from "./DeleteModal";
 export default class Group extends Component {
   state = { showDelete: false };
   render() {
-    const { group, onReload } = this.props;
+    const { user, onReload, tenantId, groupId } = this.props;
     const { showDelete } = this.state;
     return (
-      <tr key={group.groupId}>
-        <td>
-          <Link
-            to={`/provisioning/broadsoft_xsp1_as1/tenants/${group.tenantId}/${
-              group.groupId
-            }`}
-          >
-            {group.groupId}
-          </Link>
-        </td>
-        <td>{group.groupName}</td>
-        <td>{group.userLimit}</td>
-        <td>/</td>
+      <tr key={user.userId}>
+        <td>{user.userId}</td>
+        <td>{user.firstName}</td>
+        <td>{user.lastName}</td>
+        <td>{user.extension}</td>
+        <td>{user.phoneNumber}</td>
+        <td>{user.type}</td>
         <td>
           <ButtonToolbar>
             <Glyphicon
@@ -33,10 +27,10 @@ export default class Group extends Component {
             />
           </ButtonToolbar>
           <DeleteModal
-            tenantId={group.groupId}
+            tenantId={user.userId}
             show={showDelete}
             onClose={e => {
-              onReload && onReload(group.tenantId);
+              onReload && onReload(tenantId, groupId);
               this.setState({ showDelete: false });
             }}
             {...this.props}

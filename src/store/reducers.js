@@ -5,7 +5,9 @@ const initialState = {
   tenant: {},
   groups: [],
   phoneNumbers: [],
-  admins: []
+  admins: [],
+  group: {},
+  users: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -50,6 +52,22 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         admins: action.data.admins
+      };
+    }
+    case actionType.GET_GROUP: {
+      return {
+        ...state,
+        group: action.data
+      };
+    }
+    case actionType.GET_USERS: {
+      const users = action.data.users.map(user => ({
+        ...user,
+        type: user.inTrunkGroup ? "trunk" : "normal"
+      }));
+      return {
+        ...state,
+        users
       };
     }
     case actionType.DELETE_TENANT: {

@@ -19,11 +19,7 @@ const linkByCrumb = (item, lastItem, i, path) => {
   if (crumb === "tenants" && !lastItem.includes(crumb)) {
     return <Link to={"/provisioning/broadsoft_xsp1_as1/tenants"}>{crumb}</Link>;
   }
-  if (
-    lastItem.includes(crumb) &&
-    path[i - 1] === "tenants" &&
-    !lastItem.includes(crumb)
-  ) {
+  if (path[i - 1] === "tenants" && !lastItem.includes(crumb)) {
     return (
       <Link to={`/provisioning/broadsoft_xsp1_as1/tenants/${item}`}>
         {crumb}
