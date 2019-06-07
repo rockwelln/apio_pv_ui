@@ -13,7 +13,7 @@ import "./styles.css";
 const TenantComponent = props => {
   return (
     <React.Fragment>
-      <Row>
+      <Row className={"margin-bottom-4"}>
         <Title />
       </Row>
       <Row>

@@ -10,6 +10,14 @@
   margin: 10px !important;
 }
 
+.margin-bottom-4 {
+  margin-bottom: 40px !important;
+}
+
+.margin-top-2 {
+  margin-top: 20px !important;
+}
+
 .x-large {
   font-size: x-large;
 }

@@ -43,7 +43,7 @@ export class GroupsTab extends Component {
 
     return (
       <React.Fragment>
-        <Row>
+        <Row className={"margin-top-2"}>
           <Col className={"text-right"} md={1}>
             <Glyphicon
               className={"x-large"}
