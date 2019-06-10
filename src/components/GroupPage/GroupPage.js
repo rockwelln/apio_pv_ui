@@ -8,6 +8,7 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import Loading from "../../common/Loading";
 import Users from "./Tabs/Users";
+import PhoneNumbers from "./Tabs/PhoneNumbers";
 // import PhoneNumbersTab from "./Tabs/PhoneNumber";
 // import Admins from "./Tabs/Admins";
 // import Details from "./Tabs/Details";
@@ -50,7 +51,7 @@ class TenantPage extends Component {
           </p>
           <p>{`Tenant: ${tenant.name} (${tenant.tenantId})`}</p>
         </div>
-        <Tabs defaultActiveKey={1} id="tenant_tabs">
+        <Tabs defaultActiveKey={3} id="tenant_tabs">
           <Tab eventKey={0} title="LICENSES">
             LICENSES Tab
           </Tab>
@@ -64,7 +65,10 @@ class TenantPage extends Component {
             ENTERPRISE TRUNKS Tab
           </Tab>
           <Tab eventKey={3} title="PHONE NUMBERS">
-            PHONE NUMBERS
+            <PhoneNumbers
+              tenantId={tenant.tenantId}
+              groupId={this.props.match.params.groupId}
+            />
           </Tab>
           <Tab eventKey={4} title="DEVICES">
             DEVICES

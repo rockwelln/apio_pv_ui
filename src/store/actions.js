@@ -36,6 +36,11 @@ export const getUsersByGroupId = data => ({
   data
 });
 
+export const getPhoneNumbersByGroupId = data => ({
+  type: actionType.GET_PHONE_NUMBERS_BY_GROUP_ID,
+  data
+});
+
 export const deleteTenant = Id => ({
   type: actionType.DELETE_TENANT,
   Id
@@ -95,6 +100,16 @@ export function fetchGetUsersByGroupId(tenantId, groupId) {
       `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/users`
     )
       .then(data => dispatch(getUsersByGroupId(data)))
+      .catch(error => console.error("An error occurred.", error));
+  };
+}
+
+export function fetchGetPhoneNumbersByGroupId(tenantId, groupId) {
+  return function(dispatch) {
+    return fetch_get(
+      `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/numbers?assignement=true`
+    )
+      .then(data => dispatch(getPhoneNumbersByGroupId(data)))
       .catch(error => console.error("An error occurred.", error));
   };
 }

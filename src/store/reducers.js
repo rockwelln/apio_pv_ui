@@ -7,7 +7,8 @@ const initialState = {
   phoneNumbers: [],
   admins: [],
   group: {},
-  users: []
+  users: [],
+  phoneNumbersByGroup: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -68,6 +69,22 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         users
+      };
+    }
+    case actionType.GET_PHONE_NUMBERS_BY_GROUP_ID: {
+      const phoneNumbers = action.data.assigned_numbers.map(phone => ({
+        ...phone,
+        rangeStart: phone.phoneNumber.includes("-")
+          ? phone.phoneNumber.split(" - ").slice(0)[0]
+          : phone.phoneNumber,
+        rangeEnd: phone.phoneNumber.includes("-")
+          ? phone.phoneNumber.split(" - ").slice(-1)[0]
+          : null,
+        phoneChecked: false
+      }));
+      return {
+        ...state,
+        phoneNumbersByGroup: phoneNumbers
       };
     }
     case actionType.DELETE_TENANT: {

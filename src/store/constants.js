@@ -5,5 +5,6 @@ export const GET_PHONE_NUMBERS = "GET_PHONE_NUMBERS";
 export const GET_ADMINS = "GET_ADMINS";
 export const GET_GROUP = "GET_GROUP";
 export const GET_USERS = "GET_USERS";
+export const GET_PHONE_NUMBERS_BY_GROUP_ID = "GET_PHONE_NUMBERS_BY_GROUP_ID";
 
 export const DELETE_TENANT = "DELETE_TENANT";
