@@ -15,6 +15,7 @@ import { fetchGetPhoneNumbersByTenantId } from "../../../../store/actions";
 import Loading from "../../../../common/Loading";
 import PhoneNumber from "./PhoneNumber";
 import DeleteModal from "./DeleteModal";
+import { countsPerPages } from "../../../../constants";
 
 import "./styles.css";
 
@@ -26,34 +27,45 @@ export class PhoneNumbersTab extends Component {
     isLoading: true,
     selectAll: false,
     numbersForDelete: [],
-    showDelete: false
+    showDelete: false,
+    paginationPhoneNumbers: [],
+    countPerPage: 25,
+    page: 0,
+    pagination: true,
+    countPages: null
   };
 
   componentDidMount() {
     this.props.fetchGetPhoneNumbersByTenantId(this.props.tenantId).then(() =>
-      this.setState({
-        phoneNumbers: this.props.phoneNumbers.sort((a, b) => {
-          if (a.rangeStart < b.rangeStart) return -1;
-          if (a.rangeStart > b.rangeStart) return 1;
-          return 0;
-        }),
-        isLoading: false,
-        sortedBy: "rangeStart"
-      })
+      this.setState(
+        {
+          phoneNumbers: this.props.phoneNumbers.sort((a, b) => {
+            if (a.rangeStart < b.rangeStart) return -1;
+            if (a.rangeStart > b.rangeStart) return 1;
+            return 0;
+          }),
+          isLoading: false,
+          sortedBy: "rangeStart"
+        },
+        () => this.pagination()
+      )
     );
   }
 
   render() {
     const {
-      phoneNumbers,
       isLoading,
       showDelete,
-      numbersForDelete
+      numbersForDelete,
+      countPerPage,
+      pagination,
+      paginationPhoneNumbers,
+      page
     } = this.state;
 
     const { onReload } = this.props;
 
-    if (isLoading) {
+    if (isLoading && pagination) {
       return <Loading />;
     }
     return (
@@ -96,7 +108,7 @@ export class PhoneNumbersTab extends Component {
             />
           </Col>
         </Row>
-        {phoneNumbers.length ? (
+        {paginationPhoneNumbers.length ? (
           <React.Fragment>
             <Row>
               <Col mdOffset={1} md={10}>
@@ -169,7 +181,7 @@ export class PhoneNumbersTab extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {phoneNumbers.map((number, i) => (
+                    {paginationPhoneNumbers[page].map((number, i) => (
                       <PhoneNumber
                         index={i}
                         key={number.rangeStart}
@@ -188,6 +200,32 @@ export class PhoneNumbersTab extends Component {
                 </Table>
               </Col>
             </Row>
+            <Row>
+              <Col mdOffset={9} md={2}>
+                <FormControl
+                  componentClass="select"
+                  defaultValue={countPerPage}
+                  style={{ display: "inline", width: "auto" }}
+                  className={"margin-1"}
+                  onChange={this.changeCoutOnPage}
+                >
+                  {countsPerPages.map(counts => (
+                    <option key={counts.value} value={counts.value}>
+                      {counts.title}
+                    </option>
+                  ))}
+                </FormControl>
+                <Glyphicon
+                  glyph="glyphicon glyphicon-chevron-left"
+                  onClick={this.decrementPage}
+                />
+                {this.state.page + 1}
+                <Glyphicon
+                  glyph="glyphicon glyphicon-chevron-right"
+                  onClick={this.incrementPage}
+                />
+              </Col>
+            </Row>
           </React.Fragment>
         ) : (
           <Col mdOffset={1} md={10}>
@@ -201,6 +239,52 @@ export class PhoneNumbersTab extends Component {
     );
   }
 
+  changeCoutOnPage = e => {
+    this.setState({ countPerPage: Number(e.target.value), page: 0 }, () =>
+      this.pagination()
+    );
+  };
+
+  incrementPage = () => {
+    if (this.state.page >= this.state.countPages - 1) {
+      return;
+    }
+    this.setState({ page: this.state.page + 1 });
+  };
+
+  decrementPage = () => {
+    if (this.state.page === 0) {
+      return;
+    }
+    this.setState({ page: this.state.page - 1 });
+  };
+
+  pagination = () => {
+    const { countPerPage, phoneNumbers } = this.state;
+    const countPages = Math.ceil(phoneNumbers.length / countPerPage);
+
+    let paginationItems = [];
+    let counter = 0;
+
+    for (let i = 0; i < countPages; i++) {
+      if (i === 0) {
+        const item = phoneNumbers.slice(0, countPerPage);
+        paginationItems.push(item);
+      } else {
+        const item = phoneNumbers.slice(counter, counter + countPerPage);
+        paginationItems.push(item);
+      }
+      counter = counter + countPerPage;
+    }
+
+    this.setState({
+      paginationPhoneNumbers: paginationItems,
+      pagination: false,
+      countPages,
+      page: 0
+    });
+  };
+
   filterBySearchValue = () => {
     const { searchValue } = this.state;
     const SearchArray = this.props.phoneNumbers
@@ -213,21 +297,24 @@ export class PhoneNumbersTab extends Component {
             .includes(searchValue.toLowerCase())
       )
       .map(phone => phone);
-    this.setState({ phoneNumbers: SearchArray });
+    this.setState({ phoneNumbers: SearchArray }, () => this.pagination());
   };
 
   sortByRangeStart = () => {
     const { phoneNumbers, sortedBy } = this.state;
     if (sortedBy === "rangeStart") {
       const phonesSorted = phoneNumbers.reverse();
-      this.setState({ phoneNumbers: phonesSorted });
+      this.setState({ phoneNumbers: phonesSorted }, () => this.pagination());
     } else {
       const phonesSorted = phoneNumbers.sort((a, b) => {
         if (a.rangeStart < b.rangeStart) return -1;
         if (a.rangeStart > b.rangeStart) return 1;
         return 0;
       });
-      this.setState({ phoneNumbers: phonesSorted, sortedBy: "rangeStart" });
+      this.setState(
+        { phoneNumbers: phonesSorted, sortedBy: "rangeStart" },
+        () => this.pagination()
+      );
     }
   };
 
@@ -235,14 +322,16 @@ export class PhoneNumbersTab extends Component {
     const { phoneNumbers, sortedBy } = this.state;
     if (sortedBy === "rangeEnd") {
       const phonesSorted = phoneNumbers.reverse();
-      this.setState({ phoneNumbers: phonesSorted });
+      this.setState({ phoneNumbers: phonesSorted }, () => this.pagination());
     } else {
       const phonesSorted = phoneNumbers.sort((a, b) => {
         if (a.rangeEnd < b.rangeEnd) return -1;
         if (a.rangeEnd > b.rangeEnd) return 1;
         return 0;
       });
-      this.setState({ phoneNumbers: phonesSorted, sortedBy: "rangeEnd" });
+      this.setState({ phoneNumbers: phonesSorted, sortedBy: "rangeEnd" }, () =>
+        this.pagination()
+      );
     }
   };
 
@@ -250,17 +339,20 @@ export class PhoneNumbersTab extends Component {
     const { phoneNumbers, sortedBy } = this.state;
     if (sortedBy === "assignedToGroup") {
       const phonesSorted = phoneNumbers.reverse();
-      this.setState({ phoneNumbers: phonesSorted });
+      this.setState({ phoneNumbers: phonesSorted }, () => this.pagination());
     } else {
       const phonesSorted = phoneNumbers.sort((a, b) => {
         if (a.assignedToGroup < b.assignedToGroup) return -1;
         if (a.assignedToGroup > b.assignedToGroup) return 1;
         return 0;
       });
-      this.setState({
-        phoneNumbers: phonesSorted,
-        sortedBy: "assignedToGroup"
-      });
+      this.setState(
+        {
+          phoneNumbers: phonesSorted,
+          sortedBy: "assignedToGroup"
+        },
+        () => this.pagination()
+      );
     }
   };
 
@@ -269,7 +361,9 @@ export class PhoneNumbersTab extends Component {
     const numbersForDelete = phoneNumbers.filter(phone => {
       return !!phone.phoneChecked;
     });
-    this.setState({ numbersForDelete, showDelete: true });
+    this.setState({ numbersForDelete, showDelete: true }, () =>
+      this.pagination()
+    );
   };
 
   handleSelectAllClick = e => {
@@ -278,7 +372,10 @@ export class PhoneNumbersTab extends Component {
       ...el,
       phoneChecked: el.canBeDeleted ? isChecked : el.phoneChecked
     }));
-    this.setState({ phoneNumbers: newArr, selectAll: !this.state.selectAll });
+    this.setState(
+      { phoneNumbers: newArr, selectAll: !this.state.selectAll },
+      () => this.pagination()
+    );
   };
 
   handleSingleCheckboxClick = index => {
@@ -287,7 +384,9 @@ export class PhoneNumbersTab extends Component {
       phoneChecked:
         index === i && el.canBeDeleted ? !el.phoneChecked : el.phoneChecked
     }));
-    this.setState({ phoneNumbers: newArr, selectAll: false });
+    this.setState({ phoneNumbers: newArr, selectAll: false }, () =>
+      this.pagination()
+    );
   };
 }
 
