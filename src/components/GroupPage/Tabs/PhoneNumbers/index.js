@@ -149,7 +149,7 @@ export class PhoneNumbersTab extends Component {
                   <thead>
                     <tr>
                       <th style={{ width: "5%" }} />
-                      <th style={{ width: "30%" }}>
+                      <th style={{ width: "22%" }}>
                         <FormattedMessage
                           id="tenant-id"
                           defaultMessage="Range start"
@@ -159,7 +159,7 @@ export class PhoneNumbersTab extends Component {
                           onClick={this.sortByRangeStart}
                         />
                       </th>
-                      <th style={{ width: "30%" }}>
+                      <th style={{ width: "22%" }}>
                         <FormattedMessage
                           id="name"
                           defaultMessage="Range end"
@@ -169,10 +169,20 @@ export class PhoneNumbersTab extends Component {
                           onClick={this.sortByRangeEnd}
                         />
                       </th>
-                      <th style={{ width: "30%" }}>
+                      <th style={{ width: "22%" }}>
+                        <FormattedMessage
+                          id="assigned"
+                          defaultMessage="Assigned to"
+                        />
+                        <Glyphicon
+                          glyph="glyphicon glyphicon-sort"
+                          onClick={this.sortByAssignedToGroup}
+                        />
+                      </th>
+                      <th style={{ width: "22%" }}>
                         <FormattedMessage
                           id="type"
-                          defaultMessage="Assigned to"
+                          defaultMessage="User type"
                         />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
@@ -293,8 +303,10 @@ export class PhoneNumbersTab extends Component {
     const SearchArray = this.props.phoneNumbers
       .filter(
         phone =>
-          phone.phoneNumber.toLowerCase().includes(searchValue.toLowerCase()) ||
-          phone.userId.toLowerCase().includes(searchValue.toLowerCase())
+          phone.rangeStart.toLowerCase().includes(searchValue.toLowerCase()) ||
+          phone.rangeEnd.toLowerCase().includes(searchValue.toLowerCase()) ||
+          phone.userId.toLowerCase().includes(searchValue.toLowerCase()) ||
+          phone.userType.toLowerCase().includes(searchValue.toLowerCase())
       )
       .map(phone => phone);
     this.setState({ phoneNumbers: SearchArray }, () => this.pagination());
@@ -350,6 +362,27 @@ export class PhoneNumbersTab extends Component {
         {
           phoneNumbers: phonesSorted,
           sortedBy: "assignedToGroup"
+        },
+        () => this.pagination()
+      );
+    }
+  };
+
+  sortByAssignedToGroup = () => {
+    const { phoneNumbers, sortedBy } = this.state;
+    if (sortedBy === "userType") {
+      const phonesSorted = phoneNumbers.reverse();
+      this.setState({ phoneNumbers: phonesSorted }, () => this.pagination());
+    } else {
+      const phonesSorted = phoneNumbers.sort((a, b) => {
+        if (a.userType < b.userType) return -1;
+        if (a.userType > b.userType) return 1;
+        return 0;
+      });
+      this.setState(
+        {
+          phoneNumbers: phonesSorted,
+          sortedBy: "userType"
         },
         () => this.pagination()
       );

@@ -79,7 +79,7 @@ function mainReducer(state = initialState, action) {
           : phone.phoneNumber,
         rangeEnd: phone.phoneNumber.includes("-")
           ? phone.phoneNumber.split(" - ").slice(-1)[0]
-          : null,
+          : "",
         phoneChecked: false
       }));
       return {
