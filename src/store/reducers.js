@@ -8,7 +8,10 @@ const initialState = {
   admins: [],
   group: {},
   users: [],
-  phoneNumbersByGroup: []
+  phoneNumbersByGroup: [],
+  licensesByGroup: [],
+  servicePacks: [],
+  groupServices: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -86,6 +89,27 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         phoneNumbersByGroup: phoneNumbers
+      };
+    }
+    case actionType.GET_LICENSES_BY_GROUP_ID: {
+      const groupServices = action.data.groupServices.filter(
+        group =>
+          group.name === "Auto Attendant" ||
+          group.name === "Auto Attendant - Video" ||
+          group.name === "Auto Attendant - Standard" ||
+          group.name === "Call Pickup" ||
+          group.name === "Find-me/Follow-me" ||
+          group.name === "Group Paging" ||
+          group.name === "Hunt Group" ||
+          group.name === "Meet-me Conferencing" ||
+          group.name === "Route Point" ||
+          group.name === "Series Completion" ||
+          group.name === "VoiceXML"
+      );
+      return {
+        ...state,
+        servicePacks: action.data.servicePacks,
+        groupServices
       };
     }
     case actionType.DELETE_TENANT: {

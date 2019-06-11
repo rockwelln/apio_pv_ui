@@ -9,20 +9,22 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Loading from "../../common/Loading";
 import Users from "./Tabs/Users";
 import PhoneNumbers from "./Tabs/PhoneNumbers";
-// import PhoneNumbersTab from "./Tabs/PhoneNumber";
-// import Admins from "./Tabs/Admins";
-// import Details from "./Tabs/Details";
+import Licenses from "./Tabs/Licenses";
 
 import { fetchGetTenantById, fetchGetGroupById } from "../../store/actions";
 import Group from "../TenantPage/Tabs/Groups/Group";
 
 class TenantPage extends Component {
+  tabsIdSuffix = Math.random()
+    .toString(36)
+    .replace(".", "");
+
   state = {
     isLoadingTenant: true,
     isLoadingGroup: true
   };
 
-  componentDidMount() {
+  fetchTennant = () => {
     this.props
       .fetchGetTenantById(this.props.match.params.tenantId)
       .then(() => this.setState({ isLoadingTenant: false }));
@@ -32,6 +34,16 @@ class TenantPage extends Component {
         this.props.match.params.groupId
       )
       .then(() => this.setState({ isLoadingGroup: false }));
+  };
+
+  componentDidMount() {
+    this.fetchTennant();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.match.params.tenantId !== this.props.match.params.tenantId) {
+      this.fetchTennant();
+    }
   }
 
   render() {
@@ -51,9 +63,12 @@ class TenantPage extends Component {
           </p>
           <p>{`Tenant: ${tenant.name} (${tenant.tenantId})`}</p>
         </div>
-        <Tabs defaultActiveKey={3} id="tenant_tabs">
+        <Tabs defaultActiveKey={0} id={`group_tabs${this.tabsIdSuffix}`}>
           <Tab eventKey={0} title="LICENSES">
-            LICENSES Tab
+            <Licenses
+              tenantId={tenant.tenantId}
+              groupId={this.props.match.params.groupId}
+            />
           </Tab>
           <Tab eventKey={1} title="USERS">
             <Users

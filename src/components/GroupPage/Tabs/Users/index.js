@@ -210,7 +210,7 @@ export class Users extends Component {
                         index={i}
                         tenantId={this.props.tenantId}
                         groupId={this.props.groupId}
-                        key={users.userId}
+                        key={i}
                         user={user}
                         handleSingleCheckboxClick={
                           this.handleSingleCheckboxClick
