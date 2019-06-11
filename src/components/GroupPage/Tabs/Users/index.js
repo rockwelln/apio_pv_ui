@@ -6,10 +6,12 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import FormControl from "react-bootstrap/lib/FormControl";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
+import Checkbox from "react-bootstrap/lib/Checkbox";
 import { FormattedMessage } from "react-intl";
 
 import Loading from "../../../../common/Loading";
 import User from "./User";
+import DeleteModal from "./DeleteModal";
 
 import { fetchGetUsersByGroupId } from "../../../../store/actions";
 
@@ -25,7 +27,9 @@ export class Users extends Component {
     page: 0,
     pagination: true,
     countPerPage: 25,
-    countPages: null
+    countPages: null,
+    showDelete: false,
+    usersForDelete: []
   };
 
   componentDidMount() {
@@ -54,7 +58,9 @@ export class Users extends Component {
       page,
       pagination,
       countPerPage,
-      paginationUsers
+      paginationUsers,
+      usersForDelete,
+      showDelete
     } = this.state;
 
     if ((isLoading, pagination)) {
@@ -104,18 +110,51 @@ export class Users extends Component {
         {paginationUsers.length ? (
           <React.Fragment>
             <Row>
+              <Col mdOffset={1} md={10}>
+                <div style={{ display: "flex" }}>
+                  <Checkbox
+                    className={"margin-checbox"}
+                    checked={this.state.selectAll}
+                    onChange={this.handleSelectAllClick}
+                  >
+                    (Un)select all shown numbers
+                  </Checkbox>
+                  <Glyphicon
+                    glyph="glyphicon glyphicon-trash"
+                    onClick={this.deleteSlectedUsers}
+                  />
+                  <div className={"margin-checbox"}>
+                    Delete selected numbers
+                  </div>
+                  <DeleteModal
+                    userId={usersForDelete.map(user => user.userId)}
+                    show={showDelete}
+                    onClose={e => {
+                      this.props.fetchGetUsersByGroupId(
+                        this.props.tenantId,
+                        this.props.groupId
+                      );
+                      this.setState({ showDelete: false });
+                    }}
+                    {...this.props}
+                  />
+                </div>
+              </Col>
+            </Row>
+            <Row>
               <Col md={12}>
                 <Table hover>
                   <thead>
                     <tr>
-                      <th style={{ width: "16%" }}>
+                      <th style={{ width: "5%" }} />
+                      <th style={{ width: "15%" }}>
                         <FormattedMessage id="tenant-id" defaultMessage="ID" />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
                           onClick={this.sortByID}
                         />
                       </th>
-                      <th style={{ width: "16%" }}>
+                      <th style={{ width: "15%" }}>
                         <FormattedMessage
                           id="name"
                           defaultMessage="First name"
@@ -125,7 +164,7 @@ export class Users extends Component {
                           onClick={this.sortByFirstName}
                         />
                       </th>
-                      <th style={{ width: "16%" }}>
+                      <th style={{ width: "15%" }}>
                         <FormattedMessage
                           id="type"
                           defaultMessage="Last name"
@@ -135,7 +174,7 @@ export class Users extends Component {
                           onClick={this.sortByLastName}
                         />
                       </th>
-                      <th style={{ width: "16%" }}>
+                      <th style={{ width: "15%" }}>
                         <FormattedMessage
                           id="type"
                           defaultMessage="Extension"
@@ -145,7 +184,7 @@ export class Users extends Component {
                           onClick={this.sortByExtension}
                         />
                       </th>
-                      <th style={{ width: "16%" }}>
+                      <th style={{ width: "15%" }}>
                         <FormattedMessage
                           id="type"
                           defaultMessage="Phone number"
@@ -155,24 +194,33 @@ export class Users extends Component {
                           onClick={this.sortByPhoneNumber}
                         />
                       </th>
-                      <th style={{ width: "16%" }}>
+                      <th style={{ width: "15%" }}>
                         <FormattedMessage id="type" defaultMessage="Type" />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
                           onClick={this.sortByType}
                         />
                       </th>
-                      <th style={{ width: "4%" }} />
+                      <th style={{ width: "5%" }} />
                     </tr>
                   </thead>
                   <tbody>
-                    {paginationUsers[page].map(user => (
+                    {paginationUsers[page].map((user, i) => (
                       <User
+                        index={i}
                         tenantId={this.props.tenantId}
                         groupId={this.props.groupId}
                         key={users.userId}
                         user={user}
-                        onReload={this.props.fetchGetUsersByGroupId}
+                        handleSingleCheckboxClick={
+                          this.handleSingleCheckboxClick
+                        }
+                        onReload={() =>
+                          this.props.fetchGetUsersByGroupId(
+                            this.props.tenantId,
+                            this.props.groupId
+                          )
+                        }
                       />
                     ))}
                   </tbody>
@@ -379,6 +427,35 @@ export class Users extends Component {
         this.pagination()
       );
     }
+  };
+
+  handleSelectAllClick = e => {
+    const isChecked = e.target.checked;
+    const newArr = this.state.users.map(el => ({
+      ...el,
+      userChecked: isChecked
+    }));
+    this.setState({ users: newArr, selectAll: !this.state.selectAll }, () =>
+      this.pagination()
+    );
+  };
+
+  handleSingleCheckboxClick = index => {
+    const newArr = this.state.users.map((el, i) => ({
+      ...el,
+      userChecked: index === i ? !el.userChecked : el.userChecked
+    }));
+    this.setState({ users: newArr, selectAll: false }, () => this.pagination());
+  };
+
+  deleteSlectedUsers = () => {
+    const { users } = this.state;
+    const usersForDelete = users.filter(user => {
+      return !!user.userChecked;
+    });
+    this.setState({ usersForDelete, showDelete: true }, () =>
+      this.pagination()
+    );
   };
 }
 

@@ -3,16 +3,26 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
+import Checkbox from "react-bootstrap/lib/Checkbox";
 
 import DeleteModal from "./DeleteModal";
 
 export default class Group extends Component {
   state = { showDelete: false };
   render() {
-    const { user, onReload, tenantId, groupId } = this.props;
+    const { user, onReload, tenantId, groupId, index } = this.props;
     const { showDelete } = this.state;
     return (
       <tr key={user.userId}>
+        <td>
+          <Checkbox
+            checked={user.userChecked}
+            className={"table-checkbox"}
+            onChange={() => {
+              this.props.handleSingleCheckboxClick(index);
+            }}
+          />
+        </td>
         <td>{user.userId}</td>
         <td>{user.firstName}</td>
         <td>{user.lastName}</td>
@@ -27,7 +37,7 @@ export default class Group extends Component {
             />
           </ButtonToolbar>
           <DeleteModal
-            tenantId={user.userId}
+            userId={user.userId}
             show={showDelete}
             onClose={e => {
               onReload && onReload(tenantId, groupId);

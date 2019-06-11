@@ -64,7 +64,8 @@ function mainReducer(state = initialState, action) {
     case actionType.GET_USERS: {
       const users = action.data.users.map(user => ({
         ...user,
-        type: user.inTrunkGroup ? "trunk" : "normal"
+        type: user.inTrunkGroup ? "trunk" : "normal",
+        userChecked: false
       }));
       return {
         ...state,

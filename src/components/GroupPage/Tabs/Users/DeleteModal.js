@@ -14,12 +14,12 @@ class DeleteModal extends Component {
     this.onDelete = this.onDelete.bind(this);
   }
 
-  onDelete(tenantId) {
+  onDelete(userId) {
     const { onClose } = this.props;
     this.setState({ deleting: true });
 
     this.props
-      .fetchDeleteTenant(tenantId)
+      .fetchDeleteTenant(userId)
       .then(() => {
         this.props.notifications.addNotification({
           message: (
@@ -48,7 +48,7 @@ class DeleteModal extends Component {
   }
 
   render() {
-    const { tenantId, show, onClose } = this.props;
+    const { userId, show, onClose } = this.props;
     const { deleting } = this.state;
     return (
       <Modal
@@ -73,13 +73,13 @@ class DeleteModal extends Component {
           <p>
             <FormattedMessage
               id="confirm-delete-warning"
-              defaultMessage={`You are about to delete the user ${tenantId}!`}
+              defaultMessage={`You are about to delete the user ${userId}!`}
             />
           </p>
         </Modal.Body>
         <Modal.Footer>
           <Button
-            onClick={() => this.onDelete(tenantId)}
+            onClick={() => this.onDelete(userId)}
             bsStyle="danger"
             disabled={true}
           >
