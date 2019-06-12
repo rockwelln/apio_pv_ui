@@ -54,7 +54,6 @@ export class Users extends Component {
   render() {
     const {
       isLoading,
-      users,
       page,
       pagination,
       countPerPage,

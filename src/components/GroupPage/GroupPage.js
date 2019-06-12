@@ -12,7 +12,6 @@ import PhoneNumbers from "./Tabs/PhoneNumbers";
 import Licenses from "./Tabs/Licenses";
 
 import { fetchGetTenantById, fetchGetGroupById } from "../../store/actions";
-import Group from "../TenantPage/Tabs/Groups/Group";
 
 class TenantPage extends Component {
   tabsIdSuffix = Math.random()

@@ -10,7 +10,6 @@ import { FormattedMessage } from "react-intl";
 import Loading from "../../../../common/Loading";
 
 import { fetchGetLicensesByGroupId } from "../../../../store/actions";
-import { stat } from "fs";
 
 const INFINITY = 8734;
 
@@ -18,16 +17,17 @@ export class Licenses extends Component {
   state = {
     isLoading: true
   };
+
   componentDidMount() {
     this.props
       .fetchGetLicensesByGroupId(this.props.tenantId, this.props.groupId)
       .then(() => this.setState({ isLoading: false }));
   }
+
   render() {
     const { isLoading } = this.state;
     const { group, servicePacks, groupServices } = this.props;
 
-    console.log(groupServices);
     if (isLoading) {
       return <Loading />;
     }
@@ -61,7 +61,25 @@ export class Licenses extends Component {
                   glyph="glyphicon glyphicon-pencil"
                 />
               </Panel.Heading>
-              <Panel.Body>Panel content</Panel.Body>
+              <Panel.Body>
+                {groupServices.map((pack, i) => (
+                  <Row key={i}>
+                    <Col md={8} className={"text-left"}>
+                      <FormattedMessage
+                        id="service_packs"
+                        defaultMessage={`${pack.name}:`}
+                      />
+                    </Col>
+                    <Col md={4} className={"text-right"}>{`${
+                      pack.inUse ? pack.inUse : 0
+                    }(${
+                      pack.allocated.unlimited
+                        ? String.fromCharCode(INFINITY)
+                        : pack.allocated.maximum
+                    })`}</Col>
+                  </Row>
+                ))}
+              </Panel.Body>
             </Panel>
           </Row>
           <Row>
@@ -78,13 +96,13 @@ export class Licenses extends Component {
               </Panel.Heading>
               <Panel.Body>
                 <Row>
-                  <Col md={6} className={"text-left"}>
+                  <Col md={8} className={"text-left"}>
                     <FormattedMessage
                       id="service_packs"
                       defaultMessage="User limit:"
                     />
                   </Col>
-                  <Col md={6} className={"text-right"}>{`${group.userCount}(${
+                  <Col md={4} className={"text-right"}>{`${group.userCount}(${
                     group.userLimit
                   })`}</Col>
                 </Row>
@@ -108,13 +126,13 @@ export class Licenses extends Component {
               <Panel.Body>
                 {servicePacks.map((pack, i) => (
                   <Row key={i}>
-                    <Col md={6} className={"text-left"}>
+                    <Col md={8} className={"text-left"}>
                       <FormattedMessage
                         id="service_packs"
                         defaultMessage={`${pack.name}:`}
                       />
                     </Col>
-                    <Col md={6} className={"text-right"}>{`${
+                    <Col md={4} className={"text-right"}>{`${
                       pack.inUse ? pack.inUse : 0
                     }(${
                       pack.allocated.unlimited
