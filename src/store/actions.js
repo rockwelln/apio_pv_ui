@@ -51,6 +51,10 @@ export const deleteTenant = Id => ({
   Id
 });
 
+export const deleteTenantAdmin = () => ({
+  type: actionType.DELETE_TENANT_ADMIN
+});
+
 export function fetchGetTenants(cancelLoad) {
   return function(dispatch) {
     return fetch_get(`${API_BASE_URL}/tenants/`)
@@ -134,5 +138,13 @@ export function fetchDeleteTenant(ID) {
     return fetch_delete(`${API_BASE_URL}/tenants/${ID}`).then(data =>
       dispatch(deleteTenant(ID))
     );
+  };
+}
+
+export function fetchDeleteTenantAdmin(tenantId, adminId) {
+  return function(dispatch) {
+    return fetch_delete(
+      `${API_BASE_URL}/tenants/${tenantId}admins/${adminId}`
+    ).then(data => dispatch(deleteTenantAdmin()));
   };
 }

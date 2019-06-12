@@ -26,7 +26,7 @@ class Details extends Component {
     }
 
     return (
-      <Col md={6}>
+      <Col md={8}>
         <Form horizontal className={"margin-1"}>
           <FormGroup controlId="resellerSelect">
             <ControlLabel className={"margin-1"}>RESELLER</ControlLabel>
@@ -81,7 +81,7 @@ class Details extends Component {
               </Col>
             </FormGroup>
           </FormGroup>
-          <Col md={3} mdPush={9}>
+          <Col mdPush={10} md={1}>
             <Button>
               <Glyphicon glyph="glyphicon glyphicon-ok" /> UPDATE
             </Button>

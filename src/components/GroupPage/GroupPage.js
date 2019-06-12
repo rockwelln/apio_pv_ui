@@ -10,6 +10,7 @@ import Loading from "../../common/Loading";
 import Users from "./Tabs/Users";
 import PhoneNumbers from "./Tabs/PhoneNumbers";
 import Licenses from "./Tabs/Licenses";
+import Details from "./Tabs/Details";
 
 import { fetchGetTenantById, fetchGetGroupById } from "../../store/actions";
 
@@ -91,7 +92,7 @@ class TenantPage extends Component {
             ADMINISTRATORS
           </Tab>
           <Tab eventKey={6} title="DETAILS">
-            DETAILS
+            <Details group={group} isLoading={isLoadingTenant} />
           </Tab>
         </Tabs>
       </React.Fragment>
