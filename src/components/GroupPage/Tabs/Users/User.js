@@ -4,6 +4,8 @@ import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Checkbox from "react-bootstrap/lib/Checkbox";
 
+import { Link } from "react-router-dom";
+
 import DeleteModal from "./DeleteModal";
 
 export default class Group extends Component {
@@ -22,7 +24,15 @@ export default class Group extends Component {
             }}
           />
         </td>
-        <td>{user.userId}</td>
+        <td>
+          <Link
+            to={`/provisioning/broadsoft_xsp1_as1/tenants/${tenantId}/${groupId}/users/${
+              user.userId
+            }`}
+          >
+            {user.userId}
+          </Link>
+        </td>
         <td>{user.firstName}</td>
         <td>{user.lastName}</td>
         <td>{user.extension}</td>

@@ -146,7 +146,7 @@ export class Users extends Component {
                     <tr>
                       <th style={{ width: "5%" }} />
                       <th style={{ width: "15%" }}>
-                        <FormattedMessage id="tenant-id" defaultMessage="ID" />
+                        <FormattedMessage id="user-id" defaultMessage="ID" />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
                           onClick={this.sortByID}

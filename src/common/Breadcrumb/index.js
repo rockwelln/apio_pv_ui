@@ -26,11 +26,22 @@ const linkByCrumb = (item, lastItem, i, path) => {
       </Link>
     );
   }
+  if (path[i - 2] === "tenants" && !lastItem.includes(crumb)) {
+    return (
+      <Link
+        to={`/provisioning/broadsoft_xsp1_as1/tenants/${path[i - 1]}/${crumb}`}
+      >
+        {crumb}
+      </Link>
+    );
+  }
+
   return crumb;
 };
 
 const BreadcrumbComponent = ({ location }) => {
   const path = location.pathname.split("/").slice(3);
+  path.splice(3, 1);
   const lastItem = path.slice(-1);
   return (
     <Breadcrumb>
