@@ -6,13 +6,15 @@ import Checkbox from "react-bootstrap/lib/Checkbox";
 
 import DeleteModal from "./DeleteModal";
 
+import { Link } from "react-router-dom";
+
 import "./styles.css";
 
 export default class PhoneNumber extends Component {
   state = { showDelete: false };
 
   render() {
-    const { number, onReload, index } = this.props;
+    const { number, onReload, index, tenantId } = this.props;
     const { showDelete } = this.state;
     return (
       <tr key={number.groupId}>
@@ -29,7 +31,15 @@ export default class PhoneNumber extends Component {
         </td>
         <td>{number.rangeStart}</td>
         <td>{number.rangeEnd}</td>
-        <td>{number.assignedToGroup}</td>
+        <td>
+          <Link
+            to={`/provisioning/broadsoft_xsp1_as1/tenants/${tenantId}/${
+              number.assignedToGroup
+            }`}
+          >
+            {number.assignedToGroup}
+          </Link>
+        </td>
         <td>
           {number.canBeDeleted && (
             <React.Fragment>

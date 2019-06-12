@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import Table from "react-bootstrap/lib/Table";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import FormControl from "react-bootstrap/lib/FormControl";
+import InputGroup from "react-bootstrap/lib/InputGroup";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import Checkbox from "react-bootstrap/lib/Checkbox";
@@ -63,7 +64,7 @@ export class PhoneNumbersTab extends Component {
       page
     } = this.state;
 
-    const { onReload } = this.props;
+    const { onReload, tenantId } = this.props;
 
     if (isLoading && pagination) {
       return <Loading />;
@@ -71,35 +72,32 @@ export class PhoneNumbersTab extends Component {
     return (
       <React.Fragment>
         <Row className={"margin-top-2"}>
-          <Col className={"text-right"} md={1}>
-            <Glyphicon
-              className={"x-large"}
-              glyph="glyphicon glyphicon-search"
-              onClick={this.handleSearchClick}
-            />
-          </Col>
-          <Col md={10}>
-            <FormattedMessage
-              id="search_placeholder"
-              defaultMessage="Number or Assigned to"
-            >
-              {placeholder => (
-                <FormControl
-                  className={"margin-1"}
-                  type="text"
-                  value={this.state.searchValue}
-                  placeholder={placeholder}
-                  onChange={e =>
-                    this.setState(
-                      {
-                        searchValue: e.target.value
-                      },
-                      () => this.filterBySearchValue()
-                    )
-                  }
-                />
-              )}
-            </FormattedMessage>
+          <Col mdOffset={1} md={10}>
+            <InputGroup className={"margin-left-negative-4"}>
+              <InputGroup.Addon>
+                <Glyphicon glyph="lyphicon glyphicon-search" />
+              </InputGroup.Addon>
+              <FormattedMessage
+                id="search_placeholder"
+                defaultMessage="Number or Assigned to"
+              >
+                {placeholder => (
+                  <FormControl
+                    type="text"
+                    value={this.state.searchValue}
+                    placeholder={placeholder}
+                    onChange={e =>
+                      this.setState(
+                        {
+                          searchValue: e.target.value
+                        },
+                        () => this.filterBySearchValue()
+                      )
+                    }
+                  />
+                )}
+              </FormattedMessage>
+            </InputGroup>
           </Col>
           <Col md={1}>
             <Glyphicon
@@ -186,6 +184,7 @@ export class PhoneNumbersTab extends Component {
                         index={i}
                         key={number.rangeStart}
                         number={number}
+                        tenantId={tenantId}
                         handleSingleCheckboxClick={
                           this.handleSingleCheckboxClick
                         }

@@ -6,6 +6,7 @@ import { fetchGetTenants } from "../../store/actions";
 import Table from "react-bootstrap/lib/Table";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import FormControl from "react-bootstrap/lib/FormControl";
+import InputGroup from "react-bootstrap/lib/InputGroup";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import { FormattedMessage } from "react-intl";
@@ -33,14 +34,17 @@ class Tenants extends Component {
   }
 
   componentWillUnmount() {
+    console.log("componentWillUnmount");
     this.cancelLoad = true;
   }
 
   componentDidMount() {
-    this.props.fetchGetTenants(this.cancelLoad).then(() =>
+    console.log("componentDidMount");
+    this.props.fetchGetTenants(this.cancelLoad).then(() => {
+      const sortedTenants = [...this.props.tenants];
       this.setState(
         {
-          tenants: this.props.tenants.sort((a, b) => {
+          tenants: sortedTenants.sort((a, b) => {
             if (a.tenantId < b.tenantId) return -1;
             if (a.tenantId > b.tenantId) return 1;
             return 0;
@@ -49,8 +53,8 @@ class Tenants extends Component {
           isLoading: false
         },
         () => this.pagination()
-      )
-    );
+      );
+    });
   }
 
   render() {
@@ -69,35 +73,32 @@ class Tenants extends Component {
     return (
       <React.Fragment>
         <Row>
-          <Col className={"text-right "} md={1}>
-            <Glyphicon
-              className={"x-large"}
-              glyph="glyphicon glyphicon-search"
-              onClick={this.filterBySearchValue}
-            />
-          </Col>
-          <Col md={10}>
-            <FormattedMessage
-              id="search_placeholder"
-              defaultMessage="Tenant ID or Name or Type or Resellers"
-            >
-              {placeholder => (
-                <FormControl
-                  className={"margin-1"}
-                  type="text"
-                  value={this.state.searchValue}
-                  placeholder={placeholder}
-                  onChange={e =>
-                    this.setState(
-                      {
-                        searchValue: e.target.value
-                      },
-                      () => this.filterBySearchValue()
-                    )
-                  }
-                />
-              )}
-            </FormattedMessage>
+          <Col mdOffset={1} md={10}>
+            <InputGroup className={"margin-left-negative-4"}>
+              <InputGroup.Addon>
+                <Glyphicon glyph="lyphicon glyphicon-search" />
+              </InputGroup.Addon>
+              <FormattedMessage
+                id="search_placeholder"
+                defaultMessage="Tenant ID or Name or Type or Resellers"
+              >
+                {placeholder => (
+                  <FormControl
+                    type="text"
+                    value={this.state.searchValue}
+                    placeholder={placeholder}
+                    onChange={e =>
+                      this.setState(
+                        {
+                          searchValue: e.target.value
+                        },
+                        () => this.filterBySearchValue()
+                      )
+                    }
+                  />
+                )}
+              </FormattedMessage>
+            </InputGroup>
           </Col>
           <Col md={1}>
             <Glyphicon
