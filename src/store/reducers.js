@@ -118,6 +118,11 @@ function mainReducer(state = initialState, action) {
         groupServices
       };
     }
+    case actionType.DELETE_TENANT_ADMIN: {
+      return {
+        ...state
+      };
+    }
     case actionType.DELETE_TENANT: {
       return {
         ...state

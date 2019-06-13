@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-//import { fetchDeleteTenant } from "../../store/actions";
+import { fetchDeleteTenantAdmin } from "../../../../store/actions";
 
 import Modal from "react-bootstrap/lib/Modal";
 import Alert from "react-bootstrap/lib/Alert";
@@ -16,14 +16,13 @@ class DeleteModal extends Component {
     this.onDelete = this.onDelete.bind(this);
   }
 
-  onDelete(tenantId) {
+  onDelete(tenantId, adminId) {
     const { onClose } = this.props;
     this.setState({ deleting: true });
-
     this.props
-      .fetchDeleteTenant(tenantId)
+      .fetchDeleteTenantAdmin(tenantId, adminId)
       .then(() => {
-        this.props.notifications.addNotification({
+        this.props.notifications.notifications.addNotification({
           message: (
             <FormattedMessage
               id="delete-tenant-ok"
@@ -37,7 +36,7 @@ class DeleteModal extends Component {
       })
       .catch(error => {
         this.setState({ deleting: false });
-        this.props.notifications.addNotification({
+        this.props.notifications.notifications.addNotification({
           title: (
             <FormattedMessage
               id="delete-tenant-fail"
@@ -50,7 +49,7 @@ class DeleteModal extends Component {
   }
 
   render() {
-    const { adminId, show, onClose } = this.props;
+    const { tenantId, adminId, show, onClose } = this.props;
     const { deleting } = this.state;
     return (
       <Modal
@@ -81,9 +80,8 @@ class DeleteModal extends Component {
         </Modal.Body>
         <Modal.Footer>
           <Button
-            onClick={() => this.onDelete(adminId)}
+            onClick={() => this.onDelete(tenantId, adminId)}
             bsStyle="danger"
-            disabled={true}
           >
             <FormattedMessage id="delete" defaultMessage="Delete" />
           </Button>
@@ -97,7 +95,7 @@ class DeleteModal extends Component {
 }
 
 const mapDispatchToProps = {
-  //fetchDeleteTenant
+  fetchDeleteTenantAdmin
 };
 
 export default connect(

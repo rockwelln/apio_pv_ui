@@ -144,7 +144,7 @@ export function fetchDeleteTenant(ID) {
 export function fetchDeleteTenantAdmin(tenantId, adminId) {
   return function(dispatch) {
     return fetch_delete(
-      `${API_BASE_URL}/tenants/${tenantId}admins/${adminId}`
+      `${API_BASE_URL}/tenants/${tenantId}/admins/${adminId}`
     ).then(data => dispatch(deleteTenantAdmin()));
   };
 }

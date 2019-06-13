@@ -28,7 +28,7 @@ export class Admins extends Component {
     countPages: null
   };
 
-  componentDidMount() {
+  fetchAdmins = () => {
     this.props.fetchGetAdminsByTenantId(this.props.tenantId).then(() =>
       this.setState(
         {
@@ -43,7 +43,18 @@ export class Admins extends Component {
         () => this.pagination()
       )
     );
+  };
+
+  componentDidMount() {
+    this.fetchAdmins();
   }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.admins.length !== this.props.admins.length) {
+      this.fetchAdmins();
+    }
+  }
+
   render() {
     const {
       isLoading,
@@ -143,7 +154,9 @@ export class Admins extends Component {
                     {paginationAdmins[page].map(admin => (
                       <Admin
                         key={admin.userId}
+                        tenantId={this.props.tenantId}
                         admin={admin}
+                        notifications={this.props.notifications}
                         onReload={() =>
                           this.props.fetchGetAdminsByTenantId(
                             this.props.tenantId

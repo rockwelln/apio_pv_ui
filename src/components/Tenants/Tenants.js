@@ -34,12 +34,10 @@ class Tenants extends Component {
   }
 
   componentWillUnmount() {
-    console.log("componentWillUnmount");
     this.cancelLoad = true;
   }
 
   componentDidMount() {
-    console.log("componentDidMount");
     this.props.fetchGetTenants(this.cancelLoad).then(() => {
       const sortedTenants = [...this.props.tenants];
       this.setState(

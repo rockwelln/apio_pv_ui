@@ -57,7 +57,10 @@ class TenantPage extends Component {
             <PhoneNumbersTab tenantId={this.props.match.params.tenantId} />
           </Tab>
           <Tab eventKey={4} title="ADMINISTRATORS">
-            <Admins tenantId={this.props.match.params.tenantId} />
+            <Admins
+              tenantId={this.props.match.params.tenantId}
+              notifications={this.props.notifications}
+            />
           </Tab>
           <Tab eventKey={5} title="DETAILS">
             <Details tenant={tenant} isLoading={isLoading} />
