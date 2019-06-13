@@ -18,7 +18,8 @@ class Details extends Component {
   state = {
     group: [],
     groupName: "",
-    defaultDomain: ""
+    defaultDomain: "",
+    isLoading: true
   };
 
   componentDidMount() {
@@ -27,13 +28,13 @@ class Details extends Component {
         this.props.match.params.tenantId,
         this.props.match.params.groupId
       )
-      .then(() =>
-        this.setState({ isLoadingTenant: false, group: this.props.group })
-      );
+      .then(() => this.setState({ group: this.props.group, isLoading: false }));
   }
 
   render() {
-    if (this.props.isLoading) {
+    const { isLoading, group } = this.state;
+
+    if (isLoading) {
       return <Loading />;
     }
 
@@ -57,19 +58,19 @@ class Details extends Component {
                   type="text"
                   placeholder="Group ID"
                   disabled
-                  defaultValue={this.state.group.groupId}
+                  defaultValue={group.groupId}
                 />
               </Col>
             </FormGroup>
-            <FormGroup controlId="tentantName">
+            <FormGroup controlId="groupName">
               <Col componentClass={ControlLabel} md={3} className={"text-left"}>
                 Name
               </Col>
               <Col md={9}>
                 <FormControl
                   type="text"
-                  placeholder="Tenant name"
-                  defaultValue={this.state.group.groupName}
+                  placeholder="Group name"
+                  defaultValue={group.groupName}
                   onChange={e => {
                     this.setState({ tenantName: e.target.value });
                   }}
@@ -81,15 +82,46 @@ class Details extends Component {
                 Addess
               </Col>
               <Col md={9}>
-                <FormControl type="text" placeholder="Street" />
+                <FormControl
+                  type="text"
+                  placeholder="Street"
+                  defaultValue={
+                    group.addressInformation &&
+                    `${group.addressInformation.addressLine1} ${
+                      group.addressInformation.addressLine2
+                    }`
+                  }
+                />
               </Col>
             </FormGroup>
             <FormGroup controlId="tentantZipCity">
               <Col mdOffset={3} md={3}>
-                <FormControl type="text" placeholder="ZIP" />
+                <FormControl
+                  type="text"
+                  placeholder="ZIP"
+                  defaultValue={
+                    group.addressInformation &&
+                    group.addressInformation.postalCode
+                  }
+                />
               </Col>
-              <Col md={6}>
-                <FormControl type="text" placeholder="City" />
+              <Col md={3}>
+                <FormControl
+                  type="text"
+                  placeholder="City"
+                  defaultValue={
+                    group.addressInformation && group.addressInformation.city
+                  }
+                />
+              </Col>
+              <Col md={3}>
+                <FormControl
+                  type="text"
+                  placeholder="Country"
+                  defaultValue={
+                    group.addressInformation && group.addressInformation.country
+                  }
+                />
               </Col>
             </FormGroup>
             <FormGroup controlId="defaultDomain">
@@ -100,7 +132,7 @@ class Details extends Component {
                 <FormControl
                   type="text"
                   placeholder="Default Domain"
-                  defaultValue={this.state.group.defaultDomain}
+                  defaultValue={group.defaultDomain}
                   onChange={e => {
                     this.setState({ defaultDomain: e.target.value });
                   }}
@@ -115,7 +147,7 @@ class Details extends Component {
                 <FormControl
                   type="text"
                   placeholder="Calling Line Id Name"
-                  defaultValue={this.state.group.cliPhoneNumber}
+                  defaultValue={group.cliPhoneNumber}
                   disabled
                 />
               </Col>
@@ -128,7 +160,7 @@ class Details extends Component {
                 <FormControl
                   type="text"
                   placeholder="Calling Line Id Name"
-                  defaultValue={this.state.group.cliName}
+                  defaultValue={group.cliName}
                   disabled
                 />
               </Col>
