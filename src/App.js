@@ -287,7 +287,9 @@ class App extends Component {
                 path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/:groupId"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
-                    <GroupPage />
+                    <GroupPage
+                      notifications={this._notificationSystem.current}
+                    />
                   ) : (
                     <NotAllowed />
                   )

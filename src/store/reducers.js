@@ -11,7 +11,8 @@ const initialState = {
   phoneNumbersByGroup: [],
   licensesByGroup: [],
   servicePacks: [],
-  groupServices: []
+  groupServices: [],
+  devices: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -131,7 +132,18 @@ function mainReducer(state = initialState, action) {
         }
       };
     }
+    case actionType.GET_DEVICES_BY_GROUP_ID: {
+      return {
+        ...state,
+        devices: action.data.access_devices
+      };
+    }
     case actionType.DELETE_TENANT_ADMIN: {
+      return {
+        ...state
+      };
+    }
+    case actionType.DELETE_GROUP_DEVICE: {
       return {
         ...state
       };

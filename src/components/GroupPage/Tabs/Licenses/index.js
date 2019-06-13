@@ -32,7 +32,7 @@ export class Licenses extends Component {
     if (isLoading) {
       return <Loading />;
     }
-    console.log(groupServices);
+
     return (
       <Row className={"margin-top-2"}>
         <Col md={4}>
@@ -103,7 +103,7 @@ export class Licenses extends Component {
                 )}
                 <Row>
                   <Col
-                    md={4}
+                    md={8}
                     className={"cursor-pointer"}
                     componentClass="a"
                     onClick={this.handleClickShowMore}

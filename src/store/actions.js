@@ -46,6 +46,11 @@ export const getLicensesByGroupId = data => ({
   data
 });
 
+export const getDevicesByGroupId = data => ({
+  type: actionType.GET_DEVICES_BY_GROUP_ID,
+  data
+});
+
 export const deleteTenant = Id => ({
   type: actionType.DELETE_TENANT,
   Id
@@ -53,6 +58,10 @@ export const deleteTenant = Id => ({
 
 export const deleteTenantAdmin = () => ({
   type: actionType.DELETE_TENANT_ADMIN
+});
+
+export const deleteGroupDevice = () => ({
+  type: actionType.DELETE_GROUP_DEVICE
 });
 
 export function fetchGetTenants(cancelLoad) {
@@ -133,6 +142,16 @@ export function fetchGetLicensesByGroupId(tenantId, groupId) {
   };
 }
 
+export function fetchGetDevicesByGroupId(tenantId, groupId) {
+  return function(dispatch) {
+    return fetch_get(
+      `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/access_devices`
+    )
+      .then(data => dispatch(getDevicesByGroupId(data)))
+      .catch(error => console.error("An error occurred.", error));
+  };
+}
+
 export function fetchDeleteTenant(ID) {
   return function(dispatch) {
     return fetch_delete(`${API_BASE_URL}/tenants/${ID}`).then(data =>
@@ -146,5 +165,13 @@ export function fetchDeleteTenantAdmin(tenantId, adminId) {
     return fetch_delete(
       `${API_BASE_URL}/tenants/${tenantId}/admins/${adminId}`
     ).then(data => dispatch(deleteTenantAdmin()));
+  };
+}
+
+export function fetchDeleteGroupDevice(tenantId, groupId, deviceName) {
+  return function(dispatch) {
+    return fetch_delete(
+      `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/access_devices/${deviceName}`
+    ).then(data => dispatch(deleteGroupDevice()));
   };
 }

@@ -53,6 +53,7 @@ export class GroupsTab extends Component {
       paginationGroups,
       page
     } = this.state;
+
     if (isLoading && pagination) {
       return <Loading />;
     }
