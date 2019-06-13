@@ -101,8 +101,13 @@ export class Licenses extends Component {
                     </Row>
                   )
                 )}
-                <Row onClick={this.handleClickShowMore}>
-                  <Col componentClass="a" md={8} className={"cursor-pointer"}>
+                <Row>
+                  <Col
+                    md={4}
+                    className={"cursor-pointer"}
+                    componentClass="a"
+                    onClick={this.handleClickShowMore}
+                  >
                     <FormattedMessage
                       id="service_packs"
                       defaultMessage={`${
