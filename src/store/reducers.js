@@ -92,17 +92,26 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.GET_LICENSES_BY_GROUP_ID: {
-      const groupServices = action.data.groupServices
+      const groupServicesShown = action.data.groupServices
         .filter(
           group =>
             group.name === "Auto Attendant" ||
-            group.name === "Auto Attendant - Video" ||
             group.name === "Auto Attendant - Standard" ||
             group.name === "Call Pickup" ||
+            group.name === "Hunt Group" ||
+            group.name === "Meet-me Conferencing"
+        )
+        .sort((a, b) => {
+          if (a.name < b.name) return -1;
+          if (a.name > b.name) return 1;
+          return 0;
+        });
+      const groupServicesHide = action.data.groupServices
+        .filter(
+          group =>
+            group.name === "Auto Attendant - Video" ||
             group.name === "Find-me/Follow-me" ||
             group.name === "Group Paging" ||
-            group.name === "Hunt Group" ||
-            group.name === "Meet-me Conferencing" ||
             group.name === "Route Point" ||
             group.name === "Series Completion" ||
             group.name === "VoiceXML"
@@ -112,10 +121,14 @@ function mainReducer(state = initialState, action) {
           if (a.name > b.name) return 1;
           return 0;
         });
+      const groupServices = [...groupServicesShown, ...groupServicesHide];
       return {
         ...state,
         servicePacks: action.data.servicePacks,
-        groupServices
+        groupServices: {
+          groups: groupServices,
+          countShown: groupServicesShown.length
+        }
       };
     }
     case actionType.DELETE_TENANT_ADMIN: {

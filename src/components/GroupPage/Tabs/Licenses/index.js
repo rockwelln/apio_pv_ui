@@ -15,7 +15,8 @@ const INFINITY = 8734;
 
 export class Licenses extends Component {
   state = {
-    isLoading: true
+    isLoading: true,
+    showMore: false
   };
 
   componentDidMount() {
@@ -31,6 +32,7 @@ export class Licenses extends Component {
     if (isLoading) {
       return <Loading />;
     }
+    console.log(groupServices);
     return (
       <Row className={"margin-top-2"}>
         <Col md={4}>
@@ -62,23 +64,53 @@ export class Licenses extends Component {
                 />
               </Panel.Heading>
               <Panel.Body>
-                {groupServices.map((pack, i) => (
-                  <Row key={i}>
-                    <Col md={8} className={"text-left"}>
-                      <FormattedMessage
-                        id="service_packs"
-                        defaultMessage={`${pack.name}:`}
-                      />
-                    </Col>
-                    <Col md={4} className={"text-right"}>{`${
-                      pack.inUse ? pack.inUse : 0
-                    }(${
-                      pack.allocated.unlimited
-                        ? String.fromCharCode(INFINITY)
-                        : pack.allocated.maximum
-                    })`}</Col>
-                  </Row>
-                ))}
+                {groupServices.groups.map((pack, i) =>
+                  !this.state.showMore ? (
+                    i <= groupServices.countShown - 1 ? (
+                      <Row key={i}>
+                        <Col md={8} className={"text-left"}>
+                          <FormattedMessage
+                            id="service_packs"
+                            defaultMessage={`${pack.name}:`}
+                          />
+                        </Col>
+                        <Col md={4} className={"text-right"}>{`${
+                          pack.inUse ? pack.inUse : 0
+                        }(${
+                          pack.allocated.unlimited
+                            ? String.fromCharCode(INFINITY)
+                            : pack.allocated.maximum
+                        })`}</Col>
+                      </Row>
+                    ) : null
+                  ) : (
+                    <Row key={i}>
+                      <Col md={8} className={"text-left"}>
+                        <FormattedMessage
+                          id="service_packs"
+                          defaultMessage={`${pack.name}:`}
+                        />
+                      </Col>
+                      <Col md={4} className={"text-right"}>{`${
+                        pack.inUse ? pack.inUse : 0
+                      }(${
+                        pack.allocated.unlimited
+                          ? String.fromCharCode(INFINITY)
+                          : pack.allocated.maximum
+                      })`}</Col>
+                    </Row>
+                  )
+                )}
+                <Row onClick={this.handleClickShowMore}>
+                  <Col componentClass="a" md={8} className={"cursor-pointer"}>
+                    <FormattedMessage
+                      id="service_packs"
+                      defaultMessage={`${
+                        !this.state.showMore ? "Show more" : "Hide"
+                      }`}
+                    />
+                  </Col>
+                </Row>
               </Panel.Body>
             </Panel>
           </Row>
@@ -155,6 +187,9 @@ export class Licenses extends Component {
       </Row>
     );
   }
+  handleClickShowMore = () => {
+    this.setState({ showMore: !this.state.showMore });
+  };
 }
 
 const mapStateToProps = state => ({
