@@ -11,6 +11,7 @@ import GroupsTab from "./Tabs/Groups";
 import PhoneNumbersTab from "./Tabs/PhoneNumber";
 import Admins from "./Tabs/Admins";
 import Details from "./Tabs/Details";
+import DeleteModal from "./DeleteModal";
 
 import { fetchGetTenantById } from "../../store/actions";
 
@@ -18,7 +19,8 @@ import "./styles.css";
 
 class TenantPage extends Component {
   state = {
-    isLoading: true
+    isLoading: true,
+    showDelete: false
   };
 
   componentDidMount() {
@@ -29,7 +31,7 @@ class TenantPage extends Component {
 
   render() {
     const { tenant } = this.props;
-    const { isLoading } = this.state;
+    const { isLoading, showDelete } = this.state;
     if (isLoading) {
       return <Loading />;
     }
@@ -39,7 +41,18 @@ class TenantPage extends Component {
         <div>
           <p className={"header"}>
             {`TENANT: ${tenant.name} (id: ${tenant.tenantId})`}
-            <Glyphicon glyph="glyphicon glyphicon-trash" />
+            <Glyphicon
+              glyph="glyphicon glyphicon-trash"
+              onClick={() => this.setState({ showDelete: true })}
+            />
+            <DeleteModal
+              tenantId={tenant.tenantId}
+              show={showDelete}
+              notifications={this.props.notifications}
+              onClose={() => {
+                this.setState({ showDelete: false });
+              }}
+            />
           </p>
           <p>{`Type: ${tenant.type}`}</p>
         </div>
