@@ -297,7 +297,7 @@ class App extends Component {
                 exact
               />
               <Route
-                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/:groupId/users/:userId"
+                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/:groupId/users/:userName"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <UserPage />

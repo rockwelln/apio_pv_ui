@@ -12,7 +12,8 @@ const initialState = {
   licensesByGroup: [],
   servicePacks: [],
   groupServices: [],
-  devices: []
+  devices: [],
+  user: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -136,6 +137,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         devices: action.data.access_devices
+      };
+    }
+    case actionType.GET_USER: {
+      return {
+        ...state,
+        user: action.data
       };
     }
     case actionType.DELETE_TENANT_ADMIN: {

@@ -7,6 +7,8 @@ import Breadcrumb from "../../common/Breadcrumb";
 import Sidebar from "../../common/Sidebar";
 import Title from "../../common/Title";
 
+import UserPage from "./UserPage";
+
 const GroupComponent = () => {
   return (
     <React.Fragment>
@@ -21,7 +23,9 @@ const GroupComponent = () => {
           <Row>
             <Breadcrumb />
           </Row>
-          <Row>its user page</Row>
+          <Row>
+            <UserPage />
+          </Row>
         </Col>
       </Row>
     </React.Fragment>

@@ -69,7 +69,7 @@ export class Devices extends Component {
     if ((isLoading, pagination)) {
       return <Loading />;
     }
-    console.log(devices);
+
     return (
       <React.Fragment>
         <Row className={"margin-top-2"}>

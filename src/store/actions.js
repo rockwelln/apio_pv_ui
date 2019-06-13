@@ -51,6 +51,11 @@ export const getDevicesByGroupId = data => ({
   data
 });
 
+export const getUserByName = data => ({
+  type: actionType.GET_USER,
+  data
+});
+
 export const deleteTenant = Id => ({
   type: actionType.DELETE_TENANT,
   Id
@@ -148,6 +153,16 @@ export function fetchGetDevicesByGroupId(tenantId, groupId) {
       `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/access_devices`
     )
       .then(data => dispatch(getDevicesByGroupId(data)))
+      .catch(error => console.error("An error occurred.", error));
+  };
+}
+
+export function fetchGetUserByName(tenantId, groupId, userName) {
+  return function(dispatch) {
+    return fetch_get(
+      `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/users/${userName}`
+    )
+      .then(data => dispatch(getUserByName(data)))
       .catch(error => console.error("An error occurred.", error));
   };
 }
