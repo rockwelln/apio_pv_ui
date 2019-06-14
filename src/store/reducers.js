@@ -14,7 +14,8 @@ const initialState = {
   groupServices: [],
   devices: [],
   user: {},
-  trunkGroups: {}
+  trunkGroups: {},
+  availableNumbers: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -150,6 +151,18 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         trunkGroups: action.data
+      };
+    }
+    case actionType.GET_AVAILABLE_NUMBERS_BY_GROUP_ID: {
+      return {
+        ...state,
+        availableNumbers: action.data.available_numbers
+      };
+    }
+    case actionType.PUT_UPDATE_USER: {
+      console.log(action.data);
+      return {
+        ...state
       };
     }
     case actionType.DELETE_TENANT_ADMIN: {

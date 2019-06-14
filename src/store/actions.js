@@ -1,4 +1,4 @@
-import { fetch_get, fetch_delete, API_BASE_URL } from "../utils";
+import { fetch_get, fetch_delete, fetch_put, API_BASE_URL } from "../utils";
 import * as actionType from "./constants";
 
 export const getTenants = data => ({
@@ -58,6 +58,16 @@ export const getUserByName = data => ({
 
 export const getTrunkByGroupID = data => ({
   type: actionType.GET_TRUNK_BY_GROUP_ID,
+  data
+});
+
+export const getAvailableNumbersByGroupID = data => ({
+  type: actionType.GET_AVAILABLE_NUMBERS_BY_GROUP_ID,
+  data
+});
+
+export const putUpdateUser = data => ({
+  type: actionType.PUT_UPDATE_USER,
   data
 });
 
@@ -176,6 +186,27 @@ export function fetchGetTrunkByGroupID(tenantId, groupId) {
   return function(dispatch) {
     return fetch_get(
       `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/features/trunk_groups`
+    )
+      .then(data => dispatch(getTrunkByGroupID(data)))
+      .catch(error => console.error("An error occurred.", error));
+  };
+}
+
+export function fetchGetAvailableNumbersByGroupId(tenantId, groupId) {
+  return function(dispatch) {
+    return fetch_get(
+      `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/numbers?available=true`
+    )
+      .then(data => dispatch(getAvailableNumbersByGroupID(data)))
+      .catch(error => console.error("An error occurred.", error));
+  };
+}
+
+export function fetchPutUpdateUser(tenantId, groupId, userName, data) {
+  return function(dispatch) {
+    return fetch_put(
+      `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/users/${userName}`,
+      data
     )
       .then(data => dispatch(getTrunkByGroupID(data)))
       .catch(error => console.error("An error occurred.", error));

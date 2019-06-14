@@ -7,6 +7,8 @@ import Tab from "react-bootstrap/lib/Tab";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import Loading from "../../common/Loading";
+import Details from "./Tabs/Details";
+import PhoneNumber from "./Tabs/PhoneNumbers";
 
 import {
   fetchGetTenantById,
@@ -60,10 +62,10 @@ class TenantPage extends Component {
         </div>
         <Tabs defaultActiveKey={0} id="tenant_tabs">
           <Tab eventKey={0} title="DETAILS">
-            DETAILS Tab
+            <Details />
           </Tab>
           <Tab eventKey={1} title="PHONE NUMBERS">
-            PHONE NUMBERS Tab
+            <PhoneNumber />
           </Tab>
           <Tab eventKey={2} title="SERVICES">
             Services Tab
