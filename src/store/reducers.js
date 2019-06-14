@@ -13,7 +13,8 @@ const initialState = {
   servicePacks: [],
   groupServices: [],
   devices: [],
-  user: {}
+  user: {},
+  trunkGroups: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -143,6 +144,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         user: action.data
+      };
+    }
+    case actionType.GET_TRUNK_BY_GROUP_ID: {
+      return {
+        ...state,
+        trunkGroups: action.data
       };
     }
     case actionType.DELETE_TENANT_ADMIN: {

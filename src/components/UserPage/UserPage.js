@@ -47,7 +47,7 @@ class TenantPage extends Component {
     if (isLoadingTenant && isLoadingGroup && isLoadingUser) {
       return <Loading />;
     }
-    console.log(user);
+
     return (
       <React.Fragment>
         <div>

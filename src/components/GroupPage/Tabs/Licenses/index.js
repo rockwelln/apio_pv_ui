@@ -9,27 +9,40 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import { FormattedMessage } from "react-intl";
 import Loading from "../../../../common/Loading";
 
-import { fetchGetLicensesByGroupId } from "../../../../store/actions";
+import {
+  fetchGetLicensesByGroupId,
+  fetchGetTrunkByGroupID
+} from "../../../../store/actions";
 
 const INFINITY = 8734;
 
 export class Licenses extends Component {
   state = {
-    isLoading: true,
-    showMore: false
+    isLoadingLicenses: true,
+    isLoadingTrunk: true,
+    showMore: false,
+    trunkGroups: {}
   };
 
   componentDidMount() {
     this.props
       .fetchGetLicensesByGroupId(this.props.tenantId, this.props.groupId)
-      .then(() => this.setState({ isLoading: false }));
+      .then(() => this.setState({ isLoadingLicenses: false }));
+    this.props
+      .fetchGetTrunkByGroupID(this.props.tenantId, this.props.groupId)
+      .then(() =>
+        this.setState({
+          trunkGroups: this.props.trunkGroups,
+          isLoadingTrunk: false
+        })
+      );
   }
 
   render() {
-    const { isLoading } = this.state;
+    const { isLoadingTrunk, isLoadingLicenses, trunkGroups } = this.state;
     const { group, servicePacks, groupServices } = this.props;
 
-    if (isLoading) {
+    if (isLoadingLicenses || isLoadingTrunk) {
       return <Loading />;
     }
 
@@ -47,7 +60,41 @@ export class Licenses extends Component {
                 glyph="glyphicon glyphicon-pencil"
               />
             </Panel.Heading>
-            <Panel.Body />
+            {trunkGroups.length ? (
+              <Panel.Body>
+                <Row>
+                  <Col md={8} className={"text-left"}>
+                    <FormattedMessage
+                      id="trunking_licenses"
+                      defaultMessage={`Trunking licenses:`}
+                    />
+                  </Col>
+                  <Col md={4} className={"text-right"}>{`${
+                    trunkGroups.maxActiveCalls
+                  }`}</Col>
+                </Row>
+                <Row>
+                  <Col md={8} className={"text-left"}>
+                    <FormattedMessage
+                      id="max_bursting"
+                      defaultMessage={`Max bursting:`}
+                    />
+                  </Col>
+                  <Col md={4} className={"text-right"}>{`${
+                    trunkGroups.burstingMaxActiveCalls.unlimited
+                      ? String.fromCharCode(INFINITY)
+                      : trunkGroups.burstingMaxActiveCalls.maximum
+                  }`}</Col>
+                </Row>
+              </Panel.Body>
+            ) : (
+              <Panel.Body>
+                <FormattedMessage
+                  id="no_trunk_groups"
+                  defaultMessage="No info"
+                />
+              </Panel.Body>
+            )}
           </Panel>
         </Col>
         <Col md={4}>
@@ -63,10 +110,28 @@ export class Licenses extends Component {
                   glyph="glyphicon glyphicon-pencil"
                 />
               </Panel.Heading>
-              <Panel.Body>
-                {groupServices.groups.map((pack, i) =>
-                  !this.state.showMore ? (
-                    i <= groupServices.countShown - 1 ? (
+              {groupServices.groups.length ? (
+                <Panel.Body>
+                  {groupServices.groups.map((pack, i) =>
+                    !this.state.showMore ? (
+                      i <= groupServices.countShown - 1 ? (
+                        <Row key={i}>
+                          <Col md={8} className={"text-left"}>
+                            <FormattedMessage
+                              id="service_packs"
+                              defaultMessage={`${pack.name}:`}
+                            />
+                          </Col>
+                          <Col md={4} className={"text-right"}>{`${
+                            pack.inUse ? pack.inUse : 0
+                          } (${
+                            pack.allocated.unlimited
+                              ? String.fromCharCode(INFINITY)
+                              : pack.allocated.maximum
+                          })`}</Col>
+                        </Row>
+                      ) : null
+                    ) : (
                       <Row key={i}>
                         <Col md={8} className={"text-left"}>
                           <FormattedMessage
@@ -76,47 +141,38 @@ export class Licenses extends Component {
                         </Col>
                         <Col md={4} className={"text-right"}>{`${
                           pack.inUse ? pack.inUse : 0
-                        }(${
+                        } (${
                           pack.allocated.unlimited
                             ? String.fromCharCode(INFINITY)
                             : pack.allocated.maximum
                         })`}</Col>
                       </Row>
-                    ) : null
-                  ) : (
-                    <Row key={i}>
-                      <Col md={8} className={"text-left"}>
-                        <FormattedMessage
-                          id="service_packs"
-                          defaultMessage={`${pack.name}:`}
-                        />
-                      </Col>
-                      <Col md={4} className={"text-right"}>{`${
-                        pack.inUse ? pack.inUse : 0
-                      }(${
-                        pack.allocated.unlimited
-                          ? String.fromCharCode(INFINITY)
-                          : pack.allocated.maximum
-                      })`}</Col>
-                    </Row>
-                  )
-                )}
-                <Row>
-                  <Col
-                    md={8}
-                    className={"cursor-pointer"}
-                    componentClass="a"
-                    onClick={this.handleClickShowMore}
-                  >
-                    <FormattedMessage
-                      id="service_packs"
-                      defaultMessage={`${
-                        !this.state.showMore ? "Show more" : "Hide"
-                      }`}
-                    />
-                  </Col>
-                </Row>
-              </Panel.Body>
+                    )
+                  )}
+                  <Row>
+                    <Col
+                      md={8}
+                      className={"cursor-pointer"}
+                      componentClass="a"
+                      onClick={this.handleClickShowMore}
+                    >
+                      <FormattedMessage
+                        id="shown_more"
+                        defaultMessage={`${
+                          !this.state.showMore ? "Show more" : "Hide"
+                        }`}
+                      />
+                    </Col>
+                  </Row>
+                </Panel.Body>
+              ) : (
+                <Panel.Body>
+                  <FormattedMessage
+                    id="No_group_services"
+                    defaultMessage="No group services were found"
+                  />
+                </Panel.Body>
+              )}
             </Panel>
           </Row>
           <Row>
@@ -139,7 +195,7 @@ export class Licenses extends Component {
                       defaultMessage="User limit:"
                     />
                   </Col>
-                  <Col md={4} className={"text-right"}>{`${group.userCount}(${
+                  <Col md={4} className={"text-right"}>{`${group.userCount} (${
                     group.userLimit
                   })`}</Col>
                 </Row>
@@ -171,7 +227,7 @@ export class Licenses extends Component {
                     </Col>
                     <Col md={4} className={"text-right"}>{`${
                       pack.inUse ? pack.inUse : 0
-                    }(${
+                    } (${
                       pack.allocated.unlimited
                         ? String.fromCharCode(INFINITY)
                         : pack.allocated.maximum
@@ -200,11 +256,13 @@ export class Licenses extends Component {
 const mapStateToProps = state => ({
   group: state.group,
   servicePacks: state.servicePacks,
-  groupServices: state.groupServices
+  groupServices: state.groupServices,
+  trunkGroups: state.trunkGroups
 });
 
 const mapDispatchToProps = {
-  fetchGetLicensesByGroupId
+  fetchGetLicensesByGroupId,
+  fetchGetTrunkByGroupID
 };
 
 export default connect(

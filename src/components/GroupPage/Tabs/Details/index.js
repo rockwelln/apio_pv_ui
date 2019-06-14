@@ -72,7 +72,7 @@ class Details extends Component {
                   placeholder="Group name"
                   defaultValue={group.groupName}
                   onChange={e => {
-                    this.setState({ tenantName: e.target.value });
+                    this.setState({ groupName: e.target.value });
                   }}
                 />
               </Col>

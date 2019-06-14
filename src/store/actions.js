@@ -56,6 +56,11 @@ export const getUserByName = data => ({
   data
 });
 
+export const getTrunkByGroupID = data => ({
+  type: actionType.GET_TRUNK_BY_GROUP_ID,
+  data
+});
+
 export const deleteTenant = Id => ({
   type: actionType.DELETE_TENANT,
   Id
@@ -163,6 +168,16 @@ export function fetchGetUserByName(tenantId, groupId, userName) {
       `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/users/${userName}`
     )
       .then(data => dispatch(getUserByName(data)))
+      .catch(error => console.error("An error occurred.", error));
+  };
+}
+
+export function fetchGetTrunkByGroupID(tenantId, groupId) {
+  return function(dispatch) {
+    return fetch_get(
+      `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/features/trunk_groups`
+    )
+      .then(data => dispatch(getTrunkByGroupID(data)))
       .catch(error => console.error("An error occurred.", error));
   };
 }
