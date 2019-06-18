@@ -10,6 +10,7 @@ import Row from "react-bootstrap/lib/Row";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Checkbox from "react-bootstrap/lib/Checkbox";
+import HelpBlock from "react-bootstrap/lib/HelpBlock";
 import { Form } from "react-bootstrap";
 
 import Loading from "../../../../common/Loading";
@@ -28,7 +29,8 @@ class Details extends Component {
     lastName: "",
     cliFirstName: "",
     cliLastName: "",
-    language: "English"
+    language: "English",
+    emailIsValid: null
   };
 
   componentDidMount() {
@@ -58,7 +60,8 @@ class Details extends Component {
       lastName,
       cliFirstName,
       cliLastName,
-      language
+      language,
+      emailIsValid
     } = this.state;
 
     if (isLoading) {
@@ -70,7 +73,7 @@ class Details extends Component {
         <Form horizontal className={"margin-1"}>
           <FormGroup controlId="Details">
             <ControlLabel className={"margin-1"}>DETAILS</ControlLabel>
-            <FormGroup controlId="userEmail">
+            <FormGroup controlId="userEmail" validationState={emailIsValid}>
               <Col componentClass={ControlLabel} md={3} className={"text-left"}>
                 Email
               </Col>
@@ -80,9 +83,13 @@ class Details extends Component {
                   placeholder="Email"
                   defaultValue={emailAddress}
                   onChange={e =>
-                    this.setState({ emailAddress: e.target.value })
+                    this.setState({
+                      emailAddress: e.target.value,
+                      emailIsValid: null
+                    })
                   }
                 />
+                {emailIsValid && <HelpBlock>Invalid email</HelpBlock>}
               </Col>
             </FormGroup>
             <FormGroup controlId="firstName">
@@ -191,6 +198,11 @@ class Details extends Component {
     );
   }
 
+  validateEmail = elementValue => {
+    var emailPattern = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
+    return emailPattern.test(elementValue);
+  };
+
   updateUser = e => {
     e.preventDefault();
     const {
@@ -203,6 +215,13 @@ class Details extends Component {
       language
     } = this.state;
 
+    if (emailAddress) {
+      if (!this.validateEmail(emailAddress)) {
+        this.setState({ emailIsValid: "error" });
+        return;
+      }
+    }
+
     const data = {
       emailAddress,
       firstName,
@@ -211,8 +230,6 @@ class Details extends Component {
       cliLastName: useSameName ? lastName : cliLastName,
       language
     };
-
-    console.log(data);
 
     this.props.fetchPutUpdateUser(
       this.props.match.params.tenantId,

@@ -168,7 +168,14 @@ function mainReducer(state = initialState, action) {
     }
     case actionType.PUT_UPDATE_USER: {
       return {
-        ...state
+        ...state,
+        user: action.data
+      };
+    }
+    case actionType.PUT_UPDATE_GROUP_DETAILS: {
+      return {
+        ...state,
+        group: action.data
       };
     }
     case actionType.DELETE_TENANT: {

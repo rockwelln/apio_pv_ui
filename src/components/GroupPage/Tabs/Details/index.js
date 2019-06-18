@@ -12,14 +12,26 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import { Form } from "react-bootstrap";
 
 import Loading from "../../../../common/Loading";
-import { fetchGetGroupById } from "../../../../store/actions";
+import {
+  fetchGetGroupById,
+  fetchPutUpdateGroupDetails
+} from "../../../../store/actions";
 
 class Details extends Component {
   state = {
     group: [],
     groupName: "",
     defaultDomain: "",
-    isLoading: true
+    isLoading: true,
+    addressInformation: {
+      addressLine1: "",
+      addressLine2: "",
+      city: "",
+      country: "",
+      postalCode: "",
+      state: "",
+      stateDisplayName: ""
+    }
   };
 
   componentDidMount() {
@@ -28,11 +40,19 @@ class Details extends Component {
         this.props.match.params.tenantId,
         this.props.match.params.groupId
       )
-      .then(() => this.setState({ group: this.props.group, isLoading: false }));
+      .then(() =>
+        this.setState({
+          group: this.props.group,
+          addressInformation: this.props.group.addressInformation
+            ? this.props.group.addressInformation
+            : this.state.addressInformation,
+          isLoading: false
+        })
+      );
   }
 
   render() {
-    const { isLoading, group } = this.state;
+    const { isLoading, group, addressInformation } = this.state;
 
     if (isLoading) {
       return <Loading />;
@@ -85,12 +105,17 @@ class Details extends Component {
                 <FormControl
                   type="text"
                   placeholder="Street"
-                  defaultValue={
-                    group.addressInformation &&
-                    `${group.addressInformation.addressLine1} ${
-                      group.addressInformation.addressLine2
-                    }`
-                  }
+                  defaultValue={`${addressInformation.addressLine1} ${
+                    addressInformation.addressLine2
+                  }`}
+                  onChange={e => {
+                    this.setState({
+                      addressInformation: {
+                        ...this.state.addressInformation,
+                        addressLine1: e.target.value
+                      }
+                    });
+                  }}
                 />
               </Col>
             </FormGroup>
@@ -99,28 +124,45 @@ class Details extends Component {
                 <FormControl
                   type="text"
                   placeholder="ZIP"
-                  defaultValue={
-                    group.addressInformation &&
-                    group.addressInformation.postalCode
-                  }
+                  defaultValue={addressInformation.postalCode}
+                  onChange={e => {
+                    this.setState({
+                      addressInformation: {
+                        ...this.state.addressInformation,
+                        postalCode: e.target.value
+                      }
+                    });
+                  }}
                 />
               </Col>
               <Col md={3}>
                 <FormControl
                   type="text"
                   placeholder="City"
-                  defaultValue={
-                    group.addressInformation && group.addressInformation.city
-                  }
+                  defaultValue={addressInformation.city}
+                  onChange={e => {
+                    this.setState({
+                      addressInformation: {
+                        ...this.state.addressInformation,
+                        city: e.target.value
+                      }
+                    });
+                  }}
                 />
               </Col>
               <Col md={3}>
                 <FormControl
                   type="text"
                   placeholder="Country"
-                  defaultValue={
-                    group.addressInformation && group.addressInformation.country
-                  }
+                  defaultValue={addressInformation.country}
+                  onChange={e => {
+                    this.setState({
+                      addressInformation: {
+                        ...this.state.addressInformation,
+                        country: e.target.value
+                      }
+                    });
+                  }}
                 />
               </Col>
             </FormGroup>
@@ -168,7 +210,7 @@ class Details extends Component {
           </FormGroup>
           <Row>
             <Col mdPush={10} md={1}>
-              <Button>
+              <Button onClick={this.updateGroupDetails}>
                 <Glyphicon glyph="glyphicon glyphicon-ok" /> UPDATE
               </Button>
             </Col>
@@ -177,10 +219,23 @@ class Details extends Component {
       </Col>
     );
   }
+
+  updateGroupDetails = () => {
+    const { addressInformation } = this.state;
+    const data = {
+      addressInformation
+    };
+    this.props.fetchPutUpdateGroupDetails(
+      this.props.match.params.tenantId,
+      this.props.match.params.groupId,
+      data
+    );
+  };
 }
 
 const mapDispatchToProps = {
-  fetchGetGroupById
+  fetchGetGroupById,
+  fetchPutUpdateGroupDetails
 };
 
 const mapStateToProps = state => ({

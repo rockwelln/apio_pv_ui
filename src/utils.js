@@ -77,7 +77,9 @@ export function fetch_put(url, body, token) {
       Authorization: `Bearer ${getCookie("auth_token")}`
     },
     body: JSON.stringify(body)
-  }).then(checkStatus);
+  })
+    .then(checkStatus)
+    .then(parseJSON);
 }
 
 export function fetch_post(url, body, token) {
