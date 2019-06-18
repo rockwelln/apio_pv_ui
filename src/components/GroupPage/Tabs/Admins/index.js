@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { withRouter } from "react-router";
 
 import Table from "react-bootstrap/lib/Table";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
@@ -99,10 +101,16 @@ export class Admins extends Component {
             </InputGroup>
           </Col>
           <Col md={1}>
-            <Glyphicon
-              className={"x-large"}
-              glyph="glyphicon glyphicon-plus-sign"
-            />
+            <Link
+              to={`/provisioning/broadsoft_xsp1_as1/tenants/${
+                this.props.tenantId
+              }/${this.props.groupId}/addadmin`}
+            >
+              <Glyphicon
+                className={"x-large"}
+                glyph="glyphicon glyphicon-plus-sign"
+              />
+            </Link>
           </Col>
         </Row>
         {paginationAdmins.length ? (
@@ -346,7 +354,9 @@ const mapDispatchToProps = {
   fetchGetAdminsByGroupId
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Admins);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Admins)
+);

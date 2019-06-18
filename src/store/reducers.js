@@ -166,6 +166,19 @@ function mainReducer(state = initialState, action) {
         adminsGroup: action.data.admins
       };
     }
+    case actionType.POST_CREATE_GROUP_ADMIN: {
+      console.log(action.data);
+      return {
+        ...state
+      };
+    }
+    case actionType.POST_CREATE_GROUP_ADMIN_ERROR: {
+      console.log(action.error);
+      return {
+        ...state,
+        errorMassage: action.error
+      };
+    }
     case actionType.PUT_UPDATE_USER: {
       return {
         ...state,

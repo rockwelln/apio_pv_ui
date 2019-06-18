@@ -35,6 +35,9 @@ const linkByCrumb = (item, lastItem, i, path) => {
       </Link>
     );
   }
+  if (crumb === "addadmin") {
+    return "Add admin";
+  }
 
   return crumb;
 };
@@ -42,7 +45,9 @@ const linkByCrumb = (item, lastItem, i, path) => {
 const BreadcrumbComponent = ({ location }) => {
   const indexOfUser = 3;
   const path = location.pathname.split("/").slice(3);
-  path.splice(indexOfUser, 1);
+  if (path[indexOfUser] === "users") {
+    path.splice(indexOfUser, 1);
+  }
   const lastItem = path.slice(-1);
   return (
     <Breadcrumb>

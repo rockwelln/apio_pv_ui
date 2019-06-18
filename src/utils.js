@@ -77,16 +77,14 @@ export function fetch_put(url, body, token) {
       Authorization: `Bearer ${getCookie("auth_token")}`
     },
     body: JSON.stringify(body)
-  })
-    .then(checkStatus)
-    .then(parseJSON);
+  }).then(checkStatus);
 }
 
-export function fetch_post(url, body, token) {
-  return fetch_post_raw(url, JSON.stringify(body), token, "application/json");
+export function fetch_post(url, body) {
+  return fetch_post_raw(url, JSON.stringify(body), "application/json");
 }
 
-export function fetch_post_raw(url, raw_body, token, content_type) {
+export function fetch_post_raw(url, raw_body, content_type) {
   const full_url = url.href
     ? url
     : url.startsWith("http")

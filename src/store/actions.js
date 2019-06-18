@@ -1,4 +1,10 @@
-import { fetch_get, fetch_delete, fetch_put, API_BASE_URL } from "../utils";
+import {
+  fetch_get,
+  fetch_delete,
+  fetch_put,
+  fetch_post,
+  API_BASE_URL
+} from "../utils";
 import * as actionType from "./constants";
 
 export const getTenants = data => ({
@@ -69,6 +75,16 @@ export const getAvailableNumbersByGroupID = data => ({
 export const getAdminsByGroupId = data => ({
   type: actionType.GET_ADMINS_GROUP,
   data
+});
+
+export const postCreateGroupAdmin = data => ({
+  type: actionType.POST_CREATE_GROUP_ADMIN,
+  data
+});
+
+export const postCreateGroupAdminError = error => ({
+  type: actionType.POST_CREATE_GROUP_ADMIN_ERROR,
+  error
 });
 
 export const putUpdateUser = data => ({
@@ -226,12 +242,24 @@ export function fetchGetAvailableNumbersByGroupId(tenantId, groupId) {
   };
 }
 
+export function fetchPostCreateGroupAdmin(tenantId, groupId, data) {
+  return function(dispatch) {
+    return fetch_post(
+      `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/admins/`,
+      data
+    )
+      .then(data => dispatch(postCreateGroupAdmin(data)))
+      .catch(errors => dispatch(postCreateGroupAdminError(errors)));
+  };
+}
+
 export function fetchPutUpdateUser(tenantId, groupId, userName, data) {
   return function(dispatch) {
     return fetch_put(
       `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/users/${userName}/`,
       data
     )
+      .then(res => res.json())
       .then(data => dispatch(putUpdateUser(data)))
       .catch(error => console.error("An error occurred.", error));
   };
@@ -243,6 +271,7 @@ export function fetchPutUpdateGroupDetails(tenantId, groupId, data) {
       `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/`,
       data
     )
+      .then(res => res.json())
       .then(data => dispatch(putUpdateGroupDetails(data)))
       .catch(error => console.error("An error occurred.", error));
   };
