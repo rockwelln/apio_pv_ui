@@ -13,7 +13,7 @@ import { FormattedMessage } from "react-intl";
 import Loading from "../../../../common/Loading";
 import Admin from "./Admin";
 
-import { fetchGetAdminsByTenantId } from "../../../../store/actions";
+import { fetchGetAdminsByGroupId } from "../../../../store/actions";
 import { countsPerPages } from "../../../../constants";
 
 export class Admins extends Component {
@@ -29,20 +29,22 @@ export class Admins extends Component {
   };
 
   fetchAdmins = () => {
-    this.props.fetchGetAdminsByTenantId(this.props.tenantId).then(() =>
-      this.setState(
-        {
-          admins: this.props.admins.sort((a, b) => {
-            if (a.userId < b.userId) return -1;
-            if (a.userId > b.userId) return 1;
-            return 0;
-          }),
-          isLoading: false,
-          sortedBy: "userId"
-        },
-        () => this.pagination()
-      )
-    );
+    this.props
+      .fetchGetAdminsByGroupId(this.props.tenantId, this.props.groupId)
+      .then(() =>
+        this.setState(
+          {
+            admins: this.props.admins.sort((a, b) => {
+              if (a.userId < b.userId) return -1;
+              if (a.userId > b.userId) return 1;
+              return 0;
+            }),
+            isLoading: false,
+            sortedBy: "userId"
+          },
+          () => this.pagination()
+        )
+      );
   };
 
   componentDidMount() {
@@ -158,8 +160,9 @@ export class Admins extends Component {
                         admin={admin}
                         notifications={this.props.notifications}
                         onReload={() =>
-                          this.props.fetchGetAdminsByTenantId(
-                            this.props.tenantId
+                          this.props.fetchGetAdminsByGroupId(
+                            this.props.tenantId,
+                            this.props.groupId
                           )
                         }
                       />
@@ -336,11 +339,11 @@ export class Admins extends Component {
 }
 
 const mapStateToProps = state => ({
-  admins: state.adminsTenant
+  admins: state.adminsGroup
 });
 
 const mapDispatchToProps = {
-  fetchGetAdminsByTenantId
+  fetchGetAdminsByGroupId
 };
 
 export default connect(

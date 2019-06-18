@@ -12,6 +12,7 @@ import PhoneNumbers from "./Tabs/PhoneNumbers";
 import Licenses from "./Tabs/Licenses";
 import Details from "./Tabs/Details";
 import Devices from "./Tabs/Devices";
+import Admins from "./Tabs/Admins";
 
 import { fetchGetTenantById, fetchGetGroupById } from "../../store/actions";
 
@@ -94,7 +95,11 @@ class TenantPage extends Component {
             />
           </Tab>
           <Tab eventKey={5} title="ADMINISTRATORS">
-            ADMINISTRATORS
+            <Admins
+              tenantId={this.props.match.params.tenantId}
+              groupId={this.props.match.params.groupId}
+              notifications={this.props.notifications}
+            />
           </Tab>
           <Tab eventKey={6} title="DETAILS">
             <Details group={group} isLoading={isLoadingTenant} />

@@ -5,7 +5,7 @@ const initialState = {
   tenant: {},
   groups: [],
   phoneNumbers: [],
-  admins: [],
+  adminsTenant: [],
   group: {},
   users: [],
   phoneNumbersByGroup: [],
@@ -15,7 +15,8 @@ const initialState = {
   devices: [],
   user: {},
   trunkGroups: {},
-  availableNumbers: []
+  availableNumbers: [],
+  adminsGroup: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -56,10 +57,10 @@ function mainReducer(state = initialState, action) {
         phoneNumbers
       };
     }
-    case actionType.GET_ADMINS: {
+    case actionType.GET_ADMINS_TENANT: {
       return {
         ...state,
-        admins: action.data.admins
+        adminsTenant: action.data.admins
       };
     }
     case actionType.GET_GROUP: {
@@ -159,8 +160,18 @@ function mainReducer(state = initialState, action) {
         availableNumbers: action.data.available_numbers
       };
     }
+    case actionType.GET_ADMINS_GROUP: {
+      return {
+        ...state,
+        adminsGroup: action.data.admins
+      };
+    }
     case actionType.PUT_UPDATE_USER: {
-      console.log(action.data);
+      return {
+        ...state
+      };
+    }
+    case actionType.DELETE_TENANT: {
       return {
         ...state
       };
@@ -175,7 +186,7 @@ function mainReducer(state = initialState, action) {
         ...state
       };
     }
-    case actionType.DELETE_TENANT: {
+    case actionType.DELETE_GROUP_ADMIN: {
       return {
         ...state
       };
