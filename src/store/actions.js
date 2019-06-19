@@ -114,6 +114,10 @@ export const deleteGroupAdmin = () => ({
   type: actionType.DELETE_GROUP_ADMIN
 });
 
+export const clearErrorMassage = () => ({
+  type: actionType.CLEAR_ERROR_MASSAGE
+});
+
 export function fetchGetTenants(cancelLoad) {
   return function(dispatch) {
     return fetch_get(`${API_BASE_URL}/tenants/`)
@@ -244,12 +248,23 @@ export function fetchGetAvailableNumbersByGroupId(tenantId, groupId) {
 
 export function fetchPostCreateGroupAdmin(tenantId, groupId, data) {
   return function(dispatch) {
-    return fetch_post(
+    const response = fetch_post(
       `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/admins/`,
       data
-    )
-      .then(data => dispatch(postCreateGroupAdmin(data)))
-      .catch(errors => dispatch(postCreateGroupAdminError(errors)));
+    );
+    response.then(res => {
+      if (res.status === 400) {
+        res
+          .json()
+          .then(data => dispatch(postCreateGroupAdminError(data)))
+          .catch(error => console.error(error));
+        return;
+      }
+      res
+        .json()
+        .then(data => dispatch(postCreateGroupAdmin(data)))
+        .catch(error => console.error(error));
+    });
   };
 }
 

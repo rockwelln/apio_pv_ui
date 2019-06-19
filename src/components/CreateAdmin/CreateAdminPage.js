@@ -15,7 +15,8 @@ import { Form } from "react-bootstrap";
 
 import {
   fetchPostCreateGroupAdmin,
-  fetchGetGroupById
+  fetchGetGroupById,
+  clearErrorMassage
 } from "../../store/actions";
 
 import Loading from "../../common/Loading";
@@ -41,6 +42,16 @@ class CreateAdmin extends Component {
         this.props.match.params.groupId
       )
       .then(() => this.setState({ isLoading: false }));
+  }
+
+  componentDidUpdate() {
+    if (this.props.redirect) {
+      this.props.history.push(
+        `/provisioning/broadsoft_xsp1_as1/tenants/${
+          this.props.match.params.tenantId
+        }/${this.props.match.params.groupId}`
+      );
+    }
   }
 
   render() {
@@ -78,6 +89,7 @@ class CreateAdmin extends Component {
                           userId: e.target.value
                         }
                       });
+                      this.props.clearErrorMassage();
                     }}
                   />
                   <InputGroup.Addon>{`@${
@@ -102,6 +114,7 @@ class CreateAdmin extends Component {
                         firstName: e.target.value
                       }
                     });
+                    this.props.clearErrorMassage();
                   }}
                 />
               </Col>
@@ -122,6 +135,7 @@ class CreateAdmin extends Component {
                         lastName: e.target.value
                       }
                     });
+                    this.props.clearErrorMassage();
                   }}
                 />
               </Col>
@@ -160,6 +174,7 @@ class CreateAdmin extends Component {
                       },
                       passwordNotMatch: null
                     });
+                    this.props.clearErrorMassage();
                   }}
                 />
               </Col>
@@ -182,11 +197,19 @@ class CreateAdmin extends Component {
                       passwordConfirmation: e.target.value,
                       passwordNotMatch: null
                     });
+                    this.props.clearErrorMassage();
                   }}
                 />
                 {passwordNotMatch && <HelpBlock>Passwords not match</HelpBlock>}
               </Col>
             </FormGroup>
+            <Col mdOffset={3} md={9}>
+              {this.props.errorMassage && (
+                <HelpBlock bsClass="color-error">
+                  {this.props.errorMassage}
+                </HelpBlock>
+              )}
+            </Col>
           </FormGroup>
           <Row>
             <Col mdPush={10} md={1}>
@@ -215,12 +238,15 @@ class CreateAdmin extends Component {
 }
 
 const mapStateToProps = state => ({
-  defaultDomain: state.group.defaultDomain
+  defaultDomain: state.group.defaultDomain,
+  errorMassage: state.errorMassage,
+  redirect: state.redirect
 });
 
 const mapDispatchToProps = {
   fetchPostCreateGroupAdmin,
-  fetchGetGroupById
+  fetchGetGroupById,
+  clearErrorMassage
 };
 
 export default withRouter(

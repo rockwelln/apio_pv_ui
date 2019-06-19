@@ -16,7 +16,9 @@ const initialState = {
   user: {},
   trunkGroups: {},
   availableNumbers: [],
-  adminsGroup: []
+  adminsGroup: [],
+  errorMassage: "",
+  redirect: false
 };
 
 function mainReducer(state = initialState, action) {
@@ -30,7 +32,8 @@ function mainReducer(state = initialState, action) {
     case actionType.GET_TENANT: {
       return {
         ...state,
-        tenant: action.data
+        tenant: action.data,
+        redirect: false
       };
     }
     case actionType.GET_GROUPS: {
@@ -66,7 +69,8 @@ function mainReducer(state = initialState, action) {
     case actionType.GET_GROUP: {
       return {
         ...state,
-        group: action.data
+        group: action.data,
+        redirect: false
       };
     }
     case actionType.GET_USERS: {
@@ -167,16 +171,16 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN: {
-      console.log(action.data);
       return {
-        ...state
+        ...state,
+        redirect: true
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN_ERROR: {
-      console.log(action.error);
+      const errorMassage = action.error.errors[0].details.errors["0"].summary;
       return {
         ...state,
-        errorMassage: action.error
+        errorMassage
       };
     }
     case actionType.PUT_UPDATE_USER: {
@@ -209,6 +213,12 @@ function mainReducer(state = initialState, action) {
     case actionType.DELETE_GROUP_ADMIN: {
       return {
         ...state
+      };
+    }
+    case actionType.CLEAR_ERROR_MASSAGE: {
+      return {
+        ...state,
+        errorMassage: ""
       };
     }
     default:

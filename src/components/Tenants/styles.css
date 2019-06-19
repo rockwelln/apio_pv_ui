@@ -41,3 +41,8 @@
 .cursor-pointer {
   cursor: pointer;
 }
+
+.color-error {
+  color: #a94442;
+  font-weight: 600;
+}

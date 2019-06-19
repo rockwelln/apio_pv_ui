@@ -21,6 +21,8 @@ export function checkStatus(response) {
     return response;
   } else if (response.status === 401) {
     console.log("the request was *not* authorized!");
+  } else if (response.status === 400) {
+    return response;
   }
 
   const contentType = response.headers.get("content-type");
