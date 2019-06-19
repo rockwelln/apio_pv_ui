@@ -16,11 +16,11 @@ class DeleteModal extends Component {
     this.onDelete = this.onDelete.bind(this);
   }
 
-  onDelete(tenantId, adminId) {
+  onDelete(tenantId, groupId, adminId) {
     const { onClose } = this.props;
     this.setState({ deleting: true });
     this.props
-      .fetchDeleteGroupAdmin(tenantId, adminId)
+      .fetchDeleteGroupAdmin(tenantId, groupId, adminId)
       .then(() => {
         this.props.notifications.notifications.addNotification({
           message: (
@@ -49,8 +49,9 @@ class DeleteModal extends Component {
   }
 
   render() {
-    const { tenantId, adminId, show, onClose } = this.props;
+    const { tenantId, groupId, adminId, show, onClose } = this.props;
     const { deleting } = this.state;
+    console.log(this.props);
     return (
       <Modal
         show={show}
@@ -80,7 +81,7 @@ class DeleteModal extends Component {
         </Modal.Body>
         <Modal.Footer>
           <Button
-            onClick={() => this.onDelete(tenantId, adminId)}
+            onClick={() => this.onDelete(tenantId, groupId, adminId)}
             bsStyle="danger"
           >
             <FormattedMessage id="delete" defaultMessage="Delete" />

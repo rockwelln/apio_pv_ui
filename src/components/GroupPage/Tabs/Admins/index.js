@@ -165,6 +165,7 @@ export class Admins extends Component {
                       <Admin
                         key={admin.userId}
                         tenantId={this.props.tenantId}
+                        groupId={this.props.groupId}
                         admin={admin}
                         notifications={this.props.notifications}
                         onReload={() =>

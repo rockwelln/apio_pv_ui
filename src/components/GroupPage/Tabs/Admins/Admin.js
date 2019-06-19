@@ -27,6 +27,7 @@ export default class Admin extends Component {
             notifications={this.props.notifications}
             adminId={admin.userId}
             tenantId={this.props.tenantId}
+            groupId={this.props.groupId}
             show={showDelete}
             onClose={e => {
               onReload && onReload();
