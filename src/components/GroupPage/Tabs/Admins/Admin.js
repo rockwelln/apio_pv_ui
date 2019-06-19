@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
@@ -12,6 +13,15 @@ export default class Admin extends Component {
     const { showDelete } = this.state;
     return (
       <tr key={admin.userId}>
+        <td>
+          <Link
+            to={`/provisioning/broadsoft_xsp1_as1/tenants/${
+              this.props.tenantId
+            }/${this.props.groupId}/${admin.userId}`}
+          >
+            {admin.userId}
+          </Link>
+        </td>
         <td>{admin.userId}</td>
         <td>{admin.firstName}</td>
         <td>{admin.lastName}</td>

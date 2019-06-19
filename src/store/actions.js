@@ -77,6 +77,11 @@ export const getAdminsByGroupId = data => ({
   data
 });
 
+export const getGroupAdminByAdminId = data => ({
+  type: actionType.GET_ADMIN_BY_ADMIN_ID,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -242,6 +247,16 @@ export function fetchGetAvailableNumbersByGroupId(tenantId, groupId) {
       `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/numbers?available=true`
     )
       .then(data => dispatch(getAvailableNumbersByGroupID(data)))
+      .catch(error => console.error("An error occurred.", error));
+  };
+}
+
+export function fetchGetGroupAdminByAdminId(tenantId, groupId, adminId) {
+  return function(dispatch) {
+    return fetch_get(
+      `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/admins/${adminId}`
+    )
+      .then(data => dispatch(getGroupAdminByAdminId(data)))
       .catch(error => console.error("An error occurred.", error));
   };
 }

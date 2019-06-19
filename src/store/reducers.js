@@ -18,7 +18,8 @@ const initialState = {
   availableNumbers: [],
   adminsGroup: [],
   errorMassage: "",
-  redirect: false
+  shouldRedirect: false,
+  groupAdmin: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -33,7 +34,7 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         tenant: action.data,
-        redirect: false
+        shouldRedirect: false
       };
     }
     case actionType.GET_GROUPS: {
@@ -70,7 +71,7 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         group: action.data,
-        redirect: false
+        shouldRedirect: false
       };
     }
     case actionType.GET_USERS: {
@@ -170,10 +171,16 @@ function mainReducer(state = initialState, action) {
         adminsGroup: action.data.admins
       };
     }
+    case actionType.GET_ADMIN_BY_ADMIN_ID: {
+      return {
+        ...state,
+        groupAdmin: action.data
+      };
+    }
     case actionType.POST_CREATE_GROUP_ADMIN: {
       return {
         ...state,
-        redirect: true
+        shouldRedirect: true
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN_ERROR: {

@@ -6,9 +6,10 @@ import Row from "react-bootstrap/lib/Row";
 import Breadcrumb from "../../common/Breadcrumb";
 import Sidebar from "../../common/Sidebar";
 import Title from "../../common/Title";
-import CreateAdminPage from "./CreateAdminPage";
 
-const CreateAdminComponent = () => {
+import UpdateAdminPage from "./UpdateAdminPage";
+
+const UpdateAdminComponent = () => {
   return (
     <React.Fragment>
       <Row className={"margin-bottom-4"}>
@@ -23,7 +24,7 @@ const CreateAdminComponent = () => {
             <Breadcrumb />
           </Row>
           <Row>
-            <CreateAdminPage />
+            <UpdateAdminPage />
           </Row>
         </Col>
       </Row>
@@ -31,4 +32,4 @@ const CreateAdminComponent = () => {
   );
 };
 
-export default CreateAdminComponent;
+export default UpdateAdminComponent;

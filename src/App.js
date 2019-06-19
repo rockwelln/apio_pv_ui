@@ -28,7 +28,8 @@ import Tenants from "./components/Tenants";
 import TenantPage from "./components/TenantPage";
 import GroupPage from "./components/GroupPage";
 import UserPage from "./components/UserPage";
-import CreateAdmin from "./components/CreateAdmin";
+import CreateGroupAdmin from "./components/CreateAdmin";
+import UpdateGroupAdmin from "./components/UpdateAdmin";
 
 import "./App.css";
 import loading from "./loading.gif";
@@ -312,7 +313,18 @@ class App extends Component {
                 path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/:groupId/addadmin"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
-                    <CreateAdmin />
+                    <CreateGroupAdmin />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/:groupId/:adminId"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <UpdateGroupAdmin />
                   ) : (
                     <NotAllowed />
                   )

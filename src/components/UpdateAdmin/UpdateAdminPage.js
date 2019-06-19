@@ -14,17 +14,17 @@ import InputGroup from "react-bootstrap/lib/InputGroup";
 import { Form } from "react-bootstrap";
 
 import {
-  fetchPostCreateGroupAdmin,
+  //   fetchPostCreateGroupAdmin,
   fetchGetGroupById,
-  clearErrorMassage
+  //   clearErrorMassage,
+  fetchGetGroupAdminByAdminId
 } from "../../store/actions";
 
 import Loading from "../../common/Loading";
 
 class CreateAdmin extends Component {
   state = {
-    createAdminData: {
-      userId: "",
+    updateAdminData: {
       firstName: "",
       lastName: "",
       language: "English",
@@ -32,7 +32,8 @@ class CreateAdmin extends Component {
     },
     passwordConfirmation: "",
     passwordNotMatch: null,
-    isLoading: true
+    isLoadingGroup: true,
+    isLoadingAdmin: true
   };
 
   componentDidMount() {
@@ -41,7 +42,19 @@ class CreateAdmin extends Component {
         this.props.match.params.tenantId,
         this.props.match.params.groupId
       )
-      .then(() => this.setState({ isLoading: false }));
+      .then(() => this.setState({ isLoadingGroup: false }));
+    this.props
+      .fetchGetGroupAdminByAdminId(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        this.props.match.params.adminId
+      )
+      .then(() =>
+        this.setState({
+          updateAdminData: this.props.admin,
+          isLoadingAdmin: false
+        })
+      );
   }
 
   componentDidUpdate(prevProps) {
@@ -56,21 +69,28 @@ class CreateAdmin extends Component {
 
   render() {
     const {
-      createAdminData,
+      updateAdminData,
       passwordConfirmation,
       passwordNotMatch,
-      isLoading
+      isLoadingGroup,
+      isLoadingAdmin
     } = this.state;
 
-    if (isLoading) {
+    if (isLoadingGroup && isLoadingAdmin) {
       return <Loading />;
     }
+    const splitedAdminId = this.props.match.params.adminId.slice(
+      0,
+      this.props.match.params.adminId.indexOf("@")
+    );
+
+    console.log(updateAdminData);
 
     return (
       <Col md={8}>
         <Form horizontal className={"margin-1"}>
           <FormGroup controlId="Details">
-            <ControlLabel className={"margin-1"}>CREATE ADMIN</ControlLabel>
+            <ControlLabel className={"margin-1"}>UPDATE ADMIN</ControlLabel>
             <FormGroup controlId="usernameGroupAdmin">
               <Col componentClass={ControlLabel} md={3} className={"text-left"}>
                 Username
@@ -80,17 +100,9 @@ class CreateAdmin extends Component {
                   <FormControl
                     type="text"
                     placeholder="User name"
-                    defaultValue={createAdminData.userId}
+                    defaultValue={splitedAdminId}
                     autoComplete="new-username"
-                    onChange={e => {
-                      this.setState({
-                        createAdminData: {
-                          ...this.state.createAdminData,
-                          userId: e.target.value
-                        }
-                      });
-                      this.props.clearErrorMassage();
-                    }}
+                    disabled
                   />
                   <InputGroup.Addon>{`@${
                     this.props.defaultDomain
@@ -106,15 +118,14 @@ class CreateAdmin extends Component {
                 <FormControl
                   type="text"
                   placeholder="First name"
-                  defaultValue={createAdminData.firstName}
+                  defaultValue={updateAdminData.firstName}
                   onChange={e => {
                     this.setState({
-                      createAdminData: {
-                        ...this.state.createAdminData,
+                      updateAdminData: {
+                        ...this.state.updateAdminData,
                         firstName: e.target.value
                       }
                     });
-                    this.props.clearErrorMassage();
                   }}
                 />
               </Col>
@@ -127,15 +138,14 @@ class CreateAdmin extends Component {
                 <FormControl
                   type="text"
                   placeholder="Last name"
-                  defaultValue={createAdminData.lastName}
+                  defaultValue={updateAdminData.lastName}
                   onChange={e => {
                     this.setState({
-                      createAdminData: {
-                        ...this.state.createAdminData,
+                      updateAdminData: {
+                        ...this.state.updateAdminData,
                         lastName: e.target.value
                       }
                     });
-                    this.props.clearErrorMassage();
                   }}
                 />
               </Col>
@@ -148,7 +158,7 @@ class CreateAdmin extends Component {
                 <FormControl
                   type="text"
                   placeholder="Language"
-                  defaultValue={createAdminData.language}
+                  defaultValue={updateAdminData.language}
                   disabled
                 />
               </Col>
@@ -165,16 +175,15 @@ class CreateAdmin extends Component {
                   type="password"
                   placeholder="Password"
                   autoComplete="new-password"
-                  defaultValue={createAdminData.password}
+                  defaultValue={updateAdminData.password}
                   onChange={e => {
                     this.setState({
-                      createAdminData: {
-                        ...this.state.createAdminData,
+                      updateAdminData: {
+                        ...this.state.updateAdminData,
                         password: e.target.value
                       },
                       passwordNotMatch: null
                     });
-                    this.props.clearErrorMassage();
                   }}
                 />
               </Col>
@@ -197,7 +206,6 @@ class CreateAdmin extends Component {
                       passwordConfirmation: e.target.value,
                       passwordNotMatch: null
                     });
-                    this.props.clearErrorMassage();
                   }}
                 />
                 {passwordNotMatch && <HelpBlock>Passwords not match</HelpBlock>}
@@ -214,7 +222,7 @@ class CreateAdmin extends Component {
           <Row>
             <Col mdPush={10} md={1}>
               <Button onClick={this.createAdmin}>
-                <Glyphicon glyph="glyphicon glyphicon-ok" /> CREATE
+                <Glyphicon glyph="glyphicon glyphicon-ok" /> UPDATE
               </Button>
             </Col>
           </Row>
@@ -224,29 +232,37 @@ class CreateAdmin extends Component {
   }
 
   createAdmin = () => {
-    const { createAdminData, passwordConfirmation } = this.state;
-    if (createAdminData.password !== passwordConfirmation) {
+    const { updateAdminData, passwordConfirmation } = this.state;
+    if (updateAdminData.password !== passwordConfirmation) {
       this.setState({ passwordNotMatch: "error" });
+      const data = {
+        firstName: updateAdminData.firstName,
+        lastName: updateAdminData.lastName
+      };
+      console.log(data);
       return;
     }
-    this.props.fetchPostCreateGroupAdmin(
-      this.props.match.params.tenantId,
-      this.props.match.params.groupId,
-      createAdminData
-    );
+    // this.props.fetchPostCreateGroupAdmin(
+    //   this.props.match.params.tenantId,
+    //   this.props.match.params.groupId,
+    //   updateAdminData
+    // );
   };
 }
 
 const mapStateToProps = state => ({
   defaultDomain: state.group.defaultDomain,
   errorMassage: state.errorMassage,
-  shouldRedirect: state.shouldRedirect
+  shouldRedirect: state.shouldRedirect,
+
+  admin: state.groupAdmin
 });
 
 const mapDispatchToProps = {
-  fetchPostCreateGroupAdmin,
+  //   fetchPostCreateGroupAdmin,
   fetchGetGroupById,
-  clearErrorMassage
+  //   clearErrorMassage,
+  fetchGetGroupAdminByAdminId
 };
 
 export default withRouter(
