@@ -90,8 +90,6 @@ class CreateAdmin extends Component {
       splitedAdminId = this.props.match.params.adminId.slice(0, indexOfSlice);
     }
 
-    console.log(updateAdminData);
-
     return (
       <Col md={8}>
         <Form horizontal className={"margin-1"}>
