@@ -102,6 +102,11 @@ export const putUpdateGroupDetails = data => ({
   data
 });
 
+export const putUpdateGroupAdmin = data => ({
+  type: actionType.PUT_UPDATE_GROUP_ADMIN,
+  data
+});
+
 export const deleteTenant = Id => ({
   type: actionType.DELETE_TENANT,
   Id
@@ -303,6 +308,18 @@ export function fetchPutUpdateGroupDetails(tenantId, groupId, data) {
     )
       .then(res => res.json())
       .then(data => dispatch(putUpdateGroupDetails(data)))
+      .catch(error => console.error("An error occurred.", error));
+  };
+}
+
+export function fetchPutUpdateGroupAdmin(tenantId, groupId, adminId, data) {
+  return function(dispatch) {
+    return fetch_put(
+      `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/admins/${adminId}/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => dispatch(putUpdateGroupAdmin(data)))
       .catch(error => console.error("An error occurred.", error));
   };
 }

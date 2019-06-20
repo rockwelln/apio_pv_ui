@@ -14,10 +14,9 @@ import InputGroup from "react-bootstrap/lib/InputGroup";
 import { Form } from "react-bootstrap";
 
 import {
-  //   fetchPostCreateGroupAdmin,
   fetchGetGroupById,
-  //   clearErrorMassage,
-  fetchGetGroupAdminByAdminId
+  fetchGetGroupAdminByAdminId,
+  fetchPutUpdateGroupAdmin
 } from "../../store/actions";
 
 import Loading from "../../common/Loading";
@@ -33,7 +32,10 @@ class CreateAdmin extends Component {
     passwordConfirmation: "",
     passwordNotMatch: null,
     isLoadingGroup: true,
-    isLoadingAdmin: true
+    isLoadingAdmin: true,
+    isUpdatedMassage: "",
+    errorMassage: "",
+    errorLengthMassage: ""
   };
 
   componentDidMount() {
@@ -79,10 +81,14 @@ class CreateAdmin extends Component {
     if (isLoadingGroup && isLoadingAdmin) {
       return <Loading />;
     }
-    const splitedAdminId = this.props.match.params.adminId.slice(
-      0,
-      this.props.match.params.adminId.indexOf("@")
-    );
+
+    let splitedAdminId;
+    const indexOfSlice = this.props.match.params.adminId.indexOf("@");
+    if (indexOfSlice === -1) {
+      splitedAdminId = this.props.match.params.adminId;
+    } else {
+      splitedAdminId = this.props.match.params.adminId.slice(0, indexOfSlice);
+    }
 
     console.log(updateAdminData);
 
@@ -124,7 +130,9 @@ class CreateAdmin extends Component {
                       updateAdminData: {
                         ...this.state.updateAdminData,
                         firstName: e.target.value
-                      }
+                      },
+                      isUpdatedMassage: "",
+                      errorMassage: ""
                     });
                   }}
                 />
@@ -144,7 +152,9 @@ class CreateAdmin extends Component {
                       updateAdminData: {
                         ...this.state.updateAdminData,
                         lastName: e.target.value
-                      }
+                      },
+                      isUpdatedMassage: "",
+                      errorMassage: ""
                     });
                   }}
                 />
@@ -182,7 +192,10 @@ class CreateAdmin extends Component {
                         ...this.state.updateAdminData,
                         password: e.target.value
                       },
-                      passwordNotMatch: null
+                      passwordNotMatch: null,
+                      isUpdatedMassage: "",
+                      errorMassage: "",
+                      errorLengthMassage: ""
                     });
                   }}
                 />
@@ -204,17 +217,26 @@ class CreateAdmin extends Component {
                   onChange={e => {
                     this.setState({
                       passwordConfirmation: e.target.value,
-                      passwordNotMatch: null
+                      passwordNotMatch: null,
+                      isUpdatedMassage: "",
+                      errorMassage: "",
+                      errorLengthMassage: ""
                     });
                   }}
                 />
-                {passwordNotMatch && <HelpBlock>Passwords not match</HelpBlock>}
               </Col>
             </FormGroup>
             <Col mdOffset={3} md={9}>
-              {this.props.errorMassage && (
+              {this.state.isUpdatedMassage && (
+                <HelpBlock bsClass="color-success">
+                  {this.state.isUpdatedMassage}
+                </HelpBlock>
+              )}
+            </Col>
+            <Col mdOffset={3} md={9}>
+              {this.state.errorMassage && (
                 <HelpBlock bsClass="color-error">
-                  {this.props.errorMassage}
+                  {this.state.errorMassage}
                 </HelpBlock>
               )}
             </Col>
@@ -233,35 +255,68 @@ class CreateAdmin extends Component {
 
   createAdmin = () => {
     const { updateAdminData, passwordConfirmation } = this.state;
-    if (updateAdminData.password !== passwordConfirmation) {
-      this.setState({ passwordNotMatch: "error" });
-      const data = {
-        firstName: updateAdminData.firstName,
-        lastName: updateAdminData.lastName
-      };
+    const data = {
+      firstName: updateAdminData.firstName,
+      lastName: updateAdminData.lastName
+    };
+    if (
+      updateAdminData.password &&
+      updateAdminData.password !== passwordConfirmation
+    ) {
+      this.props
+        .fetchPutUpdateGroupAdmin(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          this.props.match.params.adminId,
+          data
+        )
+        .then(() =>
+          this.setState({
+            isUpdatedMassage: "Admin names is updated.",
+            errorMassage: "Password not updated, passwords do not match",
+            passwordNotMatch: "error"
+          })
+        );
       return;
     }
-    // this.props.fetchPostCreateGroupAdmin(
-    //   this.props.match.params.tenantId,
-    //   this.props.match.params.groupId,
-    //   updateAdminData
-    // );
+    if (updateAdminData.password && updateAdminData.password.length < 6) {
+      this.props
+        .fetchPutUpdateGroupAdmin(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          this.props.match.params.adminId,
+          data
+        )
+        .then(() =>
+          this.setState({
+            isUpdatedMassage: "Admin names is updated.",
+            errorMassage:
+              "Password not updated, password length less than 6 symbols",
+            passwordNotMatch: "error"
+          })
+        );
+      return;
+    }
+    this.props
+      .fetchPutUpdateGroupAdmin(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        this.props.match.params.adminId,
+        updateAdminData
+      )
+      .then(() => this.setState({ isUpdatedMassage: "Admin is updated" }));
   };
 }
 
 const mapStateToProps = state => ({
   defaultDomain: state.group.defaultDomain,
-  errorMassage: state.errorMassage,
-  shouldRedirect: state.shouldRedirect,
-
   admin: state.groupAdmin
 });
 
 const mapDispatchToProps = {
-  //   fetchPostCreateGroupAdmin,
   fetchGetGroupById,
-  //   clearErrorMassage,
-  fetchGetGroupAdminByAdminId
+  fetchGetGroupAdminByAdminId,
+  fetchPutUpdateGroupAdmin
 };
 
 export default withRouter(

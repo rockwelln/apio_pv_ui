@@ -22,7 +22,6 @@ export default class Admin extends Component {
             {admin.userId}
           </Link>
         </td>
-        <td>{admin.userId}</td>
         <td>{admin.firstName}</td>
         <td>{admin.lastName}</td>
         <td>{admin.language}</td>

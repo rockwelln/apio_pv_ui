@@ -202,6 +202,12 @@ function mainReducer(state = initialState, action) {
         group: action.data
       };
     }
+    case actionType.PUT_UPDATE_GROUP_ADMIN: {
+      return {
+        ...state,
+        groupAdmin: action.data
+      };
+    }
     case actionType.DELETE_TENANT: {
       return {
         ...state
