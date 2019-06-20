@@ -10,6 +10,8 @@ import Loading from "../../common/Loading";
 import Details from "./Tabs/Details";
 import PhoneNumber from "./Tabs/PhoneNumbers";
 
+import deepEqual from "../deepEqual";
+
 import {
   fetchGetTenantById,
   fetchGetGroupById,
@@ -23,7 +25,7 @@ class TenantPage extends Component {
     isLoadingUser: true
   };
 
-  componentDidMount() {
+  fetchRequsts = () => {
     this.props
       .fetchGetTenantById(this.props.match.params.tenantId)
       .then(() => this.setState({ isLoadingTenant: false }));
@@ -40,6 +42,18 @@ class TenantPage extends Component {
         this.props.match.params.userName
       )
       .then(() => this.setState({ isLoadingUser: false }));
+  };
+
+  componentDidMount() {
+    this.fetchRequsts();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { _record_internal_id: prevId, ...prevPropsUser } = prevProps.user;
+    const { _record_internal_id: thisId, ...thisPropsUser } = this.props.user;
+    if (!deepEqual(prevPropsUser, thisPropsUser)) {
+      this.fetchRequsts();
+    }
   }
 
   render() {
@@ -54,7 +68,9 @@ class TenantPage extends Component {
       <React.Fragment>
         <div>
           <p className={"header"}>
-            {`User: ${user.firstName} ${user.lastName}`}
+            {`User: ${user.firstName ? user.firstName : ""} ${
+              user.lastName ? user.lastName : ""
+            }`}
             <Glyphicon glyph="glyphicon glyphicon-trash" />
           </p>
           <p>{`Tenant: ${tenant.name} (id: ${tenant.tenantId})`}</p>

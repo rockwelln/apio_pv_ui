@@ -228,7 +228,13 @@ class CreateAdmin extends Component {
             </FormGroup>
             <Col mdOffset={3} md={9}>
               {this.state.isUpdatedMassage && (
-                <HelpBlock bsClass="color-success">
+                <HelpBlock
+                  bsClass={`${
+                    this.state.isUpdatedMassage === "Loading..."
+                      ? "color-info"
+                      : "color-success"
+                  }`}
+                >
                   {this.state.isUpdatedMassage}
                 </HelpBlock>
               )}
@@ -263,48 +269,54 @@ class CreateAdmin extends Component {
       updateAdminData.password &&
       updateAdminData.password !== passwordConfirmation
     ) {
-      this.props
-        .fetchPutUpdateGroupAdmin(
-          this.props.match.params.tenantId,
-          this.props.match.params.groupId,
-          this.props.match.params.adminId,
-          data
-        )
-        .then(() =>
-          this.setState({
-            isUpdatedMassage: "Admin names is updated.",
-            errorMassage: "Password not updated, passwords do not match",
-            passwordNotMatch: "error"
-          })
-        );
+      this.setState({ isUpdatedMassage: "Loading..." }, () =>
+        this.props
+          .fetchPutUpdateGroupAdmin(
+            this.props.match.params.tenantId,
+            this.props.match.params.groupId,
+            this.props.match.params.adminId,
+            data
+          )
+          .then(() =>
+            this.setState({
+              isUpdatedMassage: "Admin names is updated.",
+              errorMassage: "Password not updated, passwords do not match",
+              passwordNotMatch: "error"
+            })
+          )
+      );
       return;
     }
     if (updateAdminData.password && updateAdminData.password.length < 6) {
+      this.setState({ isUpdatedMassage: "Loading..." }, () =>
+        this.props
+          .fetchPutUpdateGroupAdmin(
+            this.props.match.params.tenantId,
+            this.props.match.params.groupId,
+            this.props.match.params.adminId,
+            data
+          )
+          .then(() =>
+            this.setState({
+              isUpdatedMassage: "Admin names is updated.",
+              errorMassage:
+                "Password not updated, password length less than 6 symbols",
+              passwordNotMatch: "error"
+            })
+          )
+      );
+      return;
+    }
+    this.setState({ isUpdatedMassage: "Loading..." }, () =>
       this.props
         .fetchPutUpdateGroupAdmin(
           this.props.match.params.tenantId,
           this.props.match.params.groupId,
           this.props.match.params.adminId,
-          data
+          updateAdminData
         )
-        .then(() =>
-          this.setState({
-            isUpdatedMassage: "Admin names is updated.",
-            errorMassage:
-              "Password not updated, password length less than 6 symbols",
-            passwordNotMatch: "error"
-          })
-        );
-      return;
-    }
-    this.props
-      .fetchPutUpdateGroupAdmin(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId,
-        this.props.match.params.adminId,
-        updateAdminData
-      )
-      .then(() => this.setState({ isUpdatedMassage: "Admin is updated" }));
+        .then(() => this.setState({ isUpdatedMassage: "Admin is updated" }))
+    );
   };
 }
 

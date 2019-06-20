@@ -30,10 +30,13 @@ class Details extends Component {
     cliFirstName: "",
     cliLastName: "",
     language: "English",
-    emailIsValid: null
+    emailIsValid: null,
+    firstNameError: null,
+    lastNameError: null,
+    updateMassage: ""
   };
 
-  componentDidMount() {
+  fetchRequst = () => {
     this.props
       .fetchGetUserByName(
         this.props.match.params.tenantId,
@@ -50,6 +53,10 @@ class Details extends Component {
           isLoading: false
         })
       );
+  };
+
+  componentDidMount() {
+    this.fetchRequst();
   }
 
   render() {
@@ -61,7 +68,10 @@ class Details extends Component {
       cliFirstName,
       cliLastName,
       language,
-      emailIsValid
+      emailIsValid,
+      firstNameError,
+      lastNameError,
+      updateMassage
     } = this.state;
 
     if (isLoading) {
@@ -85,14 +95,15 @@ class Details extends Component {
                   onChange={e =>
                     this.setState({
                       emailAddress: e.target.value,
-                      emailIsValid: null
+                      emailIsValid: null,
+                      updateMassage: ""
                     })
                   }
                 />
                 {emailIsValid && <HelpBlock>Invalid email</HelpBlock>}
               </Col>
             </FormGroup>
-            <FormGroup controlId="firstName">
+            <FormGroup controlId="firstName" validationState={firstNameError}>
               <Col componentClass={ControlLabel} md={3} className={"text-left"}>
                 First Name
               </Col>
@@ -101,11 +112,18 @@ class Details extends Component {
                   type="text"
                   placeholder="First Name"
                   defaultValue={firstName}
-                  onChange={e => this.setState({ firstName: e.target.value })}
+                  onChange={e =>
+                    this.setState({
+                      firstName: e.target.value,
+                      firstNameError: null,
+                      updateMassage: ""
+                    })
+                  }
                 />
+                {firstNameError && <HelpBlock>Field is required</HelpBlock>}
               </Col>
             </FormGroup>
-            <FormGroup controlId="lastName">
+            <FormGroup controlId="lastName" validationState={lastNameError}>
               <Col componentClass={ControlLabel} md={3} className={"text-left"}>
                 Last Name
               </Col>
@@ -114,8 +132,15 @@ class Details extends Component {
                   type="text"
                   placeholder="Last Name"
                   defaultValue={lastName}
-                  onChange={e => this.setState({ lastName: e.target.value })}
+                  onChange={e =>
+                    this.setState({
+                      lastName: e.target.value,
+                      lastNameError: null,
+                      updateMassage: ""
+                    })
+                  }
                 />
+                {lastNameError && <HelpBlock>Field is required</HelpBlock>}
               </Col>
             </FormGroup>
             <FormGroup controlId="lastName">
@@ -123,7 +148,10 @@ class Details extends Component {
                 <Checkbox
                   checked={this.state.useSameName}
                   onChange={e =>
-                    this.setState({ useSameName: e.target.checked })
+                    this.setState({
+                      useSameName: e.target.checked,
+                      updateMassage: ""
+                    })
                   }
                 >
                   Use same Name at CLI Name
@@ -146,7 +174,10 @@ class Details extends Component {
                       placeholder="CLI First Name"
                       defaultValue={cliFirstName}
                       onChange={e =>
-                        this.setState({ cliFirstName: e.target.value })
+                        this.setState({
+                          cliFirstName: e.target.value,
+                          updateMassage: ""
+                        })
                       }
                     />
                   </Col>
@@ -165,7 +196,10 @@ class Details extends Component {
                       placeholder="CLI Last Name"
                       defaultValue={cliLastName}
                       onChange={e =>
-                        this.setState({ cliLastName: e.target.value })
+                        this.setState({
+                          cliLastName: e.target.value,
+                          updateMassage: ""
+                        })
                       }
                     />
                   </Col>
@@ -185,6 +219,19 @@ class Details extends Component {
                 />
               </Col>
             </FormGroup>
+            <Col mdOffset={3} md={9}>
+              {updateMassage && (
+                <HelpBlock
+                  bsClass={`${
+                    updateMassage === "Loading..."
+                      ? "color-info"
+                      : "color-success"
+                  }`}
+                >
+                  {updateMassage}
+                </HelpBlock>
+              )}
+            </Col>
           </FormGroup>
           <Row>
             <Col mdPush={10} md={1}>
@@ -221,6 +268,14 @@ class Details extends Component {
         return;
       }
     }
+    if (!firstName) {
+      this.setState({ firstNameError: "error" });
+      return;
+    }
+    if (!lastName) {
+      this.setState({ lastNameError: "error" });
+      return;
+    }
 
     const data = {
       emailAddress,
@@ -231,11 +286,15 @@ class Details extends Component {
       language
     };
 
-    this.props.fetchPutUpdateUser(
-      this.props.match.params.tenantId,
-      this.props.match.params.groupId,
-      this.props.match.params.userName,
-      data
+    this.setState({ updateMassage: "Loading..." }, () =>
+      this.props
+        .fetchPutUpdateUser(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          this.props.match.params.userName,
+          data
+        )
+        .then(() => this.setState({ updateMassage: "User is updated" }))
     );
   };
 }
