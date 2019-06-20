@@ -68,13 +68,13 @@ class TenantPage extends Component {
         <Tabs defaultActiveKey={0} id={`group_tabs${this.tabsIdSuffix}`}>
           <Tab eventKey={0} title="LICENSES">
             <Licenses
-              tenantId={tenant.tenantId}
+              tenantId={this.props.match.params.tenantId}
               groupId={this.props.match.params.groupId}
             />
           </Tab>
           <Tab eventKey={1} title="USERS">
             <Users
-              tenantId={tenant.tenantId}
+              tenantId={this.props.match.params.tenantId}
               groupId={this.props.match.params.groupId}
             />
           </Tab>
@@ -83,13 +83,13 @@ class TenantPage extends Component {
           </Tab>
           <Tab eventKey={3} title="PHONE NUMBERS">
             <PhoneNumbers
-              tenantId={tenant.tenantId}
+              tenantId={this.props.match.params.tenantId}
               groupId={this.props.match.params.groupId}
             />
           </Tab>
           <Tab eventKey={4} title="DEVICES">
             <Devices
-              tenantId={tenant.tenantId}
+              tenantId={this.props.match.params.tenantId}
               groupId={this.props.match.params.groupId}
               notifications={this.props.notifications}
             />

@@ -99,12 +99,12 @@ class PhoneNumber extends Component {
             </FormGroup>
             <FormGroup controlId="cliPhoneNumber">
               <Col componentClass={ControlLabel} md={3} className={"text-left"}>
-                CLI Phone Number
+                CLI for outgoing calls
               </Col>
               <Col md={9}>
                 <FormControl
                   componentClass="select"
-                  placeholder="CLI Phone Number"
+                  placeholder="CLI for outgoing calls"
                   defaultValue={cliPhoneNumber}
                   onChange={e =>
                     this.setState({ cliPhoneNumber: e.target.value })

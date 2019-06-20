@@ -60,7 +60,7 @@ export class Licenses extends Component {
                 glyph="glyphicon glyphicon-pencil"
               />
             </Panel.Heading>
-            {trunkGroups.length ? (
+            {trunkGroups ? (
               <Panel.Body>
                 <Row>
                   <Col md={8} className={"text-left"}>

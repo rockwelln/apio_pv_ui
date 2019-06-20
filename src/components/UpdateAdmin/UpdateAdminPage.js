@@ -239,7 +239,6 @@ class CreateAdmin extends Component {
         firstName: updateAdminData.firstName,
         lastName: updateAdminData.lastName
       };
-      console.log(data);
       return;
     }
     // this.props.fetchPostCreateGroupAdmin(
