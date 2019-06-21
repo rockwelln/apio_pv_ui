@@ -59,6 +59,10 @@ class Details extends Component {
     this.fetchRequst();
   }
 
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+  }
+
   render() {
     const {
       isLoading,
@@ -95,8 +99,7 @@ class Details extends Component {
                   onChange={e =>
                     this.setState({
                       emailAddress: e.target.value,
-                      emailIsValid: null,
-                      updateMassage: ""
+                      emailIsValid: null
                     })
                   }
                 />
@@ -115,8 +118,7 @@ class Details extends Component {
                   onChange={e =>
                     this.setState({
                       firstName: e.target.value,
-                      firstNameError: null,
-                      updateMassage: ""
+                      firstNameError: null
                     })
                   }
                 />
@@ -135,8 +137,7 @@ class Details extends Component {
                   onChange={e =>
                     this.setState({
                       lastName: e.target.value,
-                      lastNameError: null,
-                      updateMassage: ""
+                      lastNameError: null
                     })
                   }
                 />
@@ -149,8 +150,7 @@ class Details extends Component {
                   checked={this.state.useSameName}
                   onChange={e =>
                     this.setState({
-                      useSameName: e.target.checked,
-                      updateMassage: ""
+                      useSameName: e.target.checked
                     })
                   }
                 >
@@ -175,8 +175,7 @@ class Details extends Component {
                       defaultValue={cliFirstName}
                       onChange={e =>
                         this.setState({
-                          cliFirstName: e.target.value,
-                          updateMassage: ""
+                          cliFirstName: e.target.value
                         })
                       }
                     />
@@ -197,8 +196,7 @@ class Details extends Component {
                       defaultValue={cliLastName}
                       onChange={e =>
                         this.setState({
-                          cliLastName: e.target.value,
-                          updateMassage: ""
+                          cliLastName: e.target.value
                         })
                       }
                     />
@@ -294,7 +292,16 @@ class Details extends Component {
           this.props.match.params.userName,
           data
         )
-        .then(() => this.setState({ updateMassage: "User is updated" }))
+        .then(() =>
+          this.setState(
+            { updateMassage: "User is updated" },
+            () =>
+              (this.timer = setTimeout(
+                () => this.setState({ updateMassage: "" }),
+                3000
+              ))
+          )
+        )
     );
   };
 }

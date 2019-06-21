@@ -9,6 +9,7 @@ import Col from "react-bootstrap/lib/Col";
 import Row from "react-bootstrap/lib/Row";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
+import HelpBlock from "react-bootstrap/lib/HelpBlock";
 import { Form } from "react-bootstrap";
 
 import Loading from "../../../../common/Loading";
@@ -31,7 +32,8 @@ class Details extends Component {
       postalCode: "",
       state: "",
       stateDisplayName: ""
-    }
+    },
+    updateMassage: ""
   };
 
   componentDidMount() {
@@ -51,8 +53,12 @@ class Details extends Component {
       );
   }
 
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+  }
+
   render() {
-    const { isLoading, group, addressInformation } = this.state;
+    const { isLoading, group, addressInformation, updateMassage } = this.state;
 
     if (isLoading) {
       return <Loading />;
@@ -207,6 +213,19 @@ class Details extends Component {
                 />
               </Col>
             </FormGroup>
+            <Col mdOffset={3} md={9}>
+              {updateMassage && (
+                <HelpBlock
+                  bsClass={`${
+                    updateMassage === "Loading..."
+                      ? "color-info"
+                      : "color-success"
+                  }`}
+                >
+                  {updateMassage}
+                </HelpBlock>
+              )}
+            </Col>
           </FormGroup>
           <Row>
             <Col mdPush={10} md={1}>
@@ -221,14 +240,28 @@ class Details extends Component {
   }
 
   updateGroupDetails = () => {
-    const { addressInformation } = this.state;
+    const { addressInformation, groupName } = this.state;
     const data = {
+      groupName,
       addressInformation
     };
-    this.props.fetchPutUpdateGroupDetails(
-      this.props.match.params.tenantId,
-      this.props.match.params.groupId,
-      data
+    this.setState({ updateMassage: "Loading..." }, () =>
+      this.props
+        .fetchPutUpdateGroupDetails(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          data
+        )
+        .then(() =>
+          this.setState(
+            { updateMassage: "Group details is updated" },
+            () =>
+              (this.timer = setTimeout(
+                () => this.setState({ updateMassage: "" }),
+                3000
+              ))
+          )
+        )
     );
   };
 }

@@ -50,6 +50,10 @@ class PhoneNumber extends Component {
     );
   }
 
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+  }
+
   render() {
     const {
       isLoadingUser,
@@ -79,8 +83,7 @@ class PhoneNumber extends Component {
                   defaultValue={phoneNumber}
                   onChange={e =>
                     this.setState({
-                      phoneNumber: e.target.value,
-                      updateMassage: ""
+                      phoneNumber: e.target.value
                     })
                   }
                 >
@@ -116,8 +119,7 @@ class PhoneNumber extends Component {
                   defaultValue={cliPhoneNumber}
                   onChange={e =>
                     this.setState({
-                      cliPhoneNumber: e.target.value,
-                      updateMassage: ""
+                      cliPhoneNumber: e.target.value
                     })
                   }
                 >
@@ -153,8 +155,7 @@ class PhoneNumber extends Component {
                   defaultValue={extension}
                   onChange={e =>
                     this.setState({
-                      extension: e.target.value,
-                      updateMassage: ""
+                      extension: e.target.value
                     })
                   }
                 />
@@ -204,7 +205,16 @@ class PhoneNumber extends Component {
           this.props.match.params.userName,
           data
         )
-        .then(() => this.setState({ updateMassage: "User is updated" }))
+        .then(() =>
+          this.setState(
+            { updateMassage: "User is updated" },
+            () =>
+              (this.timer = setTimeout(
+                () => this.setState({ updateMassage: "" }),
+                3000
+              ))
+          )
+        )
     );
   };
 }
