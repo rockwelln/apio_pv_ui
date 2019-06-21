@@ -17,7 +17,7 @@ export default class Admin extends Component {
           <Link
             to={`/provisioning/broadsoft_xsp1_as1/tenants/${
               this.props.tenantId
-            }/${this.props.groupId}/${admin.userId}`}
+            }/groups/${this.props.groupId}/admins/${admin.userId}`}
           >
             {admin.userId}
           </Link>

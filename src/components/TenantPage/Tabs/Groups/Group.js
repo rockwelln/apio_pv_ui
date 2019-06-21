@@ -15,9 +15,9 @@ export default class Group extends Component {
       <tr key={group.groupId}>
         <td>
           <Link
-            to={`/provisioning/broadsoft_xsp1_as1/tenants/${group.tenantId}/${
-              group.groupId
-            }`}
+            to={`/provisioning/broadsoft_xsp1_as1/tenants/${
+              group.tenantId
+            }/groups/${group.groupId}`}
           >
             {group.groupId}
           </Link>

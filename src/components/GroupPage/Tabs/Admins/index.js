@@ -104,7 +104,7 @@ export class Admins extends Component {
             <Link
               to={`/provisioning/broadsoft_xsp1_as1/tenants/${
                 this.props.tenantId
-              }/${this.props.groupId}/addadmin`}
+              }/groups/${this.props.groupId}/addadmin`}
             >
               <Glyphicon
                 className={"x-large"}

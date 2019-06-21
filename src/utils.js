@@ -16,12 +16,12 @@ function getCookie(name) {
       .shift();
 }
 
-export function checkStatus(response, checkBadRequest) {
+export function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
   } else if (response.status === 401) {
     console.log("the request was *not* authorized!");
-  } else if (response.status === 400 && checkBadRequest) {
+  } else if (response.status === 400) {
     console.log(response);
     return response;
   }
@@ -104,7 +104,7 @@ export function fetch_post_raw(url, raw_body, content_type) {
     method: "POST",
     headers: headers,
     body: raw_body
-  }).then(res => checkStatus(res, checkBadRequest));
+  }).then(checkStatus);
 }
 
 export function fetch_delete(url, token) {

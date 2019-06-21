@@ -78,7 +78,12 @@ export const getAdminsByGroupId = data => ({
 });
 
 export const getGroupAdminByAdminId = data => ({
-  type: actionType.GET_ADMIN_BY_ADMIN_ID,
+  type: actionType.GET_GROUP_ADMIN_BY_ADMIN_ID,
+  data
+});
+
+export const getTenantAdminByAdminId = data => ({
+  type: actionType.GET_TENANT_ADMIN_BY_ADMIN_ID,
   data
 });
 
@@ -89,6 +94,16 @@ export const postCreateGroupAdmin = data => ({
 
 export const postCreateGroupAdminError = error => ({
   type: actionType.POST_CREATE_GROUP_ADMIN_ERROR,
+  error
+});
+
+export const postCreateTenantAdmin = data => ({
+  type: actionType.POST_CREATE_TENANT_ADMIN,
+  data
+});
+
+export const postCreateTenantAdminError = error => ({
+  type: actionType.POST_CREATE_TENANT_ADMIN_ERROR,
   error
 });
 
@@ -104,6 +119,11 @@ export const putUpdateGroupDetails = data => ({
 
 export const putUpdateGroupAdmin = data => ({
   type: actionType.PUT_UPDATE_GROUP_ADMIN,
+  data
+});
+
+export const putUpdateTenantAdmin = data => ({
+  type: actionType.PUT_UPDATE_TENANT_ADMIN,
   data
 });
 
@@ -266,6 +286,14 @@ export function fetchGetGroupAdminByAdminId(tenantId, groupId, adminId) {
   };
 }
 
+export function fetchGetTenantAdminByAdminId(tenantId, adminId) {
+  return function(dispatch) {
+    return fetch_get(`${API_BASE_URL}/tenants/${tenantId}/admins/${adminId}`)
+      .then(data => dispatch(getTenantAdminByAdminId(data)))
+      .catch(error => console.error("An error occurred.", error));
+  };
+}
+
 export function fetchPostCreateGroupAdmin(tenantId, groupId, data) {
   return function(dispatch) {
     const response = fetch_post(
@@ -283,6 +311,28 @@ export function fetchPostCreateGroupAdmin(tenantId, groupId, data) {
       res
         .json()
         .then(data => dispatch(postCreateGroupAdmin(data)))
+        .catch(error => console.error(error));
+    });
+  };
+}
+
+export function fetchPostCreateTenantAdmin(tenantId, data) {
+  return function(dispatch) {
+    const response = fetch_post(
+      `${API_BASE_URL}/tenants/${tenantId}/admins/`,
+      data
+    );
+    response.then(res => {
+      if (res.status === 400) {
+        res
+          .json()
+          .then(data => dispatch(postCreateTenantAdminError(data)))
+          .catch(error => console.error(error));
+        return;
+      }
+      res
+        .json()
+        .then(data => dispatch(postCreateTenantAdmin(data)))
         .catch(error => console.error(error));
     });
   };
@@ -320,6 +370,18 @@ export function fetchPutUpdateGroupAdmin(tenantId, groupId, adminId, data) {
     )
       .then(res => res.json())
       .then(data => dispatch(putUpdateGroupAdmin(data)))
+      .catch(error => console.error("An error occurred.", error));
+  };
+}
+
+export function fetchPutUpdateTenantAdmin(tenantId, adminId, data) {
+  return function(dispatch) {
+    return fetch_put(
+      `${API_BASE_URL}/tenants/${tenantId}/admins/${adminId}/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => dispatch(putUpdateTenantAdmin(data)))
       .catch(error => console.error("An error occurred.", error));
   };
 }

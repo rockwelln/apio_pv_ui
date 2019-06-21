@@ -26,7 +26,7 @@ export default class Group extends Component {
         </td>
         <td>
           <Link
-            to={`/provisioning/broadsoft_xsp1_as1/tenants/${tenantId}/${groupId}/users/${
+            to={`/provisioning/broadsoft_xsp1_as1/tenants/${tenantId}/groups/${groupId}/users/${
               user.userId
             }`}
           >

@@ -16,7 +16,10 @@ import { Form } from "react-bootstrap";
 import {
   fetchGetGroupById,
   fetchGetGroupAdminByAdminId,
-  fetchPutUpdateGroupAdmin
+  fetchPutUpdateGroupAdmin,
+  fetchGetTenantAdminByAdminId,
+  fetchGetTenantById,
+  fetchPutUpdateTenantAdmin
 } from "../../store/actions";
 
 import Loading from "../../common/Loading";
@@ -31,20 +34,20 @@ class CreateAdmin extends Component {
     },
     passwordConfirmation: "",
     passwordNotMatch: null,
-    isLoadingGroup: true,
+    isLoadingLevel: true,
     isLoadingAdmin: true,
     isUpdatedMassage: "",
     errorMassage: "",
     errorLengthMassage: ""
   };
 
-  componentDidMount() {
+  fetchGroupAdmin = () => {
     this.props
       .fetchGetGroupById(
         this.props.match.params.tenantId,
         this.props.match.params.groupId
       )
-      .then(() => this.setState({ isLoadingGroup: false }));
+      .then(() => this.setState({ isLoadingLevel: false }));
     this.props
       .fetchGetGroupAdminByAdminId(
         this.props.match.params.tenantId,
@@ -53,20 +56,33 @@ class CreateAdmin extends Component {
       )
       .then(() =>
         this.setState({
-          updateAdminData: this.props.admin,
+          updateAdminData: this.props.groupAdmin,
           isLoadingAdmin: false
         })
       );
-  }
+  };
 
-  componentDidUpdate(prevProps) {
-    if (!prevProps.shouldRedirect && this.props.shouldRedirect) {
-      this.props.history.push(
-        `/provisioning/broadsoft_xsp1_as1/tenants/${
-          this.props.match.params.tenantId
-        }/${this.props.match.params.groupId}`
+  fetchTenantAdmin = () => {
+    this.props
+      .fetchGetTenantById(this.props.match.params.tenantId)
+      .then(() => this.setState({ isLoadingLevel: false }));
+    this.props
+      .fetchGetTenantAdminByAdminId(
+        this.props.match.params.tenantId,
+        this.props.match.params.adminId
+      )
+      .then(() =>
+        this.setState({
+          updateAdminData: this.props.tenantAdmin,
+          isLoadingAdmin: false
+        })
       );
-    }
+  };
+
+  componentDidMount() {
+    this.props.match.params.groupId
+      ? this.fetchGroupAdmin()
+      : this.fetchTenantAdmin();
   }
 
   render() {
@@ -74,11 +90,11 @@ class CreateAdmin extends Component {
       updateAdminData,
       passwordConfirmation,
       passwordNotMatch,
-      isLoadingGroup,
+      isLoadingLevel,
       isLoadingAdmin
     } = this.state;
 
-    if (isLoadingGroup && isLoadingAdmin) {
+    if (isLoadingLevel && isLoadingAdmin) {
       return <Loading />;
     }
 
@@ -109,7 +125,9 @@ class CreateAdmin extends Component {
                     disabled
                   />
                   <InputGroup.Addon>{`@${
-                    this.props.defaultDomain
+                    this.props.match.params.groupId
+                      ? this.props.groupDefaultDomain
+                      : this.props.tenantDefaultDomain
                   }`}</InputGroup.Addon>
                 </InputGroup>
               </Col>
@@ -247,7 +265,13 @@ class CreateAdmin extends Component {
           </FormGroup>
           <Row>
             <Col mdPush={10} md={1}>
-              <Button onClick={this.createAdmin}>
+              <Button
+                onClick={
+                  this.props.match.params.groupId
+                    ? this.createGroupAdmin
+                    : this.createTenantAdmin
+                }
+              >
                 <Glyphicon glyph="glyphicon glyphicon-ok" /> UPDATE
               </Button>
             </Col>
@@ -257,7 +281,7 @@ class CreateAdmin extends Component {
     );
   }
 
-  createAdmin = () => {
+  createGroupAdmin = () => {
     const { updateAdminData, passwordConfirmation } = this.state;
     const data = {
       firstName: updateAdminData.firstName,
@@ -316,17 +340,79 @@ class CreateAdmin extends Component {
         .then(() => this.setState({ isUpdatedMassage: "Admin is updated" }))
     );
   };
+
+  createTenantAdmin = () => {
+    const { updateAdminData, passwordConfirmation } = this.state;
+    const data = {
+      firstName: updateAdminData.firstName,
+      lastName: updateAdminData.lastName
+    };
+    if (
+      updateAdminData.password &&
+      updateAdminData.password !== passwordConfirmation
+    ) {
+      this.setState({ isUpdatedMassage: "Loading..." }, () =>
+        this.props
+          .fetchPutUpdateTenantAdmin(
+            this.props.match.params.tenantId,
+            this.props.match.params.adminId,
+            data
+          )
+          .then(() =>
+            this.setState({
+              isUpdatedMassage: "Admin names is updated.",
+              errorMassage: "Password not updated, passwords do not match",
+              passwordNotMatch: "error"
+            })
+          )
+      );
+      return;
+    }
+    if (updateAdminData.password && updateAdminData.password.length < 6) {
+      this.setState({ isUpdatedMassage: "Loading..." }, () =>
+        this.props
+          .fetchPutUpdateTenantAdmin(
+            this.props.match.params.tenantId,
+            this.props.match.params.adminId,
+            data
+          )
+          .then(() =>
+            this.setState({
+              isUpdatedMassage: "Admin names is updated.",
+              errorMassage:
+                "Password not updated, password length less than 6 symbols",
+              passwordNotMatch: "error"
+            })
+          )
+      );
+      return;
+    }
+    this.setState({ isUpdatedMassage: "Loading..." }, () =>
+      this.props
+        .fetchPutUpdateTenantAdmin(
+          this.props.match.params.tenantId,
+          this.props.match.params.adminId,
+          updateAdminData
+        )
+        .then(() => this.setState({ isUpdatedMassage: "Admin is updated" }))
+    );
+  };
 }
 
 const mapStateToProps = state => ({
-  defaultDomain: state.group.defaultDomain,
-  admin: state.groupAdmin
+  groupDefaultDomain: state.group.defaultDomain,
+  tenantDefaultDomain: state.tenant.defaultDomain,
+  groupAdmin: state.groupAdmin,
+  tenantAdmin: state.tenantAdmin
 });
 
 const mapDispatchToProps = {
   fetchGetGroupById,
   fetchGetGroupAdminByAdminId,
-  fetchPutUpdateGroupAdmin
+  fetchPutUpdateGroupAdmin,
+  fetchGetTenantAdminByAdminId,
+  fetchGetTenantById,
+  fetchPutUpdateTenantAdmin
 };
 
 export default withRouter(

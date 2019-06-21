@@ -33,7 +33,7 @@ export default class PhoneNumber extends Component {
         <td>{number.rangeEnd}</td>
         <td>
           <Link
-            to={`/provisioning/broadsoft_xsp1_as1/tenants/${tenantId}/${
+            to={`/provisioning/broadsoft_xsp1_as1/tenants/${tenantId}/groups/${
               number.assignedToGroup
             }`}
           >

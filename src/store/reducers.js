@@ -19,7 +19,8 @@ const initialState = {
   adminsGroup: [],
   errorMassage: "",
   shouldRedirect: false,
-  groupAdmin: {}
+  groupAdmin: {},
+  tenantAdmin: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -34,7 +35,8 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         tenant: action.data,
-        shouldRedirect: false
+        shouldRedirect: false,
+        errorMassage: ""
       };
     }
     case actionType.GET_GROUPS: {
@@ -71,7 +73,8 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         group: action.data,
-        shouldRedirect: false
+        shouldRedirect: false,
+        errorMassage: ""
       };
     }
     case actionType.GET_USERS: {
@@ -171,10 +174,16 @@ function mainReducer(state = initialState, action) {
         adminsGroup: action.data.admins
       };
     }
-    case actionType.GET_ADMIN_BY_ADMIN_ID: {
+    case actionType.GET_GROUP_ADMIN_BY_ADMIN_ID: {
       return {
         ...state,
         groupAdmin: action.data
+      };
+    }
+    case actionType.GET_TENANT_ADMIN_BY_ADMIN_ID: {
+      return {
+        ...state,
+        tenantAdmin: action.data
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN: {
@@ -184,6 +193,19 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN_ERROR: {
+      const errorMassage = action.error.errors[0].details.errors["0"].summary;
+      return {
+        ...state,
+        errorMassage
+      };
+    }
+    case actionType.POST_CREATE_TENANT_ADMIN: {
+      return {
+        ...state,
+        shouldRedirect: true
+      };
+    }
+    case actionType.POST_CREATE_TENANT_ADMIN_ERROR: {
       const errorMassage = action.error.errors[0].details.errors["0"].summary;
       return {
         ...state,
@@ -206,6 +228,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         groupAdmin: action.data
+      };
+    }
+    case actionType.PUT_UPDATE_TENANT_ADMIN: {
+      return {
+        ...state,
+        tenantAdmin: action.data
       };
     }
     case actionType.DELETE_TENANT: {

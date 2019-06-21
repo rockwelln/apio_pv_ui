@@ -15,7 +15,9 @@ import { Form } from "react-bootstrap";
 
 import {
   fetchPostCreateGroupAdmin,
+  fetchPostCreateTenantAdmin,
   fetchGetGroupById,
+  fetchGetTenantById,
   clearErrorMassage
 } from "../../store/actions";
 
@@ -36,21 +38,32 @@ class CreateAdmin extends Component {
   };
 
   componentDidMount() {
-    this.props
-      .fetchGetGroupById(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId
-      )
-      .then(() => this.setState({ isLoading: false }));
+    console.log(this.props.match.params.groupId);
+    this.props.match.params.groupId
+      ? this.props
+          .fetchGetGroupById(
+            this.props.match.params.tenantId,
+            this.props.match.params.groupId
+          )
+          .then(() => this.setState({ isLoading: false }))
+      : this.props
+          .fetchGetTenantById(this.props.match.params.tenantId)
+          .then(() => this.setState({ isLoading: false }));
   }
 
   componentDidUpdate(prevProps) {
     if (!prevProps.shouldRedirect && this.props.shouldRedirect) {
-      this.props.history.push(
-        `/provisioning/broadsoft_xsp1_as1/tenants/${
-          this.props.match.params.tenantId
-        }/${this.props.match.params.groupId}`
-      );
+      this.props.match.params.groupId
+        ? this.props.history.push(
+            `/provisioning/broadsoft_xsp1_as1/tenants/${
+              this.props.match.params.tenantId
+            }/groups/${this.props.match.params.groupId}`
+          )
+        : this.props.history.push(
+            `/provisioning/broadsoft_xsp1_as1/tenants/${
+              this.props.match.params.tenantId
+            }`
+          );
     }
   }
 
@@ -93,7 +106,9 @@ class CreateAdmin extends Component {
                     }}
                   />
                   <InputGroup.Addon>{`@${
-                    this.props.defaultDomain
+                    this.props.match.params.groupId
+                      ? this.props.groupDefaultDomain
+                      : this.props.tenantDefaultDomain
                   }`}</InputGroup.Addon>
                 </InputGroup>
               </Col>
@@ -229,23 +244,31 @@ class CreateAdmin extends Component {
       this.setState({ passwordNotMatch: "error" });
       return;
     }
-    this.props.fetchPostCreateGroupAdmin(
-      this.props.match.params.tenantId,
-      this.props.match.params.groupId,
-      createAdminData
-    );
+    this.props.match.params.groupId
+      ? this.props.fetchPostCreateGroupAdmin(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          createAdminData
+        )
+      : this.props.fetchPostCreateTenantAdmin(
+          this.props.match.params.tenantId,
+          createAdminData
+        );
   };
 }
 
 const mapStateToProps = state => ({
-  defaultDomain: state.group.defaultDomain,
+  groupDefaultDomain: state.group.defaultDomain,
+  tenantDefaultDomain: state.tenant.defaultDomain,
   errorMassage: state.errorMassage,
   shouldRedirect: state.shouldRedirect
 });
 
 const mapDispatchToProps = {
   fetchPostCreateGroupAdmin,
+  fetchPostCreateTenantAdmin,
   fetchGetGroupById,
+  fetchGetTenantById,
   clearErrorMassage
 };
 

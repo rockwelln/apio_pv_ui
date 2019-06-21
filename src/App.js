@@ -28,8 +28,8 @@ import Tenants from "./components/Tenants";
 import TenantPage from "./components/TenantPage";
 import GroupPage from "./components/GroupPage";
 import UserPage from "./components/UserPage";
-import CreateGroupAdmin from "./components/CreateAdmin";
-import UpdateGroupAdmin from "./components/UpdateAdmin";
+import CreateAdmin from "./components/CreateAdmin";
+import UpdateAdmin from "./components/UpdateAdmin";
 
 import "./App.css";
 import loading from "./loading.gif";
@@ -286,7 +286,7 @@ class App extends Component {
                 exact
               />
               <Route
-                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/:groupId"
+                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/groups/:groupId"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <GroupPage
@@ -299,7 +299,7 @@ class App extends Component {
                 exact
               />
               <Route
-                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/:groupId/users/:userName"
+                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/groups/:groupId/users/:userName"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <UserPage />
@@ -310,10 +310,10 @@ class App extends Component {
                 exact
               />
               <Route
-                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/:groupId/addadmin"
+                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/groups/:groupId/addadmin"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
-                    <CreateGroupAdmin />
+                    <CreateAdmin />
                   ) : (
                     <NotAllowed />
                   )
@@ -321,10 +321,32 @@ class App extends Component {
                 exact
               />
               <Route
-                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/:groupId/:adminId"
+                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/groups/:groupId/admins/:adminId"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
-                    <UpdateGroupAdmin />
+                    <UpdateAdmin />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/addadmin"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <CreateAdmin />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/admins/:adminId"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <UpdateAdmin />
                   ) : (
                     <NotAllowed />
                   )
