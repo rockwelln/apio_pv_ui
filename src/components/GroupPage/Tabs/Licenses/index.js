@@ -60,7 +60,7 @@ export class Licenses extends Component {
                 glyph="glyphicon glyphicon-pencil"
               />
             </Panel.Heading>
-            {trunkGroups ? (
+            {Object.keys(trunkGroups).length ? (
               <Panel.Body>
                 <Row>
                   <Col md={8} className={"text-left"}>
@@ -112,40 +112,54 @@ export class Licenses extends Component {
               </Panel.Heading>
               {groupServices.groups.length ? (
                 <Panel.Body>
+                  <Row>
+                    <Col
+                      mdOffset={6}
+                      md={3}
+                      className={"text-center font-weight-bold"}
+                    >
+                      in use
+                    </Col>
+                    <Col md={3} className={"text-center font-weight-bold"}>
+                      limited to
+                    </Col>
+                  </Row>
                   {groupServices.groups.map((pack, i) =>
                     !this.state.showMore ? (
                       i <= groupServices.countShown - 1 ? (
                         <Row key={i}>
-                          <Col md={8} className={"text-left"}>
+                          <Col md={6} className={"text-left"}>
                             <FormattedMessage
                               id="service_packs"
                               defaultMessage={`${pack.name}:`}
                             />
                           </Col>
-                          <Col md={4} className={"text-right"}>{`${
+                          <Col md={3} className={"text-center"}>{`${
                             pack.inUse ? pack.inUse : 0
-                          } (${
+                          }`}</Col>
+                          <Col md={3} className={"text-center"}>{`${
                             pack.allocated.unlimited
                               ? String.fromCharCode(INFINITY)
                               : pack.allocated.maximum
-                          })`}</Col>
+                          }`}</Col>
                         </Row>
                       ) : null
                     ) : (
                       <Row key={i}>
-                        <Col md={8} className={"text-left"}>
+                        <Col md={6} className={"text-left"}>
                           <FormattedMessage
                             id="service_packs"
                             defaultMessage={`${pack.name}:`}
                           />
                         </Col>
-                        <Col md={4} className={"text-right"}>{`${
+                        <Col md={3} className={"text-center"}>{`${
                           pack.inUse ? pack.inUse : 0
-                        } (${
+                        }`}</Col>
+                        <Col md={3} className={"text-center"}>{`${
                           pack.allocated.unlimited
                             ? String.fromCharCode(INFINITY)
                             : pack.allocated.maximum
-                        })`}</Col>
+                        }`}</Col>
                       </Row>
                     )
                   )}
@@ -189,15 +203,30 @@ export class Licenses extends Component {
               </Panel.Heading>
               <Panel.Body>
                 <Row>
-                  <Col md={8} className={"text-left"}>
+                  <Col
+                    mdOffset={6}
+                    md={3}
+                    className={"text-center font-weight-bold"}
+                  >
+                    in use
+                  </Col>
+                  <Col md={3} className={"text-center font-weight-bold"}>
+                    limited to
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={6} className={"text-left"}>
                     <FormattedMessage
                       id="service_packs"
                       defaultMessage="User limit:"
                     />
                   </Col>
-                  <Col md={4} className={"text-right"}>{`${group.userCount} (${
+                  <Col md={3} className={"text-center"}>{`${
+                    group.userCount
+                  }`}</Col>
+                  <Col md={3} className={"text-center"}>{`${
                     group.userLimit
-                  })`}</Col>
+                  }`}</Col>
                 </Row>
               </Panel.Body>
             </Panel>
@@ -217,21 +246,34 @@ export class Licenses extends Component {
             </Panel.Heading>
             {servicePacks.length ? (
               <Panel.Body>
+                <Row>
+                  <Col
+                    mdOffset={6}
+                    md={3}
+                    className={"text-center font-weight-bold"}
+                  >
+                    in use
+                  </Col>
+                  <Col md={3} className={"text-center font-weight-bold"}>
+                    limited to
+                  </Col>
+                </Row>
                 {servicePacks.map((pack, i) => (
                   <Row key={i}>
-                    <Col md={8} className={"text-left"}>
+                    <Col md={6} className={"text-left"}>
                       <FormattedMessage
                         id="service_packs"
                         defaultMessage={`${pack.name}:`}
                       />
                     </Col>
-                    <Col md={4} className={"text-right"}>{`${
+                    <Col md={3} className={"text-center"}>{`${
                       pack.inUse ? pack.inUse : 0
-                    } (${
+                    }`}</Col>
+                    <Col md={3} className={"text-center"}>{`${
                       pack.allocated.unlimited
                         ? String.fromCharCode(INFINITY)
                         : pack.allocated.maximum
-                    })`}</Col>
+                    }`}</Col>
                   </Row>
                 ))}
               </Panel.Body>
