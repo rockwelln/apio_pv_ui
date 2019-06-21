@@ -100,8 +100,7 @@ export class Users extends Component {
           <Col className={"text-right"} md={1}>
             <Glyphicon
               className={"x-large"}
-              glyph="glyphicon glyphicon-search"
-              onClick={this.handleSearchClick}
+              glyph="glyphicon glyphicon-plus-sign"
             />
           </Col>
         </Row>
