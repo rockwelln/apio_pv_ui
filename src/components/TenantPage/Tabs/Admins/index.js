@@ -27,7 +27,8 @@ export class Admins extends Component {
     countPerPage: 25,
     page: 0,
     pagination: true,
-    countPages: null
+    countPages: null,
+    searchValue: ""
   };
 
   fetchAdmins = () => {

@@ -9,6 +9,7 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Loading from "../../common/Loading";
 import Details from "./Tabs/Details";
 import PhoneNumber from "./Tabs/PhoneNumbers";
+import Services from "./Tabs/Services";
 
 import deepEqual from "../deepEqual";
 
@@ -84,7 +85,7 @@ class TenantPage extends Component {
             <PhoneNumber />
           </Tab>
           <Tab eventKey={2} title="SERVICES">
-            Services Tab
+            <Services />
           </Tab>
           <Tab eventKey={3} title="SERVICE PACKS">
             Service packs Tab

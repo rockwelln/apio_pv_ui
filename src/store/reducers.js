@@ -20,7 +20,8 @@ const initialState = {
   errorMassage: "",
   shouldRedirect: false,
   groupAdmin: {},
-  tenantAdmin: {}
+  tenantAdmin: {},
+  userServices: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -184,6 +185,18 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         tenantAdmin: action.data
+      };
+    }
+    case actionType.GET_USER_SERVICES_BY_USER_ID: {
+      const userServices = action.data.assignementStatus.services.map(
+        service => ({
+          ...service,
+          serviceChecked: service.assigned
+        })
+      );
+      return {
+        ...state,
+        userServices
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN: {

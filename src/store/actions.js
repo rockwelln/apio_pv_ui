@@ -87,6 +87,11 @@ export const getTenantAdminByAdminId = data => ({
   data
 });
 
+export const getUserServicesByUserId = data => ({
+  type: actionType.GET_USER_SERVICES_BY_USER_ID,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -290,6 +295,16 @@ export function fetchGetTenantAdminByAdminId(tenantId, adminId) {
   return function(dispatch) {
     return fetch_get(`${API_BASE_URL}/tenants/${tenantId}/admins/${adminId}`)
       .then(data => dispatch(getTenantAdminByAdminId(data)))
+      .catch(error => console.error("An error occurred.", error));
+  };
+}
+
+export function fetchGetUserServicesByUserId(tenantId, groupId, userId) {
+  return function(dispatch) {
+    return fetch_get(
+      `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/users/${userId}/services?assignementStatus=true`
+    )
+      .then(data => dispatch(getUserServicesByUserId(data)))
       .catch(error => console.error("An error occurred.", error));
   };
 }
