@@ -21,7 +21,8 @@ const initialState = {
   shouldRedirect: false,
   groupAdmin: {},
   tenantAdmin: {},
-  userServices: {}
+  userServices: [],
+  userServicePacks: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -194,9 +195,16 @@ function mainReducer(state = initialState, action) {
           serviceChecked: service.assigned
         })
       );
+      const userServicePacks = action.data.assignementStatus.servicePacks.map(
+        service => ({
+          ...service,
+          serviceChecked: service.assigned
+        })
+      );
       return {
         ...state,
-        userServices
+        userServices,
+        userServicePacks
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN: {

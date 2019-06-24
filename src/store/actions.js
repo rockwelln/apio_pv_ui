@@ -302,7 +302,7 @@ export function fetchGetTenantAdminByAdminId(tenantId, adminId) {
 export function fetchGetUserServicesByUserId(tenantId, groupId, userId) {
   return function(dispatch) {
     return fetch_get(
-      `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/users/${userId}/services?assignementStatus=true`
+      `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/users/${userId}/services?assignementStatus=true&summary=true`
     )
       .then(data => dispatch(getUserServicesByUserId(data)))
       .catch(error => console.error("An error occurred.", error));

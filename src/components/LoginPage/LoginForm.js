@@ -114,7 +114,7 @@ export default class LoginForm extends Component {
           validationState={this.state.errors === undefined ? null : "error"}
         >
           <Col componentClass={ControlLabel} sm={3}>
-            <FormattedMessage id="password" defaultMessage="Password" />
+            <FormattedMessage id="current-password" defaultMessage="Password" />
           </Col>
 
           <Col sm={8}>

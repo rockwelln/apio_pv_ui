@@ -118,11 +118,12 @@ class App extends Component {
       .catch(console.error);
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
     if (
       this.isAuthenticated() &&
       !this.state.user_info &&
-      this.state.auth_token
+      this.state.auth_token &&
+      prevState.auth_token
     ) {
       this.getUserInfo(this.state.auth_token);
     }

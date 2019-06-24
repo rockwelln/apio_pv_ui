@@ -43,7 +43,7 @@ export class Services extends Component {
       .then(data =>
         this.setState(
           {
-            services: this.props.userServices.sort((a, b) => {
+            services: this.props.userServicePacks.sort((a, b) => {
               if (a.name < b.name) return -1;
               if (a.name > b.name) return 1;
               return 0;
@@ -127,7 +127,7 @@ export class Services extends Component {
                 <Table hover>
                   <thead>
                     <tr>
-                      <th style={{ width: "41%" }}>
+                      <th style={{ width: "85%" }}>
                         <FormattedMessage
                           id="tenant-id"
                           defaultMessage="Service"
@@ -142,13 +142,6 @@ export class Services extends Component {
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
                           onClick={this.sortByServiceChecked}
-                        />
-                      </th>
-                      <th style={{ width: "41%" }}>
-                        <FormattedMessage id="type" defaultMessage="Status" />
-                        <Glyphicon
-                          glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByLastName}
                         />
                       </th>
                       <th style={{ width: "5%" }} />
@@ -209,7 +202,7 @@ export class Services extends Component {
           <Col mdOffset={1} md={10}>
             <FormattedMessage
               id="notFound"
-              defaultMessage="No services were found"
+              defaultMessage="No service packs found"
             />
           </Col>
         )}
@@ -329,7 +322,7 @@ export class Services extends Component {
   };
 }
 
-const mapStateToProps = state => ({ userServices: state.userServices });
+const mapStateToProps = state => ({ userServicePacks: state.userServicePacks });
 
 const mapDispatchToProps = { fetchGetUserServicesByUserId };
 
