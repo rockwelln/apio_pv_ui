@@ -27,15 +27,17 @@ export class Licenses extends Component {
   componentDidMount() {
     this.props
       .fetchGetLicensesByGroupId(this.props.tenantId, this.props.groupId)
-      .then(() => this.setState({ isLoadingLicenses: false }));
+      .then(data => {
+        this.setState({ isLoadingLicenses: data ? false : true });
+      });
     this.props
       .fetchGetTrunkByGroupID(this.props.tenantId, this.props.groupId)
-      .then(() =>
+      .then(() => {
         this.setState({
           trunkGroups: this.props.trunkGroups,
           isLoadingTrunk: false
-        })
-      );
+        });
+      });
   }
 
   render() {

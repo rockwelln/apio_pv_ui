@@ -16,12 +16,12 @@ function getCookie(name) {
       .shift();
 }
 
-export function checkStatus(response) {
+export function checkStatus(response, checkBadRequest) {
   if (response.status >= 200 && response.status < 300) {
     return response;
   } else if (response.status === 401) {
     console.log("the request was *not* authorized!");
-  } else if (response.status === 400) {
+  } else if (response.status === 400 && checkBadRequest) {
     console.log(response);
     return response;
   }
@@ -49,6 +49,7 @@ export function parseJSON(response) {
 }
 
 export function fetch_get(url, token) {
+  const checkBadRequest = false;
   const full_url = url.href
     ? url
     : url.startsWith("http")
@@ -62,11 +63,12 @@ export function fetch_get(url, token) {
       "Content-Type": "application/json"
     }
   })
-    .then(checkStatus)
+    .then(res => checkStatus(res, checkBadRequest))
     .then(parseJSON);
 }
 
 export function fetch_put(url, body, token) {
+  const checkBadRequest = false;
   const full_url = url.href
     ? url
     : url.startsWith("http")
@@ -80,7 +82,7 @@ export function fetch_put(url, body, token) {
       Authorization: `Bearer ${getCookie("auth_token")}`
     },
     body: JSON.stringify(body)
-  }).then(checkStatus);
+  }).then(res => checkStatus(res, checkBadRequest));
 }
 
 export function fetch_post(url, body) {
@@ -88,7 +90,7 @@ export function fetch_post(url, body) {
 }
 
 export function fetch_post_raw(url, raw_body, content_type) {
-  let checkBadRequest = true;
+  const checkBadRequest = true;
   const full_url = url.href
     ? url
     : url.startsWith("http")
@@ -104,7 +106,7 @@ export function fetch_post_raw(url, raw_body, content_type) {
     method: "POST",
     headers: headers,
     body: raw_body
-  }).then(checkStatus);
+  }).then(res => checkStatus(res, checkBadRequest));
 }
 
 export function fetch_delete(url, token) {

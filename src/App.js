@@ -30,6 +30,7 @@ import GroupPage from "./components/GroupPage";
 import UserPage from "./components/UserPage";
 import CreateAdmin from "./components/CreateAdmin";
 import UpdateAdmin from "./components/UpdateAdmin";
+//import ErrorBoundary from "./common/ErrorBoundary";
 
 import "./App.css";
 import loading from "./loading.gif";
@@ -117,7 +118,7 @@ class App extends Component {
       .catch(console.error);
   }
 
-  componentWillUpdate() {
+  componentDidUpdate() {
     if (
       this.isAuthenticated() &&
       !this.state.user_info &&
@@ -208,6 +209,7 @@ class App extends Component {
       return (
         <Router>
           <Switch>
+            {/* <ErrorBoundary> */}
             <Route path="/" exact>
               <Redirect to="/dashboard" />
             </Route>
@@ -220,6 +222,7 @@ class App extends Component {
                 />
               )}
             />
+            {/* </ErrorBoundary> */}
           </Switch>
         </Router>
       );
@@ -246,6 +249,7 @@ class App extends Component {
             />
           </div>
           <Col mdOffset={1} md={10}>
+            {/* <ErrorBoundary> */}
             <Switch>
               <Route
                 path="/dashboard"
@@ -353,7 +357,7 @@ class App extends Component {
                 }
                 exact
               />
-              <Route
+              {/* <Route
                 path="/data/tenants/:tenantId/groups/:siteId/numbers"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
@@ -367,12 +371,13 @@ class App extends Component {
                   )
                 }
                 exact
-              />
+              /> */}
               <Route path="/" exact>
                 <Redirect to="/dashboard" />
               </Route>
               <Route component={NotFound} />
             </Switch>
+            {/* </ErrorBoundary> */}
           </Col>
         </div>
       </Router>
