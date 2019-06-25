@@ -69,7 +69,6 @@ export class Services extends Component {
       return <Loading />;
     }
 
-    console.log(this.props.userServices);
     return (
       <React.Fragment>
         <Row className={"margin-top-2"}>

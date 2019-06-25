@@ -192,7 +192,21 @@ function mainReducer(state = initialState, action) {
       const userServices = action.data.assignementStatus.services.map(
         service => ({
           ...service,
-          serviceChecked: service.assigned
+          serviceChecked: service.assigned,
+          status: action.data.summary.userServices.reduce(
+            (prev, userService) => {
+              if (service.name === userService.name) {
+                if (userService.active) {
+                  prev = "Active";
+                  return prev;
+                } else {
+                  prev = "Not active";
+                  return prev;
+                }
+              } else return prev;
+            },
+            "N/A"
+          )
         })
       );
       const userServicePacks = action.data.assignementStatus.servicePacks.map(

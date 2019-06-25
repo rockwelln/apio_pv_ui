@@ -24,7 +24,7 @@ export default class Sevice extends Component {
             }}
           />
         </td>
-        <td />
+        <td>{service.status}</td>
         <td>
           <ButtonToolbar>
             <Glyphicon

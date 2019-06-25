@@ -104,6 +104,7 @@ export default class LoginForm extends Component {
             <FormControl
               type="text"
               value={this.state.username}
+              autoComplete="username"
               onChange={e =>
                 this.setState({ username: e.target.value, errors: undefined })
               }
@@ -121,6 +122,7 @@ export default class LoginForm extends Component {
             <FormControl
               type="password"
               value={this.state.password}
+              autoComplete="current-password"
               onChange={e =>
                 this.setState({ password: e.target.value, errors: undefined })
               }

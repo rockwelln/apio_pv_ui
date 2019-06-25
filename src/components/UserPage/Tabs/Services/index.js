@@ -69,7 +69,6 @@ export class Services extends Component {
       return <Loading />;
     }
 
-    console.log(this.props.userServices);
     return (
       <React.Fragment>
         <Row className={"margin-top-2"}>
@@ -127,7 +126,7 @@ export class Services extends Component {
                 <Table hover>
                   <thead>
                     <tr>
-                      <th style={{ width: "41%" }}>
+                      <th style={{ width: "60%" }}>
                         <FormattedMessage
                           id="tenant-id"
                           defaultMessage="Service"
@@ -144,11 +143,11 @@ export class Services extends Component {
                           onClick={this.sortByServiceChecked}
                         />
                       </th>
-                      <th style={{ width: "41%" }}>
+                      <th style={{ width: "25%" }}>
                         <FormattedMessage id="type" defaultMessage="Status" />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByLastName}
+                          onClick={this.sortByStatus}
                         />
                       </th>
                       <th style={{ width: "5%" }} />
@@ -324,6 +323,23 @@ export class Services extends Component {
       this.setState(
         { services: servicesSorted, sortedBy: "serviceChecked" },
         () => this.pagination()
+      );
+    }
+  };
+
+  sortByStatus = () => {
+    const { services, sortedBy } = this.state;
+    if (sortedBy === "status") {
+      const servicesSorted = services.reverse();
+      this.setState({ services: servicesSorted }, () => this.pagination());
+    } else {
+      const servicesSorted = services.sort((a, b) => {
+        if (a.status < b.status) return -1;
+        if (a.status > b.status) return 1;
+        return 0;
+      });
+      this.setState({ services: servicesSorted, sortedBy: "status" }, () =>
+        this.pagination()
       );
     }
   };
