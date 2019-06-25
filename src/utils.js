@@ -67,8 +67,8 @@ export function fetch_get(url, token) {
     .then(parseJSON);
 }
 
-export function fetch_put(url, body, token) {
-  const checkBadRequest = false;
+export function fetch_put(url, body, checkBadRequest) {
+  const checkRequest = checkBadRequest ? checkBadRequest : false;
   const full_url = url.href
     ? url
     : url.startsWith("http")
@@ -82,7 +82,7 @@ export function fetch_put(url, body, token) {
       Authorization: `Bearer ${getCookie("auth_token")}`
     },
     body: JSON.stringify(body)
-  }).then(res => checkStatus(res, checkBadRequest));
+  }).then(res => checkStatus(res, checkRequest));
 }
 
 export function fetch_post(url, body) {

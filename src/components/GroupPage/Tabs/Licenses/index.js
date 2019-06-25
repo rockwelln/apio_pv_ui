@@ -1,17 +1,24 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
 import Panel from "react-bootstrap/lib/Panel";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
+import FormControl from "react-bootstrap/lib/FormControl";
+import Checkbox from "react-bootstrap/lib/Checkbox";
+import HelpBlock from "react-bootstrap/lib/HelpBlock";
 
 import { FormattedMessage } from "react-intl";
 import Loading from "../../../../common/Loading";
 
 import {
   fetchGetLicensesByGroupId,
-  fetchGetTrunkByGroupID
+  fetchGetTrunkByGroupID,
+  fetchPutUpdateGroupDetails,
+  fetchPutUpdateTrunkByGroupId,
+  clearErrorMassage
 } from "../../../../store/actions";
 
 const INFINITY = 8734;
@@ -21,7 +28,10 @@ export class Licenses extends Component {
     isLoadingLicenses: true,
     isLoadingTrunk: true,
     showMore: false,
-    trunkGroups: {}
+    trunkGroups: {},
+    editNumberOfUsers: false,
+    newUserLimit: null,
+    editTrunkCapacity: false
   };
 
   componentDidMount() {
@@ -41,7 +51,13 @@ export class Licenses extends Component {
   }
 
   render() {
-    const { isLoadingTrunk, isLoadingLicenses, trunkGroups } = this.state;
+    const {
+      isLoadingTrunk,
+      isLoadingLicenses,
+      trunkGroups,
+      editNumberOfUsers,
+      editTrunkCapacity
+    } = this.state;
     const { group, servicePacks, groupServices } = this.props;
 
     if (isLoadingLicenses || isLoadingTrunk) {
@@ -57,10 +73,37 @@ export class Licenses extends Component {
                 id="trunling_capacity"
                 defaultMessage="TRUNKING CAPACITY"
               />
-              <Glyphicon
-                className={"margin-checbox"}
-                glyph="glyphicon glyphicon-pencil"
-              />
+              {!editTrunkCapacity ? (
+                Object.keys(trunkGroups).length && (
+                  <Glyphicon
+                    className={"margin-checbox"}
+                    glyph="glyphicon glyphicon-pencil"
+                    onClick={() => {
+                      this.props.clearErrorMassage();
+                      this.setState({ editTrunkCapacity: true });
+                    }}
+                  />
+                )
+              ) : (
+                <React.Fragment>
+                  <Glyphicon
+                    className={"margin-checbox"}
+                    glyph="glyphicon glyphicon glyphicon-ban-circle"
+                    onClick={() => {
+                      this.props.clearErrorMassage();
+                      this.setState({
+                        editTrunkCapacity: false,
+                        trunkGroups: this.props.trunkGroups
+                      });
+                    }}
+                  />
+                  <Glyphicon
+                    className={"margin-checbox"}
+                    glyph="glyphicon glyphicon glyphicon-ok-circle"
+                    onClick={this.updateTrunkCapacity}
+                  />
+                </React.Fragment>
+              )}
             </Panel.Heading>
             {Object.keys(trunkGroups).length ? (
               <Panel.Body>
@@ -71,9 +114,28 @@ export class Licenses extends Component {
                       defaultMessage={`Trunking licenses:`}
                     />
                   </Col>
-                  <Col md={4} className={"text-right"}>{`${
-                    trunkGroups.maxActiveCalls
-                  }`}</Col>
+                  {!editTrunkCapacity ? (
+                    <Col md={4} className={"text-right"}>{`${
+                      trunkGroups.maxActiveCalls
+                    }`}</Col>
+                  ) : (
+                    <Col md={4} className={"text-right"}>
+                      <FormControl
+                        type="number"
+                        defaultValue={trunkGroups.maxActiveCalls}
+                        onChange={e => {
+                          this.props.clearErrorMassage();
+                          let target = e.currentTarget;
+                          this.setState(prevState => ({
+                            trunkGroups: {
+                              ...prevState.trunkGroups,
+                              maxActiveCalls: parseInt(target.value, 10)
+                            }
+                          }));
+                        }}
+                      />
+                    </Col>
+                  )}
                 </Row>
                 <Row>
                   <Col md={8} className={"text-left"}>
@@ -82,11 +144,65 @@ export class Licenses extends Component {
                       defaultMessage={`Max bursting:`}
                     />
                   </Col>
-                  <Col md={4} className={"text-right"}>{`${
-                    trunkGroups.burstingMaxActiveCalls.unlimited
-                      ? String.fromCharCode(INFINITY)
-                      : trunkGroups.burstingMaxActiveCalls.maximum
-                  }`}</Col>
+                  {!editTrunkCapacity ? (
+                    <Col md={4} className={"text-right"}>{`${
+                      trunkGroups.burstingMaxActiveCalls.unlimited
+                        ? String.fromCharCode(INFINITY)
+                        : trunkGroups.burstingMaxActiveCalls.maximum
+                    }`}</Col>
+                  ) : (
+                    <Col md={4} className={"text-right"}>
+                      <Checkbox
+                        checked={trunkGroups.burstingMaxActiveCalls.unlimited}
+                        onChange={() => {
+                          this.props.clearErrorMassage();
+                          this.setState(prevState => ({
+                            trunkGroups: {
+                              ...prevState.trunkGroups,
+                              burstingMaxActiveCalls: {
+                                ...prevState.trunkGroups.burstingMaxActiveCalls,
+                                unlimited: !prevState.trunkGroups
+                                  .burstingMaxActiveCalls.unlimited
+                              }
+                            }
+                          }));
+                        }}
+                      >
+                        {String.fromCharCode(INFINITY)}
+                      </Checkbox>
+                      {!trunkGroups.burstingMaxActiveCalls.unlimited && (
+                        <FormControl
+                          type="number"
+                          defaultValue={
+                            trunkGroups.burstingMaxActiveCalls.maximum
+                          }
+                          onChange={e => {
+                            this.props.clearErrorMassage();
+                            let target = e.currentTarget;
+                            this.setState(prevState => ({
+                              trunkGroups: {
+                                ...prevState.trunkGroups,
+                                burstingMaxActiveCalls: {
+                                  ...prevState.trunkGroups
+                                    .burstingMaxActiveCalls,
+                                  maximum: parseInt(target.value, 10)
+                                }
+                              }
+                            }));
+                          }}
+                        />
+                      )}
+                    </Col>
+                  )}
+                </Row>
+                <Row>
+                  <Col md={12}>
+                    {this.props.groupTrunkErrorMassage && (
+                      <HelpBlock bsClass="color-error">
+                        {this.props.groupTrunkErrorMassage}
+                      </HelpBlock>
+                    )}
+                  </Col>
                 </Row>
               </Panel.Body>
             ) : (
@@ -198,37 +314,67 @@ export class Licenses extends Component {
                   id="number_of_users"
                   defaultMessage="Number of users"
                 />
-                <Glyphicon
-                  className={"margin-checbox"}
-                  glyph="glyphicon glyphicon-pencil"
-                />
+                {!editNumberOfUsers ? (
+                  <Glyphicon
+                    className={"margin-checbox"}
+                    glyph="glyphicon glyphicon-pencil"
+                    onClick={() => this.setState({ editNumberOfUsers: true })}
+                  />
+                ) : (
+                  <React.Fragment>
+                    <Glyphicon
+                      className={"margin-checbox"}
+                      glyph="glyphicon glyphicon glyphicon-ban-circle"
+                      onClick={() =>
+                        this.setState({ editNumberOfUsers: false })
+                      }
+                    />
+                    <Glyphicon
+                      className={"margin-checbox"}
+                      glyph="glyphicon glyphicon glyphicon-ok-circle"
+                      onClick={this.updateUserLimit}
+                    />
+                  </React.Fragment>
+                )}
               </Panel.Heading>
               <Panel.Body>
                 <Row>
                   <Col
-                    mdOffset={6}
-                    md={3}
+                    mdOffset={4}
+                    md={4}
                     className={"text-center font-weight-bold"}
                   >
                     in use
                   </Col>
-                  <Col md={3} className={"text-center font-weight-bold"}>
+                  <Col md={4} className={"text-center font-weight-bold"}>
                     limited to
                   </Col>
                 </Row>
                 <Row>
-                  <Col md={6} className={"text-left"}>
+                  <Col md={4} className={"text-left"}>
                     <FormattedMessage
                       id="service_packs"
                       defaultMessage="User limit:"
                     />
                   </Col>
-                  <Col md={3} className={"text-center"}>{`${
+                  <Col md={4} className={"text-center"}>{`${
                     group.userCount
                   }`}</Col>
-                  <Col md={3} className={"text-center"}>{`${
-                    group.userLimit
-                  }`}</Col>
+                  {!editNumberOfUsers ? (
+                    <Col md={4} className={"text-center"}>{`${
+                      group.userLimit
+                    }`}</Col>
+                  ) : (
+                    <Col md={4} className={"text-center"}>
+                      <FormControl
+                        type="number"
+                        defaultValue={group.userLimit}
+                        onChange={e => {
+                          this.setState({ newUserLimit: e.target.value });
+                        }}
+                      />
+                    </Col>
+                  )}
                 </Row>
               </Panel.Body>
             </Panel>
@@ -295,21 +441,61 @@ export class Licenses extends Component {
   handleClickShowMore = () => {
     this.setState({ showMore: !this.state.showMore });
   };
+
+  updateUserLimit = () => {
+    const data = {
+      userLimit: this.state.newUserLimit
+        ? parseInt(this.state.newUserLimit, 10)
+        : this.props.group.userLimit
+    };
+
+    this.props
+      .fetchPutUpdateGroupDetails(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        data
+      )
+      .then(() => this.setState({ editNumberOfUsers: false }));
+  };
+
+  updateTrunkCapacity = () => {
+    const data = {
+      maxActiveCalls: this.state.trunkGroups.maxActiveCalls,
+      burstingMaxActiveCalls: this.state.trunkGroups.burstingMaxActiveCalls
+    };
+
+    this.props
+      .fetchPutUpdateTrunkByGroupId(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        data
+      )
+      .then(
+        data =>
+          data === "success" && this.setState({ editTrunkCapacity: false })
+      );
+  };
 }
 
 const mapStateToProps = state => ({
   group: state.group,
   servicePacks: state.servicePacks,
   groupServices: state.groupServices,
-  trunkGroups: state.trunkGroups
+  trunkGroups: state.trunkGroups,
+  groupTrunkErrorMassage: state.groupTrunkErrorMassage
 });
 
 const mapDispatchToProps = {
   fetchGetLicensesByGroupId,
-  fetchGetTrunkByGroupID
+  fetchGetTrunkByGroupID,
+  fetchPutUpdateGroupDetails,
+  fetchPutUpdateTrunkByGroupId,
+  clearErrorMassage
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Licenses);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Licenses)
+);

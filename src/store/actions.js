@@ -132,6 +132,16 @@ export const putUpdateTenantAdmin = data => ({
   data
 });
 
+export const putUpdateTrunkByGroupId = data => ({
+  type: actionType.PUT_UPDATE_TRUNK_BY_GROUP_ID,
+  data
+});
+
+export const putUpdateTrunkByGroupIdError = data => ({
+  type: actionType.PUT_UPDATE_TRUNK_BY_GROUP_ID_ERROR,
+  data
+});
+
 export const deleteTenant = Id => ({
   type: actionType.DELETE_TENANT,
   Id
@@ -398,6 +408,31 @@ export function fetchPutUpdateTenantAdmin(tenantId, adminId, data) {
       .then(res => res.json())
       .then(data => dispatch(putUpdateTenantAdmin(data)))
       .catch(error => console.error("An error occurred.", error));
+  };
+}
+
+export function fetchPutUpdateTrunkByGroupId(tenantId, groupId, data) {
+  return function(dispatch) {
+    const checkBadRequest = true;
+    return fetch_put(
+      `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/features/trunk_groups/`,
+      data,
+      checkBadRequest
+    ).then(res => {
+      if (res.status === 400) {
+        res
+          .json()
+          .then(data => dispatch(putUpdateTrunkByGroupIdError(data)))
+          .catch(error => console.error(error));
+        return Promise.resolve("fail");
+      } else {
+        res
+          .json()
+          .then(data => dispatch(putUpdateTrunkByGroupId(data)))
+          .catch(error => console.error(error));
+        return Promise.resolve("success");
+      }
+    });
   };
 }
 
