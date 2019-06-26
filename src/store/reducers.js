@@ -286,6 +286,12 @@ function mainReducer(state = initialState, action) {
         groupTrunkErrorMassage
       };
     }
+    case actionType.PUT_UPDATE_TRUNK_BY_GROUP_ID: {
+      return {
+        ...state,
+        servicePacks: action.data.servicePacks
+      };
+    }
     case actionType.DELETE_TENANT: {
       return {
         ...state

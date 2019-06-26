@@ -142,6 +142,11 @@ export const putUpdateTrunkByGroupIdError = data => ({
   data
 });
 
+export const putUpdateServicePacksByGroupId = data => ({
+  type: actionType.PUT_UPDATE_SERVICE_PACKS_BY_GROUP_ID,
+  data
+});
+
 export const deleteTenant = Id => ({
   type: actionType.DELETE_TENANT,
   Id
@@ -433,6 +438,18 @@ export function fetchPutUpdateTrunkByGroupId(tenantId, groupId, data) {
         return Promise.resolve("success");
       }
     });
+  };
+}
+
+export function fetchPutUpdateServicePacksByGroupId(tenantId, groupId, data) {
+  return function(dispatch) {
+    return fetch_put(
+      `${API_BASE_URL}/tenants/${tenantId}/groups/${groupId}/licenses/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => dispatch(putUpdateServicePacksByGroupId(data)))
+      .catch(error => console.error("An error occurred.", error));
   };
 }
 

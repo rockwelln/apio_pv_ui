@@ -12,13 +12,15 @@ import HelpBlock from "react-bootstrap/lib/HelpBlock";
 
 import { FormattedMessage } from "react-intl";
 import Loading from "../../../../common/Loading";
+import EditLicenses from "../../../../common/EditLicenses";
 
 import {
   fetchGetLicensesByGroupId,
   fetchGetTrunkByGroupID,
   fetchPutUpdateGroupDetails,
   fetchPutUpdateTrunkByGroupId,
-  clearErrorMassage
+  clearErrorMassage,
+  fetchPutUpdateServicePacksByGroupId
 } from "../../../../store/actions";
 
 const INFINITY = 8734;
@@ -29,16 +31,21 @@ export class Licenses extends Component {
     isLoadingTrunk: true,
     showMore: false,
     trunkGroups: {},
+    servicePacks: [],
     editNumberOfUsers: false,
     newUserLimit: null,
-    editTrunkCapacity: false
+    editTrunkCapacity: false,
+    editServicePacks: false
   };
 
-  componentDidMount() {
+  fetchData = () => {
     this.props
       .fetchGetLicensesByGroupId(this.props.tenantId, this.props.groupId)
       .then(data => {
-        this.setState({ isLoadingLicenses: data ? false : true });
+        this.setState({
+          servicePacks: this.props.servicePacks,
+          isLoadingLicenses: data ? false : true
+        });
       });
     this.props
       .fetchGetTrunkByGroupID(this.props.tenantId, this.props.groupId)
@@ -48,6 +55,10 @@ export class Licenses extends Component {
           isLoadingTrunk: false
         });
       });
+  };
+
+  componentDidMount() {
+    this.fetchData();
   }
 
   render() {
@@ -56,13 +67,17 @@ export class Licenses extends Component {
       isLoadingLicenses,
       trunkGroups,
       editNumberOfUsers,
-      editTrunkCapacity
+      editTrunkCapacity,
+      editServicePacks,
+      isCheckedServicePack
     } = this.state;
     const { group, servicePacks, groupServices } = this.props;
 
     if (isLoadingLicenses || isLoadingTrunk) {
       return <Loading />;
     }
+
+    console.log(this.state);
 
     return (
       <Row className={"margin-top-2"}>
@@ -153,7 +168,7 @@ export class Licenses extends Component {
                   ) : (
                     <Col md={4} className={"text-right"}>
                       <Checkbox
-                        checked={
+                        defaultChecked={
                           this.props.trunkGroups.burstingMaxActiveCalls
                             .unlimited
                         }
@@ -391,10 +406,31 @@ export class Licenses extends Component {
                 id="service_packs"
                 defaultMessage="SERVICE PACKS"
               />
-              <Glyphicon
-                className={"margin-checbox"}
-                glyph="glyphicon glyphicon-pencil"
-              />
+              {!!servicePacks.length && !editServicePacks ? (
+                <Glyphicon
+                  className={"margin-checbox"}
+                  glyph="glyphicon glyphicon-pencil"
+                  onClick={() => this.setState({ editServicePacks: true })}
+                />
+              ) : (
+                <React.Fragment>
+                  <Glyphicon
+                    className={"margin-checbox"}
+                    glyph="glyphicon glyphicon glyphicon-ban-circle"
+                    onClick={() =>
+                      this.setState({
+                        servicePacks: this.props.servicePacks,
+                        editServicePacks: false
+                      })
+                    }
+                  />
+                  <Glyphicon
+                    className={"margin-checbox"}
+                    glyph="glyphicon glyphicon glyphicon-ok-circle"
+                    onClick={this.updateServicePacks}
+                  />
+                </React.Fragment>
+              )}
             </Panel.Heading>
             {servicePacks.length ? (
               <Panel.Body>
@@ -410,9 +446,9 @@ export class Licenses extends Component {
                     limited to
                   </Col>
                 </Row>
-                {servicePacks.map((pack, i) => (
+                {this.state.servicePacks.map((pack, i) => (
                   <Row key={i}>
-                    <Col md={6} className={"text-left"}>
+                    <Col md={5} className={"text-left"}>
                       <FormattedMessage
                         id="service_packs"
                         defaultMessage={`${pack.name}:`}
@@ -421,11 +457,27 @@ export class Licenses extends Component {
                     <Col md={3} className={"text-center"}>{`${
                       pack.inUse ? pack.inUse : 0
                     }`}</Col>
-                    <Col md={3} className={"text-center"}>{`${
-                      pack.allocated.unlimited
-                        ? String.fromCharCode(INFINITY)
-                        : pack.allocated.maximum
-                    }`}</Col>
+                    {!editServicePacks ? (
+                      <Col md={4} className={"text-center"}>{`${
+                        pack.allocated.unlimited
+                          ? String.fromCharCode(INFINITY)
+                          : pack.allocated.maximum
+                      }`}</Col>
+                    ) : (
+                      <Col md={4} className={"text-right"}>
+                        <EditLicenses
+                          defaultChecked={pack.allocated.unlimited}
+                          index={i}
+                          defaultMaximum={pack.allocated.maximum}
+                          changeServicePacksUnlimeted={
+                            this.changeServicePacksUnlimeted
+                          }
+                          changeServicePacksMaximum={
+                            this.changeServicePacksMaximum
+                          }
+                        />
+                      </Col>
+                    )}
                   </Row>
                 ))}
               </Panel.Body>
@@ -442,6 +494,54 @@ export class Licenses extends Component {
       </Row>
     );
   }
+
+  updateServicePacks = () => {
+    const data = {
+      servicePacks: this.state.servicePacks
+    };
+
+    this.props
+      .fetchPutUpdateServicePacksByGroupId(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        data
+      )
+      .then(() => this.fetchData())
+      .then(() => this.setState({ editServicePacks: false }));
+  };
+
+  changeServicePacksUnlimeted = (i, checked) => {
+    this.setState(prevState => ({
+      servicePacks: [
+        ...prevState.servicePacks.slice(0, i),
+        {
+          ...prevState.servicePacks[i],
+          allocated: {
+            ...prevState.servicePacks[i].allocated,
+            unlimited: checked
+          }
+        },
+        ...prevState.servicePacks.slice(i + 1)
+      ]
+    }));
+  };
+
+  changeServicePacksMaximum = (i, max) => {
+    this.setState(prevState => ({
+      servicePacks: [
+        ...prevState.servicePacks.slice(0, i),
+        {
+          ...prevState.servicePacks[i],
+          allocated: {
+            ...prevState.servicePacks[i].allocated,
+            maximum: max
+          }
+        },
+        ...prevState.servicePacks.slice(i + 1)
+      ]
+    }));
+  };
+
   handleClickShowMore = () => {
     this.setState({ showMore: !this.state.showMore });
   };
@@ -494,7 +594,8 @@ const mapDispatchToProps = {
   fetchGetTrunkByGroupID,
   fetchPutUpdateGroupDetails,
   fetchPutUpdateTrunkByGroupId,
-  clearErrorMassage
+  clearErrorMassage,
+  fetchPutUpdateServicePacksByGroupId
 };
 
 export default withRouter(
