@@ -116,13 +116,13 @@ export class Licenses extends Component {
                   </Col>
                   {!editTrunkCapacity ? (
                     <Col md={4} className={"text-right"}>{`${
-                      trunkGroups.maxActiveCalls
+                      this.props.trunkGroups.maxActiveCalls
                     }`}</Col>
                   ) : (
                     <Col md={4} className={"text-right"}>
                       <FormControl
                         type="number"
-                        defaultValue={trunkGroups.maxActiveCalls}
+                        defaultValue={this.props.trunkGroups.maxActiveCalls}
                         onChange={e => {
                           this.props.clearErrorMassage();
                           let target = e.currentTarget;
@@ -146,14 +146,17 @@ export class Licenses extends Component {
                   </Col>
                   {!editTrunkCapacity ? (
                     <Col md={4} className={"text-right"}>{`${
-                      trunkGroups.burstingMaxActiveCalls.unlimited
+                      this.props.trunkGroups.burstingMaxActiveCalls.unlimited
                         ? String.fromCharCode(INFINITY)
-                        : trunkGroups.burstingMaxActiveCalls.maximum
+                        : this.props.trunkGroups.burstingMaxActiveCalls.maximum
                     }`}</Col>
                   ) : (
                     <Col md={4} className={"text-right"}>
                       <Checkbox
-                        checked={trunkGroups.burstingMaxActiveCalls.unlimited}
+                        checked={
+                          this.props.trunkGroups.burstingMaxActiveCalls
+                            .unlimited
+                        }
                         onChange={() => {
                           this.props.clearErrorMassage();
                           this.setState(prevState => ({
@@ -174,7 +177,8 @@ export class Licenses extends Component {
                         <FormControl
                           type="number"
                           defaultValue={
-                            trunkGroups.burstingMaxActiveCalls.maximum
+                            this.props.trunkGroups.burstingMaxActiveCalls
+                              .maximum
                           }
                           onChange={e => {
                             this.props.clearErrorMassage();
