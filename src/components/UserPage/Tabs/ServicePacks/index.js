@@ -136,14 +136,13 @@ export class Services extends Component {
                           onClick={this.sortByName}
                         />
                       </th>
-                      <th style={{ width: "10%" }}>
+                      <th style={{ width: "15%" }}>
                         <FormattedMessage id="name" defaultMessage="Assigned" />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
                           onClick={this.sortByServiceChecked}
                         />
                       </th>
-                      <th style={{ width: "5%" }} />
                     </tr>
                   </thead>
                   <tbody>
