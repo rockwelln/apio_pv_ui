@@ -20,7 +20,8 @@ import {
   fetchPutUpdateGroupDetails,
   fetchPutUpdateTrunkByGroupId,
   clearErrorMassage,
-  fetchPutUpdateServicePacksByGroupId
+  fetchPutUpdateServicePacksByGroupId,
+  fetchPutUpdateGroupServicesByGroupId
 } from "../../../../store/actions";
 
 const INFINITY = 8734;
@@ -35,7 +36,8 @@ export class Licenses extends Component {
     editNumberOfUsers: false,
     newUserLimit: null,
     editTrunkCapacity: false,
-    editServicePacks: false
+    editServicePacks: false,
+    editGroupServices: false
   };
 
   fetchData = () => {
@@ -43,6 +45,7 @@ export class Licenses extends Component {
       .fetchGetLicensesByGroupId(this.props.tenantId, this.props.groupId)
       .then(data => {
         this.setState({
+          groupServices: this.props.groupServices.groups,
           servicePacks: this.props.servicePacks,
           isLoadingLicenses: data ? false : true
         });
@@ -69,15 +72,13 @@ export class Licenses extends Component {
       editNumberOfUsers,
       editTrunkCapacity,
       editServicePacks,
-      isCheckedServicePack
+      editGroupServices
     } = this.state;
     const { group, servicePacks, groupServices } = this.props;
 
     if (isLoadingLicenses || isLoadingTrunk) {
       return <Loading />;
     }
-
-    console.log(this.state);
 
     return (
       <Row className={"margin-top-2"}>
@@ -89,7 +90,8 @@ export class Licenses extends Component {
                 defaultMessage="TRUNKING CAPACITY"
               />
               {!editTrunkCapacity ? (
-                Object.keys(trunkGroups).length && (
+                !!Object.keys(trunkGroups).length &&
+                !!trunkGroups.maxAvailableActiveCalls.maximum && (
                   <Glyphicon
                     className={"margin-checbox"}
                     glyph="glyphicon glyphicon-pencil"
@@ -242,10 +244,32 @@ export class Licenses extends Component {
                   id="group_services"
                   defaultMessage="GROUP SERVICES"
                 />
-                <Glyphicon
-                  className={"margin-checbox"}
-                  glyph="glyphicon glyphicon-pencil"
-                />
+                {!editGroupServices ? (
+                  <Glyphicon
+                    className={"margin-checbox"}
+                    glyph="glyphicon glyphicon-pencil"
+                    onClick={() => {
+                      this.setState({ editGroupServices: true });
+                    }}
+                  />
+                ) : (
+                  <React.Fragment>
+                    <Glyphicon
+                      className={"margin-checbox"}
+                      glyph="glyphicon glyphicon glyphicon-ban-circle"
+                      onClick={() => {
+                        this.setState({
+                          editGroupServices: false
+                        });
+                      }}
+                    />
+                    <Glyphicon
+                      className={"margin-checbox"}
+                      glyph="glyphicon glyphicon glyphicon-ok-circle"
+                      onClick={this.updateGroupServices}
+                    />
+                  </React.Fragment>
+                )}
               </Panel.Heading>
               {groupServices.groups.length ? (
                 <Panel.Body>
@@ -261,8 +285,8 @@ export class Licenses extends Component {
                       limited to
                     </Col>
                   </Row>
-                  {groupServices.groups.map((pack, i) =>
-                    !this.state.showMore ? (
+                  {this.state.groupServices.map((pack, i) =>
+                    !this.state.showMore && !editGroupServices ? (
                       i <= groupServices.countShown - 1 ? (
                         <Row key={i}>
                           <Col md={6} className={"text-left"}>
@@ -281,7 +305,7 @@ export class Licenses extends Component {
                           }`}</Col>
                         </Row>
                       ) : null
-                    ) : (
+                    ) : !editGroupServices ? (
                       <Row key={i}>
                         <Col md={6} className={"text-left"}>
                           <FormattedMessage
@@ -298,23 +322,48 @@ export class Licenses extends Component {
                             : pack.allocated.maximum
                         }`}</Col>
                       </Row>
+                    ) : (
+                      <Row key={i}>
+                        <Col md={5} className={"text-left"}>
+                          <FormattedMessage
+                            id="service_packs"
+                            defaultMessage={`${pack.name}:`}
+                          />
+                        </Col>
+                        <Col md={3} className={"text-center"}>{`${
+                          pack.inUse ? pack.inUse : 0
+                        }`}</Col>
+                        <Col md={4} className={"text-center"}>
+                          <EditLicenses
+                            defaultChecked={pack.allocated.unlimited}
+                            index={i}
+                            defaultMaximum={pack.allocated.maximum}
+                            changePacksUnlimeted={
+                              this.changeGroupServicesUnlimeted
+                            }
+                            changePacksMaximum={this.changeGroupServicesMaximum}
+                          />
+                        </Col>
+                      </Row>
                     )
                   )}
-                  <Row>
-                    <Col
-                      md={8}
-                      className={"cursor-pointer"}
-                      componentClass="a"
-                      onClick={this.handleClickShowMore}
-                    >
-                      <FormattedMessage
-                        id="shown_more"
-                        defaultMessage={`${
-                          !this.state.showMore ? "Show more" : "Hide"
-                        }`}
-                      />
-                    </Col>
-                  </Row>
+                  {!editGroupServices && (
+                    <Row>
+                      <Col
+                        md={8}
+                        className={"cursor-pointer"}
+                        componentClass="a"
+                        onClick={this.handleClickShowMore}
+                      >
+                        <FormattedMessage
+                          id="shown_more"
+                          defaultMessage={`${
+                            !this.state.showMore ? "Show more" : "Hide"
+                          }`}
+                        />
+                      </Col>
+                    </Row>
+                  )}
                 </Panel.Body>
               ) : (
                 <Panel.Body>
@@ -406,31 +455,32 @@ export class Licenses extends Component {
                 id="service_packs"
                 defaultMessage="SERVICE PACKS"
               />
-              {!!servicePacks.length && !editServicePacks ? (
-                <Glyphicon
-                  className={"margin-checbox"}
-                  glyph="glyphicon glyphicon-pencil"
-                  onClick={() => this.setState({ editServicePacks: true })}
-                />
-              ) : (
-                <React.Fragment>
+              {!!servicePacks.length &&
+                (!editServicePacks ? (
                   <Glyphicon
                     className={"margin-checbox"}
-                    glyph="glyphicon glyphicon glyphicon-ban-circle"
-                    onClick={() =>
-                      this.setState({
-                        servicePacks: this.props.servicePacks,
-                        editServicePacks: false
-                      })
-                    }
+                    glyph="glyphicon glyphicon-pencil"
+                    onClick={() => this.setState({ editServicePacks: true })}
                   />
-                  <Glyphicon
-                    className={"margin-checbox"}
-                    glyph="glyphicon glyphicon glyphicon-ok-circle"
-                    onClick={this.updateServicePacks}
-                  />
-                </React.Fragment>
-              )}
+                ) : (
+                  <React.Fragment>
+                    <Glyphicon
+                      className={"margin-checbox"}
+                      glyph="glyphicon glyphicon glyphicon-ban-circle"
+                      onClick={() =>
+                        this.setState({
+                          servicePacks: this.props.servicePacks,
+                          editServicePacks: false
+                        })
+                      }
+                    />
+                    <Glyphicon
+                      className={"margin-checbox"}
+                      glyph="glyphicon glyphicon glyphicon-ok-circle"
+                      onClick={this.updateServicePacks}
+                    />
+                  </React.Fragment>
+                ))}
             </Panel.Heading>
             {servicePacks.length ? (
               <Panel.Body>
@@ -542,6 +592,53 @@ export class Licenses extends Component {
     }));
   };
 
+  updateGroupServices = () => {
+    const data = {
+      groupServices: this.state.groupServices
+    };
+
+    this.props
+      .fetchPutUpdateGroupServicesByGroupId(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        data
+      )
+      .then(() => this.fetchData())
+      .then(() => this.setState({ editGroupServices: false }));
+  };
+
+  changeGroupServicesUnlimeted = (i, checked) => {
+    this.setState(prevState => ({
+      groupServices: [
+        ...prevState.groupServices.slice(0, i),
+        {
+          ...prevState.groupServices[i],
+          allocated: {
+            ...prevState.groupServices[i].allocated,
+            unlimited: checked
+          }
+        },
+        ...prevState.groupServices.slice(i + 1)
+      ]
+    }));
+  };
+
+  changeGroupServicesMaximum = (i, max) => {
+    this.setState(prevState => ({
+      groupServices: [
+        ...prevState.groupServices.slice(0, i),
+        {
+          ...prevState.groupServices[i],
+          allocated: {
+            ...prevState.groupServices[i].allocated,
+            maximum: max
+          }
+        },
+        ...prevState.groupServices.slice(i + 1)
+      ]
+    }));
+  };
+
   handleClickShowMore = () => {
     this.setState({ showMore: !this.state.showMore });
   };
@@ -595,7 +692,8 @@ const mapDispatchToProps = {
   fetchPutUpdateGroupDetails,
   fetchPutUpdateTrunkByGroupId,
   clearErrorMassage,
-  fetchPutUpdateServicePacksByGroupId
+  fetchPutUpdateServicePacksByGroupId,
+  fetchPutUpdateGroupServicesByGroupId
 };
 
 export default withRouter(

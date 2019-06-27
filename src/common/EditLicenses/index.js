@@ -19,10 +19,7 @@ export default class EditLicenses extends Component {
         <Checkbox
           defaultChecked={this.props.defaultChecked}
           onChange={e => {
-            this.props.changeServicePacksUnlimeted(
-              this.props.index,
-              e.target.checked
-            );
+            this.props.changePacksUnlimeted(this.props.index, e.target.checked);
             this.setState({ isChecked: e.target.checked });
           }}
         >
@@ -33,7 +30,7 @@ export default class EditLicenses extends Component {
             type="number"
             defaultValue={this.props.defaultMaximum}
             onChange={e =>
-              this.props.changeServicePacksMaximum(
+              this.props.changePacksMaximum(
                 this.props.index,
                 parseInt(e.target.value, 10)
               )
