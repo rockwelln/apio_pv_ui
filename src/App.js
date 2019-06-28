@@ -18,7 +18,7 @@ import { withCookies } from "react-cookie";
 import { FormattedMessage } from "react-intl";
 
 import { NumbersManagement } from "./data_apio/numbers";
-import { API_URL_PREFIX, fetch_get, checkStatus, parseJSON } from "./utils";
+import { API_URL_PREFIX, fetch_get, checkStatus, parseJSON, NotificationsManager } from "./utils";
 import { isAllowed, pages } from "./utils/user";
 import { ResetPasswordPage, RESET_PASSWORD_PREFIX } from "./reset_password";
 
@@ -77,6 +77,7 @@ class App extends Component {
       error_msg: undefined
     };
     this._notificationSystem = React.createRef();
+    NotificationsManager.setRef(this._notificationSystem);
 
     this.getUserInfo = this.getUserInfo.bind(this);
     this.updateToken = this.updateToken.bind(this);
@@ -260,7 +261,7 @@ class App extends Component {
                 exact
               />
               <Route
-                path="/provisioning/broadsoft_xsp1_as1/tenants"
+                path="/provisioning/:gwName/tenants"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <Tenants
@@ -274,7 +275,7 @@ class App extends Component {
                 exact
               />
               <Route
-                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId"
+                path="/provisioning/:gwName/tenants/:tenantId"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <TenantPage
@@ -287,7 +288,7 @@ class App extends Component {
                 exact
               />
               <Route
-                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/groups/:groupId"
+                path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <GroupPage
@@ -300,7 +301,7 @@ class App extends Component {
                 exact
               />
               <Route
-                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/groups/:groupId/users/:userName"
+                path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/users/:userName"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <UserPage />
@@ -311,7 +312,7 @@ class App extends Component {
                 exact
               />
               <Route
-                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/groups/:groupId/addadmin"
+                path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/addadmin"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <CreateAdmin />
@@ -322,7 +323,7 @@ class App extends Component {
                 exact
               />
               <Route
-                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/groups/:groupId/admins/:adminId"
+                path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/admins/:adminId"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <UpdateAdmin />
@@ -333,7 +334,7 @@ class App extends Component {
                 exact
               />
               <Route
-                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/addadmin"
+                path="/provisioning/:gwName/tenants/:tenantId/addadmin"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <CreateAdmin />
@@ -344,7 +345,7 @@ class App extends Component {
                 exact
               />
               <Route
-                path="/provisioning/broadsoft_xsp1_as1/tenants/:tenantId/admins/:adminId"
+                path="/provisioning/:gwName/tenants/:tenantId/admins/:adminId"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <UpdateAdmin />

@@ -16,14 +16,54 @@ function getCookie(name) {
       .shift();
 }
 
-export function checkStatus(response, checkBadRequest) {
+class ProvisioningProxies {
+  static proxies = [];
+
+  fetchConfiguration(auth_token) {
+    return fetch_get("/api/v01/apio/provisioning/gateways", auth_token)
+        .then(data => ProvisioningProxies.proxies = data.gateways.map(g => {
+            g.id = g.name.toLowerCase().replace(/[. ]/g, "");
+            return g;
+        }))
+  }
+
+  getCurrentUrlPrefix() {
+    return "/api/v01/p2";
+  }
+
+  listProxies() {
+      return ProvisioningProxies.proxies;
+  }
+}
+
+export const ProvProxiesManager = new ProvisioningProxies();
+
+
+class NotificationsHandler {
+  static rootRef = null;
+
+  setRef(ref_) {
+      NotificationsHandler.rootRef = ref_;
+  }
+
+  error(title, message) {
+      NotificationsHandler.rootRef &&
+      NotificationsHandler.rootRef.current.addNotification({
+          title: title,
+          message: message,
+          level: 'error'
+      });
+  }
+}
+
+export const NotificationsManager = new NotificationsHandler();
+
+
+export function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
   } else if (response.status === 401) {
     console.log("the request was *not* authorized!");
-  } else if (response.status === 400 && checkBadRequest) {
-    console.log(response);
-    return response;
   }
 
   const contentType = response.headers.get("content-type");
@@ -67,8 +107,7 @@ export function fetch_get(url, token) {
     .then(parseJSON);
 }
 
-export function fetch_put(url, body, checkBadRequest) {
-  const checkRequest = checkBadRequest ? checkBadRequest : false;
+export function fetch_put(url, body) {
   const full_url = url.href
     ? url
     : url.startsWith("http")
@@ -82,7 +121,7 @@ export function fetch_put(url, body, checkBadRequest) {
       Authorization: `Bearer ${getCookie("auth_token")}`
     },
     body: JSON.stringify(body)
-  }).then(res => checkStatus(res, checkRequest));
+  }).then(checkStatus);
 }
 
 export function fetch_post(url, body) {
@@ -90,7 +129,6 @@ export function fetch_post(url, body) {
 }
 
 export function fetch_post_raw(url, raw_body, content_type) {
-  const checkBadRequest = true;
   const full_url = url.href
     ? url
     : url.startsWith("http")
@@ -106,7 +144,7 @@ export function fetch_post_raw(url, raw_body, content_type) {
     method: "POST",
     headers: headers,
     body: raw_body
-  }).then(res => checkStatus(res, checkBadRequest));
+  }).then(checkStatus);
 }
 
 export function fetch_delete(url, token) {
