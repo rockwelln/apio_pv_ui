@@ -23,29 +23,8 @@ class DeleteModal extends Component {
     this.props
       .fetchDeleteGroupDevice(tenantId, groupId, deviceName)
       .then(() => {
-        this.props.notifications.notifications.addNotification({
-          message: (
-            <FormattedMessage
-              id="delete-tenant-ok"
-              defaultMessage="Tenant deleted"
-            />
-          ),
-          level: "success"
-        });
         this.setState({ deleting: false });
         onClose && onClose(true);
-      })
-      .catch(error => {
-        this.setState({ deleting: false });
-        this.props.notifications.notifications.addNotification({
-          title: (
-            <FormattedMessage
-              id="delete-tenant-fail"
-              defaultMessage="Fail delete tenant"
-            />
-          ),
-          level: "error"
-        });
       });
   }
 

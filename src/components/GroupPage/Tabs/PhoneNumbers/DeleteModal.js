@@ -20,33 +20,10 @@ class DeleteModal extends Component {
     const { onClose } = this.props;
     this.setState({ deleting: true });
 
-    this.props
-      .fetchDeleteTenant(rangeStart)
-      .then(() => {
-        this.props.notifications.addNotification({
-          message: (
-            <FormattedMessage
-              id="delete-tenant-ok"
-              defaultMessage="Phone deleted"
-            />
-          ),
-          level: "success"
-        });
-        this.setState({ deleting: false });
-        onClose && onClose(true);
-      })
-      .catch(error => {
-        this.setState({ deleting: false });
-        this.props.notifications.addNotification({
-          title: (
-            <FormattedMessage
-              id="delete-tenant-fail"
-              defaultMessage="Fail delete phone"
-            />
-          ),
-          level: "error"
-        });
-      });
+    this.props.fetchDeleteTenant(rangeStart).then(() => {
+      this.setState({ deleting: false });
+      onClose && onClose(true);
+    });
   }
 
   render() {

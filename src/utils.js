@@ -20,11 +20,13 @@ class ProvisioningProxies {
   static proxies = [];
 
   fetchConfiguration(auth_token) {
-    return fetch_get("/api/v01/apio/provisioning/gateways", auth_token)
-        .then(data => ProvisioningProxies.proxies = data.gateways.map(g => {
-            g.id = g.name.toLowerCase().replace(/[. ]/g, "");
-            return g;
+    return fetch_get("/api/v01/apio/provisioning/gateways", auth_token).then(
+      data =>
+        (ProvisioningProxies.proxies = data.gateways.map(g => {
+          g.id = g.name.toLowerCase().replace(/[. ]/g, "");
+          return g;
         }))
+    );
   }
 
   getCurrentUrlPrefix() {
@@ -32,32 +34,30 @@ class ProvisioningProxies {
   }
 
   listProxies() {
-      return ProvisioningProxies.proxies;
+    return ProvisioningProxies.proxies;
   }
 }
 
 export const ProvProxiesManager = new ProvisioningProxies();
 
-
 class NotificationsHandler {
   static rootRef = null;
 
   setRef(ref_) {
-      NotificationsHandler.rootRef = ref_;
+    NotificationsHandler.rootRef = ref_;
   }
 
   error(title, message) {
-      NotificationsHandler.rootRef &&
+    NotificationsHandler.rootRef &&
       NotificationsHandler.rootRef.current.addNotification({
-          title: title,
-          message: message,
-          level: 'error'
+        title: title,
+        message: message,
+        level: "error"
       });
   }
 }
 
 export const NotificationsManager = new NotificationsHandler();
-
 
 export function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -89,7 +89,6 @@ export function parseJSON(response) {
 }
 
 export function fetch_get(url, token) {
-  const checkBadRequest = false;
   const full_url = url.href
     ? url
     : url.startsWith("http")
@@ -103,7 +102,7 @@ export function fetch_get(url, token) {
       "Content-Type": "application/json"
     }
   })
-    .then(res => checkStatus(res, checkBadRequest))
+    .then(checkStatus)
     .then(parseJSON);
 }
 
