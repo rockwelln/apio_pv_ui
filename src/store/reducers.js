@@ -248,6 +248,16 @@ function mainReducer(state = initialState, action) {
         errorMassage
       };
     }
+    case actionType.POST_ASSIGN_USER_SERVICES: {
+      return {
+        ...state
+      };
+    }
+    case actionType.POST_ASSIGN_USER_SERVICE_PACKS: {
+      return {
+        ...state
+      };
+    }
     case actionType.PUT_UPDATE_USER: {
       return {
         ...state,
@@ -312,6 +322,16 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.DELETE_GROUP_ADMIN: {
+      return {
+        ...state
+      };
+    }
+    case actionType.DELETE_DEASSIGN_USER_SERVICES: {
+      return {
+        ...state
+      };
+    }
+    case actionType.DELETE_DEASSIGN_USER_SERVICE_PACKS: {
       return {
         ...state
       };

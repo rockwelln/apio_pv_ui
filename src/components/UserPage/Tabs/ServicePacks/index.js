@@ -9,10 +9,15 @@ import InputGroup from "react-bootstrap/lib/InputGroup";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import Checkbox from "react-bootstrap/lib/Checkbox";
+import Button from "react-bootstrap/lib/Button";
 
 import { FormattedMessage } from "react-intl";
 
-import { fetchGetUserServicesByUserId } from "../../../../store/actions";
+import {
+  fetchGetUserServicesByUserId,
+  fetchPostAssignUserServicePacks,
+  fetchDeleteAssignUserServicePacks
+} from "../../../../store/actions";
 import { countsPerPages } from "../../../../constants";
 
 import Loading from "../../../../common/Loading";
@@ -30,11 +35,13 @@ export class Services extends Component {
     countPages: null,
     searchValue: "",
     showDelete: false,
-    servicesForDelete: []
+    servicesForDelete: [],
+    postServices: false,
+    deleteServices: false
   };
 
-  componentDidMount() {
-    this.props
+  fetchSerivces = () => {
+    return this.props
       .fetchGetUserServicesByUserId(
         this.props.match.params.tenantId,
         this.props.match.params.groupId,
@@ -54,6 +61,21 @@ export class Services extends Component {
           () => this.pagination()
         )
       );
+  };
+
+  componentDidMount() {
+    this.fetchSerivces();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      (!prevState.postServices && this.state.postServices) ||
+      (!prevState.deleteServices && this.state.deleteServices)
+    ) {
+      this.fetchSerivces().then(() =>
+        this.setState({ postServices: false, deleteServices: false })
+      );
+    }
   }
 
   render() {
@@ -195,6 +217,11 @@ export class Services extends Component {
                 />
               </Col>
             </Row>
+            <Row>
+              <Col mdOffset={9} md={2} className={"text-right"}>
+                <Button onClick={this.updateSevices}>Update</Button>
+              </Col>
+            </Row>
           </React.Fragment>
         ) : (
           <Col mdOffset={1} md={10}>
@@ -207,6 +234,45 @@ export class Services extends Component {
       </React.Fragment>
     );
   }
+
+  updateSevices = () => {
+    const { services } = this.state;
+    const servicesToPost = services
+      .filter(service => service.serviceChecked === true)
+      .map(service => {
+        let data = { name: service.name };
+        return data;
+      });
+    const postData = {
+      servicePacks: servicesToPost
+    };
+    const servicesToDelete = services
+      .filter(service => service.serviceChecked === false)
+      .map(service => {
+        let data = { name: service.name };
+        return data;
+      });
+    const deleteData = {
+      servicePacks: servicesToDelete
+    };
+    this.props
+      .fetchPostAssignUserServicePacks(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        this.props.match.params.userName,
+        postData
+      )
+      .then(() => this.setState({ postServices: true }));
+    this.props
+      .fetchDeleteAssignUserServicePacks(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        this.props.match.params.userName,
+        deleteData
+      )
+      .then(() => this.setState({ deleteServices: true }));
+  };
+
   changeCoutOnPage = e => {
     this.setState({ countPerPage: Number(e.target.value), page: 0 }, () =>
       this.pagination()
@@ -322,7 +388,11 @@ export class Services extends Component {
 
 const mapStateToProps = state => ({ userServicePacks: state.userServicePacks });
 
-const mapDispatchToProps = { fetchGetUserServicesByUserId };
+const mapDispatchToProps = {
+  fetchGetUserServicesByUserId,
+  fetchPostAssignUserServicePacks,
+  fetchDeleteAssignUserServicePacks
+};
 
 export default withRouter(
   connect(

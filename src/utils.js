@@ -146,7 +146,7 @@ export function fetch_post_raw(url, raw_body, content_type) {
   }).then(checkStatus);
 }
 
-export function fetch_delete(url, token) {
+export function fetch_delete(url, body, token) {
   const full_url = url.href
     ? url
     : url.startsWith("http")
@@ -156,6 +156,7 @@ export function fetch_delete(url, token) {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${getCookie("auth_token")}`
-    }
+    },
+    body: JSON.stringify(body)
   }).then(checkStatus);
 }
