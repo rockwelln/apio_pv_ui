@@ -522,9 +522,7 @@ export class Licenses extends Component {
                           changePacksUnlimeted={
                             this.changeServicePacksUnlimeted
                           }
-                          changeServicePacksMaximum={
-                            this.changeServicePacksMaximum
-                          }
+                          changePacksMaximum={this.changeServicePacksMaximum}
                         />
                       </Col>
                     )}
