@@ -5,8 +5,7 @@ import Checkbox from "react-bootstrap/lib/Checkbox";
 export default class Sevice extends Component {
   state = { showDelete: false };
   render() {
-    const { service, onReload, index } = this.props;
-    const { showDelete } = this.state;
+    const { service, index } = this.props;
     return (
       <tr key={service.name}>
         <td>{service.name}</td>

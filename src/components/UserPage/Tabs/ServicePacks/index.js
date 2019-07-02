@@ -84,8 +84,7 @@ export class Services extends Component {
       countPerPage,
       pagination,
       paginationServices,
-      page,
-      showDelete
+      page
     } = this.state;
     if (isLoading && pagination) {
       return <Loading />;

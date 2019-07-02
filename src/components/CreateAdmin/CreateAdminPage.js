@@ -38,7 +38,6 @@ class CreateAdmin extends Component {
   };
 
   componentDidMount() {
-    console.log(this.props.match.params.groupId);
     this.props.match.params.groupId
       ? this.props
           .fetchGetGroupById(

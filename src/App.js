@@ -17,8 +17,13 @@ import NotificationSystem from "react-notification-system";
 import { withCookies } from "react-cookie";
 import { FormattedMessage } from "react-intl";
 
-import { NumbersManagement } from "./data_apio/numbers";
-import { API_URL_PREFIX, fetch_get, checkStatus, parseJSON, NotificationsManager } from "./utils";
+import {
+  API_URL_PREFIX,
+  fetch_get,
+  checkStatus,
+  parseJSON,
+  NotificationsManager
+} from "./utils";
 import { isAllowed, pages } from "./utils/user";
 import { ResetPasswordPage, RESET_PASSWORD_PREFIX } from "./reset_password";
 
