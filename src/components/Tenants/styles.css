@@ -1,5 +1,6 @@
 .glyphicon {
   cursor: pointer;
+  color: #000;
 }
 
 .glyphicon-sort {
@@ -20,6 +21,15 @@
 
 .x-large {
   font-size: x-large;
+}
+
+.smaller {
+  font-size: smaller;
+}
+
+.larger {
+  font-size: larger;
+  font-weight: 600;
 }
 
 .glyphicon-plus-sign {

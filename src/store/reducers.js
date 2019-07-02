@@ -23,7 +23,30 @@ const initialState = {
   tenantAdmin: {},
   userServices: [],
   userServicePacks: [],
-  groupTrunkErrorMassage: ""
+  groupTrunkErrorMassage: "",
+  createTenantStep: "firstStep",
+  createTenant: {
+    tenantId: "",
+    type: "",
+    useCustomRoutingProfile: false,
+    defaultDomain: "",
+    name: "",
+    supportEmail: "",
+    contact: {
+      name: "",
+      phoneNumber: "",
+      emailAddress: ""
+    },
+    address: {
+      addressLine1: "",
+      addressLine2: "",
+      city: "",
+      state: "",
+      stateDisplayName: "",
+      postalCode: "",
+      country: ""
+    }
+  }
 };
 
 function mainReducer(state = initialState, action) {

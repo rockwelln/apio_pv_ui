@@ -35,6 +35,7 @@ import GroupPage from "./components/GroupPage";
 import UserPage from "./components/UserPage";
 import CreateAdmin from "./components/CreateAdmin";
 import UpdateAdmin from "./components/UpdateAdmin";
+import CreateTenant from "./components/CreateTenant";
 
 import "./App.css";
 import loading from "./loading.gif";
@@ -273,6 +274,17 @@ class App extends Component {
                       notifications={this._notificationSystem.current}
                       {...props}
                     />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/provisioning/:gwName/tenants/add"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <CreateTenant />
                   ) : (
                     <NotAllowed />
                   )
