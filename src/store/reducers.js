@@ -24,20 +24,19 @@ const initialState = {
   userServices: [],
   userServicePacks: [],
   groupTrunkErrorMassage: "",
-  createTenantStep: "firstStep",
+  createTenantStep: "secondStep",
   createTenant: {
     tenantId: "",
     type: "",
-    useCustomRoutingProfile: false,
     defaultDomain: "",
+    useCustomRoutingProfile: false,
     name: "",
-    supportEmail: "",
-    contact: {
+    contactInformation: {
       name: "",
       phoneNumber: "",
       emailAddress: ""
     },
-    address: {
+    addressInformation: {
       addressLine1: "",
       addressLine2: "",
       city: "",
@@ -45,8 +44,11 @@ const initialState = {
       stateDisplayName: "",
       postalCode: "",
       country: ""
-    }
-  }
+    },
+    useTenantLanguages: false,
+    templateName: ""
+  },
+  templatesOfTenant: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -245,6 +247,12 @@ function mainReducer(state = initialState, action) {
         userServicePacks
       };
     }
+    case actionType.GET_TEMPLATES_OF_TENANT: {
+      return {
+        ...state,
+        templatesOfTenant: action.data.templates
+      };
+    }
     case actionType.POST_CREATE_GROUP_ADMIN: {
       return {
         ...state,
@@ -364,6 +372,75 @@ function mainReducer(state = initialState, action) {
         ...state,
         errorMassage: "",
         groupTrunkErrorMassage: ""
+      };
+    }
+    case actionType.CHANGE_TYPE_OF_TENANT: {
+      return {
+        ...state,
+        createTenant: {
+          ...state.createTenant,
+          type: action.data
+        }
+      };
+    }
+    case actionType.CHANGE_ID_OF_TENANT: {
+      return {
+        ...state,
+        createTenant: {
+          ...state.createTenant,
+          tenantId: action.data
+        }
+      };
+    }
+    case actionType.CHANGE_NAME_OF_TENANT: {
+      return {
+        ...state,
+        createTenant: {
+          ...state.createTenant,
+          name: action.data
+        }
+      };
+    }
+    case actionType.CHANGE_ADDRESS_OF_TENANT: {
+      return {
+        ...state,
+        createTenant: {
+          ...state.createTenant,
+          addressInformation: {
+            ...state.createTenant.addressInformation,
+            addressLine1: action.data
+          }
+        }
+      };
+    }
+    case actionType.CHANGE_ZIP_OF_TENANT: {
+      return {
+        ...state,
+        createTenant: {
+          ...state.createTenant,
+          addressInformation: {
+            ...state.createTenant.addressInformation,
+            postalCode: action.data
+          }
+        }
+      };
+    }
+    case actionType.CHANGE_CITY_OF_TENANT: {
+      return {
+        ...state,
+        createTenant: {
+          ...state.createTenant,
+          addressInformation: {
+            ...state.createTenant.addressInformation,
+            city: action.data
+          }
+        }
+      };
+    }
+    case actionType.CHANGE_STEP_OF_CREATE_TENANT: {
+      return {
+        ...state,
+        createTenantStep: action.data
       };
     }
     default:

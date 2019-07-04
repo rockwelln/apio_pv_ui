@@ -95,6 +95,11 @@ export const getUserServicesByUserId = data => ({
   data
 });
 
+export const getTamplatesOfTenant = data => ({
+  type: actionType.GET_TEMPLATES_OF_TENANT,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -190,6 +195,41 @@ export const deleteAssignUserServicePacks = () => ({
 
 export const clearErrorMassage = () => ({
   type: actionType.CLEAR_ERROR_MASSAGE
+});
+
+export const changeStepOfCreateTenant = data => ({
+  type: actionType.CHANGE_STEP_OF_CREATE_TENANT,
+  data
+});
+
+export const changeTypeOfTenant = data => ({
+  type: actionType.CHANGE_TYPE_OF_TENANT,
+  data
+});
+
+export const changeIdOfTenant = data => ({
+  type: actionType.CHANGE_ID_OF_TENANT,
+  data
+});
+
+export const changeNameOfTenant = data => ({
+  type: actionType.CHANGE_NAME_OF_TENANT,
+  data
+});
+
+export const changeAddressOfTenant = data => ({
+  type: actionType.CHANGE_ADDRESS_OF_TENANT,
+  data
+});
+
+export const changeZIPOfTenant = data => ({
+  type: actionType.CHANGE_ZIP_OF_TENANT,
+  data
+});
+
+export const changeCityOfTenant = data => ({
+  type: actionType.CHANGE_CITY_OF_TENANT,
+  data
 });
 
 export function fetchGetTenants(cancelLoad) {
@@ -489,6 +529,24 @@ export function fetchGetUserServicesByUserId(tenantId, groupId, userId) {
           <FormattedMessage
             id="fetch-user-services-failed"
             defaultMessage="Failed to fetch user services!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetTamplatesOfTenant() {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/configs/templates/categories/tenant/`
+    )
+      .then(data => dispatch(getTamplatesOfTenant(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-tenant-tamplates-failed"
+            defaultMessage="Failed to fetch tenant tamplates!"
           />,
           error.message
         )

@@ -1,5 +1,12 @@
 .glyphicon {
   cursor: pointer;
+}
+
+.glyphicon-plus-sign {
+  color: #000;
+}
+
+.glyphicon-remove {
   color: #000;
 }
 
@@ -19,8 +26,25 @@
   margin-top: 20px !important;
 }
 
+.radio-button {
+  width: 200px;
+  height: 150px;
+  white-space: pre-wrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .x-large {
   font-size: x-large;
+}
+
+.xxx-large {
+  font-size: 48px;
+}
+
+.font-24 {
+  font-size: 24px;
 }
 
 .smaller {
