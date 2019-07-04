@@ -18,7 +18,8 @@ import {
   changeAddressOfTenant,
   changeZIPOfTenant,
   changeCityOfTenant,
-  changeStepOfCreateTenant
+  changeStepOfCreateTenant,
+  refuseCreateTenant
 } from "../../store/actions";
 
 const RESELLEROPTIONS = [
@@ -29,7 +30,7 @@ const RESELLEROPTIONS = [
   { value: "Euphony", name: "Euphony" }
 ];
 
-export class FirstStep extends Component {
+export class Basic extends Component {
   state = {
     showMore: false,
     errorMessage: ""
@@ -46,6 +47,7 @@ export class FirstStep extends Component {
                 <Glyphicon
                   className={"margin-1 smaller"}
                   glyph="glyphicon glyphicon-remove"
+                  onClick={() => this.props.refuseCreateTenant()}
                 />
               </Link>
             </p>
@@ -190,9 +192,7 @@ export class FirstStep extends Component {
                 <FormControl
                   type="text"
                   placeholder="Street"
-                  defaultValue={
-                    this.props.createTenant.addressInformation.addressLine1
-                  }
+                  defaultValue={this.props.createTenant.address.addressLine1}
                   onChange={e =>
                     this.props.changeAddressOfTenant(e.target.value)
                   }
@@ -204,9 +204,7 @@ export class FirstStep extends Component {
                 <FormControl
                   type="text"
                   placeholder="ZIP"
-                  defaultValue={
-                    this.props.createTenant.addressInformation.postalCode
-                  }
+                  defaultValue={this.props.createTenant.address.postalCode}
                   onChange={e => this.props.changeZIPOfTenant(e.target.value)}
                 />
               </Col>
@@ -214,7 +212,7 @@ export class FirstStep extends Component {
                 <FormControl
                   type="text"
                   placeholder="City"
-                  defaultValue={this.props.createTenant.addressInformation.city}
+                  defaultValue={this.props.createTenant.address.city}
                   onChange={e => this.props.changeCityOfTenant(e.target.value)}
                 />
               </Col>
@@ -242,7 +240,7 @@ export class FirstStep extends Component {
   nextStep = () => {
     const { tenantId, name, type } = this.props.createTenant;
     if (tenantId && name && type) {
-      this.props.changeStepOfCreateTenant("secondStep");
+      this.props.changeStepOfCreateTenant("Template");
     } else {
       this.setState({
         errorMessage: "Tenant ID, name and type this fields is required"
@@ -266,10 +264,11 @@ const mapDispatchToProps = {
   changeAddressOfTenant,
   changeZIPOfTenant,
   changeCityOfTenant,
-  changeStepOfCreateTenant
+  changeStepOfCreateTenant,
+  refuseCreateTenant
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(FirstStep);
+)(Basic);

@@ -128,6 +128,10 @@ export const postAssignUserServicePacks = () => ({
   type: actionType.POST_ASSIGN_USER_SERVICE_PACKS
 });
 
+export const postCreateTenant = () => ({
+  type: actionType.POST_CREATE_TENANT
+});
+
 export const putUpdateUser = data => ({
   type: actionType.PUT_UPDATE_USER,
   data
@@ -230,6 +234,15 @@ export const changeZIPOfTenant = data => ({
 export const changeCityOfTenant = data => ({
   type: actionType.CHANGE_CITY_OF_TENANT,
   data
+});
+
+export const changeTemplateOfTenant = data => ({
+  type: actionType.CHANGE_TAMPLATE_OF_TENANT,
+  data
+});
+
+export const refuseCreateTenant = () => ({
+  type: actionType.REFUSE_CREATE_TENANT
 });
 
 export function fetchGetTenants(cancelLoad) {
@@ -640,6 +653,26 @@ export function fetchPostAssignUserServicePacks(
           <FormattedMessage
             id="failed-to-assign-service-packs"
             defaultMessage="Failed to assign services packs!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchPostCreateTenant(data) {
+  return function(dispatch) {
+    return fetch_post(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/`,
+      data
+    )
+      .then(resp => resp.json())
+      .then(data => dispatch(postCreateTenant(data)))
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-create-tenant"
+            defaultMessage="Failed to create tenant!"
           />,
           error.message
         );

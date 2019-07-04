@@ -24,19 +24,19 @@ const initialState = {
   userServices: [],
   userServicePacks: [],
   groupTrunkErrorMassage: "",
-  createTenantStep: "secondStep",
+  createTenantStep: "Basic",
   createTenant: {
     tenantId: "",
     type: "",
-    defaultDomain: "",
+    defaultDomain: "netaxis.be",
     useCustomRoutingProfile: false,
     name: "",
-    contactInformation: {
+    contact: {
       name: "",
       phoneNumber: "",
       emailAddress: ""
     },
-    addressInformation: {
+    address: {
       addressLine1: "",
       addressLine2: "",
       city: "",
@@ -289,6 +289,11 @@ function mainReducer(state = initialState, action) {
         ...state
       };
     }
+    case actionType.POST_CREATE_TENANT: {
+      return {
+        ...state
+      };
+    }
     case actionType.PUT_UPDATE_USER: {
       return {
         ...state,
@@ -374,6 +379,12 @@ function mainReducer(state = initialState, action) {
         groupTrunkErrorMassage: ""
       };
     }
+    case actionType.CHANGE_STEP_OF_CREATE_TENANT: {
+      return {
+        ...state,
+        createTenantStep: action.data
+      };
+    }
     case actionType.CHANGE_TYPE_OF_TENANT: {
       return {
         ...state,
@@ -406,8 +417,8 @@ function mainReducer(state = initialState, action) {
         ...state,
         createTenant: {
           ...state.createTenant,
-          addressInformation: {
-            ...state.createTenant.addressInformation,
+          address: {
+            ...state.createTenant.address,
             addressLine1: action.data
           }
         }
@@ -418,8 +429,8 @@ function mainReducer(state = initialState, action) {
         ...state,
         createTenant: {
           ...state.createTenant,
-          addressInformation: {
-            ...state.createTenant.addressInformation,
+          address: {
+            ...state.createTenant.address,
             postalCode: action.data
           }
         }
@@ -430,17 +441,49 @@ function mainReducer(state = initialState, action) {
         ...state,
         createTenant: {
           ...state.createTenant,
-          addressInformation: {
-            ...state.createTenant.addressInformation,
+          address: {
+            ...state.createTenant.address,
             city: action.data
           }
         }
       };
     }
-    case actionType.CHANGE_STEP_OF_CREATE_TENANT: {
+    case actionType.CHANGE_TAMPLATE_OF_TENANT: {
       return {
         ...state,
-        createTenantStep: action.data
+        createTenant: {
+          ...state.createTenant,
+          templateName: action.data
+        }
+      };
+    }
+    case actionType.REFUSE_CREATE_TENANT: {
+      return {
+        ...state,
+        createTenantStep: "Basic",
+        createTenant: {
+          tenantId: "",
+          type: "",
+          defaultDomain: "netaxis.be",
+          useCustomRoutingProfile: false,
+          name: "",
+          contact: {
+            name: "",
+            phoneNumber: "",
+            emailAddress: ""
+          },
+          address: {
+            addressLine1: "",
+            addressLine2: "",
+            city: "",
+            state: "",
+            stateDisplayName: "",
+            postalCode: "",
+            country: ""
+          },
+          useTenantLanguages: false,
+          templateName: ""
+        }
       };
     }
     default:

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import FirstStep from "./FirstStep";
-import SecondStep from "./SecondStep";
+import Basic from "./Basic";
+import Template from "./Template";
+import Limits from "./Limits";
 
 import Col from "react-bootstrap/lib/Col";
 import Row from "react-bootstrap/lib/Row";
@@ -35,14 +36,17 @@ export class CreateTenant extends Component {
 
   returnStep = () => {
     switch (this.props.createTenantStep) {
-      case "firstStep": {
-        return <FirstStep />;
+      case "Basic": {
+        return <Basic />;
       }
-      case "secondStep": {
-        return <SecondStep />;
+      case "Template": {
+        return <Template />;
+      }
+      case "Limits": {
+        return <Limits />;
       }
       default:
-        return <FirstStep />;
+        return <Basic />;
     }
   };
 }

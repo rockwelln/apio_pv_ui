@@ -1,0 +1,22 @@
+.well-style {
+  width: 175px;
+  height: 155px;
+  padding-left: 0px;
+  padding-right: 0px;
+  text-align: center;
+  display: flex;
+  vertical-align: center;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.name-style {
+  position: absolute;
+  width: 100%;
+  top: 20px;
+  margin-bottom: 5px;
+  background-color: #d8d8d8;
+}

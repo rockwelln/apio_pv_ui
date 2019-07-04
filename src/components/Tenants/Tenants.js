@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { fetchGetTenants } from "../../store/actions";
+import { fetchGetTenants, refuseCreateTenant } from "../../store/actions";
 
 import Table from "react-bootstrap/lib/Table";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
@@ -54,6 +54,7 @@ class Tenants extends Component {
         () => this.pagination()
       );
     });
+    this.props.refuseCreateTenant();
   }
 
   render() {
@@ -310,7 +311,8 @@ class Tenants extends Component {
 }
 
 const mapDispatchToProps = {
-  fetchGetTenants
+  fetchGetTenants,
+  refuseCreateTenant
 };
 
 const mapStateToProps = state => ({
