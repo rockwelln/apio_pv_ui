@@ -187,14 +187,21 @@ export class Basic extends Component {
           </Row>
         )}
         <Row className={"margin-1"}>
-          <Col mdOffset={11} md={1}>
+          <Col mdOffset={10} md={2}>
             {!this.state.showHideMore ? (
               <Glyphicon
                 className={"larger"}
                 glyph="glyphicon glyphicon-plus"
                 onClick={this.showHideMore}
+                style={{ display: "flex" }}
               >
-                MORE
+                <div
+                  style={{
+                    fontFamily: `"Helvetica Neue",Helvetica,Arial,sans-serif`
+                  }}
+                >
+                  Add address
+                </div>
               </Glyphicon>
             ) : (
               <Glyphicon
@@ -202,7 +209,13 @@ export class Basic extends Component {
                 glyph="glyphicon glyphicon-minus"
                 onClick={this.showHideMore}
               >
-                LESS
+                <div
+                  style={{
+                    fontFamily: `"Helvetica Neue",Helvetica,Arial,sans-serif`
+                  }}
+                >
+                  Hide
+                </div>
               </Glyphicon>
             )}
           </Col>
@@ -252,9 +265,20 @@ export class Basic extends Component {
           </Row>
         )}
         <Row className={"margin-1"}>
-          <Col mdOffset={11} md={1}>
+          <Col mdOffset={10} md={1}>
             <Button onClick={this.nextStep}>
-              <Glyphicon glyph="glyphicon glyphicon-ok">Ok</Glyphicon>
+              <Glyphicon
+                glyph="glyphicon glyphicon-ok"
+                style={{ display: "flex" }}
+              >
+                <div
+                  style={{
+                    fontFamily: `"Helvetica Neue",Helvetica,Arial,sans-serif`
+                  }}
+                >
+                  Ok
+                </div>
+              </Glyphicon>
             </Button>
           </Col>
         </Row>

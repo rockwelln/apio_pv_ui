@@ -68,8 +68,9 @@ export class Template extends Component {
         <Row>
           <Col md={12}>
             <p className={"smaller"}>
-              Withc template do you wish to use? A template determines which
-              service packs and group services will be assigned to the tenant.
+              Please select a Tenant template. This template will influence they
+              way your tenant will be configured. (service pack definition,
+              service (pack) authorisation, feature access code definition.
             </p>
           </Col>
         </Row>
