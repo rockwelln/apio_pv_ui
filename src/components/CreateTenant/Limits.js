@@ -27,7 +27,7 @@ export class Limits extends Component {
           </Col>
         </Row>
         <Row className={"margin-1"}>
-          <Col mdOffset={10} md={2}>
+          <Col mdOffset={11} md={1}>
             <Button
               onClick={() => this.props.changeStepOfCreateTenant("Admin")}
             >
@@ -36,7 +36,7 @@ export class Limits extends Component {
           </Col>
         </Row>
         <Row className={"margin-1"}>
-          <Col mdOffset={10} md={2}>
+          <Col mdOffset={11} md={1}>
             <Button
               onClick={() => this.props.changeStepOfCreateTenant("Admin")}
             >

@@ -245,6 +245,11 @@ export const refuseCreateTenant = () => ({
   type: actionType.REFUSE_CREATE_TENANT
 });
 
+export const changeDomainOfTenant = data => ({
+  type: actionType.CHANGE_DOMAIN_OF_TENANT,
+  data
+});
+
 export function fetchGetTenants(cancelLoad) {
   return function(dispatch) {
     return fetch_get(`${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/`)

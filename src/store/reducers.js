@@ -28,7 +28,7 @@ const initialState = {
   createTenant: {
     tenantId: "",
     type: "",
-    defaultDomain: "netaxis.be",
+    defaultDomain: "",
     useCustomRoutingProfile: false,
     name: "",
     contact: {
@@ -464,7 +464,7 @@ function mainReducer(state = initialState, action) {
         createTenant: {
           tenantId: "",
           type: "",
-          defaultDomain: "netaxis.be",
+          defaultDomain: "",
           useCustomRoutingProfile: false,
           name: "",
           contact: {
@@ -483,6 +483,15 @@ function mainReducer(state = initialState, action) {
           },
           useTenantLanguages: false,
           templateName: ""
+        }
+      };
+    }
+    case actionType.CHANGE_DOMAIN_OF_TENANT: {
+      return {
+        ...state,
+        createTenant: {
+          ...state.createTenant,
+          defaultDomain: action.data
         }
       };
     }

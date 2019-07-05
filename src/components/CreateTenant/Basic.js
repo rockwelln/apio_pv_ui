@@ -19,7 +19,8 @@ import {
   changeZIPOfTenant,
   changeCityOfTenant,
   changeStepOfCreateTenant,
-  refuseCreateTenant
+  refuseCreateTenant,
+  changeDomainOfTenant
 } from "../../store/actions";
 
 const RESELLEROPTIONS = [
@@ -162,7 +163,23 @@ export class Basic extends Component {
           </Col>
         </Row>
         <Row className={"margin-1"}>
-          <Col mdOffset={10} md={2}>
+          <Col componentClass={ControlLabel} md={3}>
+            Domain
+          </Col>
+          <Col md={9}>
+            <FormControl
+              type="text"
+              placeholder="Domain"
+              defaultValue={this.props.createTenant.defaultDomain}
+              onChange={e => {
+                this.props.changeDomainOfTenant(e.target.value);
+                this.setState({ errorMessage: "" });
+              }}
+            />
+          </Col>
+        </Row>
+        <Row className={"margin-1"}>
+          <Col mdOffset={11} md={1}>
             {!this.state.showHideMore ? (
               <Glyphicon
                 className={"larger"}
@@ -227,7 +244,7 @@ export class Basic extends Component {
           </Row>
         )}
         <Row className={"margin-1"}>
-          <Col mdOffset={10} md={2}>
+          <Col mdOffset={11} md={1}>
             <Button onClick={this.nextStep}>
               <Glyphicon glyph="glyphicon glyphicon-ok">Ok</Glyphicon>
             </Button>
@@ -265,7 +282,8 @@ const mapDispatchToProps = {
   changeZIPOfTenant,
   changeCityOfTenant,
   changeStepOfCreateTenant,
-  refuseCreateTenant
+  refuseCreateTenant,
+  changeDomainOfTenant
 };
 
 export default connect(
