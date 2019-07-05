@@ -34,7 +34,8 @@ const RESELLEROPTIONS = [
 export class Basic extends Component {
   state = {
     showMore: false,
-    errorMessage: ""
+    errorMessage: "",
+    domainError: ""
   };
 
   render() {
@@ -64,7 +65,7 @@ export class Basic extends Component {
         </Row>
         <Row className={"margin-1"}>
           <Col md={12}>
-            <p className={"larger"}>TYPE</p>
+            <p className={"larger"}>TYPE{"\u002a"}</p>
           </Col>
         </Row>
         <Row className={"margin-1"}>
@@ -84,10 +85,10 @@ export class Basic extends Component {
               >
                 <div>
                   <Glyphicon
-                    className={"xxx-large"}
+                    className={"font-24"}
                     glyph="glyphicon glyphicon-cloud"
                   />
-                  <p className={"font-24"}>SERVICE PROVIDER</p>
+                  <p>SERVICE PROVIDER</p>
                 </div>
               </ToggleButton>
               <ToggleButton
@@ -100,10 +101,10 @@ export class Basic extends Component {
               >
                 <div>
                   <Glyphicon
-                    className={"xxx-large"}
+                    className={"font-24"}
                     glyph="glyphicon glyphicon-object-align-bottom"
                   />
-                  <p className={"font-24"}>ENTERPRISE</p>
+                  <p>ENTERPRISE</p>
                 </div>
               </ToggleButton>
             </ToggleButtonGroup>
@@ -132,7 +133,7 @@ export class Basic extends Component {
         </Row>
         <Row className={"margin-1"}>
           <Col componentClass={ControlLabel} md={3}>
-            ID
+            ID{"\u002a"}
           </Col>
           <Col md={9}>
             <FormControl
@@ -148,7 +149,7 @@ export class Basic extends Component {
         </Row>
         <Row className={"margin-1"}>
           <Col componentClass={ControlLabel} md={3}>
-            Name
+            Name{"\u002a"}
           </Col>
           <Col md={9}>
             <FormControl
@@ -164,7 +165,7 @@ export class Basic extends Component {
         </Row>
         <Row className={"margin-1"}>
           <Col componentClass={ControlLabel} md={3}>
-            Domain
+            Domain{"\u002a"}
           </Col>
           <Col md={9}>
             <FormControl
@@ -172,12 +173,19 @@ export class Basic extends Component {
               placeholder="Domain"
               defaultValue={this.props.createTenant.defaultDomain}
               onChange={e => {
-                this.props.changeDomainOfTenant(e.target.value);
+                this.validateDomain(e.target.value);
                 this.setState({ errorMessage: "" });
               }}
             />
           </Col>
         </Row>
+        {this.state.domainError && (
+          <Row className={"margin-1 color-error"}>
+            <Col md={12}>
+              <p>{this.state.domainError}</p>
+            </Col>
+          </Row>
+        )}
         <Row className={"margin-1"}>
           <Col mdOffset={11} md={1}>
             {!this.state.showHideMore ? (
@@ -255,14 +263,27 @@ export class Basic extends Component {
   }
 
   nextStep = () => {
-    const { tenantId, name, type } = this.props.createTenant;
-    if (tenantId && name && type) {
+    const { tenantId, name, type, defaultDomain } = this.props.createTenant;
+    if (tenantId && name && type && defaultDomain) {
       this.props.changeStepOfCreateTenant("Template");
     } else {
       this.setState({
-        errorMessage: "Tenant ID, name and type this fields is required"
+        errorMessage: "Tenant ID, name, type and domain this fields is required"
       });
     }
+  };
+
+  validateDomain = value => {
+    if (value.length < 2 || value.length > 80 || value.includes("@")) {
+      this.props.changeDomainOfTenant(value);
+      this.setState({
+        domainError:
+          "Domain length must be from 2 to 80 characters and not contain the @ symbol"
+      });
+      return;
+    }
+    this.props.changeDomainOfTenant(value);
+    this.setState({ domainError: "" });
   };
 
   showHideMore = () => {

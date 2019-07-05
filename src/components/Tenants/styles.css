@@ -27,8 +27,8 @@
 }
 
 .radio-button {
-  width: 200px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   white-space: pre-wrap;
   display: flex;
   align-items: center;

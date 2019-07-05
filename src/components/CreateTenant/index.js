@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import Basic from "./Basic";
 import Template from "./Template";
 import Limits from "./Limits";
+import Admin from "./Admin";
 
 import Col from "react-bootstrap/lib/Col";
 import Row from "react-bootstrap/lib/Row";
@@ -44,6 +45,9 @@ export class CreateTenant extends Component {
       }
       case "Limits": {
         return <Limits />;
+      }
+      case "Admin": {
+        return <Admin />;
       }
       default:
         return <Basic />;
