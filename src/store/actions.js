@@ -173,9 +173,9 @@ export const putUpdateGroupServicesByGroupId = data => ({
   data
 });
 
-export const deleteTenant = Id => ({
+export const deleteTenant = data => ({
   type: actionType.DELETE_TENANT,
-  Id
+  data
 });
 
 export const deleteTenantAdmin = () => ({
@@ -836,8 +836,8 @@ export function fetchDeleteTenant(ID) {
       `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${ID}`
     )
       .then(data => {
-        console.log(data);
-        dispatch(deleteTenant(ID));
+        dispatch(deleteTenant(data));
+        return "deleted";
       })
       .catch(error =>
         NotificationsManager.error(

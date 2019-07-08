@@ -13,7 +13,10 @@ import Loading from "../../../../common/Loading";
 class Details extends Component {
   state = {
     tenant: [],
-    tenantName: ""
+    tenantName: "",
+    defaultDomain: "",
+    useTenantLanguages: null,
+    useCustomRoutingProfile: null
   };
 
   componentDidMount() {
@@ -60,6 +63,21 @@ class Details extends Component {
                   defaultValue={this.state.tenant.name}
                   onChange={e => {
                     this.setState({ tenantName: e.target.value });
+                  }}
+                />
+              </Col>
+            </FormGroup>
+            <FormGroup controlId="defaultDomain">
+              <Col componentClass={ControlLabel} md={3}>
+                Domain
+              </Col>
+              <Col md={9}>
+                <FormControl
+                  type="text"
+                  placeholder="Tenant name"
+                  defaultValue={this.state.tenant.defaultDomain}
+                  onChange={e => {
+                    this.setState({ defaultDomain: e.target.value });
                   }}
                 />
               </Col>

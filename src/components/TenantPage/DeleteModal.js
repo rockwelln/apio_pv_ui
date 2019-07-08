@@ -21,10 +21,15 @@ class DeleteModal extends Component {
     const { onClose } = this.props;
     this.setState({ deleting: true });
 
-    this.props.fetchDeleteTenant(tenantId).then(() => {
-      this.setState({ deleting: false });
-      onClose && onClose(true);
-    });
+    this.props
+      .fetchDeleteTenant(tenantId)
+      .then(res =>
+        res
+          ? (this.setState({ deleting: false }),
+            onClose && onClose(true),
+            this.props.history.push("/provisioning/broadsoft_xsp1_as1/tenants"))
+          : this.setState({ deleting: false })
+      );
   }
 
   render() {

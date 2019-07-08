@@ -38,7 +38,7 @@ class Tenants extends Component {
     this.cancelLoad = true;
   }
 
-  componentDidMount() {
+  fetchRequsts = () => {
     this.props.fetchGetTenants(this.cancelLoad).then(() => {
       const sortedTenants = [...this.props.tenants];
       this.setState(
@@ -55,6 +55,16 @@ class Tenants extends Component {
       );
     });
     this.props.refuseCreateTenant();
+  };
+
+  componentDidMount() {
+    this.fetchRequsts();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.tenants.length !== this.props.tenants.length) {
+      this.fetchRequsts();
+    }
   }
 
   render() {
