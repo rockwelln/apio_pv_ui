@@ -32,20 +32,42 @@ export class Limits extends Component {
           </Col>
         </Row>
         <Row className={"margin-1"}>
-          <Col mdOffset={11} md={1}>
+          <Col mdOffset={9} md={1}>
             <Button
               onClick={() => this.props.changeStepOfCreateTenant("Admin")}
             >
-              <Glyphicon glyph="glyphicon glyphicon-forward">SKIP</Glyphicon>
+              <Glyphicon
+                glyph="glyphicon glyphicon-forward"
+                style={{ display: "flex", lineHeight: "20px" }}
+              >
+                <div
+                  className={"margin-left-1"}
+                  style={{
+                    fontFamily: `"Helvetica Neue",Helvetica,Arial,sans-serif`
+                  }}
+                >
+                  SKIP
+                </div>
+              </Glyphicon>
             </Button>
           </Col>
-        </Row>
-        <Row className={"margin-1"}>
-          <Col mdOffset={11} md={1}>
+          <Col mdOffset={1} md={1}>
             <Button
               onClick={() => this.props.changeStepOfCreateTenant("Admin")}
             >
-              <Glyphicon glyph="glyphicon glyphicon-ok">ADD</Glyphicon>
+              <Glyphicon
+                glyph="glyphicon glyphicon-ok"
+                style={{ display: "flex", lineHeight: "20px" }}
+              >
+                <div
+                  className={"margin-left-1"}
+                  style={{
+                    fontFamily: `"Helvetica Neue",Helvetica,Arial,sans-serif`
+                  }}
+                >
+                  APPLY
+                </div>
+              </Glyphicon>
             </Button>
           </Col>
         </Row>

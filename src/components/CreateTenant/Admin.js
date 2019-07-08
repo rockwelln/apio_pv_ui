@@ -52,7 +52,7 @@ export class Admin extends Component {
                 <FormControl
                   type="text"
                   placeholder="Admin ID"
-                  defaultValue={this.state.userId}
+                  defaultValue={this.state.createAdminData.userId}
                   onChange={e => {
                     this.clearErrors();
                     this.setState({
@@ -64,7 +64,7 @@ export class Admin extends Component {
                   }}
                 />
                 <InputGroup.Addon>{`@${
-                  this.props.createTenant.defaultDomain
+                  this.props.createdTenant.defaultDomain
                 }`}</InputGroup.Addon>
               </InputGroup>
               {this.state.userIdError && (
@@ -83,7 +83,7 @@ export class Admin extends Component {
             <FormControl
               type="text"
               placeholder="First Name"
-              defaultValue={this.props.createTenant.firstName}
+              defaultValue={this.state.createAdminData.firstName}
               onChange={e => {
                 this.clearErrors();
                 this.setState({
@@ -99,7 +99,7 @@ export class Admin extends Component {
             <FormControl
               type="text"
               placeholder="Last Name"
-              defaultValue={this.props.createTenant.lastName}
+              defaultValue={this.state.createAdminData.lastName}
               onChange={e => {
                 this.clearErrors();
                 this.setState({
@@ -209,21 +209,56 @@ export class Admin extends Component {
             <Button
               onClick={() => this.props.changeStepOfCreateTenant("Limits")}
             >
-              <Glyphicon glyph="glyphicon glyphicon-backward"> BACK</Glyphicon>
+              <Glyphicon
+                glyph="glyphicon glyphicon-backward"
+                style={{ display: "flex", lineHeight: "20px" }}
+              >
+                <div
+                  className={"margin-left-1"}
+                  style={{
+                    fontFamily: `"Helvetica Neue",Helvetica,Arial,sans-serif`
+                  }}
+                >
+                  {" "}
+                  BACK
+                </div>
+              </Glyphicon>
             </Button>
           </Col>
-          <Col mdOffset={10} md={1}>
+          <Col mdOffset={8} md={1}>
             <Link to={`/provisioning/broadsoft_xsp1_as1/tenants`}>
               <Button onClick={() => this.props.refuseCreateTenant()}>
-                <Glyphicon glyph="glyphicon glyphicon-forward">SKIP</Glyphicon>
+                <Glyphicon
+                  glyph="glyphicon glyphicon-forward"
+                  style={{ display: "flex", lineHeight: "20px" }}
+                >
+                  <div
+                    className={"margin-left-1"}
+                    style={{
+                      fontFamily: `"Helvetica Neue",Helvetica,Arial,sans-serif`
+                    }}
+                  >
+                    SKIP
+                  </div>
+                </Glyphicon>
               </Button>
             </Link>
           </Col>
-        </Row>
-        <Row className={"margin-1"}>
-          <Col mdOffset={11} md={1}>
+          <Col mdOffset={1} md={1}>
             <Button onClick={this.createAdmin}>
-              <Glyphicon glyph="glyphicon glyphicon-ok">ADD</Glyphicon>
+              <Glyphicon
+                glyph="glyphicon glyphicon-ok"
+                style={{ display: "flex", lineHeight: "20px" }}
+              >
+                <div
+                  className={"margin-left-1"}
+                  style={{
+                    fontFamily: `"Helvetica Neue",Helvetica,Arial,sans-serif`
+                  }}
+                >
+                  ADD
+                </div>
+              </Glyphicon>
             </Button>
           </Col>
         </Row>
@@ -261,7 +296,7 @@ export class Admin extends Component {
 
     this.props
       .fetchPostCreateTenantAdmin(
-        this.props.createTenant.tenantId,
+        this.props.createdTenant.tenantId,
         this.state.createAdminData
       )
       .then(() => {
@@ -272,7 +307,7 @@ export class Admin extends Component {
 }
 
 const mapStateToProps = state => ({
-  createTenant: state.createTenant
+  createdTenant: state.createdTenant
 });
 
 const mapDispatchToProps = {

@@ -5,6 +5,7 @@ import Basic from "./Basic";
 import Template from "./Template";
 import Limits from "./Limits";
 import Admin from "./Admin";
+import Created from "./Created";
 
 import Col from "react-bootstrap/lib/Col";
 import Row from "react-bootstrap/lib/Row";
@@ -42,6 +43,9 @@ export class CreateTenant extends Component {
       }
       case "Template": {
         return <Template />;
+      }
+      case "Created": {
+        return <Created />;
       }
       case "Limits": {
         return <Limits />;

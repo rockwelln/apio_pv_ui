@@ -23,13 +23,7 @@ import {
   changeDomainOfTenant
 } from "../../store/actions";
 
-const RESELLEROPTIONS = [
-  { value: "", name: "None" },
-  { value: "Paradice IT", name: "Paradice IT" },
-  { value: "ICT in action", name: "ICT in action" },
-  { value: "Vangeel ICT", name: "Vangeel ICT" },
-  { value: "Euphony", name: "Euphony" }
-];
+const RESELLEROPTIONS = [{ value: "", name: "None" }];
 
 export class Basic extends Component {
   state = {
@@ -46,11 +40,12 @@ export class Basic extends Component {
             <p className={"header"}>
               ADD TENANT
               <Link to={`/provisioning/broadsoft_xsp1_as1/tenants`}>
-                <Glyphicon
-                  className={"margin-1 smaller"}
-                  glyph="glyphicon glyphicon-remove"
+                <Button
+                  className={"margin-left-1"}
                   onClick={() => this.props.refuseCreateTenant()}
-                />
+                >
+                  Cancel
+                </Button>
               </Link>
             </p>
           </Col>
@@ -193,7 +188,7 @@ export class Basic extends Component {
                 className={"larger"}
                 glyph="glyphicon glyphicon-plus"
                 onClick={this.showHideMore}
-                style={{ display: "flex" }}
+                style={{ display: "flex", lineHeight: "20px" }}
               >
                 <div
                   style={{
@@ -208,6 +203,7 @@ export class Basic extends Component {
                 className={"larger"}
                 glyph="glyphicon glyphicon-minus"
                 onClick={this.showHideMore}
+                style={{ display: "flex", lineHeight: "20px" }}
               >
                 <div
                   style={{
@@ -269,9 +265,10 @@ export class Basic extends Component {
             <Button onClick={this.nextStep}>
               <Glyphicon
                 glyph="glyphicon glyphicon-ok"
-                style={{ display: "flex" }}
+                style={{ display: "flex", lineHeight: "20px" }}
               >
                 <div
+                  className={"margin-left-1"}
                   style={{
                     fontFamily: `"Helvetica Neue",Helvetica,Arial,sans-serif`
                   }}

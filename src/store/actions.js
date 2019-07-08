@@ -128,8 +128,9 @@ export const postAssignUserServicePacks = () => ({
   type: actionType.POST_ASSIGN_USER_SERVICE_PACKS
 });
 
-export const postCreateTenant = () => ({
-  type: actionType.POST_CREATE_TENANT
+export const postCreateTenant = data => ({
+  type: actionType.POST_CREATE_TENANT,
+  data
 });
 
 export const putUpdateUser = data => ({

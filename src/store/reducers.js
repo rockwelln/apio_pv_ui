@@ -48,7 +48,8 @@ const initialState = {
     useTenantLanguages: false,
     templateName: ""
   },
-  templatesOfTenant: []
+  templatesOfTenant: [],
+  createdTenant: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -291,7 +292,8 @@ function mainReducer(state = initialState, action) {
     }
     case actionType.POST_CREATE_TENANT: {
       return {
-        ...state
+        ...state,
+        createdTenant: action.data
       };
     }
     case actionType.PUT_UPDATE_USER: {
