@@ -173,6 +173,11 @@ export const putUpdateGroupServicesByGroupId = data => ({
   data
 });
 
+export const putUpdateTenantDetails = data => ({
+  type: actionType.PUT_UPDATE_TENANT_DETAILS,
+  data
+});
+
 export const deleteTenant = data => ({
   type: actionType.DELETE_TENANT,
   data
@@ -823,6 +828,26 @@ export function fetchPutUpdateGroupServicesByGroupId(tenantId, groupId, data) {
           <FormattedMessage
             id="update-services-failed"
             defaultMessage="Failed to update services!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchPutUpdateTenantDetails(tenantId, data) {
+  return function(dispatch) {
+    return fetch_put(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => dispatch(putUpdateTenantDetails(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="update-tenant-details-failed"
+            defaultMessage="Failed to update tenant details!"
           />,
           error.message
         )

@@ -344,6 +344,13 @@ function mainReducer(state = initialState, action) {
         ...state
       };
     }
+    case actionType.PUT_UPDATE_TENANT_DETAILS: {
+      console.log(action);
+      return {
+        ...state
+      };
+    }
+
     case actionType.DELETE_TENANT: {
       return {
         ...state
