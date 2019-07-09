@@ -57,7 +57,7 @@ export class Template extends Component {
         </Row>
         <Row>
           <Col md={12}>
-            <p className={"smaller"}>
+            <p>
               Please select a Tenant template. This template will influence they
               way your tenant will be configured. (service pack definition,
               service (pack) authorisation, feature access code definition.

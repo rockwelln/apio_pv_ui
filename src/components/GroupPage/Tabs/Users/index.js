@@ -8,6 +8,7 @@ import InputGroup from "react-bootstrap/lib/InputGroup";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import Checkbox from "react-bootstrap/lib/Checkbox";
+import Pagination from "react-bootstrap/lib/Pagination";
 import { FormattedMessage } from "react-intl";
 
 import Loading from "../../../../common/Loading";
@@ -107,36 +108,57 @@ export class Users extends Component {
         {paginationUsers.length ? (
           <React.Fragment>
             <Row>
-              <Col mdOffset={1} md={10}>
-                <div style={{ display: "flex" }}>
-                  <Checkbox
-                    className={"margin-checbox"}
-                    checked={this.state.selectAll}
-                    onChange={this.handleSelectAllClick}
-                  >
-                    (Un)select all shown numbers
-                  </Checkbox>
-                  <Glyphicon
-                    glyph="glyphicon glyphicon-trash"
-                    onClick={this.deleteSlectedUsers}
-                  />
-                  <div className={"margin-checbox"}>
-                    Delete selected numbers
+              <Col mdOffset={1} md={11}>
+                <div className={"flex space-between indent-top-bottom-1"}>
+                  <div className={"flex align-items-center"}>
+                    <Checkbox
+                      className={"margin-checbox"}
+                      checked={this.state.selectAll}
+                      onChange={this.handleSelectAllClick}
+                    >
+                      (Un)select all shown numbers
+                    </Checkbox>
+                    <Glyphicon
+                      glyph="glyphicon glyphicon-trash"
+                      onClick={this.deleteSlectedUsers}
+                    />
+                    <div className={"margin-checbox"}>
+                      Delete selected numbers
+                    </div>
+                    <DeleteModal
+                      userId={usersForDelete.map(user => user.userId)}
+                      show={showDelete}
+                      onClose={e => {
+                        this.props.fetchGetUsersByGroupId(
+                          this.props.tenantId,
+                          this.props.groupId
+                        );
+                        this.setState({ showDelete: false });
+                      }}
+                      {...this.props}
+                    />
                   </div>
-                  <DeleteModal
-                    userId={usersForDelete.map(user => user.userId)}
-                    show={showDelete}
-                    onClose={e => {
-                      this.props.fetchGetUsersByGroupId(
-                        this.props.tenantId,
-                        this.props.groupId
-                      );
-                      this.setState({ showDelete: false });
-                    }}
-                    {...this.props}
-                  />
+                  <div className={"flex align-items-center"}>
+                    <div>Item per page</div>
+                    <FormControl
+                      componentClass="select"
+                      defaultValue={countPerPage}
+                      style={{ display: "inline", width: "auto" }}
+                      className={"margin-left-1"}
+                      onChange={this.changeCoutOnPage}
+                    >
+                      {countsPerPages.map(counts => (
+                        <option key={counts.value} value={counts.value}>
+                          {counts.title}
+                        </option>
+                      ))}
+                    </FormControl>
+                  </div>
                 </div>
               </Col>
+            </Row>
+            <Row>
+              <Col md={12} />
             </Row>
             <Row>
               <Col md={12}>
@@ -225,29 +247,14 @@ export class Users extends Component {
               </Col>
             </Row>
             <Row>
-              <Col mdOffset={10} md={2}>
-                <FormControl
-                  componentClass="select"
-                  defaultValue={countPerPage}
-                  style={{ display: "inline", width: "auto" }}
-                  className={"margin-1"}
-                  onChange={this.changeCoutOnPage}
-                >
-                  {countsPerPages.map(counts => (
-                    <option key={counts.value} value={counts.value}>
-                      {counts.title}
-                    </option>
-                  ))}
-                </FormControl>
-                <Glyphicon
-                  glyph="glyphicon glyphicon-chevron-left"
-                  onClick={this.decrementPage}
-                />
-                {this.state.page + 1}
-                <Glyphicon
-                  glyph="glyphicon glyphicon-chevron-right"
-                  onClick={this.incrementPage}
-                />
+              <Col md={12}>
+                <div className="flex flex-row flex-end-center">
+                  <Pagination className={"indent-top-bottom-1"}>
+                    <Pagination.Prev onClick={this.decrementPage} />
+                    <Pagination.Item>{this.state.page + 1}</Pagination.Item>
+                    <Pagination.Next onClick={this.incrementPage} />
+                  </Pagination>
+                </div>
               </Col>
             </Row>
           </React.Fragment>

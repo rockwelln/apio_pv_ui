@@ -11,6 +11,7 @@ import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Checkbox from "react-bootstrap/lib/Checkbox";
 import HelpBlock from "react-bootstrap/lib/HelpBlock";
+import Panel from "react-bootstrap/lib/Panel";
 import { Form } from "react-bootstrap";
 
 import Loading from "../../../../common/Loading";
@@ -217,6 +218,81 @@ class Details extends Component {
                 />
               </Col>
             </FormGroup>
+            {this.props.user.trunkEndpoint && (
+              <Row>
+                <Col mdOffset={3} md={9}>
+                  <Panel>
+                    <Panel.Heading>Trunk details</Panel.Heading>
+                    <Panel.Body>
+                      <Row className={"text-left"}>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>Name:</div>
+                        </Col>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          {
+                            this.props.user.trunkEndpoint
+                              .trunkGroupDeviceEndpoint.name
+                          }
+                        </Col>
+                      </Row>
+                      <Row className={"text-left"}>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>Line Port:</div>
+                        </Col>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>
+                            {
+                              this.props.user.trunkEndpoint
+                                .trunkGroupDeviceEndpoint.linePort
+                            }
+                          </div>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>Static registration capable:</div>
+                        </Col>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>
+                            {this.props.user.trunkEndpoint
+                              .trunkGroupDeviceEndpoint
+                              .staticRegistrationCapable
+                              ? "Yes"
+                              : "No"}
+                          </div>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>Use domain:</div>
+                        </Col>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>
+                            {this.props.user.trunkEndpoint
+                              .trunkGroupDeviceEndpoint.useDomain
+                              ? "Yes"
+                              : "No"}
+                          </div>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>Is pilot user:</div>
+                        </Col>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>
+                            {this.props.user.trunkEndpoint
+                              .trunkGroupDeviceEndpoint.isPilotUser
+                              ? "Yes"
+                              : "No"}
+                          </div>
+                        </Col>
+                      </Row>
+                    </Panel.Body>
+                  </Panel>
+                </Col>
+              </Row>
+            )}
             <Col mdOffset={3} md={9}>
               {updateMassage && (
                 <HelpBlock

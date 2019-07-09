@@ -91,12 +91,6 @@ class TenantPage extends Component {
           <Tab eventKey={3} title="SERVICE PACKS">
             <ServicesPacks />
           </Tab>
-          <Tab eventKey={4} title="DEVICE">
-            Device Tab
-          </Tab>
-          <Tab eventKey={5} title="TRUNK">
-            Trunk Tab
-          </Tab>
         </Tabs>
       </React.Fragment>
     );

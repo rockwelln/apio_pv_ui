@@ -52,7 +52,7 @@ export class Basic extends Component {
         </Row>
         <Row>
           <Col md={12}>
-            <p className={"smaller"}>
+            <p>
               Select the type, configure a unique ID, a name and optionally some
               contact details
             </p>
@@ -289,7 +289,7 @@ export class Basic extends Component {
       this.props.changeStepOfCreateTenant("Template");
     } else {
       this.setState({
-        errorMessage: "Tenant ID, name, type and domain this fields is required"
+        errorMessage: "Tenant ID, name, type and domain are required"
       });
     }
   };

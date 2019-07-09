@@ -941,7 +941,6 @@ export function fetchDeleteAssignUserServices(
   data
 ) {
   return function(dispatch) {
-    console.log("delete", data);
     return fetch_delete(
       `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/users/${userName}/services/`,
       data

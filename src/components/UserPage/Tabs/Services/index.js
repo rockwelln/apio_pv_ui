@@ -10,6 +10,8 @@ import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import Checkbox from "react-bootstrap/lib/Checkbox";
 import Button from "react-bootstrap/lib/Button";
+import HelpBlock from "react-bootstrap/lib/HelpBlock";
+import Pagination from "react-bootstrap/lib/Pagination";
 
 import { FormattedMessage } from "react-intl";
 
@@ -37,7 +39,8 @@ export class Services extends Component {
     showDelete: false,
     servicesForDelete: [],
     postServices: false,
-    deleteServices: false
+    deleteServices: false,
+    updateMessage: ""
   };
 
   fetchSerivces = () => {
@@ -73,9 +76,24 @@ export class Services extends Component {
       (!prevState.deleteServices && this.state.deleteServices)
     ) {
       this.fetchSerivces().then(() =>
-        this.setState({ postServices: false, deleteServices: false })
+        this.setState(
+          {
+            postServices: false,
+            deleteServices: false,
+            updateMessage: "Services is updated"
+          },
+          () =>
+            (this.timer = setTimeout(
+              () => this.setState({ updateMessage: "" }),
+              3000
+            ))
+        )
       );
     }
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timer);
   }
 
   render() {
@@ -84,7 +102,8 @@ export class Services extends Component {
       countPerPage,
       pagination,
       paginationServices,
-      page
+      page,
+      updateMessage
     } = this.state;
     if (isLoading && pagination) {
       return <Loading />;
@@ -131,14 +150,32 @@ export class Services extends Component {
           <React.Fragment>
             <Row>
               <Col mdOffset={1} md={10}>
-                <div style={{ display: "flex" }}>
-                  <Checkbox
-                    className={"margin-checbox"}
-                    checked={this.state.selectAll}
-                    onChange={this.handleSelectAllClick}
-                  >
-                    assign/deassign all
-                  </Checkbox>
+                <div className={"flex space-between indent-top-bottom-1"}>
+                  <div className={"flex align-items-center"}>
+                    <Checkbox
+                      className={"margin-checbox"}
+                      checked={this.state.selectAll}
+                      onChange={this.handleSelectAllClick}
+                    >
+                      assign/deassign all
+                    </Checkbox>
+                  </div>
+                  <div className={"flex align-items-center"}>
+                    <div>Item per page</div>
+                    <FormControl
+                      componentClass="select"
+                      defaultValue={countPerPage}
+                      style={{ display: "inline", width: "auto" }}
+                      className={"margin-left-1"}
+                      onChange={this.changeCoutOnPage}
+                    >
+                      {countsPerPages.map(counts => (
+                        <option key={counts.value} value={counts.value}>
+                          {counts.title}
+                        </option>
+                      ))}
+                    </FormControl>
+                  </div>
                 </div>
               </Col>
             </Row>
@@ -198,34 +235,36 @@ export class Services extends Component {
               </Col>
             </Row>
             <Row>
-              <Col mdOffset={9} md={2}>
-                <FormControl
-                  componentClass="select"
-                  defaultValue={countPerPage}
-                  style={{ display: "inline", width: "auto" }}
-                  className={"margin-1"}
-                  onChange={this.changeCoutOnPage}
-                >
-                  {countsPerPages.map(counts => (
-                    <option key={counts.value} value={counts.value}>
-                      {counts.title}
-                    </option>
-                  ))}
-                </FormControl>
-                <Glyphicon
-                  glyph="glyphicon glyphicon-chevron-left"
-                  onClick={this.decrementPage}
-                />
-                {this.state.page + 1}
-                <Glyphicon
-                  glyph="glyphicon glyphicon-chevron-right"
-                  onClick={this.incrementPage}
-                />
+              <Col md={11}>
+                <div className="flex flex-row flex-end-center">
+                  <Pagination className={"indent-top-bottom-1"}>
+                    <Pagination.Prev onClick={this.decrementPage} />
+                    <Pagination.Item>{this.state.page + 1}</Pagination.Item>
+                    <Pagination.Next onClick={this.incrementPage} />
+                  </Pagination>
+                </div>
               </Col>
             </Row>
-            <Row>
-              <Col mdOffset={9} md={2} className={"text-right"}>
-                <Button onClick={this.updateSevices}>Update</Button>
+            {updateMessage && (
+              <Row className={"indent-top-bottom-1"}>
+                <Col mdOffset={9} md={3}>
+                  <HelpBlock
+                    bsClass={`${
+                      updateMessage === "Loading..."
+                        ? "color-info"
+                        : "color-success"
+                    }`}
+                  >
+                    {updateMessage}
+                  </HelpBlock>
+                </Col>
+              </Row>
+            )}
+            <Row className={"indent-top-bottom-1"}>
+              <Col mdOffset={9} md={2}>
+                <div className="flex flex-row flex-end-center">
+                  <Button onClick={this.updateSevices}>Update</Button>
+                </div>
               </Col>
             </Row>
           </React.Fragment>
@@ -261,22 +300,24 @@ export class Services extends Component {
     const deleteData = {
       services: servicesToDelete
     };
-    this.props
-      .fetchPostAssignUserServices(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId,
-        this.props.match.params.userName,
-        postData
-      )
-      .then(() => this.setState({ postServices: true }));
-    this.props
-      .fetchDeleteAssignUserServices(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId,
-        this.props.match.params.userName,
-        deleteData
-      )
-      .then(() => this.setState({ deleteServices: true }));
+    this.setState({ updateMessage: "Loading..." }, () => {
+      this.props
+        .fetchPostAssignUserServices(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          this.props.match.params.userName,
+          postData
+        )
+        .then(() => this.setState({ postServices: true }));
+      this.props
+        .fetchDeleteAssignUserServices(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          this.props.match.params.userName,
+          deleteData
+        )
+        .then(() => this.setState({ deleteServices: true }));
+    });
   };
 
   changeCoutOnPage = e => {

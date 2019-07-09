@@ -17,7 +17,8 @@ import HelpBlock from "react-bootstrap/lib/HelpBlock";
 
 import {
   refuseCreateTenant,
-  fetchPostCreateTenantAdmin
+  fetchPostCreateTenantAdmin,
+  changeStepOfCreateTenant
 } from "../../store/actions";
 
 export class Admin extends Component {
@@ -39,6 +40,16 @@ export class Admin extends Component {
   render() {
     return (
       <React.Fragment>
+        <Row>
+          <Col md={12}>
+            <p className={"header"}>ADD TENANT: admin</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={12}>
+            <p>Add an administrator who can manage this tenant</p>
+          </Col>
+        </Row>
         <Row className={"margin-1"}>
           <FormGroup
             controlId="passwordGroupAdmin"
@@ -219,7 +230,6 @@ export class Admin extends Component {
                     fontFamily: `"Helvetica Neue",Helvetica,Arial,sans-serif`
                   }}
                 >
-                  {" "}
                   BACK
                 </div>
               </Glyphicon>
@@ -312,7 +322,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   fetchPostCreateTenantAdmin,
-  refuseCreateTenant
+  refuseCreateTenant,
+  changeStepOfCreateTenant
 };
 
 export default withRouter(

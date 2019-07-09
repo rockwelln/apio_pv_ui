@@ -8,6 +8,7 @@ import InputGroup from "react-bootstrap/lib/InputGroup";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import Checkbox from "react-bootstrap/lib/Checkbox";
+import Pagination from "react-bootstrap/lib/Pagination";
 
 import { FormattedMessage } from "react-intl";
 
@@ -112,32 +113,50 @@ export class PhoneNumbersTab extends Component {
           <React.Fragment>
             <Row>
               <Col mdOffset={1} md={10}>
-                <div style={{ display: "flex" }}>
-                  <Checkbox
-                    className={"margin-checbox"}
-                    checked={this.state.selectAll}
-                    onChange={this.handleSelectAllClick}
-                  >
-                    (Un)select all shown numbers
-                  </Checkbox>
-                  <Glyphicon
-                    glyph="glyphicon glyphicon-trash"
-                    onClick={this.deleteSlectedNumbers}
-                  />
-                  <div className={"margin-checbox"}>
-                    Delete selected numbers
+                <div className={"flex space-between indent-top-bottom-1"}>
+                  <div className={"flex align-items-center"}>
+                    <Checkbox
+                      className={"margin-checbox"}
+                      checked={this.state.selectAll}
+                      onChange={this.handleSelectAllClick}
+                    >
+                      (Un)select all shown numbers
+                    </Checkbox>
+                    <Glyphicon
+                      glyph="glyphicon glyphicon-trash"
+                      onClick={this.deleteSlectedNumbers}
+                    />
+                    <div className={"margin-checbox"}>
+                      Delete selected numbers
+                    </div>
+                    <DeleteModal
+                      rangeStart={numbersForDelete.map(
+                        number => number.phoneNumbers || number.phoneNumber
+                      )}
+                      show={showDelete}
+                      onClose={e => {
+                        onReload && onReload(numbersForDelete);
+                        this.setState({ showDelete: false });
+                      }}
+                      {...this.props}
+                    />
                   </div>
-                  <DeleteModal
-                    rangeStart={numbersForDelete.map(
-                      number => number.phoneNumbers || number.phoneNumber
-                    )}
-                    show={showDelete}
-                    onClose={e => {
-                      onReload && onReload(numbersForDelete);
-                      this.setState({ showDelete: false });
-                    }}
-                    {...this.props}
-                  />
+                  <div className={"flex align-items-center"}>
+                    <div>Item per page</div>
+                    <FormControl
+                      componentClass="select"
+                      defaultValue={countPerPage}
+                      style={{ display: "inline", width: "auto" }}
+                      className={"margin-left-1"}
+                      onChange={this.changeCoutOnPage}
+                    >
+                      {countsPerPages.map(counts => (
+                        <option key={counts.value} value={counts.value}>
+                          {counts.title}
+                        </option>
+                      ))}
+                    </FormControl>
+                  </div>
                 </div>
               </Col>
             </Row>
@@ -212,29 +231,14 @@ export class PhoneNumbersTab extends Component {
               </Col>
             </Row>
             <Row>
-              <Col mdOffset={9} md={2}>
-                <FormControl
-                  componentClass="select"
-                  defaultValue={countPerPage}
-                  style={{ display: "inline", width: "auto" }}
-                  className={"margin-1"}
-                  onChange={this.changeCoutOnPage}
-                >
-                  {countsPerPages.map(counts => (
-                    <option key={counts.value} value={counts.value}>
-                      {counts.title}
-                    </option>
-                  ))}
-                </FormControl>
-                <Glyphicon
-                  glyph="glyphicon glyphicon-chevron-left"
-                  onClick={this.decrementPage}
-                />
-                {this.state.page + 1}
-                <Glyphicon
-                  glyph="glyphicon glyphicon-chevron-right"
-                  onClick={this.incrementPage}
-                />
+              <Col md={11}>
+                <div className="flex flex-row flex-end-center">
+                  <Pagination className={"indent-top-bottom-1"}>
+                    <Pagination.Prev onClick={this.decrementPage} />
+                    <Pagination.Item>{this.state.page + 1}</Pagination.Item>
+                    <Pagination.Next onClick={this.incrementPage} />
+                  </Pagination>
+                </div>
               </Col>
             </Row>
           </React.Fragment>

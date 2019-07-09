@@ -19,7 +19,7 @@ export class Limits extends Component {
         </Row>
         <Row>
           <Col md={12}>
-            <p className={"smaller"}>
+            <p>
               Set user limits on service packs and group services. This is
               typically used to limit the volime of licensable items that can be
               consumed by a customer.

@@ -14,6 +14,10 @@
   margin: 5px;
 }
 
+.margin-0 {
+  margin: 0;
+}
+
 .margin-1 {
   margin: 10px !important;
 }
@@ -28,6 +32,11 @@
 
 .margin-left-1 {
   margin-left: 10px !important;
+}
+
+.indent-top-bottom-1 {
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
 }
 
 .radio-button {
@@ -105,6 +114,11 @@
   flex-wrap: wrap;
 }
 
+.flex-end-center {
+  justify-content: flex-end;
+  align-items: center;
+}
+
 .flex {
   display: flex;
 }
@@ -125,4 +139,12 @@
 
 .width-20 {
   width: 200px;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.word-break-word {
+  word-break: break-word;
 }
