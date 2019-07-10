@@ -24,7 +24,7 @@ const initialState = {
   userServices: [],
   userServicePacks: [],
   groupTrunkErrorMassage: "",
-  createTenantStep: "Admin",
+  createTenantStep: "Basic",
   createTenant: {
     tenantId: "",
     type: "",
@@ -46,7 +46,8 @@ const initialState = {
       country: ""
     },
     useTenantLanguages: false,
-    templateName: ""
+    templateName: "",
+    accessDevice: {}
   },
   templatesOfTenant: [],
   createdTenant: {}
@@ -252,6 +253,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         templatesOfTenant: action.data.templates
+      };
+    }
+    case actionType.GET_ACCESS_DEVICE_BY_NAME: {
+      return {
+        ...state,
+        accessDevice: action.data
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN: {

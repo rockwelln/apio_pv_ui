@@ -72,7 +72,7 @@ export class Basic extends Component {
             >
               <ToggleButton
                 className={"radio-button"}
-                value={"Service Provider"}
+                value={"ServiceProvider"}
                 onClick={e => {
                   this.props.changeTypeOfTenant(e.target.value);
                   this.setState({ errorMessage: "" });

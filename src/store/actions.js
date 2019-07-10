@@ -100,6 +100,11 @@ export const getTamplatesOfTenant = data => ({
   data
 });
 
+export const getAccessDeviceByName = data => ({
+  type: actionType.GET_ACCESS_DEVICE_BY_NAME,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -571,6 +576,24 @@ export function fetchGetTamplatesOfTenant() {
           <FormattedMessage
             id="fetch-tenant-tamplates-failed"
             defaultMessage="Failed to fetch tenant tamplates!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetAccessDeviceByName(tenantId, groupId, deviceName) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/access_devices/${deviceName}`
+    )
+      .then(data => dispatch(getAccessDeviceByName(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-access-device-failed"
+            defaultMessage="Failed to fetch access device!"
           />,
           error.message
         )

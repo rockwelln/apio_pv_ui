@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+import { Link } from "react-router-dom";
 
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
@@ -17,7 +18,8 @@ import { Form } from "react-bootstrap";
 import Loading from "../../../../common/Loading";
 import {
   fetchGetUserByName,
-  fetchPutUpdateUser
+  fetchPutUpdateUser,
+  fetchGetAccessDeviceByName
 } from "../../../../store/actions";
 
 class Details extends Component {
@@ -44,16 +46,34 @@ class Details extends Component {
         this.props.match.params.groupId,
         this.props.match.params.userName
       )
-      .then(() =>
-        this.setState({
-          emailAddress: this.props.user.emailAddress,
-          firstName: this.props.user.firstName,
-          lastName: this.props.user.lastName,
-          cliFirstName: this.props.user.cliFirstName,
-          cliLastName: this.props.user.cliLastName,
-          isLoading: false
-        })
-      );
+      .then(() => {
+        this.props.user.accessDeviceEndpoint
+          ? this.props
+              .fetchGetAccessDeviceByName(
+                this.props.match.params.tenantId,
+                this.props.match.params.groupId,
+                this.props.user.accessDeviceEndpoint.accessDevice.name
+              )
+              .then(() =>
+                this.setState({
+                  emailAddress: this.props.user.emailAddress,
+                  firstName: this.props.user.firstName,
+                  lastName: this.props.user.lastName,
+                  cliFirstName: this.props.user.cliFirstName,
+                  cliLastName: this.props.user.cliLastName,
+                  accessDevice: this.props.accessDevice,
+                  isLoading: false
+                })
+              )
+          : this.setState({
+              emailAddress: this.props.user.emailAddress,
+              firstName: this.props.user.firstName,
+              lastName: this.props.user.lastName,
+              cliFirstName: this.props.user.cliFirstName,
+              cliLastName: this.props.user.cliLastName,
+              isLoading: false
+            });
+      });
   };
 
   componentDidMount() {
@@ -229,10 +249,12 @@ class Details extends Component {
                           <div>Name:</div>
                         </Col>
                         <Col md={6} className={"text-left word-break-word"}>
-                          {
-                            this.props.user.trunkEndpoint
-                              .trunkGroupDeviceEndpoint.name
-                          }
+                          <Link>
+                            {
+                              this.props.user.trunkEndpoint
+                                .trunkGroupDeviceEndpoint.name
+                            }
+                          </Link>
                         </Col>
                       </Row>
                       <Row className={"text-left"}>
@@ -293,6 +315,163 @@ class Details extends Component {
                 </Col>
               </Row>
             )}
+            {this.props.user.accessDeviceEndpoint && (
+              <Row>
+                <Col mdOffset={3} md={9}>
+                  <Panel>
+                    <Panel.Heading>Device details</Panel.Heading>
+                    <Panel.Body>
+                      <Row className={"text-left"}>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>Name:</div>
+                        </Col>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>
+                            {
+                              this.props.user.accessDeviceEndpoint.accessDevice
+                                .name
+                            }
+                          </div>
+                        </Col>
+                      </Row>
+                      <Row className={"text-left"}>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>Description:</div>
+                        </Col>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>{this.props.accessDevice.description}</div>
+                        </Col>
+                      </Row>
+                      <Row className={"text-left"}>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>Device type:</div>
+                        </Col>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>{this.props.accessDevice.deviceType}</div>
+                        </Col>
+                      </Row>
+                      <Row className={"text-left"}>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>Mac address:</div>
+                        </Col>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>{this.props.accessDevice.macAddress}</div>
+                        </Col>
+                      </Row>
+                      <Row className={"text-left"}>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>Number of assigned ports:</div>
+                        </Col>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>
+                            {this.props.accessDevice.numberOfAssignedPorts}
+                          </div>
+                        </Col>
+                      </Row>
+                      <Row className={"text-left"}>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>Number of ports:</div>
+                        </Col>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>{this.props.accessDevice.numberOfPorts}</div>
+                        </Col>
+                      </Row>
+                      <Row className={"text-left"}>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>Outbound proxy server net address:</div>
+                        </Col>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>
+                            {
+                              this.props.accessDevice
+                                .outboundProxyServerNetAddress
+                            }
+                          </div>
+                        </Col>
+                      </Row>
+                      <Row className={"text-left"}>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>Physical location:</div>
+                        </Col>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>{this.props.accessDevice.physicalLocation}</div>
+                        </Col>
+                      </Row>
+                      <Row className={"text-left"}>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>Protocol:</div>
+                        </Col>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>{this.props.accessDevice.protocol}</div>
+                        </Col>
+                      </Row>
+                      <Row className={"text-left"}>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>Serial number:</div>
+                        </Col>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>{this.props.accessDevice.serialNumber}</div>
+                        </Col>
+                      </Row>
+                      <Row className={"text-left"}>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>Status:</div>
+                        </Col>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>{this.props.accessDevice.status}</div>
+                        </Col>
+                      </Row>
+                      <Row className={"text-left"}>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>Stun server net address:</div>
+                        </Col>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>
+                            {this.props.accessDevice.stunServerNetAddress}
+                          </div>
+                        </Col>
+                      </Row>
+                      <Row className={"text-left"}>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>Transport protocol:</div>
+                        </Col>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>{this.props.accessDevice.transportProtocol}</div>
+                        </Col>
+                      </Row>
+                      <Row className={"text-left"}>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>Use custom user name password:</div>
+                        </Col>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>
+                            {this.props.accessDevice.useCustomUserNamePassword
+                              ? "Yes"
+                              : "No"}
+                          </div>
+                        </Col>
+                      </Row>
+                      <Row className={"text-left"}>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>User name:</div>
+                        </Col>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>{this.props.accessDevice.userName}</div>
+                        </Col>
+                      </Row>
+                      <Row className={"text-left"}>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>Version:</div>
+                        </Col>
+                        <Col md={6} className={"text-left word-break-word"}>
+                          <div>{this.props.accessDevice.version}</div>
+                        </Col>
+                      </Row>
+                    </Panel.Body>
+                  </Panel>
+                </Col>
+              </Row>
+            )}
             <Col mdOffset={3} md={9}>
               {updateMassage && (
                 <HelpBlock
@@ -308,10 +487,12 @@ class Details extends Component {
             </Col>
           </FormGroup>
           <Row>
-            <Col mdPush={10} md={1}>
-              <Button onClick={this.updateUser} type="submit">
-                <Glyphicon glyph="glyphicon glyphicon-ok" /> UPDATE
-              </Button>
+            <Col md={12} className={"padding-0"}>
+              <div className="flex flex-row flex-end-center">
+                <Button onClick={this.updateUser} type="submit">
+                  <Glyphicon glyph="glyphicon glyphicon-ok" /> UPDATE
+                </Button>
+              </div>
             </Col>
           </Row>
         </Form>
@@ -384,11 +565,13 @@ class Details extends Component {
 
 const mapDispatchToProps = {
   fetchGetUserByName,
-  fetchPutUpdateUser
+  fetchPutUpdateUser,
+  fetchGetAccessDeviceByName
 };
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  accessDevice: state.accessDevice
 });
 
 export default withRouter(
