@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router";
 
 import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
@@ -10,7 +11,7 @@ import { Link } from "react-router-dom";
 
 import "./styles.css";
 
-export default class PhoneNumber extends Component {
+class PhoneNumber extends Component {
   state = { showDelete: false };
 
   render() {
@@ -33,9 +34,9 @@ export default class PhoneNumber extends Component {
         <td>{number.rangeEnd}</td>
         <td>
           <Link
-            to={`/provisioning/broadsoft_xsp1_as1/tenants/${tenantId}/groups/${
-              number.assignedToGroup
-            }`}
+            to={`/provisioning/${
+              this.props.match.params.gwName
+            }/tenants/${tenantId}/groups/${number.assignedToGroup}`}
           >
             {number.assignedToGroup}
           </Link>
@@ -65,3 +66,5 @@ export default class PhoneNumber extends Component {
     );
   }
 }
+
+export default withRouter(PhoneNumber);

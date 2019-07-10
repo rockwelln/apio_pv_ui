@@ -103,7 +103,7 @@ export class Admins extends Component {
           </Col>
           <Col md={1}>
             <Link
-              to={`/provisioning/broadsoft_xsp1_as1/tenants/${
+              to={`/provisioning/${this.props.match.params.gwName}/tenants/${
                 this.props.tenantId
               }/groups/${this.props.groupId}/addadmin`}
             >

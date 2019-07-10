@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
 import { Link } from "react-router-dom";
 
@@ -43,7 +44,9 @@ export class Template extends Component {
           <Col md={12}>
             <p className={"header"}>
               ADD TENANT: template
-              <Link to={`/provisioning/broadsoft_xsp1_as1/tenants`}>
+              <Link
+                to={`/provisioning/${this.props.match.params.gwName}/tenants`}
+              >
                 <Button
                   disabled={this.state.creating}
                   className={"margin-left-1"}
@@ -159,7 +162,9 @@ const mapDispatchToProps = {
   fetchPostCreateTenant
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Template);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Template)
+);

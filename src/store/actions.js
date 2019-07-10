@@ -261,6 +261,30 @@ export const changeDomainOfTenant = data => ({
   data
 });
 
+export const refuseCreateGroup = () => ({
+  type: actionType.REFUSE_CREATE_GROUP
+});
+
+export const changeIdOfGroup = data => ({
+  type: actionType.CHANGE_ID_OF_GROUP,
+  data
+});
+
+export const changeNameOfGroup = data => ({
+  type: actionType.CHANGE_NAME_OF_GROUP,
+  data
+});
+
+export const changeDomainOfGroup = data => ({
+  type: actionType.CHANGE_DOMAIN_OF_GROUP,
+  data
+});
+
+export const changeUserLimitOfGroup = data => ({
+  type: actionType.CHANGE_USER_LIMIT_OF_GROUP,
+  data
+});
+
 export function fetchGetTenants(cancelLoad) {
   return function(dispatch) {
     return fetch_get(`${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/`)

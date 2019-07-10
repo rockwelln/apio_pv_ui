@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { withRouter } from "react-router";
 
 import Table from "react-bootstrap/lib/Table";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
@@ -90,10 +92,16 @@ export class GroupsTab extends Component {
             </InputGroup>
           </Col>
           <Col md={1}>
-            <Glyphicon
-              className={"x-large"}
-              glyph="glyphicon glyphicon-plus-sign"
-            />
+            <Link
+              to={`/provisioning/${this.props.match.params.gwName}/tenants/${
+                this.props.match.params.tenantId
+              }/addgroup`}
+            >
+              <Glyphicon
+                className={"x-large"}
+                glyph="glyphicon glyphicon-plus-sign"
+              />
+            </Link>
           </Col>
         </Row>
         <Row>
@@ -311,7 +319,9 @@ const mapDispatchToProps = {
   fetchGetGroupsByTenantId
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(GroupsTab);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(GroupsTab)
+);

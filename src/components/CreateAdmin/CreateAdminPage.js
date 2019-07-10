@@ -54,12 +54,12 @@ class CreateAdmin extends Component {
     if (!prevProps.shouldRedirect && this.props.shouldRedirect) {
       this.props.match.params.groupId
         ? this.props.history.push(
-            `/provisioning/broadsoft_xsp1_as1/tenants/${
+            `/provisioning/${this.props.match.params.gwName}/tenants/${
               this.props.match.params.tenantId
             }/groups/${this.props.match.params.groupId}`
           )
         : this.props.history.push(
-            `/provisioning/broadsoft_xsp1_as1/tenants/${
+            `/provisioning/${this.props.match.params.gwName}/tenants/${
               this.props.match.params.tenantId
             }`
           );

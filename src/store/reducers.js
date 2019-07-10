@@ -50,7 +50,31 @@ const initialState = {
     accessDevice: {}
   },
   templatesOfTenant: [],
-  createdTenant: {}
+  createdTenant: {},
+  createGroupStep: "Basic",
+  createGroup: {
+    groupId: "",
+    groupName: "",
+    userLimit: "",
+    defaultDomain: "",
+    cliName: "",
+    cliPhoneNumber: "",
+    timeZone: "",
+    contact: {
+      name: "",
+      phoneNumber: "",
+      emailAddress: ""
+    },
+    address: {
+      addressLine1: "",
+      addressLine2: "",
+      city: "",
+      state: "",
+      stateDisplayName: "",
+      postalCode: "",
+      country: ""
+    }
+  }
 };
 
 function mainReducer(state = initialState, action) {
@@ -508,6 +532,71 @@ function mainReducer(state = initialState, action) {
         createTenant: {
           ...state.createTenant,
           defaultDomain: action.data
+        }
+      };
+    }
+    case actionType.REFUSE_CREATE_GROUP: {
+      return {
+        ...state,
+        createGroupStep: "Basic",
+        createGroup: {
+          groupId: "",
+          groupName: "",
+          userLimit: "",
+          defaultDomain: "",
+          cliName: "",
+          cliPhoneNumber: "",
+          timeZone: "",
+          contact: {
+            name: "",
+            phoneNumber: "",
+            emailAddress: ""
+          },
+          address: {
+            addressLine1: "",
+            addressLine2: "",
+            city: "",
+            state: "",
+            stateDisplayName: "",
+            postalCode: "",
+            country: ""
+          }
+        }
+      };
+    }
+    case actionType.CHANGE_ID_OF_GROUP: {
+      return {
+        ...state,
+        createGroup: {
+          ...state.createGroup,
+          groupId: action.data
+        }
+      };
+    }
+    case actionType.CHANGE_NAME_OF_GROUP: {
+      return {
+        ...state,
+        createGroup: {
+          ...state.createGroup,
+          groupName: action.data
+        }
+      };
+    }
+    case actionType.CHANGE_DOMAIN_OF_GROUP: {
+      return {
+        ...state,
+        createGroup: {
+          ...state.createGroup,
+          defaultDomain: action.data
+        }
+      };
+    }
+    case actionType.CHANGE_USER_LIMIT_OF_GROUP: {
+      return {
+        ...state,
+        createGroup: {
+          ...state.createGroup,
+          userLimit: action.data
         }
       };
     }

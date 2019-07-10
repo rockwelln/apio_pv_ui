@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router";
 
 import { Link } from "react-router-dom";
 import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
@@ -24,7 +25,11 @@ class Tenant extends Component {
     return (
       <tr key={t.tenantId}>
         <td>
-          <Link to={`/provisioning/broadsoft_xsp1_as1/tenants/${t.tenantId}`}>
+          <Link
+            to={`/provisioning/${this.props.match.params.gwName}/tenants/${
+              t.tenantId
+            }`}
+          >
             {t.tenantId}
           </Link>
         </td>
@@ -53,4 +58,4 @@ class Tenant extends Component {
   }
 }
 
-export default Tenant;
+export default withRouter(Tenant);

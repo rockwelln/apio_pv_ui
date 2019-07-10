@@ -236,7 +236,9 @@ export class Admin extends Component {
             </Button>
           </Col>
           <Col mdOffset={8} md={1}>
-            <Link to={`/provisioning/broadsoft_xsp1_as1/tenants`}>
+            <Link
+              to={`/provisioning/${this.props.match.params.gwName}/tenants`}
+            >
               <Button onClick={() => this.props.refuseCreateTenant()}>
                 <Glyphicon
                   glyph="glyphicon glyphicon-forward"
@@ -310,7 +312,9 @@ export class Admin extends Component {
         this.state.createAdminData
       )
       .then(() => {
-        this.props.history.push("/provisioning/broadsoft_xsp1_as1/tenants");
+        this.props.history.push(
+          `/provisioning/${this.props.match.params.gwName}/tenants`
+        );
         this.props.refuseCreateTenant();
       });
   };

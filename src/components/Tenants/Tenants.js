@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { withRouter } from "react-router";
 
 import { fetchGetTenants, refuseCreateTenant } from "../../store/actions";
 
@@ -112,7 +113,9 @@ class Tenants extends Component {
             </InputGroup>
           </Col>
           <Col md={1}>
-            <Link to={`/provisioning/broadsoft_xsp1_as1/tenants/add`}>
+            <Link
+              to={`/provisioning/${this.props.match.params.gwName}/tenants/add`}
+            >
               <Glyphicon
                 className={"x-large"}
                 glyph="glyphicon glyphicon-plus-sign"
@@ -335,7 +338,9 @@ const mapStateToProps = state => ({
   tenants: state.tenants
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Tenants);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Tenants)
+);

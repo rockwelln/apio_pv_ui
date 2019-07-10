@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router";
 
 import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
@@ -8,7 +9,7 @@ import { Link } from "react-router-dom";
 
 import DeleteModal from "./DeleteModal";
 
-export default class Group extends Component {
+class Group extends Component {
   state = { showDelete: false };
   render() {
     const { user, onReload, tenantId, groupId, index } = this.props;
@@ -26,9 +27,9 @@ export default class Group extends Component {
         </td>
         <td>
           <Link
-            to={`/provisioning/broadsoft_xsp1_as1/tenants/${tenantId}/groups/${groupId}/users/${
-              user.userId
-            }`}
+            to={`/provisioning/${
+              this.props.match.params.gwName
+            }/tenants/${tenantId}/groups/${groupId}/users/${user.userId}`}
           >
             {user.userId}
           </Link>
@@ -59,3 +60,5 @@ export default class Group extends Component {
     );
   }
 }
+
+export default withRouter(Group);

@@ -27,7 +27,9 @@ class DeleteModal extends Component {
         res
           ? (this.setState({ deleting: false }),
             onClose && onClose(true),
-            this.props.history.push("/provisioning/broadsoft_xsp1_as1/tenants"))
+            this.props.history.push(
+              `/provisioning/${this.props.match.params.gwName}/tenants`
+            ))
           : this.setState({ deleting: false })
       );
   }

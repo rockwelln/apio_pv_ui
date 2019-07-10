@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
 import { Link } from "react-router-dom";
 
@@ -16,7 +17,7 @@ export class Created extends Component {
             this.props.createdTenant.tenantId
           }) was succussfully created`}
         </p>
-        <Link to={`/provisioning/broadsoft_xsp1_as1/tenants`}>
+        <Link to={`/provisioning/${this.props.match.params.gwName}/tenants`}>
           <Button className={"margin-1 width-20"}>Return to tenants</Button>
         </Link>
         <Button className={"margin-1 width-20"} onClick={this.goToLicenses}>
@@ -39,7 +40,9 @@ const mapDispatchToProps = {
   changeStepOfCreateTenant
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Created);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Created)
+);
