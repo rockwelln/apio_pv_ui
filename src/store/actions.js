@@ -105,6 +105,11 @@ export const getAccessDeviceByName = data => ({
   data
 });
 
+export const getTamplatesOfGroup = data => ({
+  type: actionType.GET_TEMPLATES_OF_GROUP,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -135,6 +140,11 @@ export const postAssignUserServicePacks = () => ({
 
 export const postCreateTenant = data => ({
   type: actionType.POST_CREATE_TENANT,
+  data
+});
+
+export const postCreateGroup = data => ({
+  type: actionType.POST_CREATE_GROUP,
   data
 });
 
@@ -282,6 +292,31 @@ export const changeDomainOfGroup = data => ({
 
 export const changeUserLimitOfGroup = data => ({
   type: actionType.CHANGE_USER_LIMIT_OF_GROUP,
+  data
+});
+
+export const changeAddressOfGroup = data => ({
+  type: actionType.CHANGE_ADDRESS_OF_GROUP,
+  data
+});
+
+export const changeZIPOfGroup = data => ({
+  type: actionType.CHANGE_ZIP_OF_GROUP,
+  data
+});
+
+export const changeCityOfGroup = data => ({
+  type: actionType.CHANGE_CITY_OF_GROUP,
+  data
+});
+
+export const changeStepOfCreateGroup = data => ({
+  type: actionType.CHANGE_STEP_OF_CREATE_GROUP,
+  data
+});
+
+export const changeTemplateOfGroup = data => ({
+  type: actionType.CHANGE_TAMPLATE_OF_GROUP,
   data
 });
 
@@ -625,6 +660,24 @@ export function fetchGetAccessDeviceByName(tenantId, groupId, deviceName) {
   };
 }
 
+export function fetchGetTamplatesOfGroup() {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/configs/templates/categories/group/`
+    )
+      .then(data => dispatch(getTamplatesOfGroup(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-tenant-tamplates-failed"
+            defaultMessage="Failed to fetch tenant tamplates!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
 export function fetchPostCreateGroupAdmin(tenantId, groupId, data) {
   return function(dispatch) {
     return fetch_post(
@@ -731,6 +784,26 @@ export function fetchPostCreateTenant(data) {
           <FormattedMessage
             id="failed-to-create-tenant"
             defaultMessage="Failed to create tenant!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchPostCreateGroup(tenantId, data) {
+  return function(dispatch) {
+    return fetch_post(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => dispatch(postCreateGroup(data)))
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-create-group"
+            defaultMessage="Failed to create group!"
           />,
           error.message
         );

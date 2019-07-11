@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import Basic from "./Basic";
-// import Template from "./Template";
+import Template from "./Template";
 // import Limits from "./Limits";
 // import Admin from "./Admin";
 // import Created from "./Created";
@@ -41,9 +41,9 @@ export class CreateGroup extends Component {
       case "Basic": {
         return <Basic />;
       }
-      //   case "Template": {
-      //     return <Template />;
-      //   }
+      case "Template": {
+        return <Template />;
+      }
       //   case "Created": {
       //     return <Created />;
       //   }

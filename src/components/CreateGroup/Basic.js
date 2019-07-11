@@ -12,15 +12,15 @@ import Button from "react-bootstrap/lib/Button";
 import Checkbox from "react-bootstrap/lib/Checkbox";
 
 import {
-  changeAddressOfTenant,
-  changeZIPOfTenant,
-  changeCityOfTenant,
-  changeStepOfCreateTenant,
   refuseCreateGroup,
   changeIdOfGroup,
   changeNameOfGroup,
   changeDomainOfGroup,
-  changeUserLimitOfGroup
+  changeUserLimitOfGroup,
+  changeAddressOfGroup,
+  changeZIPOfGroup,
+  changeCityOfGroup,
+  changeStepOfCreateGroup
 } from "../../store/actions";
 
 export class Basic extends Component {
@@ -143,7 +143,11 @@ export class Basic extends Component {
               type="number"
               min={0}
               placeholder="User limit"
-              defaultValue={this.props.createGroup.userLimit}
+              value={
+                this.props.createGroup.userLimit === -1
+                  ? ""
+                  : this.props.createGroup.userLimit
+              }
               onChange={e => {
                 this.validateUserLimits(e.target.value);
                 this.setState({ errorMessage: "" });
@@ -186,7 +190,7 @@ export class Basic extends Component {
             )}
           </Col>
         </Row>
-        {/* {this.state.showHideMore && (
+        {this.state.showHideMore && (
           <React.Fragment>
             <Row className={"margin-1"}>
               <Col componentClass={ControlLabel} md={3}>
@@ -196,9 +200,9 @@ export class Basic extends Component {
                 <FormControl
                   type="text"
                   placeholder="Street"
-                  defaultValue={this.props.createTenant.address.addressLine1}
+                  defaultValue={this.props.createGroup.address.addressLine1}
                   onChange={e =>
-                    this.props.changeAddressOfTenant(e.target.value)
+                    this.props.changeAddressOfGroup(e.target.value)
                   }
                 />
               </Col>
@@ -208,21 +212,21 @@ export class Basic extends Component {
                 <FormControl
                   type="text"
                   placeholder="ZIP"
-                  defaultValue={this.props.createTenant.address.postalCode}
-                  onChange={e => this.props.changeZIPOfTenant(e.target.value)}
+                  defaultValue={this.props.createGroup.address.postalCode}
+                  onChange={e => this.props.changeZIPOfGroup(e.target.value)}
                 />
               </Col>
               <Col md={6}>
                 <FormControl
                   type="text"
                   placeholder="City"
-                  defaultValue={this.props.createTenant.address.city}
-                  onChange={e => this.props.changeCityOfTenant(e.target.value)}
+                  defaultValue={this.props.createGroup.address.city}
+                  onChange={e => this.props.changeCityOfGroup(e.target.value)}
                 />
               </Col>
             </Row>
           </React.Fragment>
-        )} */}
+        )}
         {this.state.errorMessage && (
           <Row className={"margin-1 color-error"}>
             <Col md={12}>
@@ -232,7 +236,7 @@ export class Basic extends Component {
         )}
         <Row className={"margin-1"}>
           <Col mdOffset={10} md={1}>
-            <Button onClick={this.nextStep} disabled>
+            <Button onClick={this.nextStep}>
               <Glyphicon
                 glyph="glyphicon glyphicon-ok"
                 style={{ display: "flex", lineHeight: "20px" }}
@@ -254,20 +258,24 @@ export class Basic extends Component {
   }
 
   nextStep = () => {
-    const { tenantId, name, type, defaultDomain } = this.props.createTenant;
-    if (tenantId && name && type && defaultDomain) {
-      this.props.changeStepOfCreateTenant("Template");
+    const {
+      groupId,
+      groupName,
+      userLimit,
+      defaultDomain
+    } = this.props.createGroup;
+    if (groupId && groupName && userLimit && defaultDomain) {
+      this.props.changeStepOfCreateGroup("Template");
     } else {
       this.setState({
-        errorMessage: "Tenant ID, name, type and domain are required"
+        errorMessage: "Grop ID, name, user limit and domain are required"
       });
     }
   };
 
   validateUserLimits = value => {
-    console.log(value);
-    if (!isNaN(value) && value > 0) {
-      console.log("its number");
+    if ((!isNaN(value) && value > 0) || value === "") {
+      this.props.changeUserLimitOfGroup(value);
     }
     return;
   };
@@ -296,15 +304,15 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  changeAddressOfTenant,
-  changeZIPOfTenant,
-  changeCityOfTenant,
-  changeStepOfCreateTenant,
   refuseCreateGroup,
   changeIdOfGroup,
   changeNameOfGroup,
   changeDomainOfGroup,
-  changeUserLimitOfGroup
+  changeUserLimitOfGroup,
+  changeAddressOfGroup,
+  changeZIPOfGroup,
+  changeCityOfGroup,
+  changeStepOfCreateGroup
 };
 
 export default withRouter(
