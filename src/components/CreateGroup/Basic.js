@@ -20,7 +20,8 @@ import {
   changeAddressOfGroup,
   changeZIPOfGroup,
   changeCityOfGroup,
-  changeStepOfCreateGroup
+  changeStepOfCreateGroup,
+  fetchGetTenantById
 } from "../../store/actions";
 
 export class Basic extends Component {
@@ -30,6 +31,12 @@ export class Basic extends Component {
     domainError: "",
     userUnlimeted: false
   };
+
+  componentDidMount() {
+    this.props
+      .fetchGetTenantById(this.props.match.params.tenantId)
+      .then(() => this.props.changeDomainOfGroup(this.props.defaultDomain));
+  }
 
   render() {
     return (
@@ -55,10 +62,7 @@ export class Basic extends Component {
         </Row>
         <Row>
           <Col md={12}>
-            <p>
-              Configure a unique ID, a name, domain, user limit and optionally
-              some contact details
-            </p>
+            <p>Please specify a name and an ID</p>
           </Col>
         </Row>
         <Row className={"margin-1"}>
@@ -93,63 +97,6 @@ export class Basic extends Component {
               defaultValue={this.props.createGroup.groupName}
               onChange={e => {
                 this.props.changeNameOfGroup(e.target.value);
-                this.setState({ errorMessage: "" });
-              }}
-            />
-          </Col>
-        </Row>
-        <Row className={"margin-1"}>
-          <Col componentClass={ControlLabel} md={3}>
-            Domain{"\u002a"}
-          </Col>
-          <Col md={9}>
-            <FormControl
-              type="text"
-              placeholder="Domain"
-              defaultValue={this.props.createGroup.defaultDomain}
-              onChange={e => {
-                this.validateDomain(e.target.value);
-                this.setState({ errorMessage: "" });
-              }}
-            />
-          </Col>
-        </Row>
-        {this.state.domainError && (
-          <Row className={"margin-1 color-error"}>
-            <Col md={12}>
-              <p>{this.state.domainError}</p>
-            </Col>
-          </Row>
-        )}
-        <Row className={"margin-1"}>
-          <Col componentClass={ControlLabel} md={3}>
-            User limit{"\u002a"}
-          </Col>
-          <Col md={2}>
-            <Checkbox
-              onChange={e =>
-                e.target.checked
-                  ? (this.props.changeUserLimitOfGroup(-1),
-                    this.setState({ userUnlimeted: e.target.checked }))
-                  : this.props.changeUserLimitOfGroup("")
-              }
-            >
-              unlimeted
-            </Checkbox>
-          </Col>
-          <Col md={7}>
-            <FormControl
-              disabled={this.props.createGroup.userLimit === -1}
-              type="number"
-              min={0}
-              placeholder="User limit"
-              value={
-                this.props.createGroup.userLimit === -1
-                  ? ""
-                  : this.props.createGroup.userLimit
-              }
-              onChange={e => {
-                this.validateUserLimits(e.target.value);
                 this.setState({ errorMessage: "" });
               }}
             />
@@ -264,7 +211,7 @@ export class Basic extends Component {
       userLimit,
       defaultDomain
     } = this.props.createGroup;
-    if (groupId && groupName && userLimit && defaultDomain) {
+    if (groupId && groupName) {
       this.props.changeStepOfCreateGroup("Template");
     } else {
       this.setState({
@@ -275,7 +222,7 @@ export class Basic extends Component {
 
   validateUserLimits = value => {
     if ((!isNaN(value) && value > 0) || value === "") {
-      this.props.changeUserLimitOfGroup(value);
+      this.props.changeUserLimitOfGroup(Number(value));
     }
     return;
   };
@@ -300,7 +247,8 @@ export class Basic extends Component {
 
 const mapStateToProps = state => ({
   createTenant: state.createTenant,
-  createGroup: state.createGroup
+  createGroup: state.createGroup,
+  defaultDomain: state.tenant.defaultDomain
 });
 
 const mapDispatchToProps = {
@@ -312,7 +260,8 @@ const mapDispatchToProps = {
   changeAddressOfGroup,
   changeZIPOfGroup,
   changeCityOfGroup,
-  changeStepOfCreateGroup
+  changeStepOfCreateGroup,
+  fetchGetTenantById
 };
 
 export default withRouter(

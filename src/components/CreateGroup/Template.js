@@ -62,11 +62,7 @@ export class Template extends Component {
         </Row>
         <Row>
           <Col md={12}>
-            <p>
-              Please select a Group template. This template will influence they
-              way your tenant will be configured. (service pack definition,
-              service (pack) authorisation, feature access code definition.
-            </p>
+            <p>Please select a template.</p>
           </Col>
         </Row>
         <Row>
@@ -133,7 +129,10 @@ export class Template extends Component {
   createButtonClick = () => {
     this.setState({ creating: "Creating..." }, () => {
       this.props
-        .fetchPostCreateGroup(this.props.tenantId, this.props.createGroup)
+        .fetchPostCreateGroup(
+          this.props.match.params.tenantId,
+          this.props.createGroup
+        )
         .then(res =>
           res
             ? this.props.changeStepOfCreateGroup("Created")

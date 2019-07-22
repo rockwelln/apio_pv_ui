@@ -51,11 +51,10 @@ const initialState = {
   },
   templatesOfTenant: [],
   createdTenant: {},
-  createGroupStep: "Basic",
+  createGroupStep: "Limits",
   createGroup: {
     groupId: "",
     groupName: "",
-    userLimit: "",
     defaultDomain: "",
     cliName: "",
     cliPhoneNumber: "",
