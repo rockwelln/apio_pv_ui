@@ -152,3 +152,7 @@
 .word-break-word {
   word-break: break-word;
 }
+
+.glyphicon-light::before {
+  font-weight: 100;
+}

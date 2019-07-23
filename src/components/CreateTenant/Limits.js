@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import { Link } from "react-router-dom";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
@@ -12,65 +13,59 @@ export class Limits extends Component {
   render() {
     return (
       <React.Fragment>
-        <Row>
-          <Col md={12}>
-            <p className={"header"}>ADD TENANT: usage limits</p>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={12}>
-            <p>
-              Set user limits on service packs and group services. This is
-              typically used to limit the volime of licensable items that can be
-              consumed by a customer.
-            </p>
-          </Col>
-        </Row>
-        <Row className={"margin-1"}>
-          <Col md={12}>
-            <p>Page under construction, press SKIP or ADD to continue</p>
-          </Col>
-        </Row>
-        <Row className={"margin-1"}>
-          <Col mdOffset={9} md={1}>
-            <Button
-              onClick={() => this.props.changeStepOfCreateTenant("Admin")}
-            >
-              <Glyphicon
-                glyph="glyphicon glyphicon-forward"
-                style={{ display: "flex", lineHeight: "20px" }}
-              >
-                <div
-                  className={"margin-left-1"}
-                  style={{
-                    fontFamily: `"Helvetica Neue",Helvetica,Arial,sans-serif`
-                  }}
-                >
-                  SKIP
+          <div className={"panel-heading"}>
+            <Row >
+              <Col md={12}>
+                <div className={"header"}>
+                  Assign tenant licenses
                 </div>
-              </Glyphicon>
-            </Button>
-          </Col>
-          <Col mdOffset={1} md={1}>
-            <Button
-              onClick={() => this.props.changeStepOfCreateTenant("Admin")}
-            >
-              <Glyphicon
-                glyph="glyphicon glyphicon-ok"
-                style={{ display: "flex", lineHeight: "20px" }}
-              >
-                <div
-                  className={"margin-left-1"}
-                  style={{
-                    fontFamily: `"Helvetica Neue",Helvetica,Arial,sans-serif`
-                  }}
-                >
-                  APPLY
+              </Col>
+            </Row>
+          </div>
+
+
+          <div class="panel-body">
+              <Row>
+                <p>
+                  Set limits on how many service packs and group services a Tenant can consum. 
+                  This is typically used to limit the volume of licensable items that can be
+                  consumed by a customer.
+                </p>
+                <div class="alert alert-danger" role="alert">
+                  Attention - this page is under construction
                 </div>
-              </Glyphicon>
-            </Button>
-          </Col>
-        </Row>
+              </Row>
+              <Row>
+                  <div class="button-row">
+                    <div class="pull-left">
+ 
+                          <Button className={"btn-success"} onClick={() => this.props.changeStepOfCreateTenant("Admin")}>
+                            <Glyphicon
+                              glyph="glyphicon glyphicon-ok"
+                            >
+                            </Glyphicon>
+                            &nbsp; Finish
+
+                          </Button>
+
+                    </div>
+                    <div class="pull-right">
+                      <Button
+                        onClick={() => this.props.changeStepOfCreateTenant("Admin")}
+                        className={"btn-primary"}
+                      >               
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-forward"
+                      >
+                      </Glyphicon>
+
+                      &nbsp; Assign licenses
+                      </Button>
+                    </div>
+                  </div>
+              </Row>
+          </div>
+
       </React.Fragment>
     );
   }

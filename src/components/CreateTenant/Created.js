@@ -6,24 +6,67 @@ import { Link } from "react-router-dom";
 
 import Button from "react-bootstrap/lib/Button";
 
+
+import Glyphicon from "react-bootstrap/lib/Glyphicon";
+import Row from "react-bootstrap/lib/Row";
+import Col from "react-bootstrap/lib/Col";
+
+
 import { changeStepOfCreateTenant } from "../../store/actions";
 
 export class Created extends Component {
   render() {
     return (
-      <div className={"flex-column text-align-center align-items-center"}>
-        <p className={"header margin-1"}>
-          {`Congratulations, tenant ${this.props.createdTenant.name} (id: ${
-            this.props.createdTenant.tenantId
-          }) was succussfully created`}
-        </p>
-        <Link to={`/provisioning/${this.props.match.params.gwName}/tenants`}>
-          <Button className={"margin-1 width-20"}>Return to tenants</Button>
-        </Link>
-        <Button className={"margin-1 width-20"} onClick={this.goToLicenses}>
-          Assign licenses
-        </Button>
-      </div>
+        <React.Fragment>
+          <div className={"panel-heading"}>
+            <Row >
+              <Col md={12}>
+                <div className={"header"}>
+                  Tenant created
+                </div>
+              </Col>
+            </Row>
+          </div>
+          <div class="panel-body">
+            <p>
+              {`Congratulations, tenant ${this.props.createdTenant.name} (id: ${
+              this.props.createdTenant.tenantId
+              }) was created`}
+            </p>
+            <p>
+              You can either just continue to the tenant or continue assigning licenses are creating a tenant admin. 
+            </p>
+            <Row>
+                <div class="button-row">
+                  <div class="pull-left">
+                    <Link to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.createdTenant.tenantId}`}>
+                       
+                        <Button className={"btn-success"}>
+                          <Glyphicon
+                            glyph="glyphicon glyphicon-ok"
+                          >
+                          </Glyphicon>
+                          &nbsp; Finish
+                        </Button>
+                    </Link>
+                  </div>
+                  <div class="pull-right">
+                    <Button
+                      onClick={this.goToLicenses}
+                      className={"btn-primary"}
+                    >               
+                    <Glyphicon
+                      glyph="glyphicon glyphicon-forward"
+                    >
+                    </Glyphicon>
+
+                    &nbsp; Assign licenses
+                    </Button>
+                  </div>
+                </div>
+              </Row>
+            </div>
+        </React.Fragment>
     );
   }
 

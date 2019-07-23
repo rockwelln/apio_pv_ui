@@ -84,136 +84,143 @@ class Tenants extends Component {
 
     return (
       <React.Fragment>
-        <Row>
-          <Col mdOffset={1} md={10}>
-            <InputGroup className={"margin-left-negative-4"}>
-              <InputGroup.Addon>
-                <Glyphicon glyph="lyphicon glyphicon-search" />
-              </InputGroup.Addon>
+        <div className={"panel-heading"}>
+          <div className={"header"}>
+            Tenant overview
+          </div>
+        </div>
+        <div className={"panel-body"}>
+          <Row>
+            <Col mdOffset={1} md={10}>
+              <InputGroup className={"margin-left-negative-4"}>
+                <InputGroup.Addon>
+                  <Glyphicon glyph="lyphicon glyphicon-search" />
+                </InputGroup.Addon>
+                <FormattedMessage
+                  id="search_placeholder"
+                  defaultMessage="Tenant ID or Name or Type or Resellers"
+                >
+                  {placeholder => (
+                    <FormControl
+                      type="text"
+                      value={this.state.searchValue}
+                      placeholder={placeholder}
+                      onChange={e =>
+                        this.setState(
+                          {
+                            searchValue: e.target.value
+                          },
+                          () => this.filterBySearchValue()
+                        )
+                      }
+                    />
+                  )}
+                </FormattedMessage>
+              </InputGroup>
+            </Col>
+            <Col md={1}>
+              <Link
+                to={`/provisioning/${this.props.match.params.gwName}/tenants/add`}
+              >
+                <Glyphicon
+                  className={"x-large"}
+                  glyph="glyphicon glyphicon-plus-sign"
+                />
+              </Link>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={11}>
+              <div className="flex flex-row flex-end-center indent-top-bottom-1">
+                <div>Item per page</div>
+                <FormControl
+                  componentClass="select"
+                  defaultValue={countPerPage}
+                  style={{ display: "inline", width: "auto" }}
+                  className={"margin-left-1"}
+                  onChange={this.changeCoutOnPage}
+                >
+                  {countsPerPages.map(counts => (
+                    <option key={counts.value} value={counts.value}>
+                      {counts.title}
+                    </option>
+                  ))}
+                </FormControl>
+              </div>
+            </Col>
+          </Row>
+          {paginationTenants.length ? (
+            <React.Fragment>
+              <Row>
+                <Col mdOffset={1} md={10}>
+                  <Table hover>
+                    <thead>
+                      <tr>
+                        <th style={{ width: "24%" }}>
+                          <FormattedMessage id="tenant-id" defaultMessage="ID" />
+                          <Glyphicon
+                            glyph="glyphicon glyphicon-sort"
+                            onClick={this.sortByID}
+                          />
+                        </th>
+                        <th style={{ width: "24%" }}>
+                          <FormattedMessage id="name" defaultMessage="Name" />
+                          <Glyphicon
+                            glyph="glyphicon glyphicon-sort"
+                            onClick={this.sortByName}
+                          />
+                        </th>
+                        <th style={{ width: "24%" }}>
+                          <FormattedMessage id="type" defaultMessage="Type" />
+                          <Glyphicon
+                            glyph="glyphicon glyphicon-sort"
+                            onClick={this.sortByType}
+                          />
+                        </th>
+                        <th style={{ width: "24%" }}>
+                          <FormattedMessage
+                            id="reseller"
+                            defaultMessage="Reseller"
+                          />
+                          <Glyphicon glyph="glyphicon glyphicon-sort" />
+                        </th>
+                        <th style={{ width: "4%" }} />
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {paginationTenants[page].map(t => (
+                        <Tenant
+                          key={t.tenantId}
+                          t={t}
+                          onReload={this.props.fetchGetTenants}
+                          {...this.props}
+                        />
+                      ))}
+                    </tbody>
+                  </Table>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={11}>
+                  <div className="flex flex-row flex-end-center">
+                    <Pagination className={"indent-top-bottom-1"}>
+                      <Pagination.Prev onClick={this.decrementPage} />
+                      <Pagination.Item>{this.state.page + 1}</Pagination.Item>
+                      <Pagination.Next onClick={this.incrementPage} />
+                    </Pagination>
+                  </div>
+                </Col>
+              </Row>
+            </React.Fragment>
+          ) : (
+            <Col mdOffset={1} md={10}>
               <FormattedMessage
-                id="search_placeholder"
-                defaultMessage="Tenant ID or Name or Type or Resellers"
-              >
-                {placeholder => (
-                  <FormControl
-                    type="text"
-                    value={this.state.searchValue}
-                    placeholder={placeholder}
-                    onChange={e =>
-                      this.setState(
-                        {
-                          searchValue: e.target.value
-                        },
-                        () => this.filterBySearchValue()
-                      )
-                    }
-                  />
-                )}
-              </FormattedMessage>
-            </InputGroup>
-          </Col>
-          <Col md={1}>
-            <Link
-              to={`/provisioning/${this.props.match.params.gwName}/tenants/add`}
-            >
-              <Glyphicon
-                className={"x-large"}
-                glyph="glyphicon glyphicon-plus-sign"
+                id="notFound"
+                defaultMessage="No tenants were found"
               />
-            </Link>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={11}>
-            <div className="flex flex-row flex-end-center indent-top-bottom-1">
-              <div>Item per page</div>
-              <FormControl
-                componentClass="select"
-                defaultValue={countPerPage}
-                style={{ display: "inline", width: "auto" }}
-                className={"margin-left-1"}
-                onChange={this.changeCoutOnPage}
-              >
-                {countsPerPages.map(counts => (
-                  <option key={counts.value} value={counts.value}>
-                    {counts.title}
-                  </option>
-                ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
-        {paginationTenants.length ? (
-          <React.Fragment>
-            <Row>
-              <Col mdOffset={1} md={10}>
-                <Table hover>
-                  <thead>
-                    <tr>
-                      <th style={{ width: "24%" }}>
-                        <FormattedMessage id="tenant-id" defaultMessage="ID" />
-                        <Glyphicon
-                          glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByID}
-                        />
-                      </th>
-                      <th style={{ width: "24%" }}>
-                        <FormattedMessage id="name" defaultMessage="Name" />
-                        <Glyphicon
-                          glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByName}
-                        />
-                      </th>
-                      <th style={{ width: "24%" }}>
-                        <FormattedMessage id="type" defaultMessage="Type" />
-                        <Glyphicon
-                          glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByType}
-                        />
-                      </th>
-                      <th style={{ width: "24%" }}>
-                        <FormattedMessage
-                          id="reseller"
-                          defaultMessage="Reseller"
-                        />
-                        <Glyphicon glyph="glyphicon glyphicon-sort" />
-                      </th>
-                      <th style={{ width: "4%" }} />
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {paginationTenants[page].map(t => (
-                      <Tenant
-                        key={t.tenantId}
-                        t={t}
-                        onReload={this.props.fetchGetTenants}
-                        {...this.props}
-                      />
-                    ))}
-                  </tbody>
-                </Table>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={11}>
-                <div className="flex flex-row flex-end-center">
-                  <Pagination className={"indent-top-bottom-1"}>
-                    <Pagination.Prev onClick={this.decrementPage} />
-                    <Pagination.Item>{this.state.page + 1}</Pagination.Item>
-                    <Pagination.Next onClick={this.incrementPage} />
-                  </Pagination>
-                </div>
-              </Col>
-            </Row>
-          </React.Fragment>
-        ) : (
-          <Col mdOffset={1} md={10}>
-            <FormattedMessage
-              id="notFound"
-              defaultMessage="No tenants were found"
-            />
-          </Col>
-        )}
+            </Col>
+          )}
+      </div>
       </React.Fragment>
     );
   }

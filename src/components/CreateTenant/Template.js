@@ -40,90 +40,94 @@ export class Template extends Component {
 
     return (
       <React.Fragment>
-        <Row>
-          <Col md={12}>
-            <p className={"header"}>
-              ADD TENANT: template
-              <Link
-                to={`/provisioning/${this.props.match.params.gwName}/tenants`}
-              >
+        <div className={"panel-heading"}>
+          <Row>
+            <Col md={12}>
+              <div className={"header"}>
+                Add tenant: select template
+                <Link
+                  to={`/provisioning/${this.props.match.params.gwName}/tenants`}
+                >
+                    <Button
+                      disabled={this.state.creating}
+                      className={"margin-left-1 btn-danger"}
+                      onClick={() => this.props.refuseCreateTenant()}
+                    >
+                      Cancel
+                    </Button>
+                  </Link>
+              </div>
+            </Col>
+          </Row>
+          </div>
+          <div class="panel-body">
+            <Row>
+            <Col md={12}>
+              <p>
+                Please select a Tenant template. This template will influence the
+                way your tenant will be configured. A template determines the service pack definition,
+                service (pack) authorisation, feature access code definition, etc.
+              </p>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={12} className={"flex-row"}>
+              <FormGroup>
+                <Radio
+                  name="radioGroup"
+                  checked={this.props.createTenant.templateName ? 0 : 1}
+                  onClick={() => this.selectTemplate("")}
+                >
+                  <div className="font-weight-bold flex">no template</div>
+                </Radio>
+                {this.props.templatesOfTenant.map((template, i) => (
+                  <Radio
+                    key={i + ""}
+                    name="radioGroup"
+                    onClick={() => this.selectTemplate(template.name)}
+                  >
+                    <div className={"flex-row"}>
+                      <div className="font-weight-bold">{`${template.name}`}</div>
+                      <div>
+                        {template.description ? `: ${template.description}` : ""}
+                      </div>
+                    </div>
+                  </Radio>
+                ))}
+              </FormGroup>
+            </Col>
+          </Row>
+          <Row>
+            <div class="button-row">
+              <div class="pull-left">
+                <Button
+                  onClick={this.backButtonClick}
+                  disabled={this.state.creating}
+                  className={"btn-primary"}
+                >
+                <Glyphicon
+                    glyph="glyphicon glyphicon-backward"
+                  >
+                  </Glyphicon>
+                  &nbsp; Back
+                </Button>
+              </div>
+              <div class="pull-right">
                 <Button
                   disabled={this.state.creating}
-                  className={"margin-left-1"}
-                  onClick={() => this.props.refuseCreateTenant()}
+                  onClick={this.createButtonClick}
+                  className={"btn-primary"}
+                >               
+                <Glyphicon
+                  glyph="glyphicon glyphicon-ok"
                 >
-                  Cancel
+                </Glyphicon>
+                  {this.state.creating ? this.state.creating : " Create"}
                 </Button>
-              </Link>
-            </p>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={12}>
-            <p>
-              Please select a Tenant template. This template will influence they
-              way your tenant will be configured. (service pack definition,
-              service (pack) authorisation, feature access code definition.
-            </p>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={12} className={"flex-row"}>
-            <FormGroup>
-              <Radio
-                name="radioGroup"
-                checked={this.props.createTenant.templateName ? 0 : 1}
-                onClick={() => this.selectTemplate("")}
-              >
-                <div className="font-weight-bold flex">no template</div>
-              </Radio>
-              {this.props.templatesOfTenant.map((template, i) => (
-                <Radio
-                  key={i + ""}
-                  name="radioGroup"
-                  onClick={() => this.selectTemplate(template.name)}
-                >
-                  <div className={"flex-row"}>
-                    <div className="font-weight-bold">{`${template.name}`}</div>
-                    <div>
-                      {template.description ? `: ${template.description}` : ""}
-                    </div>
-                  </div>
-                </Radio>
-              ))}
-            </FormGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={1}>
-            <Button
-              onClick={this.backButtonClick}
-              disabled={this.state.creating}
-            >
-              <Glyphicon
-                glyph="glyphicon glyphicon-backward"
-                style={{ display: "flex", lineHeight: "20px" }}
-              >
-                <div
-                  className={"margin-left-1"}
-                  style={{
-                    fontFamily: `"Helvetica Neue",Helvetica,Arial,sans-serif`
-                  }}
-                >
-                  BACK
-                </div>
-              </Glyphicon>
-            </Button>
-          </Col>
-          <Col mdOffset={10} md={1}>
-            <Button
-              disabled={this.state.creating}
-              onClick={this.createButtonClick}
-            >
-              {this.state.creating ? this.state.creating : "CREATE"}
-            </Button>
-          </Col>
-        </Row>
+              </div>
+            </div>
+          </Row>
+        </div>
       </React.Fragment>
     );
   }

@@ -58,53 +58,54 @@ class TenantPage extends Component {
 
     return (
       <React.Fragment>
-        <div>
+        <div className={"panel-heading"}>
           <p className={"header"}>
-            {`GROUP: ${group.groupName} (${this.props.match.params.groupId})`}
+            {`GROUP: ${group.groupName} (${this.props.match.params.groupId}) of tenant ${tenant.name} (${tenant.tenantId})`}
             <Glyphicon glyph="glyphicon glyphicon-trash" />
           </p>
-          <p>{`Tenant: ${tenant.name} (${tenant.tenantId})`}</p>
         </div>
-        <Tabs defaultActiveKey={0} id={`group_tabs${this.tabsIdSuffix}`}>
-          <Tab eventKey={0} title="LICENSES">
-            <Licenses
-              tenantId={this.props.match.params.tenantId}
-              groupId={this.props.match.params.groupId}
-            />
-          </Tab>
-          <Tab eventKey={1} title="USERS">
-            <Users
-              tenantId={this.props.match.params.tenantId}
-              groupId={this.props.match.params.groupId}
-            />
-          </Tab>
-          <Tab eventKey={2} title="TRUNKS GROUP">
-            ENTERPRISE TRUNKS Tab
-          </Tab>
-          <Tab eventKey={3} title="PHONE NUMBERS">
-            <PhoneNumbers
-              tenantId={this.props.match.params.tenantId}
-              groupId={this.props.match.params.groupId}
-            />
-          </Tab>
-          <Tab eventKey={4} title="DEVICES">
-            <Devices
-              tenantId={this.props.match.params.tenantId}
-              groupId={this.props.match.params.groupId}
-              notifications={this.props.notifications}
-            />
-          </Tab>
-          <Tab eventKey={5} title="ADMINISTRATORS">
-            <Admins
-              tenantId={this.props.match.params.tenantId}
-              groupId={this.props.match.params.groupId}
-              notifications={this.props.notifications}
-            />
-          </Tab>
-          <Tab eventKey={6} title="DETAILS">
-            <Details group={group} isLoading={isLoadingTenant} />
-          </Tab>
-        </Tabs>
+        <div className={"panel-body"}>
+          <Tabs defaultActiveKey={0} id={`group_tabs${this.tabsIdSuffix}`}>
+            <Tab eventKey={0} title="LICENSES">
+              <Licenses
+                tenantId={this.props.match.params.tenantId}
+                groupId={this.props.match.params.groupId}
+              />
+            </Tab>
+            <Tab eventKey={1} title="USERS">
+              <Users
+                tenantId={this.props.match.params.tenantId}
+                groupId={this.props.match.params.groupId}
+              />
+            </Tab>
+            <Tab eventKey={2} title="TRUNKS GROUP">
+              ENTERPRISE TRUNKS Tab
+            </Tab>
+            <Tab eventKey={3} title="PHONE NUMBERS">
+              <PhoneNumbers
+                tenantId={this.props.match.params.tenantId}
+                groupId={this.props.match.params.groupId}
+              />
+            </Tab>
+            <Tab eventKey={4} title="DEVICES">
+              <Devices
+                tenantId={this.props.match.params.tenantId}
+                groupId={this.props.match.params.groupId}
+                notifications={this.props.notifications}
+              />
+            </Tab>
+            <Tab eventKey={5} title="ADMINISTRATORS">
+              <Admins
+                tenantId={this.props.match.params.tenantId}
+                groupId={this.props.match.params.groupId}
+                notifications={this.props.notifications}
+              />
+            </Tab>
+            <Tab eventKey={6} title="DETAILS">
+              <Details group={group} isLoading={isLoadingTenant} />
+            </Tab>
+          </Tabs>
+        </div>
       </React.Fragment>
     );
   }

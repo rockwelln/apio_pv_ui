@@ -18,6 +18,7 @@
 
 body {
     background-color: #fafafa;
+    font-family:"Ubuntu";
 }
 
 .panel > .panel-heading > .panel-title a {
@@ -50,4 +51,9 @@ body {
     /* If max-width does not work, try using width instead */
     width: 450px;
     text-align: left;
+}
+
+.button-row {
+  margin-left: 15px;
+  margin-right: 15px;
 }

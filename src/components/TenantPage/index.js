@@ -20,12 +20,12 @@ const TenantComponent = notifications => {
         <Col md={2}>
           <Sidebar />
         </Col>
-        <Col md={10} className={"border-left padding-left-3"}>
+        <Col md={10} className={"padding-left-3 padding-right-3"}>
           <Row>
             <Breadcrumb />
           </Row>
-          <Row>
-            <TenantPage notifications={notifications} />
+          <Row className={"panel panel-default"}>
+            <TenantPage  notifications={notifications} />
           </Row>
         </Col>
       </Row>
