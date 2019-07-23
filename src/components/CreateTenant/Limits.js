@@ -26,14 +26,16 @@ export class Limits extends Component {
 
           <div class="panel-body">
               <Row>
-                <p>
-                  Set limits on how many service packs and group services a Tenant can consum. 
-                  This is typically used to limit the volume of licensable items that can be
-                  consumed by a customer.
-                </p>
-                <div class="alert alert-danger" role="alert">
-                  Attention - this page is under construction
-                </div>
+                <Col md={12}>
+                  <p>
+                    Set limits on how many service packs and group services a Tenant can consum. 
+                    This is typically used to limit the volume of licensable items that can be
+                    consumed by a customer.
+                  </p>
+                  <div class="alert alert-danger" role="alert">
+                    Attention - this page is under construction
+                  </div>
+                </Col>
               </Row>
               <Row>
                   <div class="button-row">

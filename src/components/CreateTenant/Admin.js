@@ -249,55 +249,60 @@ export class Admin extends Component {
 
           {/* BUTTONS */}
           <Row>
-              <div class="button-row">
-                    <div class="pull-left">
-                          {/* BACK BUTTON */}
-                          <Button className={"btn-success"} onClick={() => this.props.changeStepOfCreateTenant("Limits")}>
-                            <Glyphicon
-                              glyph="glyphicon glyphicon-backward"
-                            >
-                            </Glyphicon>
-                            &nbsp; Back
+              <Col md={12}>
+                <div class="button-row">
+                      <div class="pull-left">
+                            {/* BACK BUTTON */}
+                            <Button className={"btn-success"} onClick={() => this.props.changeStepOfCreateTenant("Limits")}>
+                              <Glyphicon
+                                glyph="glyphicon glyphicon-backward"
+                              >
+                              </Glyphicon>
+                              &nbsp; Back
 
-                          </Button>
+                            </Button>
 
-                    </div>
+                      </div>
 
-                    {/* VIKTOR: can you make sure that user is forwarded to the tenant screen, not to the tenant overview */}
-                    <div class="pull-right">
-
-
-                      <Link to={`/provisioning/${this.props.match.params.gwName}/tenants`}>
-
-                          {/* SKIP & FINISH */}
+                      {/* VIKTOR: can you make sure that user is forwarded to the tenant screen, not to the tenant overview */}
+                      <div class="pull-right">
+                          
+                          {/* CREATE & FINISH */}
                           <Button
-                              onClick={() => this.props.changeStepOfCreateTenant("Admin")}
-                              className={"btn-primary"}
-                            >               
-                            <Glyphicon
-                              glyph="glyphicon glyphicon-forward"
-                            >
-                            </Glyphicon>
-                            &nbsp; Skip
+                                onClick={() => this.createAdmin}
+                                className={"btn-primary"}
+                          >               
+                              <Glyphicon
+                                glyph="glyphicon glyphicon-ok"
+                              >
+                              </Glyphicon>
+                              &nbsp; Create
                           </Button>
-                        </Link>
-                        
-                        {/* CREATE & FINISH */}
-                        <Button
-                              onClick={() => this.createAdmin}
-                              className={"btn-primary"}
-                        >               
-                            <Glyphicon
-                              glyph="glyphicon glyphicon-ok"
-                            >
-                            </Glyphicon>
-                            &nbsp; Skip
-                        </Button>
-
-
-
-                    </div>
-                </div>
+                      </div>
+                  </div>
+                </Col>
+            </Row>
+            <Row>
+              <Col md={12}>
+                <div class="button-row">
+                      <div class="pull-right">
+                        <Link to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.createdTenant.tenantId}`}>
+                            {/* SKIP & FINISH */}
+                            <Button
+                                onClick={() => this.props.changeStepOfCreateTenant("Admin")}
+                                className={"btn-warning"}
+                              >               
+                              <Glyphicon
+                                glyph="glyphicon glyphicon-stop"
+                              >
+                              </Glyphicon>
+                              &nbsp; Skip
+                            </Button>
+                          </Link>
+    
+                      </div>
+                  </div>
+                </Col>
             </Row>
             
       </div>
@@ -340,7 +345,7 @@ export class Admin extends Component {
       )
       .then(() => {
         this.props.history.push(
-          `/provisioning/${this.props.match.params.gwName}/tenants`
+          `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.createdTenant.tenantId}`
         );
         this.props.refuseCreateTenant();
       });
