@@ -153,6 +153,20 @@
   word-break: break-word;
 }
 
-.glyphicon-light::before {
-  font-weight: 100;
+.limits-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.width-8 {
+  width: 80px;
+}
+
+.width-12 {
+  width: 120px;
+}
+
+.flex-row-reverse {
+  display: flex;
+  flex-direction: row-reverse;
 }
