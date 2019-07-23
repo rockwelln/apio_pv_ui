@@ -77,7 +77,8 @@ const initialState = {
     templateName: ""
   },
   templatesOfGroup: [],
-  createdGroup: {}
+  createdGroup: {},
+  addPhoneTenantStep: "Basic"
 };
 
 function mainReducer(state = initialState, action) {

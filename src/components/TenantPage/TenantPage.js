@@ -13,7 +13,7 @@ import Admins from "./Tabs/Admins";
 import Details from "./Tabs/Details";
 import DeleteModal from "./DeleteModal";
 
-import { fetchGetTenantById } from "../../store/actions";
+import { fetchGetTenantById, refuseCreateGroup } from "../../store/actions";
 
 import "./styles.css";
 
@@ -27,6 +27,7 @@ class TenantPage extends Component {
     this.props
       .fetchGetTenantById(this.props.match.params.tenantId)
       .then(() => this.setState({ isLoading: false }));
+    this.props.refuseCreateGroup();
   }
 
   render() {
@@ -38,7 +39,7 @@ class TenantPage extends Component {
 
     return (
       <React.Fragment>
-      <div className={"panel-heading"}>
+        <div className={"panel-heading"}>
           <div className={"header"}>
             {`${tenant.type}: ${tenant.name} (id: ${tenant.tenantId})`}
             <Glyphicon
@@ -89,7 +90,8 @@ class TenantPage extends Component {
 }
 
 const mapDispatchToProps = {
-  fetchGetTenantById
+  fetchGetTenantById,
+  refuseCreateGroup
 };
 
 const mapStateToProps = state => ({

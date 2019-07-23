@@ -37,6 +37,7 @@ import CreateAdmin from "./components/CreateAdmin";
 import UpdateAdmin from "./components/UpdateAdmin";
 import CreateTenant from "./components/CreateTenant";
 import CreateGroup from "./components/CreateGroup";
+import AddPhoneNumberTenant from "./components/AddPhoneNumberTenant";
 
 import "./App.css";
 import loading from "./loading.gif";
@@ -310,6 +311,17 @@ class App extends Component {
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <CreateGroup />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/provisioning/:gwName/tenants/:tenantId/addphone"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <AddPhoneNumberTenant />
                   ) : (
                     <NotAllowed />
                   )

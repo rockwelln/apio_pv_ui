@@ -13,6 +13,8 @@ import Radio from "react-bootstrap/lib/Radio";
 
 import Loading from "../../common/Loading";
 
+import { removeEmpty } from "../remuveEmptyInObject";
+
 import {
   refuseCreateGroup,
   changeTemplateOfGroup,
@@ -24,7 +26,7 @@ import {
 export class Template extends Component {
   state = {
     isLoading: true,
-    creating: ""
+    creating: false
   };
 
   componentDidMount() {
@@ -44,11 +46,11 @@ export class Template extends Component {
           <Row>
             <Col md={12}>
               <div className={"header"}>
-                Add group: select template           
+                Add group: select template
                 <Link
-                  to={`/provisioning/${this.props.match.params.gwName}/tenants/${
-                    this.props.match.params.tenantId
-                  }`}
+                  to={`/provisioning/${
+                    this.props.match.params.gwName
+                  }/tenants/${this.props.match.params.tenantId}`}
                 >
                   <Button
                     disabled={this.state.creating}
@@ -67,9 +69,10 @@ export class Template extends Component {
           <Row>
             <Col md={12}>
               <p>
-                Please select a Group template. This template will influence they
-                way your tenant will be configured. (service pack definition,
-                service (pack) authorisation, feature access code definition.
+                Please select a Group template. This template will influence
+                they way your tenant will be configured. (service pack
+                definition, service (pack) authorisation, feature access code
+                definition.
               </p>
             </Col>
           </Row>
@@ -78,7 +81,7 @@ export class Template extends Component {
               <FormGroup>
                 <Radio
                   name="radioGroup"
-                  checked={this.props.createGroup.templateName ? 0 : 1}
+                  checked={this.props.createGroup.templateName ? false : true}
                   onClick={() => this.selectTemplate("")}
                 >
                   <div className="font-weight-bold flex">no template</div>
@@ -90,9 +93,13 @@ export class Template extends Component {
                     onClick={() => this.selectTemplate(template.name)}
                   >
                     <div className={"flex-row"}>
-                      <div className="font-weight-bold">{`${template.name}`}</div>
+                      <div className="font-weight-bold">{`${
+                        template.name
+                      }`}</div>
                       <div>
-                        {template.description ? `: ${template.description}` : ""}
+                        {template.description
+                          ? `: ${template.description}`
+                          : ""}
                       </div>
                     </div>
                   </Radio>
@@ -103,17 +110,14 @@ export class Template extends Component {
           <Row>
             <div className={"button-row"}>
               <div className={"pull-left"}>
-                  <Button
-                    onClick={this.backButtonClick}
-                    disabled={this.state.creating}
-                    className={"btn-primary"}
-                  >
-                    <Glyphicon
-                      glyph="glyphicon glyphicon-backward"
-                   >
-                    </Glyphicon>
-                    &nbsp; BACK
-                  </Button>
+                <Button
+                  onClick={this.backButtonClick}
+                  disabled={this.state.creating}
+                  className={"btn-primary"}
+                >
+                  <Glyphicon glyph="glyphicon glyphicon-backward" />
+                  &nbsp; BACK
+                </Button>
               </div>
               <div className={"pull-right"}>
                 <Button
@@ -124,7 +128,7 @@ export class Template extends Component {
                   {this.state.creating ? this.state.creating : "CREATE"}
                 </Button>
               </div>
-          </div>
+            </div>
           </Row>
         </div>
       </React.Fragment>
@@ -132,9 +136,13 @@ export class Template extends Component {
   }
 
   createButtonClick = () => {
+    const filteredDataCreateGroup = removeEmpty(this.props.createGroup);
     this.setState({ creating: "Creating..." }, () => {
       this.props
-        .fetchPostCreateGroup(this.props.tenantId, this.props.createGroup)
+        .fetchPostCreateGroup(
+          this.props.match.params.tenantId,
+          filteredDataCreateGroup
+        )
         .then(res =>
           res
             ? this.props.changeStepOfCreateGroup("Created")

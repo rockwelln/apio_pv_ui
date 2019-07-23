@@ -9,7 +9,6 @@ import Col from "react-bootstrap/lib/Col";
 import FormControl from "react-bootstrap/lib/FormControl";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import Button from "react-bootstrap/lib/Button";
-import Checkbox from "react-bootstrap/lib/Checkbox";
 
 import {
   refuseCreateGroup,
@@ -20,7 +19,8 @@ import {
   changeAddressOfGroup,
   changeZIPOfGroup,
   changeCityOfGroup,
-  changeStepOfCreateGroup
+  changeStepOfCreateGroup,
+  fetchGetTenantById
 } from "../../store/actions";
 
 export class Basic extends Component {
@@ -31,19 +31,24 @@ export class Basic extends Component {
     userUnlimited: false
   };
 
+  componentDidMount() {
+    this.props
+      .fetchGetTenantById(this.props.match.params.tenantId)
+      .then(() => this.props.changeDomainOfGroup(this.props.defaultDomain));
+  }
+
   render() {
     return (
       <React.Fragment>
-
         <div className={"panel-heading"}>
           <Row>
             <Col md={12}>
               <div className={"header"}>
                 ADD GROUP
                 <Link
-                  to={`/provisioning/${this.props.match.params.gwName}/tenants/${
-                    this.props.match.params.tenantId
-                  }`}
+                  to={`/provisioning/${
+                    this.props.match.params.gwName
+                  }/tenants/${this.props.match.params.tenantId}`}
                 >
                   <Button
                     className={"margin-left-1 btn-danger"}
@@ -104,81 +109,21 @@ export class Basic extends Component {
             </Col>
           </Row>
           <Row className={"margin-1"}>
-            <Col componentClass={ControlLabel} md={3}>
-              Domain{"\u002a"}
-            </Col>
-            <Col md={9}>
-              <FormControl
-                type="text"
-                placeholder="Domain"
-                defaultValue={this.props.createGroup.defaultDomain}
-                onChange={e => {
-                  this.validateDomain(e.target.value);
-                  this.setState({ errorMessage: "" });
-                }}
-              />
-            </Col>
-          </Row>
-          {this.state.domainError && (
-            <Row className={"margin-1 color-error"}>
-              <Col md={12}>
-                <p>{this.state.domainError}</p>
-              </Col>
-            </Row>
-          )}
-          <Row className={"margin-1"}>
-            <Col componentClass={ControlLabel} md={3}>
-              User limit{"\u002a"}
-            </Col>
-            <Col md={2}>
-              <Checkbox
-                onChange={e =>
-                  e.target.checked
-                    ? (this.props.changeUserLimitOfGroup(-1),
-                      this.setState({ userUnlimited: e.target.checked }))
-                    : this.props.changeUserLimitOfGroup("")
-                }
-              >
-                unlimited
-              </Checkbox>
-            </Col>
-            <Col md={7}>
-              <FormControl
-                disabled={this.props.createGroup.userLimit === -1}
-                type="number"
-                min={0}
-                placeholder="User limit"
-                value={
-                  this.props.createGroup.userLimit === -1
-                    ? ""
-                    : this.props.createGroup.userLimit
-                }
-                onChange={e => {
-                  this.validateUserLimits(e.target.value);
-                  this.setState({ errorMessage: "" });
-                }}
-              />
-            </Col>
-          </Row>
-          <Row className={"margin-1"}>
             <Col mdOffset={10} md={2}>
               {!this.state.showHideMore ? (
                 <div>
                   <Glyphicon
                     glyph="glyphicon glyphicon-collapse-up"
                     onClick={this.showHideMore}
-                  >
-                  </Glyphicon>
+                  />
                   Add adress
                 </div>
-                
               ) : (
-              <div>
-                <Glyphicon
-                  glyph="glyphicon glyphicon-collapse-down"
-                  onClick={this.showHideMore}
-                >
-                </Glyphicon>
+                <div>
+                  <Glyphicon
+                    glyph="glyphicon glyphicon-collapse-down"
+                    onClick={this.showHideMore}
+                  />
                   Hide
                 </div>
               )}
@@ -229,16 +174,13 @@ export class Basic extends Component {
             </Row>
           )}
           <Row className={"margin-1"}>
-            <div class="button-row">
-              <div class="pull-right">
+            <div className="button-row">
+              <div className="pull-right">
                 <Button onClick={this.nextStep} className={"btn-primary"}>
-                  <Glyphicon
-                    glyph="glyphicon glyphicon-ok"
-                  >
-                  </Glyphicon>
-                    &nbsp; Next
+                  <Glyphicon glyph="glyphicon glyphicon-ok" />
+                  &nbsp; Next
                 </Button>
-                </div>
+              </div>
             </div>
           </Row>
         </div>
@@ -247,39 +189,14 @@ export class Basic extends Component {
   }
 
   nextStep = () => {
-    const {
-      groupId,
-      groupName,
-      userLimit,
-      defaultDomain
-    } = this.props.createGroup;
-    if (groupId && groupName && userLimit && defaultDomain) {
+    const { groupId, groupName } = this.props.createGroup;
+    if (groupId && groupName) {
       this.props.changeStepOfCreateGroup("Template");
     } else {
       this.setState({
-        errorMessage: "Grop ID, name, user limit and domain are required"
+        errorMessage: "Grop ID and name are required"
       });
     }
-  };
-
-  validateUserLimits = value => {
-    if ((!isNaN(value) && value > 0) || value === "") {
-      this.props.changeUserLimitOfGroup(value);
-    }
-    return;
-  };
-
-  validateDomain = value => {
-    if (value.length < 2 || value.length > 80 || value.includes("@")) {
-      this.props.changeDomainOfGroup(value);
-      this.setState({
-        domainError:
-          "Domain length must be from 2 to 80 characters and not contain the @ symbol"
-      });
-      return;
-    }
-    this.props.changeDomainOfGroup(value);
-    this.setState({ domainError: "" });
   };
 
   showHideMore = () => {
@@ -289,7 +206,8 @@ export class Basic extends Component {
 
 const mapStateToProps = state => ({
   createTenant: state.createTenant,
-  createGroup: state.createGroup
+  createGroup: state.createGroup,
+  defaultDomain: state.tenant.defaultDomain
 });
 
 const mapDispatchToProps = {
@@ -301,7 +219,8 @@ const mapDispatchToProps = {
   changeAddressOfGroup,
   changeZIPOfGroup,
   changeCityOfGroup,
-  changeStepOfCreateGroup
+  changeStepOfCreateGroup,
+  fetchGetTenantById
 };
 
 export default withRouter(

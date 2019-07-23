@@ -10,20 +10,19 @@ import { changeStepOfCreateGroup } from "../../store/actions";
 
 export class Created extends Component {
   render() {
-    console.log(this.props.createdGroup);
     return (
       <div className={"flex-column text-align-center align-items-center"}>
         <p className={"header margin-1"}>
           {`Congratulations, group  (id: ) was succussfully created`}
         </p>
-        <Link to={`/provisioning/${this.props.match.params.gwName}/tenants`}>
+        <Link
+          to={`/provisioning/${this.props.match.params.gwName}/tenants/${
+            this.props.match.params.tenantId
+          }`}
+        >
           <Button className={"margin-1 width-20"}>Return to tenants</Button>
         </Link>
-        <Button
-          className={"margin-1 width-20"}
-          onClick={this.goToLicenses}
-          disabled
-        >
+        <Button className={"margin-1 width-20"} onClick={this.goToLicenses}>
           Assign licenses
         </Button>
       </div>

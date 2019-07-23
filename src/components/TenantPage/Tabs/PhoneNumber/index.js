@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { withRouter } from "react-router";
 
 import Table from "react-bootstrap/lib/Table";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
@@ -72,6 +74,8 @@ export class PhoneNumbersTab extends Component {
     }
     return (
       <React.Fragment>
+        {/*SEARCHBAR */}
+
         <Row className={"margin-top-2"}>
           <Col mdOffset={1} md={10}>
             <InputGroup className={"margin-left-negative-4"}>
@@ -101,14 +105,22 @@ export class PhoneNumbersTab extends Component {
             </InputGroup>
           </Col>
           <Col md={1}>
-            <Glyphicon
-              className={"x-large"}
-              glyph="glyphicon glyphicon-plus-sign"
-            />
+            <Link
+              to={`/provisioning/${this.props.match.params.gwName}/tenants/${
+                this.props.match.params.tenantId
+              }/addphone`}
+            >
+              <Glyphicon
+                className={"x-large"}
+                glyph="glyphicon glyphicon-plus-sign"
+              />
+            </Link>
           </Col>
         </Row>
         {paginationPhoneNumbers.length ? (
           <React.Fragment>
+            {/*CONTROL BAR */}
+
             <Row>
               <Col mdOffset={1} md={10}>
                 <div className={"flex space-between indent-top-bottom-1"}>
@@ -158,6 +170,9 @@ export class PhoneNumbersTab extends Component {
                 </div>
               </Col>
             </Row>
+
+            {/*TABLE */}
+
             <Row>
               <Col mdOffset={1} md={10}>
                 <Table hover>
@@ -401,7 +416,9 @@ const mapDispatchToProps = {
   fetchGetPhoneNumbersByTenantId
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PhoneNumbersTab);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(PhoneNumbersTab)
+);

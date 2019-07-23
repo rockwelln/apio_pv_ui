@@ -16,9 +16,9 @@ import FormGroup from "react-bootstrap/lib/FormGroup";
 import HelpBlock from "react-bootstrap/lib/HelpBlock";
 
 import {
-  refuseCreateTenant,
-  fetchPostCreateTenantAdmin,
-  changeStepOfCreateTenant
+  refuseCreateGroup,
+  fetchPostCreateGroupAdmin,
+  changeStepOfCreateGroup
 } from "../../store/actions";
 
 export class Admin extends Component {
@@ -34,7 +34,8 @@ export class Admin extends Component {
     passwordNotMatch: null,
     userIdError: null,
     passwordLenthError: null,
-    emptyFieldError: ""
+    emptyFieldError: "",
+    creating: false
   };
 
   render() {
@@ -86,7 +87,7 @@ export class Admin extends Component {
                     }}
                   />
                   <InputGroup.Addon>{`@${
-                    this.props.createdTenant.defaultDomain
+                    this.props.createdGroup.defaultDomain
                   }`}</InputGroup.Addon>
                 </InputGroup>
                 {this.state.userIdError && (
@@ -245,9 +246,7 @@ export class Admin extends Component {
                   {/* BACK BUTTON */}
                   <Button
                     className={"btn-success"}
-                    onClick={() =>
-                      this.props.changeStepOfCreateTenant("Limits")
-                    }
+                    onClick={() => this.props.changeStepOfCreateGroup("Limits")}
                   >
                     <Glyphicon glyph="glyphicon glyphicon-backward" />
                     &nbsp; Back
@@ -261,7 +260,7 @@ export class Admin extends Component {
                     className={"btn-primary"}
                   >
                     <Glyphicon glyph="glyphicon glyphicon-ok" />
-                    &nbsp; Create
+                    {this.state.creating ? "Creating..." : "Create"}
                   </Button>
                 </div>
               </div>
@@ -278,9 +277,7 @@ export class Admin extends Component {
                   >
                     {/* SKIP & FINISH */}
                     <Button
-                      onClick={() =>
-                        this.props.changeStepOfCreateTenant("Admin")
-                      }
+                      onClick={() => this.props.refuseCreateGroup()}
                       className={"btn-warning"}
                     >
                       <Glyphicon glyph="glyphicon glyphicon-stop" />
@@ -324,28 +321,34 @@ export class Admin extends Component {
       return;
     }
 
-    this.props
-      .fetchPostCreateTenantAdmin(
-        this.props.createdTenant.tenantId,
-        this.state.createAdminData
-      )
-      .then(() => {
-        this.props.history.push(
-          `/provisioning/${this.props.match.params.gwName}/tenants/`
-        );
-        this.props.refuseCreateTenant();
-      });
+    this.setState({ creating: true }, () =>
+      this.props
+        .fetchPostCreateGroupAdmin(
+          this.props.match.params.tenantId,
+          this.props.createdGroup.groupId,
+          this.state.createAdminData
+        )
+        .then(() => {
+          this.props.history.push(
+            `/provisioning/${this.props.match.params.gwName}/tenants/${
+              this.props.match.params.tenantId
+            }`
+          );
+          this.props.refuseCreateGroup();
+        })
+    );
   };
 }
 
 const mapStateToProps = state => ({
-  createdTenant: state.createdTenant
+  createdTenant: state.createdTenant,
+  createdGroup: state.createdGroup
 });
 
 const mapDispatchToProps = {
-  fetchPostCreateTenantAdmin,
-  refuseCreateTenant,
-  changeStepOfCreateTenant
+  fetchPostCreateGroupAdmin,
+  changeStepOfCreateGroup,
+  refuseCreateGroup
 };
 
 export default withRouter(

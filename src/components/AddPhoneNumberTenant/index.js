@@ -1,12 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import Basic from "./Basic";
-import Template from "./Template";
-import Limits from "./Limits";
-import Admin from "./Admin";
-import Created from "./Created";
-
 import Col from "react-bootstrap/lib/Col";
 import Row from "react-bootstrap/lib/Row";
 
@@ -14,7 +8,9 @@ import Breadcrumb from "../../common/Breadcrumb";
 import Sidebar from "../../common/Sidebar";
 import Title from "../../common/Title";
 
-export class CreateGroup extends Component {
+import Basic from "./Basic";
+
+export class AddPhoneNumberTenant extends Component {
   render() {
     return (
       <React.Fragment>
@@ -37,21 +33,9 @@ export class CreateGroup extends Component {
   }
 
   returnStep = () => {
-    switch (this.props.createGroupStep) {
+    switch (this.props.addPhoneTenantStep) {
       case "Basic": {
         return <Basic />;
-      }
-      case "Template": {
-        return <Template />;
-      }
-      case "Created": {
-        return <Created />;
-      }
-      case "Limits": {
-        return <Limits />;
-      }
-      case "Admin": {
-        return <Admin />;
       }
       default:
         return <Basic />;
@@ -60,10 +44,10 @@ export class CreateGroup extends Component {
 }
 
 const mapStateToProps = state => ({
-  createGroupStep: state.createGroupStep
+  addPhoneTenantStep: state.addPhoneTenantStep
 });
 
 export default connect(
   mapStateToProps,
   null
-)(CreateGroup);
+)(AddPhoneNumberTenant);
