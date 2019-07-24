@@ -9,6 +9,7 @@ import Sidebar from "../../common/Sidebar";
 import Title from "../../common/Title";
 
 import Basic from "./Basic";
+import Validated from "./Validated";
 
 export class AddPhoneNumberTenant extends Component {
   render() {
@@ -36,6 +37,9 @@ export class AddPhoneNumberTenant extends Component {
     switch (this.props.addPhoneTenantStep) {
       case "Basic": {
         return <Basic />;
+      }
+      case "Validated": {
+        return <Validated />;
       }
       default:
         return <Basic />;

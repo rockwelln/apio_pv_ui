@@ -320,6 +320,25 @@ export const changeTemplateOfGroup = data => ({
   data
 });
 
+export const changeStepOfAddPhoneTenant = data => ({
+  type: actionType.CHANGE_STEP_OF_ADD_PHONE_TENANT,
+  data
+});
+
+export const refuseAddPhoneToTenant = () => ({
+  type: actionType.REFUSE_ADD_PHONE_TO_TENANT
+});
+
+export const saveValidatedNumbersTenant = data => ({
+  type: actionType.SAVE_VALIDATED_NUMBERS_TENANT,
+  data
+});
+
+export const removeSuccesfulValidPhoneTenant = data => ({
+  type: actionType.REMOVE_SUCCESFUL_VALID_PHONE_TENANT,
+  data
+});
+
 export function fetchGetTenants(cancelLoad) {
   return function(dispatch) {
     return fetch_get(`${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/`)

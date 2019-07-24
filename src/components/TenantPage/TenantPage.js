@@ -13,7 +13,11 @@ import Admins from "./Tabs/Admins";
 import Details from "./Tabs/Details";
 import DeleteModal from "./DeleteModal";
 
-import { fetchGetTenantById, refuseCreateGroup } from "../../store/actions";
+import {
+  fetchGetTenantById,
+  refuseCreateGroup,
+  refuseAddPhoneToTenant
+} from "../../store/actions";
 
 import "./styles.css";
 
@@ -28,6 +32,7 @@ class TenantPage extends Component {
       .fetchGetTenantById(this.props.match.params.tenantId)
       .then(() => this.setState({ isLoading: false }));
     this.props.refuseCreateGroup();
+    this.props.refuseAddPhoneToTenant();
   }
 
   render() {
@@ -91,7 +96,8 @@ class TenantPage extends Component {
 
 const mapDispatchToProps = {
   fetchGetTenantById,
-  refuseCreateGroup
+  refuseCreateGroup,
+  refuseAddPhoneToTenant
 };
 
 const mapStateToProps = state => ({

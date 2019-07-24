@@ -6,8 +6,20 @@ import { withRouter } from "react-router";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import Button from "react-bootstrap/lib/Button";
+import FormGroup from "react-bootstrap/lib/FormGroup";
+import FormControl from "react-bootstrap/lib/FormControl";
+
+import {
+  changeStepOfAddPhoneTenant,
+  saveValidatedNumbersTenant,
+  refuseAddPhoneToTenant
+} from "../../store/actions";
+import { parseNumbersString } from "../parsePhoneNumbers";
 
 export class Basic extends Component {
+  state = {
+    inputPhones: ""
+  };
   render() {
     return (
       <React.Fragment>
@@ -23,7 +35,7 @@ export class Basic extends Component {
                 >
                   <Button
                     className={"margin-left-1 btn-danger"}
-                    onClick={() => this.props.refuseCreateGroup()}
+                    onClick={() => this.props.refuseAddPhoneToTenant()}
                   >
                     Cancel
                   </Button>
@@ -54,17 +66,45 @@ export class Basic extends Component {
                   </li>
                 </ul>
               </div>
+              <FormGroup controlId="validatePhone">
+                <FormControl
+                  componentClass="textarea"
+                  rows={20}
+                  onChange={e => this.setState({ inputPhones: e.target.value })}
+                />
+              </FormGroup>
             </Col>
+          </Row>
+          <Row className={"margin-1"}>
+            <div className="button-row">
+              <div className="pull-right">
+                <Button onClick={this.nextStep} className={"btn-primary"}>
+                  Validate
+                </Button>
+              </div>
+            </div>
           </Row>
         </div>
       </React.Fragment>
     );
   }
+
+  nextStep = () => {
+    const validatedNumbers = parseNumbersString(this.state.inputPhones);
+    this.props.saveValidatedNumbersTenant(validatedNumbers);
+    this.props.changeStepOfAddPhoneTenant("Validated");
+  };
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  addPhoneTenantStep: state.addPhoneTenantStep
+});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  changeStepOfAddPhoneTenant,
+  saveValidatedNumbersTenant,
+  refuseAddPhoneToTenant
+};
 
 export default withRouter(
   connect(

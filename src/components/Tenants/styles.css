@@ -170,3 +170,7 @@
   display: flex;
   flex-direction: row-reverse;
 }
+
+textarea {
+  resize: none;
+}

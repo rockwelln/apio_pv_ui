@@ -78,7 +78,8 @@ const initialState = {
   },
   templatesOfGroup: [],
   createdGroup: {},
-  addPhoneTenantStep: "Basic"
+  addPhoneTenantStep: "Basic",
+  validatedNumbersTenant: null
 };
 
 function mainReducer(state = initialState, action) {
@@ -666,6 +667,31 @@ function mainReducer(state = initialState, action) {
           ...state.createGroup,
           templateName: action.data
         }
+      };
+    }
+    case actionType.CHANGE_STEP_OF_ADD_PHONE_TENANT: {
+      return {
+        ...state,
+        addPhoneTenantStep: action.data
+      };
+    }
+    case actionType.REFUSE_ADD_PHONE_TO_TENANT: {
+      return {
+        ...state,
+        addPhoneTenantStep: "Basic",
+        validatedNumbersTenant: null
+      };
+    }
+    case actionType.SAVE_VALIDATED_NUMBERS_TENANT: {
+      return {
+        ...state,
+        validatedNumbersTenant: action.data
+      };
+    }
+    case actionType.REMOVE_SUCCESFUL_VALID_PHONE_TENANT: {
+      return {
+        ...state
+        //validatedNumbersTenant: action.data
       };
     }
     default:
