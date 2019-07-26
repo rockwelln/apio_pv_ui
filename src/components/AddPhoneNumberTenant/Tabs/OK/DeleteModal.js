@@ -19,9 +19,9 @@ class DeleteModal extends Component {
   onDelete() {
     const { onClose } = this.props;
     this.props.removeSuccesfulValidPhoneTenant(this.props.phone.line);
-    // this.setState({ deleting: true });
-    // this.setState({ deleting: false });
-    // onClose && onClose(true);
+    this.setState({ deleting: true });
+    this.setState({ deleting: false });
+    onClose && onClose(true);
   }
 
   render() {

@@ -19,27 +19,44 @@ export class OkTab extends Component {
     sortedBy: ""
   };
 
-  getValidatedNumbers = () => {
+  getValidatedNumbers = sortedBy => {
     this.setState({
       successfulValidated: this.props.validatedNumbersTenant.ok.sort((a, b) => {
-        if (a.line < b.line) return -1;
-        if (a.line > b.line) return 1;
-        return 0;
+        switch (sortedBy) {
+          case "line":
+            this.sortByLine();
+            break;
+          case "start":
+            this.sortByRangeStart();
+            break;
+          case "end":
+            this.sortByRangeEnd();
+            break;
+          case "type":
+            this.sortByType();
+            break;
+          default: {
+            if (a.line < b.line) return -1;
+            if (a.line > b.line) return 1;
+            return 0;
+          }
+        }
+        return true;
       }),
-      sortedBy: "line"
+      sortedBy: sortedBy ? sortedBy : "line"
     });
   };
 
   componentDidMount() {
-    this.getValidatedNumbers();
+    this.getValidatedNumbers(this.state.sortedBy);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (
       prevProps.validatedNumbersTenant.ok.length !==
       this.props.validatedNumbersTenant.ok.length
     ) {
-      this.getValidatedNumbers();
+      this.getValidatedNumbers(prevState.sortedBy);
     }
   }
 
@@ -47,6 +64,8 @@ export class OkTab extends Component {
     const { successfulValidated } = this.state;
     return (
       <React.Fragment>
+        {/**SEARCH BAR */}
+
         <Row className={"margin-top-2"}>
           <Col mdOffset={1} md={10}>
             <InputGroup className={"margin-left-negative-4"}>
@@ -82,33 +101,37 @@ export class OkTab extends Component {
             />
           </Col>
         </Row>
+        {/**TABLE */}
+
         <Row>
           <Col mdOffset={1} md={10}>
             <Table hover>
+              {/**TABLE HEAD */}
+
               <thead>
                 <tr>
-                  <th style={{ width: "24%" }}>
+                  <th style={{ width: "12%" }}>
                     <FormattedMessage id="Line" defaultMessage="Line" />
                     <Glyphicon
                       glyph="glyphicon glyphicon-sort"
                       onClick={this.sortByLine}
                     />
                   </th>
-                  <th style={{ width: "24%" }}>
+                  <th style={{ width: "28%" }}>
                     <FormattedMessage id="Start" defaultMessage="Range start" />
                     <Glyphicon
                       glyph="glyphicon glyphicon-sort"
                       onClick={this.sortByRangeStart}
                     />
                   </th>
-                  <th style={{ width: "24%" }}>
+                  <th style={{ width: "28%" }}>
                     <FormattedMessage id="End" defaultMessage="Range end" />
                     <Glyphicon
                       glyph="glyphicon glyphicon-sort"
                       onClick={this.sortByRangeEnd}
                     />
                   </th>
-                  <th style={{ width: "24%" }}>
+                  <th style={{ width: "28%" }}>
                     <FormattedMessage id="type" defaultMessage="Type" />
                     <Glyphicon
                       glyph="glyphicon glyphicon-sort"
@@ -118,6 +141,8 @@ export class OkTab extends Component {
                   <th style={{ width: "4%" }} />
                 </tr>
               </thead>
+              {/**TABLE BODY */}
+
               <tbody>
                 {successfulValidated.map(phone => (
                   <Phone key={phone.line} phone={phone} />
@@ -130,6 +155,7 @@ export class OkTab extends Component {
     );
   }
 
+  //Function for dynamic search
   filterBySearchValue = () => {
     const { searchValue } = this.state;
     const SearchArray = this.props.validatedNumbersTenant.ok
@@ -144,6 +170,7 @@ export class OkTab extends Component {
     this.setState({ successfulValidated: SearchArray });
   };
 
+  //Funcinons for sort
   sortByLine = () => {
     const { successfulValidated, sortedBy } = this.state;
     if (sortedBy === "line") {

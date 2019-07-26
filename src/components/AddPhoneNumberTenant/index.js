@@ -10,6 +10,7 @@ import Title from "../../common/Title";
 
 import Basic from "./Basic";
 import Validated from "./Validated";
+import Info from "./Info";
 
 export class AddPhoneNumberTenant extends Component {
   render() {
@@ -40,6 +41,9 @@ export class AddPhoneNumberTenant extends Component {
       }
       case "Validated": {
         return <Validated />;
+      }
+      case "Info": {
+        return <Info />;
       }
       default:
         return <Basic />;

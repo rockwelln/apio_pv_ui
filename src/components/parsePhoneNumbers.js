@@ -20,7 +20,7 @@ export const parseNumbersString = str => {
     if (!phoneNumbers.length || phoneNumbers.length > 2) {
       const errRow = {
         row,
-        index: index + 1
+        line: index + 1
       };
       err.push(errRow);
     } else {
@@ -40,7 +40,7 @@ export const parseNumbersString = str => {
       } else {
         const errRow = {
           row,
-          index: index + 1
+          line: index + 1
         };
         err.push(errRow);
       }

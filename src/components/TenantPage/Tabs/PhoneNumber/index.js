@@ -39,7 +39,7 @@ export class PhoneNumbersTab extends Component {
     countPages: null
   };
 
-  componentDidMount() {
+  fetchNumbers = () => {
     this.props.fetchGetPhoneNumbersByTenantId(this.props.tenantId).then(() =>
       this.setState(
         {
@@ -54,6 +54,16 @@ export class PhoneNumbersTab extends Component {
         () => this.pagination()
       )
     );
+  };
+
+  componentDidMount() {
+    this.fetchNumbers();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.phoneDeleted !== this.props.phoneDeleted) {
+      this.fetchNumbers();
+    }
   }
 
   render() {
@@ -409,7 +419,8 @@ export class PhoneNumbersTab extends Component {
 }
 
 const mapStateToProps = state => ({
-  phoneNumbers: state.phoneNumbers
+  phoneNumbers: state.phoneNumbers,
+  phoneDeleted: state.phoneDeleted
 });
 
 const mapDispatchToProps = {

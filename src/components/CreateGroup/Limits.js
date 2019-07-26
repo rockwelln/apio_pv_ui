@@ -82,7 +82,7 @@ export class Licenses extends Component {
       editServicePacks,
       editGroupServices
     } = this.state;
-    const { group, servicePacks, groupServices } = this.props;
+    const { servicePacks, groupServices } = this.props;
 
     if (isLoadingLicenses || isLoadingTrunk) {
       return <Loading />;

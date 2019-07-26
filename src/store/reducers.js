@@ -79,7 +79,9 @@ const initialState = {
   templatesOfGroup: [],
   createdGroup: {},
   addPhoneTenantStep: "Basic",
-  validatedNumbersTenant: null
+  validatedNumbersTenant: null,
+  addedNumbersToTenant: {},
+  phoneDeleted: false
 };
 
 function mainReducer(state = initialState, action) {
@@ -344,6 +346,12 @@ function mainReducer(state = initialState, action) {
         createdGroup: action.data
       };
     }
+    case actionType.POST_ADD_PHONE_NUMBERS_TO_TENANT: {
+      return {
+        ...state,
+        addedNumbersToTenant: action.data
+      };
+    }
     case actionType.PUT_UPDATE_USER: {
       return {
         ...state,
@@ -427,6 +435,12 @@ function mainReducer(state = initialState, action) {
     case actionType.DELETE_DEASSIGN_USER_SERVICE_PACKS: {
       return {
         ...state
+      };
+    }
+    case actionType.DELETE_PHONE_FROM_TENANT: {
+      return {
+        ...state,
+        phoneDeleted: !state.phoneDeleted
       };
     }
     case actionType.CLEAR_ERROR_MASSAGE: {
@@ -689,9 +703,17 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.REMOVE_SUCCESFUL_VALID_PHONE_TENANT: {
+      const indexToDelete = state.validatedNumbersTenant.ok.findIndex(
+        phone => phone.line === action.data
+      );
+      const newArray = [...state.validatedNumbersTenant.ok];
+      newArray.splice(indexToDelete, 1);
       return {
-        ...state
-        //validatedNumbersTenant: action.data
+        ...state,
+        validatedNumbersTenant: {
+          ...state.validatedNumbersTenant,
+          ok: newArray
+        }
       };
     }
     default:

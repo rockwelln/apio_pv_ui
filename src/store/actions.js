@@ -148,6 +148,11 @@ export const postCreateGroup = data => ({
   data
 });
 
+export const postAddPhoneNumbersToTenant = data => ({
+  type: actionType.POST_ADD_PHONE_NUMBERS_TO_TENANT,
+  data
+});
+
 export const putUpdateUser = data => ({
   type: actionType.PUT_UPDATE_USER,
   data
@@ -216,6 +221,10 @@ export const deleteAssignUserServices = () => ({
 
 export const deleteAssignUserServicePacks = () => ({
   type: actionType.DELETE_DEASSIGN_USER_SERVICE_PACKS
+});
+
+export const deletePhoneFromTenant = () => ({
+  type: actionType.DELETE_PHONE_FROM_TENANT
 });
 
 export const clearErrorMassage = () => ({
@@ -830,6 +839,26 @@ export function fetchPostCreateGroup(tenantId, data) {
   };
 }
 
+export function fetchPostAddPhoneNumbersToTenant(tenantId, data) {
+  return function(dispatch) {
+    return fetch_post(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/numbers/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => dispatch(postAddPhoneNumbersToTenant(data)))
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-add-phone-numbers"
+            defaultMessage="Failed to add phone numbers!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
 export function fetchPutUpdateUser(tenantId, groupId, userName, data) {
   return function(dispatch) {
     return fetch_put(
@@ -1118,6 +1147,27 @@ export function fetchDeleteAssignUserServicePacks(
           <FormattedMessage
             id="failed-deassign-user-services"
             defaultMessage="Failed to deassign user services!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchDeletePhoneFromTenant(tenantId, data) {
+  return function(dispatch) {
+    return fetch_delete(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/numbers/`,
+      data
+    )
+      .then(data => {
+        dispatch(deletePhoneFromTenant());
+      })
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-delete-number"
+            defaultMessage="Failed to delete number!"
           />,
           error.message
         )

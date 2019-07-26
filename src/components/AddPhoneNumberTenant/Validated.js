@@ -11,13 +11,16 @@ import Tab from "react-bootstrap/lib/Tab";
 
 import {
   changeStepOfAddPhoneTenant,
-  refuseAddPhoneToTenant
+  refuseAddPhoneToTenant,
+  fetchPostAddPhoneNumbersToTenant
 } from "../../store/actions";
 
-import OkTab from "./Tabs/OK/OkTab";
+import OkTab from "./Tabs/OK";
+import ErrorTab from "./Tabs/Error";
 
 export class Basic extends Component {
   render() {
+    console.log(this.props.addedNumbersToTenant);
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
@@ -58,23 +61,60 @@ export class Basic extends Component {
               eventKey={1}
               title={`ERROR (${this.props.validatedNumbersTenant.err.length})`}
             >
-              Error tab
+              <ErrorTab />
             </Tab>
           </Tabs>
+          <Row className={"margin-1"}>
+            <div className="button-row">
+              <div className="pull-right">
+                <Button
+                  onClick={this.addPhoneNumbers}
+                  className={"btn-primary"}
+                >
+                  ADD
+                </Button>
+              </div>
+            </div>
+          </Row>
         </div>
       </React.Fragment>
     );
   }
+
+  addPhoneNumbers = () => {
+    const data = this.props.validatedNumbersTenant.ok.reduce(
+      (accamulator, phone) => {
+        console.log("accamulator", accamulator);
+        if (!phone.end) {
+          accamulator.numbers.push({ phoneNumber: phone.start });
+        } else {
+          accamulator = {
+            ...accamulator,
+            range: { minPhoneNumber: phone.start, maxPhoneNumber: phone.end }
+          };
+        }
+        console.log("accamulator2", accamulator);
+        return accamulator;
+      },
+      { numbers: [], range: {} }
+    );
+    console.log(data);
+    this.props
+      .fetchPostAddPhoneNumbersToTenant(this.props.match.params.tenantId, data)
+      .then(this.props.changeStepOfAddPhoneTenant("Info"));
+  };
 }
 
 const mapStateToProps = state => ({
   addPhoneTenantStep: state.addPhoneTenantStep,
-  validatedNumbersTenant: state.validatedNumbersTenant
+  validatedNumbersTenant: state.validatedNumbersTenant,
+  addedNumbersToTenant: state.addedNumbersToTenant
 });
 
 const mapDispatchToProps = {
   changeStepOfAddPhoneTenant,
-  refuseAddPhoneToTenant
+  refuseAddPhoneToTenant,
+  fetchPostAddPhoneNumbersToTenant
 };
 
 export default withRouter(

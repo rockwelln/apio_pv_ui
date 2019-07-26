@@ -3,7 +3,6 @@ import React from "react";
 import Col from "react-bootstrap/lib/Col";
 import Row from "react-bootstrap/lib/Row";
 
-import Breadcrumb from "../../common/Breadcrumb";
 import Sidebar from "../../common/Sidebar";
 import Tenants from "./Tenants";
 import Title from "../../common/Title";
