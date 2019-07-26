@@ -26,8 +26,8 @@ export const parseNumbersString = str => {
     } else {
       const [startNum, endNum] = phoneNumbers;
       const range = {
-        start: startNum,
-        end: endNum,
+        start: startNum.includes("+") ? startNum : `+${startNum}`,
+        end: endNum ? (endNum.includes("+") ? endNum : `+${endNum}`) : "",
         line: index + 1,
         type: endNum ? "Range" : "Phonenumber"
       };

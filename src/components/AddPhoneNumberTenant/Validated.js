@@ -19,8 +19,10 @@ import OkTab from "./Tabs/OK";
 import ErrorTab from "./Tabs/Error";
 
 export class Basic extends Component {
+  state = {
+    buttomNameAdd: "ADD"
+  };
   render() {
-    console.log(this.props.addedNumbersToTenant);
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
@@ -70,8 +72,9 @@ export class Basic extends Component {
                 <Button
                   onClick={this.addPhoneNumbers}
                   className={"btn-primary"}
+                  disabled={this.state.buttomNameAdd === "Adding..."}
                 >
-                  ADD
+                  {this.state.buttomNameAdd}
                 </Button>
               </div>
             </div>
@@ -84,7 +87,6 @@ export class Basic extends Component {
   addPhoneNumbers = () => {
     const data = this.props.validatedNumbersTenant.ok.reduce(
       (accamulator, phone) => {
-        console.log("accamulator", accamulator);
         if (!phone.end) {
           accamulator.numbers.push({ phoneNumber: phone.start });
         } else {
@@ -93,22 +95,29 @@ export class Basic extends Component {
             range: { minPhoneNumber: phone.start, maxPhoneNumber: phone.end }
           };
         }
-        console.log("accamulator2", accamulator);
         return accamulator;
       },
-      { numbers: [], range: {} }
+      { numbers: [] }
     );
-    console.log(data);
-    this.props
-      .fetchPostAddPhoneNumbersToTenant(this.props.match.params.tenantId, data)
-      .then(this.props.changeStepOfAddPhoneTenant("Info"));
+    this.setState({ buttomNameAdd: "Adding..." }, () => {
+      this.props
+        .fetchPostAddPhoneNumbersToTenant(
+          this.props.match.params.tenantId,
+          data
+        )
+        .then(res => {
+          if (res) {
+            this.props.changeStepOfAddPhoneTenant("Info");
+          }
+        })
+        .then(() => this.setState({ buttomNameAdd: "ADD" }));
+    });
   };
 }
 
 const mapStateToProps = state => ({
   addPhoneTenantStep: state.addPhoneTenantStep,
-  validatedNumbersTenant: state.validatedNumbersTenant,
-  addedNumbersToTenant: state.addedNumbersToTenant
+  validatedNumbersTenant: state.validatedNumbersTenant
 });
 
 const mapDispatchToProps = {

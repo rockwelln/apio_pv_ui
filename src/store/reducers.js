@@ -347,9 +347,20 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.POST_ADD_PHONE_NUMBERS_TO_TENANT: {
+      const warning = action.data.warning;
+      const added = action.data.result.filter(
+        number => number.status === "added"
+      );
+      const rejected = action.data.result.filter(
+        number => number.status === "rejected"
+      );
       return {
         ...state,
-        addedNumbersToTenant: action.data
+        addedNumbersToTenant: {
+          warning,
+          added,
+          rejected
+        }
       };
     }
     case actionType.PUT_UPDATE_USER: {

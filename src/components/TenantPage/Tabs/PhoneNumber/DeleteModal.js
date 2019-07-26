@@ -46,7 +46,6 @@ class DeleteModal extends Component {
   render() {
     const { show, onClose } = this.props;
     const { deleting } = this.state;
-    console.log(this.props.number);
     if (this.props.number) {
       return (
         <Modal
