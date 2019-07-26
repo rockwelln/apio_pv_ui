@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import Table from "react-bootstrap/lib/Table";
+import Button from "react-bootstrap/lib/Button";
 
 import { FormattedMessage } from "react-intl";
 
@@ -32,10 +33,28 @@ export class Rejected extends Component {
               ))}
             </tbody>
           </Table>
+          <Row className={"margin-1"}>
+            <div className="button-row">
+              <div className="pull-right">
+                <Button
+                  onClick={this.copyToClipBoard}
+                  className={"btn-primary"}
+                >
+                  Copy to clipboard
+                </Button>
+              </div>
+            </div>
+          </Row>
         </Col>
       </Row>
     );
   }
+  copyToClipBoard = () => {
+    if (this.props.addedNumbersToTenant.rejected) {
+      const toCopy = JSON.stringify(this.props.addedNumbersToTenant.rejected);
+      navigator.clipboard.writeText(toCopy);
+    }
+  };
 }
 
 const mapStateToProps = state => ({
