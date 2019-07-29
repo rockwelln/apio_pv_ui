@@ -110,6 +110,11 @@ export const getTamplatesOfGroup = data => ({
   data
 });
 
+export const getCategoriesOfTemplate = data => ({
+  type: actionType.GET_CATEGORIES_OF_TEMPLATE,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -697,8 +702,26 @@ export function fetchGetTamplatesOfGroup() {
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage
-            id="fetch-tenant-tamplates-failed"
-            defaultMessage="Failed to fetch tenant tamplates!"
+            id="fetch-tenant-templates-failed"
+            defaultMessage="Failed to fetch tenant templates!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetCategoriesOfTemplate() {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/configs/templates/categories/`
+    )
+      .then(data => dispatch(getCategoriesOfTemplate(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-categories-of-tamplates-failed"
+            defaultMessage="Failed to fetch categories of templates!"
           />,
           error.message
         )

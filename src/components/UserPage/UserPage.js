@@ -68,7 +68,7 @@ class TenantPage extends Component {
 
     return (
       <React.Fragment>
-        <div>
+        <div className={"panel-heading"}>
           <p className={"header"}>
             {`User: ${user.firstName ? user.firstName : ""} ${
               user.lastName ? user.lastName : ""
@@ -78,20 +78,22 @@ class TenantPage extends Component {
           <p>{`Tenant: ${tenant.name} (id: ${tenant.tenantId})`}</p>
           <p>{`Group: ${group.groupName} (id: )`}</p>
         </div>
-        <Tabs defaultActiveKey={0} id="tenant_tabs">
-          <Tab eventKey={0} title="DETAILS">
-            <Details />
-          </Tab>
-          <Tab eventKey={1} title="PHONE NUMBERS">
-            <PhoneNumber />
-          </Tab>
-          <Tab eventKey={2} title="SERVICES">
-            <Services />
-          </Tab>
-          <Tab eventKey={3} title="SERVICE PACKS">
-            <ServicesPacks />
-          </Tab>
-        </Tabs>
+        <div className={"panel-body"}>
+          <Tabs defaultActiveKey={0} id="tenant_tabs">
+            <Tab eventKey={0} title="DETAILS">
+              <Details />
+            </Tab>
+            <Tab eventKey={1} title="PHONE NUMBERS">
+              <PhoneNumber />
+            </Tab>
+            <Tab eventKey={2} title="SERVICES">
+              <Services />
+            </Tab>
+            <Tab eventKey={3} title="SERVICE PACKS">
+              <ServicesPacks />
+            </Tab>
+          </Tabs>
+        </div>
       </React.Fragment>
     );
   }

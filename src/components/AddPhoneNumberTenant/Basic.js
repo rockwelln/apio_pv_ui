@@ -8,6 +8,7 @@ import Col from "react-bootstrap/lib/Col";
 import Button from "react-bootstrap/lib/Button";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import FormControl from "react-bootstrap/lib/FormControl";
+import Checkbox from "react-bootstrap/lib/Checkbox";
 
 import {
   changeStepOfAddPhoneTenant,
@@ -18,9 +19,11 @@ import { parseNumbersString } from "../parsePhoneNumbers";
 
 export class Basic extends Component {
   state = {
-    inputPhones: ""
+    inputPhones: "",
+    isLocalFormat: false
   };
   render() {
+    console.log(this.state.isLocalFormat);
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
@@ -66,6 +69,16 @@ export class Basic extends Component {
                   </li>
                 </ul>
               </div>
+              <div>
+                <Checkbox
+                  defaultChecked={this.state.isLocalFormat}
+                  onChange={e => {
+                    this.setState({ isLocalFormat: e.target.checked });
+                  }}
+                >
+                  local format
+                </Checkbox>
+              </div>
               <FormGroup controlId="validatePhone">
                 <FormControl
                   componentClass="textarea"
@@ -90,7 +103,10 @@ export class Basic extends Component {
   }
 
   nextStep = () => {
-    const validatedNumbers = parseNumbersString(this.state.inputPhones);
+    const validatedNumbers = parseNumbersString(
+      this.state.inputPhones,
+      this.state.isLocalFormat
+    );
     this.props.saveValidatedNumbersTenant(validatedNumbers);
     this.props.changeStepOfAddPhoneTenant("Validated");
   };

@@ -177,7 +177,11 @@ class PhoneNumber extends Component {
           </FormGroup>
           <Row>
             <Col mdPush={10} md={1}>
-              <Button onClick={this.updateUser} type="submit">
+              <Button
+                onClick={this.updateUser}
+                type="submit"
+                className={"btn-primary"}
+              >
                 <Glyphicon glyph="glyphicon glyphicon-ok" /> UPDATE
               </Button>
             </Col>

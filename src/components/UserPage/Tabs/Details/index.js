@@ -488,7 +488,7 @@ class Details extends Component {
           </FormGroup>
           <Row>
             <Col md={12} className={"padding-0"}>
-              <div className="flex flex-row flex-end-center">
+              <div className="flex flex-row flex-end-center btn-primary">
                 <Button onClick={this.updateUser} type="submit">
                   <Glyphicon glyph="glyphicon glyphicon-ok" /> UPDATE
                 </Button>

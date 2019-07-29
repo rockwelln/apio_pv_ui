@@ -25,7 +25,7 @@ const TenantComponent = notifications => {
             <Breadcrumb />
           </Row>
           <Row className={"panel panel-default"}>
-            <TenantPage  notifications={notifications} />
+            <TenantPage notifications={notifications} />
           </Row>
         </Col>
       </Row>

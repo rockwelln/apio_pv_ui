@@ -81,7 +81,8 @@ const initialState = {
   addPhoneTenantStep: "Basic",
   validatedNumbersTenant: null,
   addedNumbersToTenant: {},
-  phoneDeleted: false
+  phoneDeleted: false,
+  categoriesOfTemplate: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -296,6 +297,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         templatesOfGroup: action.data.templates
+      };
+    }
+    case actionType.GET_CATEGORIES_OF_TEMPLATE: {
+      return {
+        ...state,
+        categoriesOfTemplate: action.data.categories
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN: {

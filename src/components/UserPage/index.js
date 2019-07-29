@@ -23,7 +23,7 @@ const GroupComponent = () => {
           <Row>
             <Breadcrumb />
           </Row>
-          <Row>
+          <Row className={"panel panel-default"}>
             <UserPage />
           </Row>
         </Col>

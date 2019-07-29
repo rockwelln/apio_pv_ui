@@ -38,6 +38,7 @@ import UpdateAdmin from "./components/UpdateAdmin";
 import CreateTenant from "./components/CreateTenant";
 import CreateGroup from "./components/CreateGroup";
 import AddPhoneNumberTenant from "./components/AddPhoneNumberTenant";
+import Templates from "./components/Templates";
 
 import "./App.css";
 import loading from "./loading.gif";
@@ -266,6 +267,17 @@ class App extends Component {
                     {...props}
                   />
                 )}
+                exact
+              />
+              <Route
+                path="/provisioning/:gwName/templates"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <Templates />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
                 exact
               />
               <Route

@@ -107,177 +107,210 @@ class CreateAdmin extends Component {
     }
 
     return (
-      <Col md={8}>
-        <Form horizontal className={"margin-1"}>
-          <FormGroup controlId="Details">
-            <ControlLabel className={"margin-1"}>UPDATE ADMIN</ControlLabel>
-            <FormGroup controlId="usernameGroupAdmin">
-              <Col componentClass={ControlLabel} md={3} className={"text-left"}>
-                Username
-              </Col>
-              <Col md={9}>
-                <InputGroup>
-                  <FormControl
-                    type="text"
-                    placeholder="User name"
-                    defaultValue={splitedAdminId}
-                    autoComplete="new-username"
-                    disabled
-                  />
-                  <InputGroup.Addon>{`@${
-                    this.props.match.params.groupId
-                      ? this.props.groupDefaultDomain
-                      : this.props.tenantDefaultDomain
-                  }`}</InputGroup.Addon>
-                </InputGroup>
-              </Col>
-            </FormGroup>
-            <FormGroup controlId="firstName">
-              <Col componentClass={ControlLabel} md={3} className={"text-left"}>
-                First Name
-              </Col>
-              <Col md={9}>
-                <FormControl
-                  type="text"
-                  placeholder="First name"
-                  defaultValue={updateAdminData.firstName}
-                  onChange={e => {
-                    this.setState({
-                      updateAdminData: {
-                        ...this.state.updateAdminData,
-                        firstName: e.target.value
-                      },
-                      isUpdatedMassage: "",
-                      errorMassage: ""
-                    });
-                  }}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup controlId="lastName">
-              <Col componentClass={ControlLabel} md={3} className={"text-left"}>
-                Last Name
-              </Col>
-              <Col md={9}>
-                <FormControl
-                  type="text"
-                  placeholder="Last name"
-                  defaultValue={updateAdminData.lastName}
-                  onChange={e => {
-                    this.setState({
-                      updateAdminData: {
-                        ...this.state.updateAdminData,
-                        lastName: e.target.value
-                      },
-                      isUpdatedMassage: "",
-                      errorMassage: ""
-                    });
-                  }}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup controlId="language">
-              <Col componentClass={ControlLabel} md={3} className={"text-left"}>
-                Language
-              </Col>
-              <Col md={9}>
-                <FormControl
-                  type="text"
-                  placeholder="Language"
-                  defaultValue={updateAdminData.language}
-                  disabled
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup
-              controlId="passwordGroupAdmin"
-              validationState={passwordNotMatch}
-            >
-              <Col componentClass={ControlLabel} md={3} className={"text-left"}>
-                Password
-              </Col>
-              <Col md={9}>
-                <FormControl
-                  type="password"
-                  placeholder="Password"
-                  autoComplete="new-password"
-                  defaultValue={updateAdminData.password}
-                  onChange={e => {
-                    this.setState({
-                      updateAdminData: {
-                        ...this.state.updateAdminData,
-                        password: e.target.value
-                      },
-                      passwordNotMatch: null,
-                      isUpdatedMassage: "",
-                      errorMassage: "",
-                      errorLengthMassage: ""
-                    });
-                  }}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup
-              controlId="passwordConfirmation"
-              validationState={passwordNotMatch}
-            >
-              <Col componentClass={ControlLabel} md={3} className={"text-left"}>
-                Password confirmation
-              </Col>
-              <Col md={9}>
-                <FormControl
-                  type="password"
-                  placeholder="Password confirmation"
-                  autoComplete="new-password"
-                  defaultValue={passwordConfirmation}
-                  onChange={e => {
-                    this.setState({
-                      passwordConfirmation: e.target.value,
-                      passwordNotMatch: null,
-                      isUpdatedMassage: "",
-                      errorMassage: "",
-                      errorLengthMassage: ""
-                    });
-                  }}
-                />
-              </Col>
-            </FormGroup>
-            <Col mdOffset={3} md={9}>
-              {this.state.isUpdatedMassage && (
-                <HelpBlock
-                  bsClass={`${
-                    this.state.isUpdatedMassage === "Loading..."
-                      ? "color-info"
-                      : "color-success"
-                  }`}
+      <React.Fragment>
+        <div className={"panel-heading"}>
+          <div className={"header"}>UPDATE ADMIN</div>
+        </div>
+        <div className={"panel-body"}>
+          <Col md={8}>
+            <Form horizontal className={"margin-1"}>
+              <FormGroup controlId="Details">
+                <FormGroup controlId="usernameGroupAdmin">
+                  <Col
+                    componentClass={ControlLabel}
+                    md={3}
+                    className={"text-left"}
+                  >
+                    Username
+                  </Col>
+                  <Col md={9}>
+                    <InputGroup>
+                      <FormControl
+                        type="text"
+                        placeholder="User name"
+                        defaultValue={splitedAdminId}
+                        autoComplete="new-username"
+                        disabled
+                      />
+                      <InputGroup.Addon>{`@${
+                        this.props.match.params.groupId
+                          ? this.props.groupDefaultDomain
+                          : this.props.tenantDefaultDomain
+                      }`}</InputGroup.Addon>
+                    </InputGroup>
+                  </Col>
+                </FormGroup>
+                <FormGroup controlId="firstName">
+                  <Col
+                    componentClass={ControlLabel}
+                    md={3}
+                    className={"text-left"}
+                  >
+                    First Name
+                  </Col>
+                  <Col md={9}>
+                    <FormControl
+                      type="text"
+                      placeholder="First name"
+                      defaultValue={updateAdminData.firstName}
+                      onChange={e => {
+                        this.setState({
+                          updateAdminData: {
+                            ...this.state.updateAdminData,
+                            firstName: e.target.value
+                          },
+                          isUpdatedMassage: "",
+                          errorMassage: ""
+                        });
+                      }}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup controlId="lastName">
+                  <Col
+                    componentClass={ControlLabel}
+                    md={3}
+                    className={"text-left"}
+                  >
+                    Last Name
+                  </Col>
+                  <Col md={9}>
+                    <FormControl
+                      type="text"
+                      placeholder="Last name"
+                      defaultValue={updateAdminData.lastName}
+                      onChange={e => {
+                        this.setState({
+                          updateAdminData: {
+                            ...this.state.updateAdminData,
+                            lastName: e.target.value
+                          },
+                          isUpdatedMassage: "",
+                          errorMassage: ""
+                        });
+                      }}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup controlId="language">
+                  <Col
+                    componentClass={ControlLabel}
+                    md={3}
+                    className={"text-left"}
+                  >
+                    Language
+                  </Col>
+                  <Col md={9}>
+                    <FormControl
+                      type="text"
+                      placeholder="Language"
+                      defaultValue={updateAdminData.language}
+                      disabled
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup
+                  controlId="passwordGroupAdmin"
+                  validationState={passwordNotMatch}
                 >
-                  {this.state.isUpdatedMassage}
-                </HelpBlock>
-              )}
-            </Col>
-            <Col mdOffset={3} md={9}>
-              {this.state.errorMassage && (
-                <HelpBlock bsClass="color-error">
-                  {this.state.errorMassage}
-                </HelpBlock>
-              )}
-            </Col>
-          </FormGroup>
-          <Row>
-            <Col mdPush={10} md={1}>
-              <Button
-                onClick={
-                  this.props.match.params.groupId
-                    ? this.createGroupAdmin
-                    : this.createTenantAdmin
-                }
-              >
-                <Glyphicon glyph="glyphicon glyphicon-ok" /> UPDATE
-              </Button>
-            </Col>
-          </Row>
-        </Form>
-      </Col>
+                  <Col
+                    componentClass={ControlLabel}
+                    md={3}
+                    className={"text-left"}
+                  >
+                    Password
+                  </Col>
+                  <Col md={9}>
+                    <FormControl
+                      type="password"
+                      placeholder="Password"
+                      autoComplete="new-password"
+                      defaultValue={updateAdminData.password}
+                      onChange={e => {
+                        this.setState({
+                          updateAdminData: {
+                            ...this.state.updateAdminData,
+                            password: e.target.value
+                          },
+                          passwordNotMatch: null,
+                          isUpdatedMassage: "",
+                          errorMassage: "",
+                          errorLengthMassage: ""
+                        });
+                      }}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup
+                  controlId="passwordConfirmation"
+                  validationState={passwordNotMatch}
+                >
+                  <Col
+                    componentClass={ControlLabel}
+                    md={3}
+                    className={"text-left"}
+                  >
+                    Password confirmation
+                  </Col>
+                  <Col md={9}>
+                    <FormControl
+                      type="password"
+                      placeholder="Password confirmation"
+                      autoComplete="new-password"
+                      defaultValue={passwordConfirmation}
+                      onChange={e => {
+                        this.setState({
+                          passwordConfirmation: e.target.value,
+                          passwordNotMatch: null,
+                          isUpdatedMassage: "",
+                          errorMassage: "",
+                          errorLengthMassage: ""
+                        });
+                      }}
+                    />
+                  </Col>
+                </FormGroup>
+                <Col mdOffset={3} md={9}>
+                  {this.state.isUpdatedMassage && (
+                    <HelpBlock
+                      bsClass={`${
+                        this.state.isUpdatedMassage === "Loading..."
+                          ? "color-info"
+                          : "color-success"
+                      }`}
+                    >
+                      {this.state.isUpdatedMassage}
+                    </HelpBlock>
+                  )}
+                </Col>
+                <Col mdOffset={3} md={9}>
+                  {this.state.errorMassage && (
+                    <HelpBlock bsClass="color-error">
+                      {this.state.errorMassage}
+                    </HelpBlock>
+                  )}
+                </Col>
+              </FormGroup>
+              <Row>
+                <div className="button-row">
+                  <div className="pull-right">
+                    <Button
+                      onClick={
+                        this.props.match.params.groupId
+                          ? this.createGroupAdmin
+                          : this.createTenantAdmin
+                      }
+                      className={"btn-primary"}
+                    >
+                      <Glyphicon glyph="glyphicon glyphicon-ok" /> UPDATE
+                    </Button>
+                  </div>
+                </div>
+              </Row>
+            </Form>
+          </Col>
+        </div>
+      </React.Fragment>
     );
   }
 

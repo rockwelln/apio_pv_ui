@@ -9,7 +9,7 @@ const isPhoneNumberCorrect = phoneNumber => {
   return false;
 };
 
-export const parseNumbersString = str => {
+export const parseNumbersString = (str, isLocalFormat) => {
   const res = str.split(/\n+/);
 
   const ok = [],
@@ -25,19 +25,39 @@ export const parseNumbersString = str => {
       err.push(errRow);
     } else {
       const [startNum, endNum] = phoneNumbers;
-      const range = {
-        start:
-          startNum.charAt(0) === "0" || startNum.charAt(0) === "+"
-            ? startNum
-            : `+${startNum}`,
-        end: endNum
-          ? endNum.charAt(0) === "0" || endNum.charAt(0) === "+"
-            ? endNum
-            : `+${endNum}`
-          : "",
-        line: index + 1,
-        type: endNum ? "Range" : "Phonenumber"
-      };
+      let range;
+      if (isLocalFormat) {
+        range = {
+          start: startNum.charAt(0) === "0" ? startNum : `0${startNum}`,
+          end: endNum ? (endNum.charAt(0) === "0" ? endNum : `0${endNum}`) : "",
+          line: index + 1,
+          type: endNum ? "Range" : "Phonenumber"
+        };
+      } else {
+        range = {
+          start: startNum.charAt(0) === "+" ? startNum : `+${startNum}`,
+          end: endNum ? (endNum.charAt(0) === "+" ? endNum : `+${endNum}`) : "",
+          line: index + 1,
+          type: endNum ? "Range" : "Phonenumber"
+        };
+      }
+      // const range = {
+      //   start:
+      //     isLocalFormat && startNum.charAt(0) === "0"
+      //       ? startNum
+      //       : startNum.charAt(0) === "+"
+      //       ? startNum
+      //       : `+${startNum}`,
+      //   end: endNum
+      //     ? isLocalFormat && endNum.charAt(0) === "0"
+      //       ? endNum
+      //       : endNum.charAt(0) === "0"
+      //       ? endNum
+      //       : `+${endNum}`
+      //     : "",
+      //   line: index + 1,
+      //   type: endNum ? "Range" : "Phonenumber"
+      // };
       if (
         startNum &&
         isPhoneNumberCorrect(startNum) &&

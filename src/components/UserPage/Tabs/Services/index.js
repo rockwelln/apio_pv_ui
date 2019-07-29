@@ -262,7 +262,7 @@ export class Services extends Component {
             )}
             <Row className={"indent-top-bottom-1"}>
               <Col mdOffset={9} md={2}>
-                <div className="flex flex-row flex-end-center">
+                <div className="flex flex-row flex-end-center btn-primary">
                   <Button onClick={this.updateSevices}>Update</Button>
                 </div>
               </Col>
