@@ -18,7 +18,7 @@ import { fetchGetPhoneNumbersByTenantId } from "../../../../store/actions";
 
 import Loading from "../../../../common/Loading";
 import PhoneNumber from "./PhoneNumber";
-import DeleteModal from "./DeleteModal";
+import DeleteModal from "./DeleteModal1";
 import { countsPerPages } from "../../../../constants";
 
 import "./styles.css";
@@ -82,6 +82,8 @@ export class PhoneNumbersTab extends Component {
     if (isLoading && pagination) {
       return <Loading />;
     }
+
+    console.log("showDelete", showDelete);
     return (
       <React.Fragment>
         {/*SEARCHBAR */}
@@ -142,23 +144,28 @@ export class PhoneNumbersTab extends Component {
                     >
                       (Un)select all shown numbers
                     </Checkbox>
-                    <Glyphicon
-                      glyph="glyphicon glyphicon-trash"
+                    <div
                       onClick={this.deleteSlectedNumbers}
-                    />
-                    <div className={"margin-checbox"}>
-                      Delete selected numbers
+                      className={
+                        "cursor-pointer padding-left-05 flex text-align-center align-items-center"
+                      }
+                    >
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-trash"
+                        onClick={this.deleteSlectedNumbers}
+                      />
+                      <div>Delete selected numbers</div>
                     </div>
                     <DeleteModal
                       rangeStart={numbersForDelete.map(
                         number => number.phoneNumbers || number.phoneNumber
                       )}
-                      show={showDelete}
+                      tenantId={this.props.tenantId}
+                      show={this.state.showDelete}
                       onClose={e => {
-                        onReload && onReload(numbersForDelete);
+                        this.fetchNumbers();
                         this.setState({ showDelete: false });
                       }}
-                      {...this.props}
                     />
                   </div>
                   <div className={"flex align-items-center"}>
@@ -389,9 +396,7 @@ export class PhoneNumbersTab extends Component {
     const numbersForDelete = phoneNumbers.filter(phone => {
       return !!phone.phoneChecked;
     });
-    this.setState({ numbersForDelete, showDelete: true }, () =>
-      this.pagination()
-    );
+    this.setState({ numbersForDelete, showDelete: true });
   };
 
   handleSelectAllClick = e => {

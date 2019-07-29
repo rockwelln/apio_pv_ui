@@ -67,7 +67,7 @@ export class Users extends Component {
     if ((isLoading, pagination)) {
       return <Loading />;
     }
-
+    console.log("showDelete", showDelete);
     return (
       <React.Fragment>
         <Row className={"margin-top-2"}>

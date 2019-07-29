@@ -5,6 +5,8 @@ import Modal from "react-bootstrap/lib/Modal";
 import Alert from "react-bootstrap/lib/Alert";
 import Button from "react-bootstrap/lib/Button";
 
+import { fetchDeletePhoneFromTenant } from "../../../../store/actions";
+
 import { FormattedMessage } from "react-intl";
 
 class DeleteModal extends Component {
@@ -17,17 +19,24 @@ class DeleteModal extends Component {
   onDelete(userId) {
     const { onClose } = this.props;
     this.setState({ deleting: true });
+    const data = {
+      numbers: this.props.rangeStart.map(number => ({ phoneNumber: number }))
+    };
 
-    this.props.fetchDeleteTenant(userId).then(() => {
-      this.setState({ deleting: false });
-      onClose && onClose(true);
-    });
+    console.log(data);
+
+    this.props
+      .fetchDeletePhoneFromTenant(this.props.tenantId, data)
+      .then(() => {
+        this.setState({ deleting: false });
+        onClose && onClose(true);
+      });
   }
 
   render() {
-    const { userId, show, onClose } = this.props;
+    const { rangeStart, show, onClose } = this.props;
     const { deleting } = this.state;
-    console.log("show", show);
+    console.log("show", rangeStart);
     return (
       <Modal
         show={show}
@@ -51,16 +60,12 @@ class DeleteModal extends Component {
           <p>
             <FormattedMessage
               id="confirm-delete-warning"
-              defaultMessage={`You are about to delete the user ${userId}!`}
+              defaultMessage={`You are about to delete the numbers ${rangeStart}!`}
             />
           </p>
         </Modal.Body>
         <Modal.Footer>
-          <Button
-            onClick={() => this.onDelete(userId)}
-            bsStyle="danger"
-            disabled={true}
-          >
+          <Button onClick={() => this.onDelete()} bsStyle="danger">
             <FormattedMessage id="delete" defaultMessage="Delete" />
           </Button>
           <Button onClick={() => onClose && onClose(false)} disabled={deleting}>
@@ -72,7 +77,9 @@ class DeleteModal extends Component {
   }
 }
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  fetchDeletePhoneFromTenant
+};
 
 export default connect(
   null,

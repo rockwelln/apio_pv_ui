@@ -45,6 +45,7 @@ class DeleteModal extends Component {
 
   render() {
     const { show, onClose } = this.props;
+    console.log("show", show);
     const { deleting } = this.state;
     if (this.props.number) {
       return (
@@ -82,7 +83,7 @@ class DeleteModal extends Component {
           </Modal.Body>
           <Modal.Footer>
             <Button
-              onClick={() => this.onDelete(this.props.number)}
+              //onClick={() => this.onDelete(this.props.number)}
               bsStyle="danger"
             >
               <FormattedMessage id="delete" defaultMessage="Delete" />
