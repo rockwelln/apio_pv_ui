@@ -16,6 +16,7 @@ export default class EditLicenses extends Component {
   render() {
     return (
       <React.Fragment>
+        {/**Unlimeted checkbox */}
         <Checkbox
           defaultChecked={this.props.defaultChecked}
           onChange={e => {
@@ -25,6 +26,7 @@ export default class EditLicenses extends Component {
         >
           {String.fromCharCode(INFINITY)}
         </Checkbox>
+        {/**Value of maximum */}
         {!this.state.isChecked && (
           <FormControl
             type="number"

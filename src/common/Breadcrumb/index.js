@@ -14,11 +14,17 @@ const convertCrumb = crumb => {
   return crumb;
 };
 
+//Links and rename path for crumb
 const linkByCrumb = (item, lastItem, i, path, match) => {
   const crumb = convertCrumb(item);
   if (crumb === "tenants" && !lastItem.includes(crumb)) {
     return (
       <Link to={`/provisioning/${match.params.gwName}/tenants`}>{crumb}</Link>
+    );
+  }
+  if (crumb === "templates" && !lastItem.includes(crumb)) {
+    return (
+      <Link to={`/provisioning/${match.params.gwName}/templates`}>{crumb}</Link>
     );
   }
   if (path[i - 1] === "tenants" && !lastItem.includes(crumb)) {
@@ -52,6 +58,7 @@ const linkByCrumb = (item, lastItem, i, path, match) => {
   return crumb;
 };
 
+//parsing and render breadcrumb
 const BreadcrumbComponent = ({ location, match }) => {
   const indexForGroupLevel = 4;
   const indexForTenantLevel = 2;

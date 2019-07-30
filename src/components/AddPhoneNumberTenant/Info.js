@@ -16,6 +16,7 @@ import Rejected from "./Tabs/Rejected";
 export class Info extends Component {
   render() {
     return (
+      //body
       <div className={"panel-body"}>
         {this.props.addedNumbersToTenant.warning && (
           <Row>
@@ -42,6 +43,7 @@ export class Info extends Component {
             <Rejected />
           </Tab>
         </Tabs>
+        {/**Button for finish */}
         <Row className={"margin-1"}>
           <div className="button-row">
             <div className="pull-right">

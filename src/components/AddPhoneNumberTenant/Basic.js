@@ -23,9 +23,9 @@ export class Basic extends Component {
     isLocalFormat: false
   };
   render() {
-    console.log(this.state.isLocalFormat);
     return (
       <React.Fragment>
+        {/**Header */}
         <div className={"panel-heading"}>
           <Row>
             <Col md={12}>
@@ -52,7 +52,9 @@ export class Basic extends Component {
             </Col>
           </Row>
         </div>
+        {/**Body */}
         <div className={"panel-body"}>
+          {/**Description */}
           <Row>
             <Col md={12}>
               <div>Copy-paste here the phone numbers you want to add</div>
@@ -69,6 +71,7 @@ export class Basic extends Component {
                   </li>
                 </ul>
               </div>
+              {/**Checkbox for check local format */}
               <div>
                 <Checkbox
                   defaultChecked={this.state.isLocalFormat}
@@ -79,6 +82,7 @@ export class Basic extends Component {
                   local format
                 </Checkbox>
               </div>
+              {/**Text area */}
               <FormGroup controlId="validatePhone">
                 <FormControl
                   componentClass="textarea"
@@ -88,6 +92,7 @@ export class Basic extends Component {
               </FormGroup>
             </Col>
           </Row>
+          {/*Button for next step and validation*/}
           <Row className={"margin-1"}>
             <div className="button-row">
               <div className="pull-right">

@@ -34,6 +34,7 @@ export class AddPhoneNumberTenant extends Component {
     );
   }
 
+  //Steps of add phone number
   returnStep = () => {
     switch (this.props.addPhoneTenantStep) {
       case "Basic": {

@@ -18,7 +18,7 @@ import { fetchGetPhoneNumbersByTenantId } from "../../../../store/actions";
 
 import Loading from "../../../../common/Loading";
 import PhoneNumber from "./PhoneNumber";
-import DeleteModal from "./DeleteModal1";
+import DeleteModal from "./MultipleDeleteModal";
 import { countsPerPages } from "../../../../constants";
 
 import "./styles.css";
@@ -83,7 +83,6 @@ export class PhoneNumbersTab extends Component {
       return <Loading />;
     }
 
-    console.log("showDelete", showDelete);
     return (
       <React.Fragment>
         {/*SEARCHBAR */}

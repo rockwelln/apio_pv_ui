@@ -13,6 +13,8 @@ import Radio from "react-bootstrap/lib/Radio";
 
 import Loading from "../../common/Loading";
 
+import { removeEmpty } from "../remuveEmptyInObject";
+
 import {
   fetchGetTamplatesOfTenant,
   changeTemplateOfTenant,
@@ -48,25 +50,26 @@ export class Template extends Component {
                 <Link
                   to={`/provisioning/${this.props.match.params.gwName}/tenants`}
                 >
-                    <Button
-                      disabled={this.state.creating}
-                      className={"margin-left-1 btn-danger"}
-                      onClick={() => this.props.refuseCreateTenant()}
-                    >
-                      Cancel
-                    </Button>
-                  </Link>
+                  <Button
+                    disabled={this.state.creating}
+                    className={"margin-left-1 btn-danger"}
+                    onClick={() => this.props.refuseCreateTenant()}
+                  >
+                    Cancel
+                  </Button>
+                </Link>
               </div>
             </Col>
           </Row>
-          </div>
-          <div class="panel-body">
-            <Row>
+        </div>
+        <div class="panel-body">
+          <Row>
             <Col md={12}>
               <p>
-                Please select a Tenant template. This template will influence the
-                way your tenant will be configured. A template determines the service pack definition,
-                service (pack) authorisation, feature access code definition, etc.
+                Please select a Tenant template. This template will influence
+                the way your tenant will be configured. A template determines
+                the service pack definition, service (pack) authorisation,
+                feature access code definition, etc.
               </p>
             </Col>
           </Row>
@@ -87,9 +90,13 @@ export class Template extends Component {
                     onClick={() => this.selectTemplate(template.name)}
                   >
                     <div className={"flex-row"}>
-                      <div className="font-weight-bold">{`${template.name}`}</div>
+                      <div className="font-weight-bold">{`${
+                        template.name
+                      }`}</div>
                       <div>
-                        {template.description ? `: ${template.description}` : ""}
+                        {template.description
+                          ? `: ${template.description}`
+                          : ""}
                       </div>
                     </div>
                   </Radio>
@@ -105,10 +112,7 @@ export class Template extends Component {
                   disabled={this.state.creating}
                   className={"btn-primary"}
                 >
-                <Glyphicon
-                    glyph="glyphicon glyphicon-backward"
-                  >
-                  </Glyphicon>
+                  <Glyphicon glyph="glyphicon glyphicon-backward" />
                   &nbsp; Back
                 </Button>
               </div>
@@ -117,11 +121,8 @@ export class Template extends Component {
                   disabled={this.state.creating}
                   onClick={this.createButtonClick}
                   className={"btn-primary"}
-                >               
-                <Glyphicon
-                  glyph="glyphicon glyphicon-ok"
                 >
-                </Glyphicon>
+                  <Glyphicon glyph="glyphicon glyphicon-ok" />
                   {this.state.creating ? this.state.creating : " Create"}
                 </Button>
               </div>
@@ -133,9 +134,10 @@ export class Template extends Component {
   }
 
   createButtonClick = () => {
+    const filteredDataCreateTenant = removeEmpty(this.props.createTenant);
     this.setState({ creating: "Creating..." }, () => {
       this.props
-        .fetchPostCreateTenant(this.props.createTenant)
+        .fetchPostCreateTenant(filteredDataCreateTenant)
         .then(res =>
           res
             ? this.props.changeStepOfCreateTenant("Created")

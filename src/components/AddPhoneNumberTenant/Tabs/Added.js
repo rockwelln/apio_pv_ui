@@ -13,6 +13,7 @@ export class Added extends Component {
     return (
       <Row>
         <Col mdOffset={1} md={11}>
+          {/**Table of result */}
           <Table hover>
             <thead>
               <tr>
@@ -33,6 +34,7 @@ export class Added extends Component {
               ))}
             </tbody>
           </Table>
+          {/**Button for copy to clipboard */}
           <Row className={"margin-1"}>
             <div className="button-row">
               <div className="pull-right">

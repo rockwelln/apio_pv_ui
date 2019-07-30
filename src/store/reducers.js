@@ -82,7 +82,8 @@ const initialState = {
   validatedNumbersTenant: null,
   addedNumbersToTenant: {},
   phoneDeleted: false,
-  categoriesOfTemplate: {}
+  categoriesOfTemplate: [],
+  category: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -305,6 +306,12 @@ function mainReducer(state = initialState, action) {
         categoriesOfTemplate: action.data.categories
       };
     }
+    case actionType.GET_CATEGORY_BY_NAME: {
+      return {
+        ...state,
+        category: action.data
+      };
+    }
     case actionType.POST_CREATE_GROUP_ADMIN: {
       return {
         ...state,
@@ -419,7 +426,6 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.PUT_UPDATE_TENANT_DETAILS: {
-      console.log(action);
       return {
         ...state
       };

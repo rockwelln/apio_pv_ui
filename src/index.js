@@ -49,7 +49,6 @@ class AppWithIntl extends Component {
   }
 
   changeLanguage(locale) {
-    console.log("change lang");
     if (locale !== this.state.locale) {
       this.setState({ locale: locale });
       if (locale === undefined) this.props.cookies.remove("user_language");
@@ -61,7 +60,6 @@ class AppWithIntl extends Component {
     let locale = this._getLocale();
     let messages = getMessages(locale);
 
-    console.log("locale: " + locale);
     return (
       <IntlProvider locale={locale} key={locale} messages={messages}>
         <App onLanguageUpdate={this.changeLanguage} />

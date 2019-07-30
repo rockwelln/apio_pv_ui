@@ -25,6 +25,7 @@ export class Basic extends Component {
   render() {
     return (
       <React.Fragment>
+        {/**Header */}
         <div className={"panel-heading"}>
           <Row>
             <Col md={12}>
@@ -51,6 +52,7 @@ export class Basic extends Component {
             </Col>
           </Row>
         </div>
+        {/**Body */}
         <div className={"panel-body"}>
           <Tabs defaultActiveKey={0} id="tenant_tabs">
             <Tab
@@ -66,6 +68,7 @@ export class Basic extends Component {
               <ErrorTab />
             </Tab>
           </Tabs>
+          {/**Button to send data to BE and switch to next step */}
           <Row className={"margin-1"}>
             <div className="button-row">
               <div className="pull-right">

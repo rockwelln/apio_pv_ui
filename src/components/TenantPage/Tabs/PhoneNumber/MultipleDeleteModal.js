@@ -23,8 +23,6 @@ class DeleteModal extends Component {
       numbers: this.props.rangeStart.map(number => ({ phoneNumber: number }))
     };
 
-    console.log(data);
-
     this.props
       .fetchDeletePhoneFromTenant(this.props.tenantId, data)
       .then(() => {
@@ -36,7 +34,6 @@ class DeleteModal extends Component {
   render() {
     const { rangeStart, show, onClose } = this.props;
     const { deleting } = this.state;
-    console.log("show", rangeStart);
     return (
       <Modal
         show={show}
