@@ -18,6 +18,8 @@ import {
 import OkTab from "./Tabs/OK";
 import ErrorTab from "./Tabs/Error";
 
+import { getRange } from "../expandRangeOfPhoneNumber";
+
 export class Basic extends Component {
   state = {
     buttomNameAdd: "ADD"
@@ -93,10 +95,11 @@ export class Basic extends Component {
         if (!phone.end) {
           accamulator.numbers.push({ phoneNumber: phone.start });
         } else {
-          accamulator = {
-            ...accamulator,
-            range: { minPhoneNumber: phone.start, maxPhoneNumber: phone.end }
-          };
+          let range = getRange(phone.start, phone.end);
+          range &&
+            range.map(phone =>
+              accamulator.numbers.push({ phoneNumber: phone })
+            );
         }
         return accamulator;
       },
