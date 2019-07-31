@@ -178,3 +178,7 @@
 textarea {
   resize: none;
 }
+
+.width-100p {
+  width: 100%;
+}
