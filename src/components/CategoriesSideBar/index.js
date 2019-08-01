@@ -28,6 +28,7 @@ export class CategoriesSideBar extends Component {
       <React.Fragment>
         {this.props.categoriesOfTemplate.map((category, i) => (
           <LinkContainer
+            key={i}
             to={`/provisioning/${this.props.match.params.gwName}/templates/${
               category.name
             }`}

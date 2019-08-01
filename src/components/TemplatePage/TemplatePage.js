@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { Link } from "react-router-dom";
 
 import { fetchGetCategoryByName } from "../../store/actions";
 
@@ -53,6 +52,7 @@ export class TemplatePage extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props.match.params.templateName);
     this.fetchReq();
   }
 
@@ -70,14 +70,8 @@ export class TemplatePage extends Component {
     }
   }
   render() {
-    const {
-      isLoading,
-      countPerPage,
-      pagination,
-      paginationTemplates,
-      page
-    } = this.state;
-    if (isLoading && pagination) {
+    const { isLoading, countPerPage, paginationTemplates, page } = this.state;
+    if (isLoading) {
       return <Loading />;
     }
     return (

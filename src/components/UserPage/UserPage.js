@@ -65,7 +65,6 @@ class TenantPage extends Component {
     if (isLoadingTenant && isLoadingGroup && isLoadingUser) {
       return <Loading />;
     }
-
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
@@ -73,7 +72,7 @@ class TenantPage extends Component {
             {`User: 
               ${user.firstName ? user.firstName : ""} 
               ${user.lastName ? user.lastName : ""}
-              (can you put the username/id here)`}
+              (${this.props.match.params.userName})`}
             <Glyphicon glyph="glyphicon glyphicon-trash" />
           </div>
         </div>
