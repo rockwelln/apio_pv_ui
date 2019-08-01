@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { withRouter } from "react-router";
 
 import Table from "react-bootstrap/lib/Table";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
@@ -34,7 +36,7 @@ export class Users extends Component {
     usersForDelete: []
   };
 
-  componentDidMount() {
+  fetchReq() {
     this.props
       .fetchGetUsersByGroupId(this.props.tenantId, this.props.groupId)
       .then(() =>
@@ -51,6 +53,16 @@ export class Users extends Component {
           () => this.pagination()
         )
       );
+  }
+
+  componentDidMount() {
+    this.fetchReq();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.users.length !== this.props.users.length) {
+      this.setState({ isLoading: true }, () => this.fetchReq());
+    }
   }
 
   render() {
@@ -98,10 +110,16 @@ export class Users extends Component {
             </InputGroup>
           </Col>
           <Col className={"text-right"} md={1}>
-            <Glyphicon
-              className={"x-large"}
-              glyph="glyphicon glyphicon-plus-sign"
-            />
+            <Link
+              to={`/provisioning/${this.props.match.params.gwName}/tenants/${
+                this.props.match.params.tenantId
+              }/groups/${this.props.match.params.groupId}/adduser`}
+            >
+              <Glyphicon
+                className={"x-large"}
+                glyph="glyphicon glyphicon-plus-sign"
+              />
+            </Link>
           </Col>
         </Row>
         {paginationUsers.length ? (
@@ -470,7 +488,9 @@ const mapDispatchToProps = {
   fetchGetUsersByGroupId
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Users);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Users)
+);

@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
 import Modal from "react-bootstrap/lib/Modal";
 import Alert from "react-bootstrap/lib/Alert";
 import Button from "react-bootstrap/lib/Button";
 
 import { FormattedMessage } from "react-intl";
+
+import { fetchDeleteUserFromGroup } from "../../../../store/actions";
 
 class DeleteModal extends Component {
   constructor(props) {
@@ -18,10 +21,16 @@ class DeleteModal extends Component {
     const { onClose } = this.props;
     this.setState({ deleting: true });
 
-    this.props.fetchDeleteTenant(userId).then(() => {
-      this.setState({ deleting: false });
-      onClose && onClose(true);
-    });
+    this.props
+      .fetchDeleteUserFromGroup(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        userId
+      )
+      .then(() => {
+        this.setState({ deleting: false });
+        onClose && onClose(true);
+      });
   }
 
   render() {
@@ -55,11 +64,7 @@ class DeleteModal extends Component {
           </p>
         </Modal.Body>
         <Modal.Footer>
-          <Button
-            onClick={() => this.onDelete(userId)}
-            bsStyle="danger"
-            disabled={true}
-          >
+          <Button onClick={() => this.onDelete(userId)} bsStyle="danger">
             <FormattedMessage id="delete" defaultMessage="Delete" />
           </Button>
           <Button onClick={() => onClose && onClose(false)} disabled={deleting}>
@@ -71,9 +76,11 @@ class DeleteModal extends Component {
   }
 }
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { fetchDeleteUserFromGroup };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(DeleteModal);
+export default withRouter(
+  connect(
+    null,
+    mapDispatchToProps
+  )(DeleteModal)
+);

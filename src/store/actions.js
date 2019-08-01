@@ -163,6 +163,11 @@ export const postAddPhoneNumbersToTenant = data => ({
   data
 });
 
+export const postCreateUserToGroup = data => ({
+  type: actionType.POST_CREATE_USER_TO_GROUP,
+  data
+});
+
 export const putUpdateUser = data => ({
   type: actionType.PUT_UPDATE_USER,
   data
@@ -235,6 +240,10 @@ export const deleteAssignUserServicePacks = () => ({
 
 export const deletePhoneFromTenant = () => ({
   type: actionType.DELETE_PHONE_FROM_TENANT
+});
+
+export const deleteUserFromGroup = () => ({
+  type: actionType.DELETE_USER_FROM_GROUP
 });
 
 export const clearErrorMassage = () => ({
@@ -905,6 +914,26 @@ export function fetchPostAddPhoneNumbersToTenant(tenantId, data) {
   };
 }
 
+export function fetchPostCreateUserToGroup(tenantId, groupId, data) {
+  return function(dispatch) {
+    return fetch_post(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/users/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => dispatch(postCreateUserToGroup(data)))
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-create user"
+            defaultMessage="Failed create user!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
 export function fetchPutUpdateUser(tenantId, groupId, userName, data) {
   return function(dispatch) {
     return fetch_put(
@@ -1214,6 +1243,26 @@ export function fetchDeletePhoneFromTenant(tenantId, data) {
           <FormattedMessage
             id="failed-to-delete-number"
             defaultMessage="Failed to delete number!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchDeleteUserFromGroup(tenantId, groupId, userName) {
+  return function(dispatch) {
+    return fetch_delete(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/users/${userName}/`
+    )
+      .then(data => {
+        dispatch(deleteUserFromGroup());
+      })
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-delete-user"
+            defaultMessage="Failed to delete user!"
           />,
           error.message
         )

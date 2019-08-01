@@ -83,7 +83,8 @@ const initialState = {
   addedNumbersToTenant: {},
   phoneDeleted: false,
   categoriesOfTemplate: [],
-  category: {}
+  category: {},
+  createdUserInGroup: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -377,6 +378,12 @@ function mainReducer(state = initialState, action) {
         }
       };
     }
+    case actionType.POST_CREATE_USER_TO_GROUP: {
+      return {
+        ...state,
+        createdUserInGroup: action.data
+      };
+    }
     case actionType.PUT_UPDATE_USER: {
       return {
         ...state,
@@ -465,6 +472,11 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         phoneDeleted: !state.phoneDeleted
+      };
+    }
+    case actionType.DELETE_USER_FROM_GROUP: {
+      return {
+        ...state
       };
     }
     case actionType.CLEAR_ERROR_MASSAGE: {

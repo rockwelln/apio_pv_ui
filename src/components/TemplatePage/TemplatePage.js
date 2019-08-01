@@ -52,7 +52,6 @@ export class TemplatePage extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.match.params.templateName);
     this.fetchReq();
   }
 
