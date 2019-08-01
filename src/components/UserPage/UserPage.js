@@ -69,14 +69,13 @@ class TenantPage extends Component {
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
-          <p className={"header"}>
-            {`User: ${user.firstName ? user.firstName : ""} ${
-              user.lastName ? user.lastName : ""
-            }`}
+          <div className={"header"}>
+            {`User: 
+              ${user.firstName ? user.firstName : ""} 
+              ${user.lastName ? user.lastName : ""}
+              (can you put the username/id here)`}
             <Glyphicon glyph="glyphicon glyphicon-trash" />
-          </p>
-          <p>{`Tenant: ${tenant.name} (id: ${tenant.tenantId})`}</p>
-          <p>{`Group: ${group.groupName} (id: )`}</p>
+          </div>
         </div>
         <div className={"panel-body"}>
           <Tabs defaultActiveKey={0} id="tenant_tabs">

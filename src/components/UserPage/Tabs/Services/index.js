@@ -262,10 +262,15 @@ export class Services extends Component {
             )}
             <Row className={"indent-top-bottom-1"}>
               <Col mdOffset={9} md={2}>
-                <div className="flex flex-row flex-end-center btn-primary">
-                  <Button onClick={this.updateSevices}>Update</Button>
+                <div className="button-row">
+                  <div className="pull-right">
+                    <Button onClick={this.updateSevices} className="btn-primary">
+                        <Glyphicon glyph="glyphicon glyphicon-ok" /> UPDATE
+                    </Button>
+                  </div>
                 </div>
               </Col>
+  
             </Row>
           </React.Fragment>
         ) : (
