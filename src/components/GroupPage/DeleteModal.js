@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { withRouter } from "react-router";
 
-import { fetchDeleteGroupFromTenant } from "../../../../store/actions";
+import { fetchDeleteGroupFromTenant } from "../../store/actions";
 
 import Modal from "react-bootstrap/lib/Modal";
 import Alert from "react-bootstrap/lib/Alert";
 import Button from "react-bootstrap/lib/Button";
 
 import { FormattedMessage } from "react-intl";
+import { withRouter } from "react-router";
 
 class DeleteModal extends Component {
   constructor(props) {
@@ -26,15 +26,23 @@ class DeleteModal extends Component {
         this.props.match.params.tenantId,
         this.props.groupId
       )
-      .then(() => {
-        this.setState({ deleting: false });
-        onClose && onClose(true);
-      });
+      .then(res =>
+        res
+          ? (this.setState({ deleting: false }),
+            onClose && onClose(true),
+            this.props.history.push(
+              `/provisioning/${this.props.match.params.gwName}/tenants/${
+                this.props.match.params.tenantId
+              }`
+            ))
+          : this.setState({ deleting: false })
+      );
   }
 
   render() {
     const { groupId, show, onClose } = this.props;
     const { deleting } = this.state;
+
     return (
       <Modal
         show={show}
@@ -63,7 +71,11 @@ class DeleteModal extends Component {
           </p>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={() => this.onDelete()} bsStyle="danger">
+          <Button
+            onClick={() => this.onDelete()}
+            bsStyle="danger"
+            disabled={deleting}
+          >
             <FormattedMessage id="delete" defaultMessage="Delete" />
           </Button>
           <Button onClick={() => onClose && onClose(false)} disabled={deleting}>

@@ -16,6 +16,8 @@ import Admins from "./Tabs/Admins";
 
 import { fetchGetTenantById, fetchGetGroupById } from "../../store/actions";
 
+import DeleteModal from "./DeleteModal";
+
 class TenantPage extends Component {
   tabsIdSuffix = Math.random()
     .toString(36)
@@ -23,7 +25,8 @@ class TenantPage extends Component {
 
   state = {
     isLoadingTenant: true,
-    isLoadingGroup: true
+    isLoadingGroup: true,
+    showDelete: false
   };
 
   fetchTennant = () => {
@@ -50,7 +53,7 @@ class TenantPage extends Component {
 
   render() {
     const { tenant, group } = this.props;
-    const { isLoadingTenant, isLoadingGroup } = this.state;
+    const { isLoadingTenant, isLoadingGroup, showDelete } = this.state;
 
     if (isLoadingTenant && isLoadingGroup) {
       return <Loading />;
@@ -60,8 +63,21 @@ class TenantPage extends Component {
       <React.Fragment>
         <div className={"panel-heading"}>
           <p className={"header"}>
-            {`GROUP: ${group.groupName} (${this.props.match.params.groupId}) of tenant ${tenant.name} (${tenant.tenantId})`}
-            <Glyphicon glyph="glyphicon glyphicon-trash" />
+            {`GROUP: ${group.groupName} (${
+              this.props.match.params.groupId
+            }) of tenant ${tenant.name} (${tenant.tenantId})`}
+            <Glyphicon
+              glyph="glyphicon glyphicon-trash"
+              onClick={() => this.setState({ showDelete: true })}
+            />
+            <DeleteModal
+              groupId={this.props.match.params.groupId}
+              show={showDelete}
+              notifications={this.props.notifications}
+              onClose={() => {
+                this.setState({ showDelete: false });
+              }}
+            />
           </p>
         </div>
         <div className={"panel-body"}>

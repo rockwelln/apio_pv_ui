@@ -69,7 +69,6 @@ export class PhoneNumbersTab extends Component {
   render() {
     const {
       isLoading,
-      showDelete,
       numbersForDelete,
       countPerPage,
       pagination,
@@ -77,7 +76,7 @@ export class PhoneNumbersTab extends Component {
       page
     } = this.state;
 
-    const { onReload, tenantId } = this.props;
+    const { tenantId } = this.props;
 
     if (isLoading && pagination) {
       return <Loading />;

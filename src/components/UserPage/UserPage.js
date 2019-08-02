@@ -59,7 +59,7 @@ class TenantPage extends Component {
   }
 
   render() {
-    const { tenant, group, user } = this.props;
+    const { user } = this.props;
     const { isLoadingTenant, isLoadingGroup, isLoadingUser } = this.state;
 
     if (isLoadingTenant && isLoadingGroup && isLoadingUser) {

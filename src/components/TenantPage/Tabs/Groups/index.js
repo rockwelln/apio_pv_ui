@@ -31,7 +31,7 @@ export class GroupsTab extends Component {
     countPages: null
   };
 
-  componentDidMount() {
+  fetchReq() {
     this.props.fetchGetGroupsByTenantId(this.props.tenantId).then(() =>
       this.setState(
         {
@@ -46,6 +46,16 @@ export class GroupsTab extends Component {
         () => this.pagination()
       )
     );
+  }
+
+  componentDidMount() {
+    this.fetchReq();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.groups.length !== this.props.groups.length) {
+      this.fetchReq();
+    }
   }
 
   render() {
@@ -170,7 +180,7 @@ export class GroupsTab extends Component {
                       <Group
                         key={group.groupId}
                         group={group}
-                        onReload={this.props.fetchGetGroupsByTenantId}
+                        onReload={() => this.fetchReq()}
                       />
                     ))}
                   </tbody>

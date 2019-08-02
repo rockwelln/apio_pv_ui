@@ -36,7 +36,7 @@ export class Sidebar extends Component {
             title={"TEMPLATES"}
             className={"width-100p flex space-between align-items-center"}
             componentClass={Nav}
-            eventKey={2}
+            id={"category"}
           >
             <Nav
               bsStyle="pills"

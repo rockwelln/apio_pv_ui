@@ -34,10 +34,10 @@ class Group extends Component {
             />
           </ButtonToolbar>
           <DeleteModal
-            tenantId={group.groupId}
+            groupId={group.groupId}
             show={showDelete}
             onClose={e => {
-              onReload && onReload(group.tenantId);
+              onReload && onReload();
               this.setState({ showDelete: false });
             }}
             {...this.props}

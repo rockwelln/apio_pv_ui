@@ -106,7 +106,7 @@ export class AddUserPage extends Component {
                       md={3}
                       className={"text-left"}
                     >
-                      User ID
+                      User ID{"\u002a"}
                     </Col>
                     <Col md={9}>
                       <InputGroup>
@@ -168,7 +168,7 @@ export class AddUserPage extends Component {
                       md={3}
                       className={"text-left"}
                     >
-                      First Name
+                      First Name{"\u002a"}
                     </Col>
                     <Col md={9}>
                       <FormControl
@@ -196,7 +196,7 @@ export class AddUserPage extends Component {
                       md={3}
                       className={"text-left"}
                     >
-                      Last Name
+                      Last Name{"\u002a"}
                     </Col>
                     <Col md={9}>
                       <FormControl
@@ -237,7 +237,7 @@ export class AddUserPage extends Component {
                           md={3}
                           className={"text-left"}
                         >
-                          CLI First Name
+                          CLI First Name{"\u002a"}
                         </Col>
                         <Col md={9}>
                           <FormControl
@@ -258,7 +258,7 @@ export class AddUserPage extends Component {
                           md={3}
                           className={"text-left"}
                         >
-                          CLI Last Name
+                          CLI Last Name{"\u002a"}
                         </Col>
                         <Col md={9}>
                           <FormControl
@@ -284,7 +284,7 @@ export class AddUserPage extends Component {
                       md={3}
                       className={"text-left"}
                     >
-                      Password
+                      Password{"\u002a"}
                     </Col>
                     <Col md={9}>
                       <FormControl
@@ -300,7 +300,9 @@ export class AddUserPage extends Component {
                         }
                       />
                       {passwordError && (
-                        <HelpBlock>Field is required</HelpBlock>
+                        <HelpBlock>
+                          Field is required and min length 6 characters
+                        </HelpBlock>
                       )}
                     </Col>
                   </FormGroup>
@@ -344,7 +346,7 @@ export class AddUserPage extends Component {
                       md={3}
                       className={"text-left"}
                     >
-                      Language
+                      Language{"\u002a"}
                     </Col>
                     <Col md={9}>
                       <FormControl
@@ -418,7 +420,7 @@ export class AddUserPage extends Component {
       this.setState({ lastNameError: "error" });
       return;
     }
-    if (!password) {
+    if (!password || password.length < 6) {
       this.setState({ passwordError: "error" });
       return;
     }

@@ -246,6 +246,11 @@ export const deleteUserFromGroup = () => ({
   type: actionType.DELETE_USER_FROM_GROUP
 });
 
+export const deleteGroupFromTenant = data => ({
+  type: actionType.DELETE_GROUP_FROM_TENANT,
+  data
+});
+
 export const clearErrorMassage = () => ({
   type: actionType.CLEAR_ERROR_MASSAGE
 });
@@ -1263,6 +1268,27 @@ export function fetchDeleteUserFromGroup(tenantId, groupId, userName) {
           <FormattedMessage
             id="failed-to-delete-user"
             defaultMessage="Failed to delete user!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchDeleteGroupFromTenant(tenantId, groupId) {
+  return function(dispatch) {
+    return fetch_delete(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/`
+    )
+      .then(data => {
+        dispatch(deleteGroupFromTenant(data));
+        return "deleted";
+      })
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-delete-group"
+            defaultMessage="Failed to delete group!"
           />,
           error.message
         )
