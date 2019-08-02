@@ -84,7 +84,8 @@ const initialState = {
   phoneDeleted: false,
   categoriesOfTemplate: [],
   category: {},
-  createdUserInGroup: {}
+  createdUserInGroup: {},
+  trunksGroups: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -311,6 +312,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         category: action.data
+      };
+    }
+    case actionType.GET_TRUNKS_GROUPS_BY_GROUP: {
+      return {
+        ...state,
+        trunksGroups: action.data.trunks
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN: {

@@ -13,6 +13,7 @@ import Licenses from "./Tabs/Licenses";
 import Details from "./Tabs/Details";
 import Devices from "./Tabs/Devices";
 import Admins from "./Tabs/Admins";
+import TrunksGroup from "./Tabs/TrunksGroup";
 
 import { fetchGetTenantById, fetchGetGroupById } from "../../store/actions";
 
@@ -95,7 +96,7 @@ class TenantPage extends Component {
               />
             </Tab>
             <Tab eventKey={2} title="TRUNKS GROUP">
-              ENTERPRISE TRUNKS Tab
+              <TrunksGroup />
             </Tab>
             <Tab eventKey={3} title="PHONE NUMBERS">
               <PhoneNumbers
