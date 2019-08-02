@@ -9,6 +9,8 @@ import Button from "react-bootstrap/lib/Button";
 
 import { FormattedMessage } from "react-intl";
 
+import { getRange } from "../../../expandRangeOfPhoneNumber";
+
 class DeleteModal extends Component {
   constructor(props) {
     super(props);
@@ -19,20 +21,19 @@ class DeleteModal extends Component {
   onDelete(number) {
     const { onClose } = this.props;
     this.setState({ deleting: true });
-    // let data;
-    // if (number.rangeEnd) {
-    //   data = {
-    //     numbers: [
-    //       { minPhoneNumber: number.rangeStart, maxPhoneNumber: number.rangeEnd }
-    //     ]
-    //   };
-    // } else
-    //   data = {
-    //     numbers: [{ phoneNumber: number.rangeStart }]
-    //   };
+
+    const allNumbers = [];
+
+    if (this.props.number.rangeEnd) {
+      const expandedRange = getRange(
+        this.props.number.rangeStart,
+        this.props.number.rangeEnd
+      );
+      allNumbers.push(...expandedRange);
+    } else allNumbers.push(this.props.number.rangeStart);
 
     const data = {
-      numbers: [{ phoneNumber: number.rangeStart }]
+      numbers: allNumbers.map(number => ({ phoneNumber: number }))
     };
 
     this.props
@@ -82,7 +83,7 @@ class DeleteModal extends Component {
           </Modal.Body>
           <Modal.Footer>
             <Button
-              //onClick={() => this.onDelete(this.props.number)}
+              onClick={() => this.onDelete(this.props.number)}
               bsStyle="danger"
             >
               <FormattedMessage id="delete" defaultMessage="Delete" />

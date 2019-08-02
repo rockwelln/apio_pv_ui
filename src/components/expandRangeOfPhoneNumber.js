@@ -1,5 +1,5 @@
 const getPrefix = number => {
-  const prefix = number.match(/^(\+\d{1,3})?0+/g);
+  const prefix = number.match(/^(\+?0*)/g);
   return prefix && prefix[0];
 };
 

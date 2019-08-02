@@ -7,6 +7,8 @@ import Button from "react-bootstrap/lib/Button";
 
 import { fetchDeletePhoneFromTenant } from "../../../../store/actions";
 
+import { getRange } from "../../../expandRangeOfPhoneNumber";
+
 import { FormattedMessage } from "react-intl";
 
 class DeleteModal extends Component {
@@ -16,11 +18,22 @@ class DeleteModal extends Component {
     this.onDelete = this.onDelete.bind(this);
   }
 
-  onDelete(userId) {
+  onDelete() {
     const { onClose } = this.props;
     this.setState({ deleting: true });
+
+    const allNumbers = [];
+
+    this.props.rangeStart.map(number => {
+      if (number.includes(" - ")) {
+        const range = number.split(" - ");
+        const expandedRange = getRange(range[0], range[1]);
+        allNumbers.push(...expandedRange);
+      } else allNumbers.push(number);
+    });
+
     const data = {
-      numbers: this.props.rangeStart.map(number => ({ phoneNumber: number }))
+      numbers: allNumbers.map(number => ({ phoneNumber: number }))
     };
 
     this.props
