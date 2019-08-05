@@ -401,7 +401,7 @@ class App extends Component {
                 exact
               />
               <Route
-                path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/trunkgroup/:trunkgroupname"
+                path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/trunkgroup/:trunkGroupName"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <TrunkGroupPage />

@@ -7,6 +7,8 @@ import Breadcrumb from "../../common/Breadcrumb";
 import Sidebar from "../../common/Sidebar";
 import Title from "../../common/Title";
 
+import TrunkGroupPage from "./TrunkGroupPage";
+
 const TrunkGroupComponent = () => {
   return (
     <React.Fragment>
@@ -21,7 +23,9 @@ const TrunkGroupComponent = () => {
           <Row>
             <Breadcrumb />
           </Row>
-          <Row className={"panel panel-default"}>TrunkGroup page</Row>
+          <Row className={"panel panel-default"}>
+            <TrunkGroupPage />
+          </Row>
         </Col>
       </Row>
     </React.Fragment>

@@ -85,7 +85,8 @@ const initialState = {
   categoriesOfTemplate: [],
   category: {},
   createdUserInGroup: {},
-  trunksGroups: []
+  trunksGroups: [],
+  trunkGroup: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -319,6 +320,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         trunksGroups: action.data.trunks
+      };
+    }
+    case actionType.GET_TRUNK_GROUP_BY_NAME: {
+      return {
+        ...state,
+        trunkGroup: action.data
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN: {
