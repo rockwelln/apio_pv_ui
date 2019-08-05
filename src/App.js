@@ -41,6 +41,7 @@ import AddPhoneNumberTenant from "./components/AddPhoneNumberTenant";
 import Templates from "./components/Templates";
 import TemplatePage from "./components/TemplatePage";
 import AddUser from "./components/AddUser";
+import TrunkGroupPage from "./components/TrunkGroupPage";
 
 import "./App.css";
 import loading from "./loading.gif";
@@ -393,6 +394,17 @@ class App extends Component {
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <AddUser />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/trunkgroup/:trunkgroupname"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <TrunkGroupPage />
                   ) : (
                     <NotAllowed />
                   )

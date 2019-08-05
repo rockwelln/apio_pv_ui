@@ -85,7 +85,7 @@ export class AddUserPage extends Component {
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
-          <div className={"header"}>{`Add new user to group ${
+          <div className={"header"}>{`Add a new hosted pbx user to ${
             this.props.match.params.groupId
           }`}</div>
         </div>

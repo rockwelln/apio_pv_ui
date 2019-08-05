@@ -148,9 +148,10 @@ function mainReducer(state = initialState, action) {
         type: user.inTrunkGroup ? "trunk" : "normal",
         userChecked: false
       }));
+
       return {
         ...state,
-        users
+        users: users.filter(user => user.type !== "trunk")
       };
     }
     case actionType.GET_PHONE_NUMBERS_BY_GROUP_ID: {

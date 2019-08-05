@@ -52,6 +52,9 @@ const linkByCrumb = (item, lastItem, i, path, match) => {
   if (crumb === "adduser") {
     return "Add user";
   }
+  if (crumb === "trunkgroup") {
+    return "Trunk group";
+  }
 
   return crumb;
 };

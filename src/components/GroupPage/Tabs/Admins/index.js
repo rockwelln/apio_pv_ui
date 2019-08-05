@@ -86,6 +86,7 @@ export class Admins extends Component {
                 {placeholder => (
                   <FormControl
                     type="text"
+                    defaultValue={this.state.searchValue}
                     value={this.state.searchValue}
                     placeholder={placeholder}
                     onChange={e =>

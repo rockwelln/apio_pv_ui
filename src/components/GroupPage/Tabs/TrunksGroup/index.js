@@ -18,6 +18,8 @@ import Loading from "../../../../common/Loading";
 import { fetchGetTrunksGroupsByGroup } from "../../../../store/actions";
 import { countsPerPages } from "../../../../constants";
 
+import TrunkGrup from "./TrunkGrup";
+
 export class Trunks extends Component {
   state = {
     trunks: [],
@@ -27,7 +29,8 @@ export class Trunks extends Component {
     countPerPage: 25,
     page: 0,
     pagination: true,
-    countPages: null
+    countPages: null,
+    searchValue: ""
   };
   fetchTrunks = () => {
     this.props
@@ -44,7 +47,7 @@ export class Trunks extends Component {
               return 0;
             }),
             isLoading: false,
-            sortedBy: "userId"
+            sortedBy: "name"
           },
           () => this.pagination()
         )
@@ -61,14 +64,7 @@ export class Trunks extends Component {
     }
   }
   render() {
-    const {
-      isLoading,
-      countPerPage,
-      pagination,
-      paginationTrunks,
-      page
-    } = this.state;
-    console.log(this.state.trunks);
+    const { isLoading, countPerPage, paginationTrunks, page } = this.state;
     if (isLoading) {
       return <Loading />;
     }
@@ -137,7 +133,7 @@ export class Trunks extends Component {
                         <FormattedMessage id="Name" defaultMessage="Name" />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByUserId}
+                          onClick={this.sortByName}
                         />
                       </th>
                       <th style={{ width: "19%" }}>
@@ -147,7 +143,7 @@ export class Trunks extends Component {
                         />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByFirstName}
+                          onClick={this.sortByGroupId}
                         />
                       </th>
                       <th style={{ width: "19%" }}>
@@ -157,7 +153,7 @@ export class Trunks extends Component {
                         />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByLastName}
+                          onClick={this.sortByDeviceName}
                         />
                       </th>
                       <th style={{ width: "19%" }}>
@@ -167,7 +163,7 @@ export class Trunks extends Component {
                         />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByAssignedToGroup}
+                          onClick={this.sortByDeviceLevel}
                         />
                       </th>
                       <th style={{ width: "20%" }}>
@@ -177,29 +173,21 @@ export class Trunks extends Component {
                         />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByAssignedToGroup}
+                          onClick={this.sortByDepartment}
                         />
                       </th>
                       <th style={{ width: "4%" }} />
                     </tr>
                   </thead>
-                  {/* <tbody>
-                    {paginationAdmins[page].map(admin => (
-                      <Admin
-                        key={admin.userId}
-                        tenantId={this.props.tenantId}
-                        groupId={this.props.groupId}
-                        admin={admin}
-                        notifications={this.props.notifications}
-                        onReload={() =>
-                          this.props.fetchGetAdminsByGroupId(
-                            this.props.tenantId,
-                            this.props.groupId
-                          )
-                        }
+                  <tbody>
+                    {paginationTrunks[page].map((trunkGrup, i) => (
+                      <TrunkGrup
+                        key={i}
+                        trunkGrup={trunkGrup}
+                        onReload={() => this.props.fetchTrunks()}
                       />
                     ))}
-                  </tbody> */}
+                  </tbody>
                 </Table>
               </Col>
             </Row>
@@ -226,6 +214,27 @@ export class Trunks extends Component {
       </React.Fragment>
     );
   }
+
+  changeCoutOnPage = e => {
+    this.setState({ countPerPage: Number(e.target.value), page: 0 }, () =>
+      this.pagination()
+    );
+  };
+
+  incrementPage = () => {
+    if (this.state.page >= this.state.countPages - 1) {
+      return;
+    }
+    this.setState({ page: this.state.page + 1 });
+  };
+
+  decrementPage = () => {
+    if (this.state.page === 0) {
+      return;
+    }
+    this.setState({ page: this.state.page - 1 });
+  };
+
   pagination = () => {
     const { countPerPage, trunks } = this.state;
     const countPages = Math.ceil(trunks.length / countPerPage);
@@ -250,6 +259,101 @@ export class Trunks extends Component {
       countPages,
       page: 0
     });
+  };
+
+  filterBySearchValue = () => {
+    const { searchValue } = this.state;
+    const SearchArray = this.props.trunks
+      .filter(trunk =>
+        trunk.name.toLowerCase().includes(searchValue.toLowerCase())
+      )
+      .map(trunk => trunk);
+    this.setState({ trunks: SearchArray }, () => this.pagination());
+  };
+
+  sortByName = () => {
+    const { trunks, sortedBy } = this.state;
+    if (sortedBy === "name") {
+      const trunksSorted = trunks.reverse();
+      this.setState({ trunks: trunksSorted }, () => this.pagination());
+    } else {
+      const trunksSorted = trunks.sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      });
+      this.setState({ trunks: trunksSorted, sortedBy: "name" }, () =>
+        this.pagination()
+      );
+    }
+  };
+
+  sortByGroupId = () => {
+    const { trunks, sortedBy } = this.state;
+    if (sortedBy === "groupId") {
+      const trunksSorted = trunks.reverse();
+      this.setState({ trunks: trunksSorted }, () => this.pagination());
+    } else {
+      const trunksSorted = trunks.sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      });
+      this.setState({ trunks: trunksSorted, sortedBy: "groupId" }, () =>
+        this.pagination()
+      );
+    }
+  };
+
+  sortByDeviceName = () => {
+    const { trunks, sortedBy } = this.state;
+    if (sortedBy === "deviceName") {
+      const trunksSorted = trunks.reverse();
+      this.setState({ trunks: trunksSorted }, () => this.pagination());
+    } else {
+      const trunksSorted = trunks.sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      });
+      this.setState({ trunks: trunksSorted, sortedBy: "deviceName" }, () =>
+        this.pagination()
+      );
+    }
+  };
+
+  sortByDeviceLevel = () => {
+    const { trunks, sortedBy } = this.state;
+    if (sortedBy === "deviceLevel") {
+      const trunksSorted = trunks.reverse();
+      this.setState({ trunks: trunksSorted }, () => this.pagination());
+    } else {
+      const trunksSorted = trunks.sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      });
+      this.setState({ trunks: trunksSorted, sortedBy: "deviceLevel" }, () =>
+        this.pagination()
+      );
+    }
+  };
+
+  sortByDepartment = () => {
+    const { trunks, sortedBy } = this.state;
+    if (sortedBy === "department") {
+      const trunksSorted = trunks.reverse();
+      this.setState({ trunks: trunksSorted }, () => this.pagination());
+    } else {
+      const trunksSorted = trunks.sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      });
+      this.setState({ trunks: trunksSorted, sortedBy: "department" }, () =>
+        this.pagination()
+      );
+    }
   };
 }
 
