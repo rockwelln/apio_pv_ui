@@ -86,7 +86,8 @@ const initialState = {
   category: {},
   createdUserInGroup: {},
   trunksGroups: [],
-  trunkGroup: {}
+  trunkGroup: {},
+  trunkGroupUsers: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -326,6 +327,17 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         trunkGroup: action.data
+      };
+    }
+    case actionType.GET_USERS_BY_TRUNK_GROUP: {
+      const users = action.data.users.map(user => ({
+        ...user,
+        type: "trunk",
+        userChecked: false
+      }));
+      return {
+        ...state,
+        trunkGroupUsers: users
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN: {

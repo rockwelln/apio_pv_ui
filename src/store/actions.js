@@ -130,6 +130,11 @@ export const getTrunkGroupByName = data => ({
   data
 });
 
+export const getUsersByTrunkGroup = data => ({
+  type: actionType.GET_USERS_BY_TRUNK_GROUP,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -785,8 +790,26 @@ export function fetchGetTrunkGroupByName(tenantId, groupId, trunkGroupName) {
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage
-            id="fetch-category-failed"
-            defaultMessage="Failed to fetch category!"
+            id="fetch-trunk-group-failed"
+            defaultMessage="Failed to fetch trunk group!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetUsersByTrunkGroup(tenantId, groupId, trunkGroupName) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/services/trunk_users/${trunkGroupName}/`
+    )
+      .then(data => dispatch(getUsersByTrunkGroup(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-users-failed"
+            defaultMessage="Failed to fetch users!"
           />,
           error.message
         )

@@ -412,6 +412,28 @@ class App extends Component {
                 exact
               />
               <Route
+                path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/trunkgroup/:trunkGroupName/users/:userName"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <UserPage />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/trunkgroup/:trunkGroupName/adduser"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <AddUser />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/admins/:adminId"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
