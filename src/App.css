@@ -58,3 +58,16 @@ body {
   margin-right: 15px;
   margin-top: 10px;
 }
+
+.panel-header-btn {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
+  font-size: 13px;
+  margin-left: 10px;
+}
+
+.margin-left-8 {
+  margin-left: 8px;
+}
