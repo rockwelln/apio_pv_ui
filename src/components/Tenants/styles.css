@@ -38,6 +38,10 @@
   margin-left: 10px !important;
 }
 
+.margin-right-1 {
+  margin-right: 10px !important;
+}
+
 .indent-top-bottom-1 {
   margin-top: 10px !important;
   margin-bottom: 10px !important;
@@ -181,4 +185,8 @@ textarea {
 
 .width-100p {
   width: 100%;
+}
+
+.width-auto {
+  width: auto;
 }

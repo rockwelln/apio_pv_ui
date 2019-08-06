@@ -135,6 +135,11 @@ export const getUsersByTrunkGroup = data => ({
   data
 });
 
+export const getBackupByTrunkGroup = data => ({
+  type: actionType.GET_BACKUP_BY_TRUNK_GROUP,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -828,6 +833,24 @@ export function fetchGetTrunksGroupsByGroup(tenantId, groupId) {
           <FormattedMessage
             id="fetch-trunk-groups-failed"
             defaultMessage="Failed to fetch trunk groups!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetBackupByTrunkGroup(tenantId, groupId, trunkGroupName) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/services/trunk_groups/${trunkGroupName}/backup`
+    )
+      .then(data => dispatch(getBackupByTrunkGroup(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-backup-by-trunk-groups-failed"
+            defaultMessage="Failed to fetch backup!"
           />,
           error.message
         )

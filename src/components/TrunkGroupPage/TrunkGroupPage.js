@@ -4,13 +4,13 @@ import { connect } from "react-redux";
 
 import Tabs from "react-bootstrap/lib/Tabs";
 import Tab from "react-bootstrap/lib/Tab";
-import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import Loading from "../../common/Loading";
 
 import { fetchGetTrunkGroupByName } from "../../store/actions";
 
-import Users from "./Users";
+import Users from "./Tabs/Users";
+import Backup from "./Tabs/Backup";
 
 class TrunkGroupPage extends Component {
   state = {
@@ -18,7 +18,7 @@ class TrunkGroupPage extends Component {
     showDelete: false
   };
 
-  componentDidMount() {
+  fetchTrunk() {
     this.props
       .fetchGetTrunkGroupByName(
         this.props.match.params.tenantId,
@@ -28,12 +28,24 @@ class TrunkGroupPage extends Component {
       .then(() => this.setState({ isLoading: false }));
   }
 
+  componentDidMount() {
+    this.fetchTrunk();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.match.params.trunkGroupName !==
+      this.props.match.params.trunkGroupName
+    ) {
+      this.setState({ isLoading: true }, () => this.fetchTrunk());
+    }
+  }
+
   render() {
     const { isLoading } = this.state;
     if (isLoading) {
       return <Loading />;
     }
-
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
@@ -43,9 +55,9 @@ class TrunkGroupPage extends Component {
           <div>{`Level: ${this.props.trunkGroup.accessDevice.level}`}</div>
         </div>
         <div className={"panel-body"}>
-          <Tabs defaultActiveKey={0} id="tenant_tabs">
+          <Tabs defaultActiveKey={3} id="tenant_tabs">
             <Tab eventKey={0} title="DETAILS">
-              DETAILS Tab
+              DETAILS
             </Tab>
             <Tab eventKey={1} title="USERS">
               <Users />
@@ -54,7 +66,7 @@ class TrunkGroupPage extends Component {
               SCREENING Tab
             </Tab>
             <Tab eventKey={3} title="BACKUP">
-              BACKUP
+              <Backup />
             </Tab>
             <Tab eventKey={4} title="NETWORK SETTINGS">
               NETWORK SETTINGS

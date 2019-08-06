@@ -5,3 +5,9 @@ export const countsPerPages = [
   { value: 50, title: "50" },
   { value: 100, title: "100" }
 ];
+
+export const trunkGroupMode = [
+  { name: "not active", value: "" },
+  { name: "Reroute", value: "Reroute" },
+  { name: "Forward", value: "Forward" }
+];

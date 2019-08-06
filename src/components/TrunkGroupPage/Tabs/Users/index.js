@@ -13,13 +13,13 @@ import Checkbox from "react-bootstrap/lib/Checkbox";
 import Pagination from "react-bootstrap/lib/Pagination";
 import { FormattedMessage } from "react-intl";
 
-import Loading from "../../../common/Loading";
+import Loading from "../../../../common/Loading";
 import User from "./User";
 import DeleteModal from "./DeleteModal";
 
-import { fetchGetUsersByTrunkGroup } from "../../../store/actions";
+import { fetchGetUsersByTrunkGroup } from "../../../../store/actions";
 
-import { countsPerPages } from "../../../constants";
+import { countsPerPages } from "../../../../constants";
 
 export class Users extends Component {
   state = {
@@ -68,7 +68,6 @@ export class Users extends Component {
     }
   }
   render() {
-    console.log(this.props.trunkGroupUsers);
     const {
       isLoading,
       page,

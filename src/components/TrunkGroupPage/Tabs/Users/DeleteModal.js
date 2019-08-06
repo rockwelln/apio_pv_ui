@@ -8,7 +8,7 @@ import Button from "react-bootstrap/lib/Button";
 
 import { FormattedMessage } from "react-intl";
 
-import { fetchDeleteUserFromGroup } from "../../../store/actions";
+import { fetchDeleteUserFromGroup } from "../../../../store/actions";
 
 class DeleteModal extends Component {
   constructor(props) {

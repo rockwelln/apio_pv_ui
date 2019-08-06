@@ -72,7 +72,6 @@ const BreadcrumbComponent = ({ location, match }) => {
   const indexForGroupLevel = 4;
   const indexForTenantLevel = 2;
   const path = location.pathname.split("/").slice(3);
-  console.log(path);
   if (path[indexForTrunkUsersLevel] === "users") {
     path.splice(indexForTrunkUsersLevel, 1);
   }

@@ -87,7 +87,8 @@ const initialState = {
   createdUserInGroup: {},
   trunksGroups: [],
   trunkGroup: {},
-  trunkGroupUsers: []
+  trunkGroupUsers: [],
+  trunkGroupBackup: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -338,6 +339,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         trunkGroupUsers: users
+      };
+    }
+    case actionType.GET_BACKUP_BY_TRUNK_GROUP: {
+      return {
+        ...state,
+        trunkGroupBackup: action.data
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN: {
