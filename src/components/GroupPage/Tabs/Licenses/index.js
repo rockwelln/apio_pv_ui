@@ -22,7 +22,8 @@ import {
   fetchPutUpdateTrunkByGroupId,
   clearErrorMassage,
   fetchPutUpdateServicePacksByGroupId,
-  fetchPutUpdateGroupServicesByGroupId
+  fetchPutUpdateGroupServicesByGroupId,
+  fetchPostAddGroupServicesToGroup
 } from "../../../../store/actions";
 
 const INFINITY = 8734;
@@ -657,11 +658,31 @@ export class Licenses extends Component {
       groupServices: this.state.groupServices
     };
 
+    const authorisedServices = {
+      services: this.state.groupServices.reduce((prev, service) => {
+        if (
+          !(!service.allocated.unlimited && service.allocated.maximum === 0)
+        ) {
+          prev.push({ name: service.name });
+          return prev;
+        }
+        return prev;
+      }, [])
+    };
+    console.log(authorisedServices);
+
     this.props
       .fetchPutUpdateGroupServicesByGroupId(
         this.props.match.params.tenantId,
         this.props.match.params.groupId,
         data
+      )
+      .then(() =>
+        this.props.fetchPostAddGroupServicesToGroup(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          authorisedServices
+        )
       )
       .then(() => this.fetchData())
       .then(() => this.setState({ editGroupServices: false }));
@@ -750,7 +771,8 @@ const mapDispatchToProps = {
   fetchPutUpdateTrunkByGroupId,
   clearErrorMassage,
   fetchPutUpdateServicePacksByGroupId,
-  fetchPutUpdateGroupServicesByGroupId
+  fetchPutUpdateGroupServicesByGroupId,
+  fetchPostAddGroupServicesToGroup
 };
 
 export default withRouter(

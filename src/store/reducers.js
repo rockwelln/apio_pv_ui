@@ -420,6 +420,11 @@ function mainReducer(state = initialState, action) {
         createdUserInGroup: action.data
       };
     }
+    case actionType.POST_ADD_GROUP_SERVICES_TO_GROUP: {
+      return {
+        ...state
+      };
+    }
     case actionType.PUT_UPDATE_USER: {
       return {
         ...state,

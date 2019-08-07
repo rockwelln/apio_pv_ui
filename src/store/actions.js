@@ -188,6 +188,11 @@ export const postCreateUserToGroup = data => ({
   data
 });
 
+export const postAddGroupServicesToGroup = data => ({
+  type: actionType.POST_ADD_GROUP_SERVICES_TO_GROUP,
+  data
+});
+
 export const putUpdateUser = data => ({
   type: actionType.PUT_UPDATE_USER,
   data
@@ -1022,8 +1027,28 @@ export function fetchPostCreateUserToGroup(tenantId, groupId, data) {
       .catch(error => {
         NotificationsManager.error(
           <FormattedMessage
-            id="failed-create user"
+            id="failed-create-user"
             defaultMessage="Failed create user!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchPostAddGroupServicesToGroup(tenantId, groupId, data) {
+  return function(dispatch) {
+    return fetch_post(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/services/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => dispatch(postAddGroupServicesToGroup(data)))
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-add-group-services"
+            defaultMessage="Failed add group services!"
           />,
           error.message
         );
