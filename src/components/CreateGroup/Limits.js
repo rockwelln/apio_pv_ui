@@ -323,25 +323,14 @@ export class Licenses extends Component {
                       <Row>
                         <Col
                           mdOffset={5}
-                          md={editGroupServices ? 3 : 2}
+                          md={3}
                           className={"text-center font-weight-bold"}
                         >
                           in use
                         </Col>
-                        <Col
-                          md={editGroupServices ? 3 : 2}
-                          className={"text-center font-weight-bold"}
-                        >
+                        <Col md={3} className={"text-center font-weight-bold"}>
                           limited to
                         </Col>
-                        {!editGroupServices && (
-                          <Col
-                            md={3}
-                            className={"text-center font-weight-bold"}
-                          >
-                            authorised
-                          </Col>
-                        )}
                       </Row>
                       {this.state.groupServices.map((pack, i) =>
                         !this.state.showMore && !editGroupServices ? (
@@ -353,25 +342,21 @@ export class Licenses extends Component {
                                   defaultMessage={`${pack.name}:`}
                                 />
                               </Col>
-                              <Col md={2} className={"text-center"}>{`${
-                                pack.inUse ? pack.inUse : 0
-                              }`}</Col>
-                              <Col md={2} className={"text-center"}>{`${
-                                pack.allocated.unlimited
-                                  ? String.fromCharCode(INFINITY)
-                                  : pack.allocated.maximum
-                              }`}</Col>
-                              <Col md={3} className={"text-center"}>
-                                <Checkbox
-                                  className={"margin-0"}
-                                  checked={
-                                    !(
-                                      !pack.allocated.unlimited &&
-                                      pack.allocated.maximum === 0
-                                    )
-                                  }
-                                />
-                              </Col>
+                              {!pack.allocated.unlimited &&
+                              pack.allocated.maximum === 0 ? (
+                                <Col md={6}>not authorised</Col>
+                              ) : (
+                                <React.Fragment>
+                                  <Col md={3} className={"text-center"}>{`${
+                                    pack.inUse ? pack.inUse : 0
+                                  }`}</Col>
+                                  <Col md={3} className={"text-center"}>{`${
+                                    pack.allocated.unlimited
+                                      ? String.fromCharCode(INFINITY)
+                                      : pack.allocated.maximum
+                                  }`}</Col>
+                                </React.Fragment>
+                              )}
                             </Row>
                           ) : null
                         ) : !editGroupServices ? (
@@ -382,25 +367,21 @@ export class Licenses extends Component {
                                 defaultMessage={`${pack.name}:`}
                               />
                             </Col>
-                            <Col md={2} className={"text-center"}>{`${
-                              pack.inUse ? pack.inUse : 0
-                            }`}</Col>
-                            <Col md={2} className={"text-center"}>{`${
-                              pack.allocated.unlimited
-                                ? String.fromCharCode(INFINITY)
-                                : pack.allocated.maximum
-                            }`}</Col>
-                            <Col md={3} className={"text-center"}>
-                              <Checkbox
-                                className={"margin-0"}
-                                checked={
-                                  !(
-                                    !pack.allocated.unlimited &&
-                                    pack.allocated.maximum === 0
-                                  )
-                                }
-                              />
-                            </Col>
+                            {!pack.allocated.unlimited &&
+                            pack.allocated.maximum === 0 ? (
+                              <Col md={6}>not authorised</Col>
+                            ) : (
+                              <React.Fragment>
+                                <Col md={3} className={"text-center"}>{`${
+                                  pack.inUse ? pack.inUse : 0
+                                }`}</Col>
+                                <Col md={3} className={"text-center"}>{`${
+                                  pack.allocated.unlimited
+                                    ? String.fromCharCode(INFINITY)
+                                    : pack.allocated.maximum
+                                }`}</Col>
+                              </React.Fragment>
+                            )}
                           </Row>
                         ) : (
                           <Row key={i}>
@@ -500,22 +481,14 @@ export class Licenses extends Component {
                     <Row>
                       <Col
                         mdOffset={5}
-                        md={editServicePacks ? 3 : 2}
+                        md={3}
                         className={"text-center font-weight-bold"}
                       >
                         in use
                       </Col>
-                      <Col
-                        md={editServicePacks ? 3 : 2}
-                        className={"text-center font-weight-bold"}
-                      >
+                      <Col md={3} className={"text-center font-weight-bold"}>
                         limited to
                       </Col>
-                      {!editServicePacks && (
-                        <Col md={3} className={"text-center font-weight-bold"}>
-                          authorised
-                        </Col>
-                      )}
                     </Row>
                     {this.state.servicePacks.map((pack, i) => (
                       <Row key={i}>
@@ -525,18 +498,28 @@ export class Licenses extends Component {
                             defaultMessage={`${pack.name}:`}
                           />
                         </Col>
-                        <Col
-                          md={editServicePacks ? 3 : 2}
-                          className={"text-center"}
-                        >{`${pack.inUse ? pack.inUse : 0}`}</Col>
-                        {!editServicePacks ? (
-                          <Col md={2} className={"text-center"}>{`${
-                            pack.allocated.unlimited
-                              ? String.fromCharCode(INFINITY)
-                              : pack.allocated.maximum
+                        {!pack.allocated.unlimited &&
+                          pack.allocated.maximum === 0 && (
+                            <Col md={6} className={"text-center"}>
+                              not authorised
+                            </Col>
+                          )}
+
+                        {pack.allocated.maximum !== 0 && (
+                          <Col md={3} className={"text-center"}>{`${
+                            pack.inUse ? pack.inUse : 0
                           }`}</Col>
+                        )}
+                        {!editServicePacks ? (
+                          pack.allocated.maximum !== 0 ? (
+                            <Col md={3} className={"text-center"}>{`${
+                              pack.allocated.unlimited
+                                ? String.fromCharCode(INFINITY)
+                                : pack.allocated.maximum
+                            }`}</Col>
+                          ) : null
                         ) : (
-                          <Col md={3} className={"text-right"}>
+                          <Col md={3} className={"text-center"}>
                             <EditLicenses
                               defaultChecked={pack.allocated.unlimited}
                               index={i}
@@ -550,19 +533,6 @@ export class Licenses extends Component {
                             />
                           </Col>
                         )}
-                        {!editServicePacks ? (
-                          <Col md={3} className={"text-center"}>
-                            <Checkbox
-                              className={"margin-0"}
-                              checked={
-                                !(
-                                  !pack.allocated.unlimited &&
-                                  pack.allocated.maximum === 0
-                                )
-                              }
-                            />
-                          </Col>
-                        ) : null}
                       </Row>
                     ))}
                   </Panel.Body>

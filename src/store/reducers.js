@@ -174,6 +174,7 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.GET_LICENSES_BY_GROUP_ID: {
+      console.log(action.data.groupServices);
       const groupServicesShown = action.data.groupServices
         .filter(
           group =>
@@ -181,6 +182,7 @@ function mainReducer(state = initialState, action) {
             group.name === "Auto Attendant - Standard" ||
             group.name === "Call Pickup" ||
             group.name === "Hunt Group" ||
+            group.name === "Group Paging" ||
             group.name === "Meet-me Conferencing"
         )
         .sort((a, b) => {
@@ -191,12 +193,12 @@ function mainReducer(state = initialState, action) {
       const groupServicesHide = action.data.groupServices
         .filter(
           group =>
-            group.name === "Auto Attendant - Video" ||
-            group.name === "Find-me/Follow-me" ||
-            group.name === "Group Paging" ||
-            group.name === "Route Point" ||
-            group.name === "Series Completion" ||
-            group.name === "VoiceXML"
+            group.name !== "Auto Attendant" &&
+            group.name !== "Auto Attendant - Standard" &&
+            group.name !== "Call Pickup" &&
+            group.name !== "Hunt Group" &&
+            group.name !== "Group Paging" &&
+            group.name !== "Meet-me Conferencing"
         )
         .sort((a, b) => {
           if (a.name < b.name) return -1;
