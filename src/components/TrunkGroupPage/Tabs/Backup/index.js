@@ -45,7 +45,6 @@ export class Backup extends Component {
     if (this.state.isLoading) {
       return <Loading />;
     }
-    console.log(this.props.trunkGroupBackup, this.state);
     return (
       <React.Fragment>
         <Row className={"margin-top-2"}>
@@ -104,13 +103,20 @@ export class Backup extends Component {
         </Row>
         <Row className={"margin-top-2"}>
           <Col md={12}>
-            <Button
-              className={"btn-primary"}
-              onClick={() => this.setState({ show: true })}
-            >
-              <Glyphicon glyph="glyphicon glyphicon-pencil" />
-              &nbsp; Edit
-            </Button>
+            <div className="button-row">
+              <div className="pull-left">
+                <Button
+                  className={"btn-primary"}
+                  onClick={() => this.setState({ show: true })}
+                >
+                  <Glyphicon glyph="glyphicon glyphicon-pencil" />
+                  &nbsp; Edit
+                </Button>
+              </div>
+              <div className="pull-right">
+                <Button className={"btn-primary"}>&nbsp; Update</Button>
+              </div>
+            </div>
           </Col>
         </Row>
 
@@ -120,11 +126,23 @@ export class Backup extends Component {
             onClose={e => {
               this.setState({ show: false });
             }}
+            onSave={this.changeGroups}
           />
         )}
       </React.Fragment>
     );
   }
+
+  changeGroups = (groupId, name) => {
+    this.setState({
+      show: false,
+      trunk: {
+        ...this.state.trunk,
+        groupId,
+        name
+      }
+    });
+  };
 }
 
 const mapStateToProps = state => ({
