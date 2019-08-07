@@ -55,7 +55,7 @@ class TrunkGroupPage extends Component {
           <div>{`Level: ${this.props.trunkGroup.accessDevice.level}`}</div>
         </div>
         <div className={"panel-body"}>
-          <Tabs defaultActiveKey={3} id="tenant_tabs">
+          <Tabs defaultActiveKey={0} id="tenant_tabs">
             <Tab eventKey={0} title="DETAILS">
               DETAILS
             </Tab>
