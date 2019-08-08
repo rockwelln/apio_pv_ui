@@ -71,8 +71,8 @@ class TrunkGroupPage extends Component {
             <Tab eventKey={4} title="NETWORK SETTINGS">
               NETWORK SETTINGS
             </Tab>
-            <Tab eventKey={5} title="NETWORK SETTINGS">
-              NETWORK SETTINGS
+            <Tab eventKey={5} title="ADVANCED SETTINGS">
+              Advanced setting
             </Tab>
           </Tabs>
         </div>
