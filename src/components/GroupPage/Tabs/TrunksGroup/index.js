@@ -256,7 +256,7 @@ export class Trunks extends Component {
       paginationTrunks: paginationItems,
       pagination: false,
       countPages,
-      page: 0
+      page: this.state.page
     });
   };
 

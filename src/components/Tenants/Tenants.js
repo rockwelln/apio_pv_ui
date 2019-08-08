@@ -85,9 +85,7 @@ class Tenants extends Component {
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
-          <div className={"header"}>
-            Tenant overview
-          </div>
+          <div className={"header"}>Tenant overview</div>
         </div>
         <div className={"panel-body"}>
           <Row>
@@ -120,7 +118,9 @@ class Tenants extends Component {
             </Col>
             <Col md={1}>
               <Link
-                to={`/provisioning/${this.props.match.params.gwName}/tenants/add`}
+                to={`/provisioning/${
+                  this.props.match.params.gwName
+                }/tenants/add`}
               >
                 <Glyphicon
                   className={"x-large"}
@@ -157,7 +157,10 @@ class Tenants extends Component {
                     <thead>
                       <tr>
                         <th style={{ width: "24%" }}>
-                          <FormattedMessage id="tenant-id" defaultMessage="ID" />
+                          <FormattedMessage
+                            id="tenant-id"
+                            defaultMessage="ID"
+                          />
                           <Glyphicon
                             glyph="glyphicon glyphicon-sort"
                             onClick={this.sortByID}
@@ -220,7 +223,7 @@ class Tenants extends Component {
               />
             </Col>
           )}
-      </div>
+        </div>
       </React.Fragment>
     );
   }
@@ -267,7 +270,7 @@ class Tenants extends Component {
       paginationTenants: paginationItems,
       pagination: false,
       countPages,
-      page: 0
+      page: this.state.page
     });
   };
 

@@ -136,23 +136,20 @@ export class Users extends Component {
                       checked={this.state.selectAll}
                       onChange={this.handleSelectAllClick}
                     >
-                      (Un)select all shown numbers
+                      (Un)select all shown users
                     </Checkbox>
                     <Glyphicon
                       glyph="glyphicon glyphicon-trash"
                       onClick={this.deleteSlectedUsers}
                     />
                     <div className={"margin-checbox"}>
-                      Delete selected numbers
+                      Delete selected users
                     </div>
                     <DeleteModal
                       userId={usersForDelete.map(user => user.userId)}
                       show={showDelete}
                       onClose={e => {
-                        this.props.fetchGetUsersByGroupId(
-                          this.props.tenantId,
-                          this.props.groupId
-                        );
+                        this.fetchUsers();
                         this.setState({ showDelete: false });
                       }}
                       {...this.props}
@@ -323,11 +320,13 @@ export class Users extends Component {
       counter = counter + countPerPage;
     }
 
-    this.setState({
-      paginationUsers: paginationItems,
-      pagination: false,
-      countPages,
-      page: 0
+    this.setState(prevState => {
+      return {
+        paginationUsers: paginationItems,
+        pagination: false,
+        countPages,
+        page: prevState.countPages === countPages ? this.state.page : 0
+      };
     });
   };
 
@@ -459,10 +458,10 @@ export class Users extends Component {
     );
   };
 
-  handleSingleCheckboxClick = index => {
-    const newArr = this.state.users.map((el, i) => ({
+  handleSingleCheckboxClick = id => {
+    const newArr = this.state.users.map(el => ({
       ...el,
-      userChecked: index === i ? !el.userChecked : el.userChecked
+      userChecked: el.userId === id ? !el.userChecked : el.userChecked
     }));
     this.setState({ users: newArr, selectAll: false }, () => this.pagination());
   };

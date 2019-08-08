@@ -268,7 +268,7 @@ export class Admins extends Component {
       paginationAdmins: paginationItems,
       pagination: false,
       countPages,
-      page: 0
+      page: this.state.page
     });
   };
 

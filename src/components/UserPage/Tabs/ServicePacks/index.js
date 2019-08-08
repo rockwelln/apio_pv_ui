@@ -250,11 +250,14 @@ export class Services extends Component {
               </Row>
             )}
             <Row className={"indent-top-bottom-1"}>
-              <Col mdOffset={9} md={2}>         
+              <Col mdOffset={9} md={2}>
                 <div className="button-row">
                   <div className="pull-right">
-                    <Button onClick={this.updateSevices} className="btn-primary">
-                        <Glyphicon glyph="glyphicon glyphicon-ok" /> UPDATE
+                    <Button
+                      onClick={this.updateSevices}
+                      className="btn-primary"
+                    >
+                      <Glyphicon glyph="glyphicon glyphicon-ok" /> UPDATE
                     </Button>
                   </div>
                 </div>
@@ -355,7 +358,7 @@ export class Services extends Component {
       paginationServices: paginationItems,
       pagination: false,
       countPages,
-      page: 0
+      page: this.state.page
     });
   };
 

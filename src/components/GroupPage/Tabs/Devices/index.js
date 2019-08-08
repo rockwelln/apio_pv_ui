@@ -276,7 +276,7 @@ export class Devices extends Component {
       paginationDevices: paginationItems,
       pagination: false,
       countPages,
-      page: 0
+      page: this.state.page
     });
   };
 

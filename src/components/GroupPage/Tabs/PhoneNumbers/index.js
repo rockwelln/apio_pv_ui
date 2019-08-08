@@ -296,7 +296,7 @@ export class PhoneNumbersTab extends Component {
       paginationPhoneNumbers: paginationItems,
       pagination: false,
       countPages,
-      page: 0
+      page: this.state.page
     });
   };
 

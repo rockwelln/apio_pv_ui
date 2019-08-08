@@ -21,7 +21,7 @@ class Group extends Component {
             checked={user.userChecked}
             className={"table-checkbox"}
             onChange={() => {
-              this.props.handleSingleCheckboxClick(index);
+              this.props.handleSingleCheckboxClick(user.userId);
             }}
           />
         </td>
