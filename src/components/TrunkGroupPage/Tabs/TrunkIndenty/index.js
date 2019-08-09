@@ -15,14 +15,14 @@ import Loading from "../../../../common/Loading";
 export class TrunkIndenty extends Component {
   state = {
     isLoading: true,
-    trunkGroupIdentity: "",
-    otgDtgIdentity: "",
-    allowTerminationToTrunkGroupIdentity: "",
-    allowTerminationToDtgIdentity: "",
-    includeTrunkGroupIdentity: "",
-    includeDtgIdentity: "",
-    includeTrunkGroupIdentityForNetworkCalls: "",
-    includeOtgIdentityForNetworkCalls: ""
+    trunkGroupIdentity: null,
+    otgDtgIdentity: null,
+    allowTerminationToTrunkGroupIdentity: null,
+    allowTerminationToDtgIdentity: null,
+    includeTrunkGroupIdentity: null,
+    includeDtgIdentity: null,
+    includeTrunkGroupIdentityForNetworkCalls: null,
+    includeOtgIdentityForNetworkCalls: null
   };
 
   componentDidMount() {

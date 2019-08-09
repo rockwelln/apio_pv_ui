@@ -9,10 +9,10 @@ import Button from "react-bootstrap/lib/Button";
 
 export class Details extends Component {
   state = {
-    requireAuthentication: "",
-    sipAuthenticationUserName: "",
-    pilotUserId: "",
-    accessDevice: ""
+    requireAuthentication: null,
+    sipAuthenticationUserName: null,
+    pilotUserId: null,
+    accessDevice: null
   };
 
   componentDidMount() {

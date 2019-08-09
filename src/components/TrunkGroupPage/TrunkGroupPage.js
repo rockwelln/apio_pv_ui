@@ -13,6 +13,11 @@ import Users from "./Tabs/Users";
 import Backup from "./Tabs/Backup";
 import Details from "./Tabs/Details";
 import TrunkIndenty from "./Tabs/TrunkIndenty";
+import Capacity from "./Tabs/Capacity";
+import CallScreening from "./Tabs/CallScreening";
+import StatefulRerouting from "./Tabs/StatefulRerouting";
+import CLI from "./Tabs/CLI";
+import Advanced from "./Tabs/Advanced";
 
 class TrunkGroupPage extends Component {
   state = {
@@ -58,7 +63,7 @@ class TrunkGroupPage extends Component {
           <div>{`Level: ${this.props.trunkGroup.accessDevice.level}`}</div>
         </div>
         <div className={"panel-body"}>
-          <Tabs defaultActiveKey={2} id="tenant_tabs">
+          <Tabs defaultActiveKey={0} id="tenant_tabs">
             <Tab eventKey={0} title="Details">
               <Details />
             </Tab>
@@ -72,19 +77,19 @@ class TrunkGroupPage extends Component {
               <Backup />
             </Tab>
             <Tab eventKey={4} title="Capacity">
-              Capacity
+              <Capacity />
             </Tab>
             <Tab eventKey={5} title="Call screening">
-              Call screening
+              <CallScreening />
             </Tab>
             <Tab eventKey={6} title="Stateful rerouting">
-              Stateful rerouting
+              <StatefulRerouting />
             </Tab>
             <Tab eventKey={7} title="Outgoing CLI overwrite">
-              Outgoing CLI overwrite
+              <CLI />
             </Tab>
             <Tab eventKey={8} title="Advanced">
-              Advanced
+              <Advanced />
             </Tab>
           </Tabs>
         </div>

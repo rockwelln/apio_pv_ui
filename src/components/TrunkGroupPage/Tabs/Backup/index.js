@@ -22,7 +22,8 @@ export class Backup extends Component {
     mode: null,
     destination: null,
     trunk: {},
-    show: false
+    show: false,
+    invitationTimeout: null
   };
 
   componentDidMount() {
@@ -37,7 +38,8 @@ export class Backup extends Component {
           mode: this.props.trunkGroupBackup.mode,
           destination: this.props.trunkGroupBackup.destination,
           trunk: this.props.trunkGroupBackup.trunk,
-          isLoading: false
+          isLoading: false,
+          invitationTimeout: this.props.trunkGroup.invitationTimeout
         })
       );
   }
@@ -101,6 +103,24 @@ export class Backup extends Component {
             </div>
           </Col>
         </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={12} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex"}>
+              Nb of seconds before detination timeout
+            </div>
+            <div>
+              <FormControl
+                type="number"
+                value={this.state.invitationTimeout}
+                onChange={e => {
+                  this.setState({
+                    invitationTimeout: e.target.value
+                  });
+                }}
+              />
+            </div>
+          </Col>
+        </Row>
         <Row className={"margin-top-2"}>
           <Col md={12}>
             <div className="button-row">
@@ -146,7 +166,8 @@ export class Backup extends Component {
 }
 
 const mapStateToProps = state => ({
-  trunkGroupBackup: state.trunkGroupBackup
+  trunkGroupBackup: state.trunkGroupBackup,
+  trunkGroup: state.trunkGroup
 });
 
 const mapDispatchToProps = {
