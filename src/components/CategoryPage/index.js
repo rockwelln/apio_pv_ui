@@ -5,9 +5,11 @@ import Row from "react-bootstrap/lib/Row";
 
 import Sidebar from "../../common/Sidebar";
 import Title from "../../common/Title";
-import Templates from "./Templates";
+import Breadcrumb from "../../common/Breadcrumb";
 
-const TemplateComponent = props => {
+import CategoryPage from "./CategoryPage";
+
+const CategoryComponent = props => {
   return (
     <React.Fragment>
       <Row className={"margin-bottom-4"}>
@@ -18,8 +20,11 @@ const TemplateComponent = props => {
           <Sidebar />
         </Col>
         <Col md={10} className={"padding-left-3 padding-right-3"}>
+          <Row>
+            <Breadcrumb />
+          </Row>
           <Row className={"panel panel-default"}>
-            <Templates />
+            <CategoryPage />
           </Row>
         </Col>
       </Row>
@@ -27,4 +32,4 @@ const TemplateComponent = props => {
   );
 };
 
-export default TemplateComponent;
+export default CategoryComponent;

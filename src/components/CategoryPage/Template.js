@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router";
+import { Link } from "react-router-dom";
 
 import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
@@ -13,7 +14,15 @@ class Admin extends Component {
     const { showDelete } = this.state;
     return (
       <tr>
-        <td>{template.name}</td>
+        <td>
+          <Link
+            to={`/provisioning/${this.props.match.params.gwName}/templates/${
+              this.props.match.params.categoryName
+            }/template/${template.name}`}
+          >
+            {template.name}
+          </Link>
+        </td>
         <td>{template.description}</td>
         <td>
           <ButtonToolbar>

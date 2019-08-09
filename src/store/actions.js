@@ -140,6 +140,11 @@ export const getBackupByTrunkGroup = data => ({
   data
 });
 
+export const getTemplateDetails = data => ({
+  type: actionType.GET_TEMPLATE_DETAILS,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -273,6 +278,11 @@ export const deleteUserFromGroup = () => ({
 
 export const deleteGroupFromTenant = data => ({
   type: actionType.DELETE_GROUP_FROM_TENANT,
+  data
+});
+
+export const deleteTrunkGroup = data => ({
+  type: actionType.DELETE_TRUNK_GROUP,
   data
 });
 
@@ -863,6 +873,24 @@ export function fetchGetBackupByTrunkGroup(tenantId, groupId, trunkGroupName) {
   };
 }
 
+export function fetchGetTemplateDetails(category, template) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/configs/templates/categories/${category}/templates/${template}`
+    )
+      .then(data => dispatch(getTemplateDetails(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-template-details-failed"
+            defaultMessage="Failed to template details!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
 export function fetchPostCreateGroupAdmin(tenantId, groupId, data) {
   return function(dispatch) {
     return fetch_post(
@@ -1406,6 +1434,27 @@ export function fetchDeleteGroupFromTenant(tenantId, groupId) {
           <FormattedMessage
             id="failed-to-delete-group"
             defaultMessage="Failed to delete group!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchDeleteTrunkGroup(tenantId, groupId, trunkName) {
+  return function(dispatch) {
+    return fetch_delete(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/services/trunk_groups/${trunkName}`
+    )
+      .then(data => {
+        dispatch(deleteTrunkGroup(data));
+        return "deleted";
+      })
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-delete-trunk-group"
+            defaultMessage="Failed to delete trunk group!"
           />,
           error.message
         )

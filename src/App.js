@@ -38,11 +38,11 @@ import UpdateAdmin from "./components/UpdateAdmin";
 import CreateTenant from "./components/CreateTenant";
 import CreateGroup from "./components/CreateGroup";
 import AddPhoneNumberTenant from "./components/AddPhoneNumberTenant";
-import Templates from "./components/Templates";
-import TemplatePage from "./components/TemplatePage";
+import CategoryPage from "./components/CategoryPage";
 import AddUser from "./components/AddUser";
 import TrunkGroupPage from "./components/TrunkGroupPage";
 import ConfigPage from "./components/Configs";
+import TemplatePage from "./components/TemplatePage";
 
 import "./App.css";
 import loading from "./loading.gif";
@@ -285,10 +285,10 @@ class App extends Component {
                 exact
               />
               <Route
-                path="/provisioning/:gwName/templates"
+                path="/provisioning/:gwName/templates/:categoryName"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
-                    <Templates />
+                    <CategoryPage />
                   ) : (
                     <NotAllowed />
                   )
@@ -296,7 +296,7 @@ class App extends Component {
                 exact
               />
               <Route
-                path="/provisioning/:gwName/templates/:templateName"
+                path="/provisioning/:gwName/templates/:categoryName/template/:templateName"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <TemplatePage />

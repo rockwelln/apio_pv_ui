@@ -183,7 +183,7 @@ export class Trunks extends Component {
                       <TrunkGrup
                         key={i}
                         trunkGrup={trunkGrup}
-                        onReload={() => this.props.fetchTrunks()}
+                        onReload={() => this.fetchTrunks()}
                       />
                     ))}
                   </tbody>

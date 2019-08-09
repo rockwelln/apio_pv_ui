@@ -88,7 +88,8 @@ const initialState = {
   trunksGroups: [],
   trunkGroup: {},
   trunkGroupUsers: [],
-  trunkGroupBackup: {}
+  trunkGroupBackup: {},
+  templateDetails: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -349,6 +350,12 @@ function mainReducer(state = initialState, action) {
         trunkGroupBackup: action.data
       };
     }
+    case actionType.GET_TEMPLATE_DETAILS: {
+      return {
+        ...state,
+        templateDetails: action.data
+      };
+    }
     case actionType.POST_CREATE_GROUP_ADMIN: {
       return {
         ...state,
@@ -521,6 +528,11 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.DELETE_GROUP_FROM_TENANT: {
+      return {
+        ...state
+      };
+    }
+    case actionType.DELETE_TRUNK_GROUP: {
       return {
         ...state
       };
