@@ -4,7 +4,7 @@ export const API_URL_PREFIX =
     : "https://yaoh1.bxl.netaxis.be"; //"https://engo.netaxis.be"; //
 export const API_URL_PROXY_PREFIX = "/api/v01/apio/sync";
 
-export const API_BASE_URL = "/api/v01/p2";
+export const API_BASE_URL = "/api/v01/p4";
 
 function getCookie(name) {
   var value = "; " + document.cookie;
@@ -30,7 +30,7 @@ class ProvisioningProxies {
   }
 
   getCurrentUrlPrefix() {
-    return "/api/v01/p2";
+    return "/api/v01/p4";
   }
 
   listProxies() {
