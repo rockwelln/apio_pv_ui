@@ -130,6 +130,16 @@ export const getTrunkGroupByName = data => ({
   data
 });
 
+export const getPhoneTypes = data => ({
+  type: actionType.GET_PHONE_TYPES,
+  data
+});
+
+export const getPhoneTypesDetails = data => ({
+  type: actionType.GET_PHONE_TYPES_DETAILS,
+  data
+});
+
 export const getUsersByTrunkGroup = data => ({
   type: actionType.GET_USERS_BY_TRUNK_GROUP,
   data
@@ -883,7 +893,43 @@ export function fetchGetTemplateDetails(category, template) {
         NotificationsManager.error(
           <FormattedMessage
             id="fetch-template-details-failed"
-            defaultMessage="Failed to template details!"
+            defaultMessage="Failed to fetch template details!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetPhoneTypes() {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/configs/phone_types/`
+    )
+      .then(data => dispatch(getPhoneTypes(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-phone-types-failed"
+            defaultMessage="Failed to fetch phone types!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetPhoneTypesDetails(name) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/configs/phone_types/${name}`
+    )
+      .then(data => dispatch(getPhoneTypesDetails(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-phone-types-failed"
+            defaultMessage="Failed to fetch phone types!"
           />,
           error.message
         )

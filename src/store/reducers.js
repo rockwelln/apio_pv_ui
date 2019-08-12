@@ -89,7 +89,9 @@ const initialState = {
   trunkGroup: {},
   trunkGroupUsers: [],
   trunkGroupBackup: {},
-  templateDetails: {}
+  templateDetails: {},
+  phoneTypes: [],
+  phoneTypesDetails: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -354,6 +356,18 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         templateDetails: action.data
+      };
+    }
+    case actionType.GET_PHONE_TYPES: {
+      return {
+        ...state,
+        phoneTypes: action.data.phoneTypes
+      };
+    }
+    case actionType.GET_PHONE_TYPES_DETAILS: {
+      return {
+        ...state,
+        phoneTypesDetails: action.data
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN: {
