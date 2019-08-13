@@ -91,7 +91,10 @@ const initialState = {
   trunkGroupBackup: {},
   templateDetails: {},
   phoneTypes: [],
-  phoneTypesDetails: {}
+  phoneTypesDetails: {},
+  applications: [],
+  applicationKeys: [],
+  keyValue: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -370,6 +373,24 @@ function mainReducer(state = initialState, action) {
         phoneTypesDetails: action.data
       };
     }
+    case actionType.GET_APPLICATIONS: {
+      return {
+        ...state,
+        applications: action.data.applications
+      };
+    }
+    case actionType.GET_KEYS_BY_APPLICATIONS: {
+      return {
+        ...state,
+        applicationKeys: action.data.applicationKeys
+      };
+    }
+    case actionType.GET_VALUE_OF_KEY: {
+      return {
+        ...state,
+        keyValue: action.data
+      };
+    }
     case actionType.POST_CREATE_GROUP_ADMIN: {
       return {
         ...state,
@@ -446,6 +467,11 @@ function mainReducer(state = initialState, action) {
         ...state
       };
     }
+    case actionType.POST_ADD_KEY_TO_APPLICATION: {
+      return {
+        ...state
+      };
+    }
     case actionType.PUT_UPDATE_USER: {
       return {
         ...state,
@@ -499,7 +525,12 @@ function mainReducer(state = initialState, action) {
         ...state
       };
     }
-
+    case actionType.PUT_UPDATE_KEY: {
+      return {
+        ...state,
+        keyValue: action.data
+      };
+    }
     case actionType.DELETE_TENANT: {
       return {
         ...state
@@ -547,6 +578,11 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.DELETE_TRUNK_GROUP: {
+      return {
+        ...state
+      };
+    }
+    case actionType.DELETE_KEY: {
       return {
         ...state
       };

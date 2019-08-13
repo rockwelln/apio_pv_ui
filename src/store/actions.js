@@ -155,6 +155,21 @@ export const getTemplateDetails = data => ({
   data
 });
 
+export const getApplications = data => ({
+  type: actionType.GET_APPLICATIONS,
+  data
+});
+
+export const getKeysByApplication = data => ({
+  type: actionType.GET_KEYS_BY_APPLICATIONS,
+  data
+});
+
+export const getValueOfKey = data => ({
+  type: actionType.GET_VALUE_OF_KEY,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -208,6 +223,11 @@ export const postAddGroupServicesToGroup = data => ({
   data
 });
 
+export const postAddKeyToApplication = data => ({
+  type: actionType.POST_ADD_KEY_TO_APPLICATION,
+  data
+});
+
 export const putUpdateUser = data => ({
   type: actionType.PUT_UPDATE_USER,
   data
@@ -253,6 +273,11 @@ export const putUpdateTenantDetails = data => ({
   data
 });
 
+export const putUpdateKey = data => ({
+  type: actionType.PUT_UPDATE_KEY,
+  data
+});
+
 export const deleteTenant = data => ({
   type: actionType.DELETE_TENANT,
   data
@@ -293,6 +318,11 @@ export const deleteGroupFromTenant = data => ({
 
 export const deleteTrunkGroup = data => ({
   type: actionType.DELETE_TRUNK_GROUP,
+  data
+});
+
+export const deleteKey = data => ({
+  type: actionType.DELETE_KEY,
   data
 });
 
@@ -937,6 +967,60 @@ export function fetchGetPhoneTypesDetails(name) {
   };
 }
 
+export function fetchGetApplications() {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/configs/applications/`
+    )
+      .then(data => dispatch(getApplications(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-applications-failed"
+            defaultMessage="Failed to fetch applications!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetKeysByApplication(appName) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/configs/applications/${appName}`
+    )
+      .then(data => dispatch(getKeysByApplication(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-applications-keys-failed"
+            defaultMessage="Failed to fetch applications keys!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetValueOfKey(appName, keyName) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/configs/applications/${appName}/${keyName}`
+    )
+      .then(data => dispatch(getValueOfKey(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-key-value-failed"
+            defaultMessage="Failed to fetch key value!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
 export function fetchPostCreateGroupAdmin(tenantId, groupId, data) {
   return function(dispatch) {
     return fetch_post(
@@ -1130,6 +1214,26 @@ export function fetchPostAddGroupServicesToGroup(tenantId, groupId, data) {
   };
 }
 
+export function fetchPostAddKeyToApplication(appName, data) {
+  return function(dispatch) {
+    return fetch_post(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/configs/applications/${appName}/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => dispatch(postAddKeyToApplication(data)))
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-add-key"
+            defaultMessage="Failed add key!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
 export function fetchPutUpdateUser(tenantId, groupId, userName, data) {
   return function(dispatch) {
     return fetch_put(
@@ -1287,6 +1391,26 @@ export function fetchPutUpdateTenantDetails(tenantId, data) {
           <FormattedMessage
             id="update-tenant-details-failed"
             defaultMessage="Failed to update tenant details!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchPutUpdateKey(appName, keyName, data) {
+  return function(dispatch) {
+    return fetch_put(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/configs/applications/${appName}/${keyName}/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => dispatch(putUpdateKey(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="update-kay-failed"
+            defaultMessage="Failed to update key!"
           />,
           error.message
         )
@@ -1501,6 +1625,27 @@ export function fetchDeleteTrunkGroup(tenantId, groupId, trunkName) {
           <FormattedMessage
             id="failed-to-delete-trunk-group"
             defaultMessage="Failed to delete trunk group!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchDeleteKey(appName, keyName) {
+  return function(dispatch) {
+    return fetch_delete(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/configs/applications/${appName}/${keyName}`
+    )
+      .then(data => {
+        dispatch(deleteKey(data));
+        return "deleted";
+      })
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-delete-key"
+            defaultMessage="Failed to delete key!"
           />,
           error.message
         )

@@ -202,3 +202,11 @@ textarea {
 .flex-basis-33 {
   flex-basis: 33.33%;
 }
+
+.flex-basis-66 {
+  flex-basis: 66.66%;
+}
+
+.height-30 {
+  height: 300px !important;
+}

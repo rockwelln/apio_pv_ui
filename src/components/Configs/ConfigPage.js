@@ -5,6 +5,7 @@ import Tabs from "react-bootstrap/lib/Tabs";
 import Tab from "react-bootstrap/lib/Tab";
 
 import PhoneTypes from "./Tabs/PhoneTypes";
+import Key from "./Tabs/Key";
 export class ConfigPage extends Component {
   render() {
     return (
@@ -13,12 +14,12 @@ export class ConfigPage extends Component {
           <div className={"header"}>Configs</div>
         </div>
         <div className={"panel-body"}>
-          <Tabs defaultActiveKey={0} id="tenant_tabs">
+          <Tabs defaultActiveKey={1} id="tenant_tabs">
             <Tab eventKey={0} title="Phone types">
               <PhoneTypes />
             </Tab>
             <Tab eventKey={1} title="Key-value stores">
-              Key-value stores
+              <Key />
             </Tab>
             <Tab eventKey={2} title="Default announcements">
               Default announcements
