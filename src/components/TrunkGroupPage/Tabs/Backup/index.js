@@ -10,6 +10,7 @@ import Button from "react-bootstrap/lib/Button";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import Radio from "react-bootstrap/lib/Radio";
 import FormControl from "react-bootstrap/lib/FormControl";
+import Well from "react-bootstrap/lib/Well";
 
 import { trunkGroupMode } from "../../../../constants";
 import { fetchGetBackupByTrunkGroup } from "../../../../store/actions";
@@ -55,52 +56,73 @@ export class Backup extends Component {
         <Row>
           <Col md={12} className={"flex-row"}>
             <FormGroup>
-              {trunkGroupMode.map((mode, i) => (
-                <Radio
-                  key={i}
-                  className={"margin-left-1"}
-                  name="radioGroup"
-                  value={mode.value}
-                  checked={this.state.mode === mode.value}
-                  onChange={e => this.setState({ mode: e.target.value })}
-                >
-                  <div>{mode.name}</div>
-                </Radio>
-              ))}
+              <Radio
+                className={"margin-left-1 width-12"}
+                name="radioGroup"
+                checked={this.state.mode === ""}
+                onChange={() => this.setState({ mode: "" })}
+              >
+                <div>Not active</div>
+              </Radio>
+              <div className={"flex align-items-center"}>
+                <div className={"width-12"}>
+                  <Radio
+                    className={"margin-left-1"}
+                    name="radioGroup"
+                    checked={this.state.mode === "Forward"}
+                    onChange={() => this.setState({ mode: "Forward" })}
+                  >
+                    <div>Forward</div>
+                  </Radio>
+                </div>
+                <div className={"flex flex-1"}>
+                  <FormControl
+                    type="text"
+                    value={this.state.destination}
+                    disabled={this.state.mode !== "Forward"}
+                    onChange={e =>
+                      this.setState({ destination: e.target.value })
+                    }
+                  />
+                </div>
+              </div>
+              <div className={"flex align-items-center"}>
+                <div className={"width-12"}>
+                  <Radio
+                    className={"margin-left-1"}
+                    name="radioGroup"
+                    checked={this.state.mode === "Reroute"}
+                    onChange={() => this.setState({ mode: "Reroute" })}
+                  >
+                    <div>Reroute</div>
+                  </Radio>
+                </div>
+                {this.state.trunk && (
+                  <Well className={"margin-0 disabled-input-well"}>
+                    <Link
+                      to={`/provisioning/${
+                        this.props.match.params.gwName
+                      }/tenants/${this.state.trunk.tenantId}/groups/${
+                        this.state.trunk.groupId
+                      }/trunkgroup/${this.state.trunk.name}`}
+                    >
+                      <div>{`${this.state.trunk.tenantId}/${
+                        this.state.trunk.groupId
+                      }/${this.state.trunk.name}`}</div>
+                    </Link>
+                  </Well>
+                )}
+                {this.state.mode === "Reroute" && (
+                  <Button
+                    className={"btn-primary margin-left-1"}
+                    onClick={() => this.setState({ show: true })}
+                  >
+                    <Glyphicon glyph="glyphicon glyphicon-pencil" />
+                    &nbsp; Edit
+                  </Button>
+                )}
+              </div>
             </FormGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={12}>
-            <div className={"flex align-items-center"}>
-              <div className={"margin-right-1"}>Destination:</div>
-              <FormControl
-                type="text"
-                value={this.state.destination}
-                disabled={this.state.mode !== "Forward"}
-                onChange={e => this.setState({ destination: e.target.value })}
-              />
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-2"}>
-          <Col md={12}>
-            <div className={"flex align-items-center"}>
-              <div className={"margin-right-1"}>Backup trunk:</div>
-              {this.state.trunk && (
-                <Link
-                  to={`/provisioning/${
-                    this.props.match.params.gwName
-                  }/tenants/${this.state.trunk.tenantId}/groups/${
-                    this.state.trunk.groupId
-                  }/trunkgroup/${this.state.trunk.name}`}
-                >
-                  <div>{`${this.state.trunk.tenantId}/${
-                    this.state.trunk.groupId
-                  }/${this.state.trunk.name}`}</div>
-                </Link>
-              )}
-            </div>
           </Col>
         </Row>
         <Row className={"margin-top-1"}>
@@ -124,15 +146,6 @@ export class Backup extends Component {
         <Row className={"margin-top-2"}>
           <Col md={12}>
             <div className="button-row">
-              <div className="pull-left">
-                <Button
-                  className={"btn-primary"}
-                  onClick={() => this.setState({ show: true })}
-                >
-                  <Glyphicon glyph="glyphicon glyphicon-pencil" />
-                  &nbsp; Edit
-                </Button>
-              </div>
               <div className="pull-right">
                 <Button className={"btn-primary"}>&nbsp; Update</Button>
               </div>
