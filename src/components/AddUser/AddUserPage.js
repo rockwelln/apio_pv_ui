@@ -17,7 +17,8 @@ import InputGroup from "react-bootstrap/lib/InputGroup";
 import {
   fetchGetCategoryByName,
   fetchPostCreateUserToGroup,
-  fetchGetGroupById
+  fetchGetGroupById,
+  fetchGetAvailableNumbersByGroupId
 } from "../../store/actions";
 import { removeEmpty } from "../remuveEmptyInObject";
 
@@ -43,7 +44,8 @@ export class AddUserPage extends Component {
     passwordError: null,
     templateName: "",
     buttonName: "Create",
-    isLoadingGroup: true
+    isLoadingGroup: true,
+    phoneNumber: ""
   };
 
   componentDidMount = () => {
@@ -52,7 +54,14 @@ export class AddUserPage extends Component {
         this.props.match.params.tenantId,
         this.props.match.params.groupId
       )
-      .then(() => this.setState({ isLoadingGroup: false }));
+      .then(() =>
+        this.props
+          .fetchGetAvailableNumbersByGroupId(
+            this.props.match.params.tenantId,
+            this.props.match.params.groupId
+          )
+          .then(() => this.setState({ isLoadingGroup: false }))
+      );
     this.props
       .fetchGetCategoryByName("user")
       .then(() => this.setState({ isLoadingTemplates: false }));
@@ -306,6 +315,38 @@ export class AddUserPage extends Component {
                       )}
                     </Col>
                   </FormGroup>
+                  {this.props.match.params.trunkGroupName && (
+                    <FormGroup controlId="phonenumber">
+                      <Col
+                        componentClass={ControlLabel}
+                        md={3}
+                        className={"text-left"}
+                      >
+                        Phone number
+                      </Col>
+                      <Col md={9}>
+                        <FormControl
+                          componentClass="select"
+                          defaultValue={this.state.phoneNumber}
+                          onChange={e =>
+                            this.setState({
+                              phoneNumber: e.target.value
+                            })
+                          }
+                        >
+                          <option key={"noneNum"} value="">
+                            none
+                          </option>
+                          {this.props.availableNumbers.map(number => (
+                            <option key={`${number}`} value={number}>
+                              {number}
+                            </option>
+                          ))}
+                          ))}
+                        </FormControl>
+                      </Col>
+                    </FormGroup>
+                  )}
                   <FormGroup controlId="template">
                     <Col
                       componentClass={ControlLabel}
@@ -399,7 +440,8 @@ export class AddUserPage extends Component {
       templateName,
       userId,
       password,
-      language
+      language,
+      phoneNumber
     } = this.state;
 
     if (emailAddress) {
@@ -434,11 +476,20 @@ export class AddUserPage extends Component {
       cliLastName: useSameName ? lastName : cliLastName,
       templateName,
       password,
-      language
+      language,
+      trunkEndpoint: phoneNumber && {
+        trunkGroupDeviceEndpoint: {
+          name:
+            this.props.match.params.trunkGroupName &&
+            this.props.match.params.trunkGroupName,
+          linePort: `${phoneNumber}@${this.props.group.defaultDomain}`,
+          isPilotUser: false
+        }
+      }
     };
+
     const clearData = removeEmpty(data);
     console.log(clearData);
-
     this.setState({ buttonName: "Creating..." }, () =>
       this.props
         .fetchPostCreateUserToGroup(
@@ -467,13 +518,15 @@ export class AddUserPage extends Component {
 const mapStateToProps = state => ({
   category: state.category,
   group: state.group,
-  createdUserInGroup: state.createdUserInGroup
+  createdUserInGroup: state.createdUserInGroup,
+  availableNumbers: state.availableNumbers
 });
 
 const mapDispatchToProps = {
   fetchGetCategoryByName,
   fetchPostCreateUserToGroup,
-  fetchGetGroupById
+  fetchGetGroupById,
+  fetchGetAvailableNumbersByGroupId
 };
 
 export default withRouter(
