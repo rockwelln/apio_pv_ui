@@ -181,7 +181,6 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.GET_LICENSES_BY_GROUP_ID: {
-      console.log(action.data.groupServices);
       const groupServicesShown = action.data.groupServices
         .filter(
           group =>
