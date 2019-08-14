@@ -8,7 +8,7 @@ import Col from "react-bootstrap/lib/Col";
 import Button from "react-bootstrap/lib/Button";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import FormControl from "react-bootstrap/lib/FormControl";
-import Checkbox from "react-bootstrap/lib/Checkbox";
+import Radio from "react-bootstrap/lib/Radio";
 
 import {
   changeStepOfAddPhoneTenant,
@@ -71,16 +71,32 @@ export class Basic extends Component {
                   </li>
                 </ul>
               </div>
-              {/**Checkbox for check local format */}
+              {/**Radio for check local format */}
               <div>
-                <Checkbox
-                  defaultChecked={this.state.isLocalFormat}
-                  onChange={e => {
-                    this.setState({ isLocalFormat: e.target.checked });
-                  }}
-                >
-                  local format
-                </Checkbox>
+                <FormGroup>
+                  <Radio
+                    name="phoneTypes"
+                    checked={!this.state.isLocalFormat}
+                    onClick={() =>
+                      this.setState({
+                        isLocalFormat: !this.state.isLocalFormat
+                      })
+                    }
+                  >
+                    <div className="font-weight-bold flex">{`I will paste phonenumbers in international format (00<cc>xx..x or <cc>xx..x)`}</div>
+                  </Radio>
+                  <Radio
+                    name="phoneTypes"
+                    checked={this.state.isLocalFormat}
+                    onClick={() =>
+                      this.setState({
+                        isLocalFormat: !this.state.isLocalFormat
+                      })
+                    }
+                  >
+                    <div className="font-weight-bold flex">{`I will paste phonenumbers in local format (0xx..x or xx...x)`}</div>
+                  </Radio>
+                </FormGroup>
               </div>
               {/**Text area */}
               <FormGroup controlId="validatePhone">
