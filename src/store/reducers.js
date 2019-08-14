@@ -190,7 +190,8 @@ function mainReducer(state = initialState, action) {
             group.name === "Call Pickup" ||
             group.name === "Hunt Group" ||
             group.name === "Group Paging" ||
-            group.name === "Meet-me Conferencing"
+            group.name === "Meet-me Conferencing" ||
+            group.name === "Trunk Group"
         )
         .sort((a, b) => {
           if (a.name < b.name) return -1;
@@ -205,7 +206,8 @@ function mainReducer(state = initialState, action) {
             group.name !== "Call Pickup" &&
             group.name !== "Hunt Group" &&
             group.name !== "Group Paging" &&
-            group.name !== "Meet-me Conferencing"
+            group.name !== "Meet-me Conferencing" &&
+            group.name !== "Trunk Group"
         )
         .sort((a, b) => {
           if (a.name < b.name) return -1;
