@@ -170,6 +170,11 @@ export const getValueOfKey = data => ({
   data
 });
 
+export const getTrunksGroupsByGroupFail = data => ({
+  type: actionType.GET_TRUNKS_GROUPS_BY_GROUP_FAIL,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -667,13 +672,16 @@ export function fetchGetTrunkByGroupID(tenantId, groupId) {
       `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/features/trunk_groups`
     )
       .then(data => dispatch(getTrunkByGroupID(data)))
-      .catch(error =>
-        NotificationsManager.error(
-          <FormattedMessage
-            id="fetch-trunk-failed"
-            defaultMessage="Failed to fetch trunk!"
-          />,
-          error.message
+      .catch(
+        error => (
+          dispatch(getTrunksGroupsByGroupFail()),
+          NotificationsManager.error(
+            <FormattedMessage
+              id="fetch-trunk-failed"
+              defaultMessage="Failed to fetch trunk!"
+            />,
+            error.message
+          )
         )
       );
   };

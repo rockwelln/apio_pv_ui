@@ -95,9 +95,11 @@ class TenantPage extends Component {
                 groupId={this.props.match.params.groupId}
               />
             </Tab>
-            <Tab eventKey={2} title="TRUNKS GROUP">
-              <TrunksGroup />
-            </Tab>
+            {this.props.fetchTrunksGroupsFail && (
+              <Tab eventKey={2} title="TRUNKS GROUP">
+                <TrunksGroup />
+              </Tab>
+            )}
             <Tab eventKey={3} title="PHONE NUMBERS">
               <PhoneNumbers
                 tenantId={this.props.match.params.tenantId}
@@ -135,7 +137,8 @@ const mapDispatchToProps = {
 
 const mapStateToProps = state => ({
   tenant: state.tenant,
-  group: state.group
+  group: state.group,
+  fetchTrunksGroupsFail: state.fetchTrunksGroupsFail
 });
 
 export default withRouter(

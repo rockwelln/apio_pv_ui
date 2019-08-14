@@ -94,7 +94,8 @@ const initialState = {
   phoneTypesDetails: {},
   applications: [],
   applicationKeys: [],
-  keyValue: {}
+  keyValue: {},
+  fetchTrunksGroupsFail: false
 };
 
 function mainReducer(state = initialState, action) {
@@ -236,7 +237,8 @@ function mainReducer(state = initialState, action) {
     case actionType.GET_TRUNK_BY_GROUP_ID: {
       return {
         ...state,
-        trunkGroups: action.data
+        trunkGroups: action.data,
+        fetchTrunksGroupsFail: true
       };
     }
     case actionType.GET_AVAILABLE_NUMBERS_BY_GROUP_ID: {
@@ -389,6 +391,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         keyValue: action.data
+      };
+    }
+    case actionType.GET_TRUNKS_GROUPS_BY_GROUP_FAIL: {
+      return {
+        ...state,
+        fetchTrunksGroupsFail: false
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN: {
