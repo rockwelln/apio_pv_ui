@@ -12,14 +12,18 @@ import Radio from "react-bootstrap/lib/Radio";
 import FormControl from "react-bootstrap/lib/FormControl";
 import Well from "react-bootstrap/lib/Well";
 
-import { trunkGroupMode } from "../../../../constants";
-import { fetchGetBackupByTrunkGroup } from "../../../../store/actions";
+import {
+  fetchGetBackupByTrunkGroup,
+  fetchPutUpdateBackupByTrunkGtoup,
+  fetchPutUpdateTrunkGroup
+} from "../../../../store/actions";
 import Loading from "../../../../common/Loading";
 import EditFrom from "./EditFrom";
 
 export class Backup extends Component {
   state = {
     isLoading: true,
+    disableButton: false,
     mode: null,
     destination: null,
     trunk: {},
@@ -147,7 +151,13 @@ export class Backup extends Component {
           <Col md={12}>
             <div className="button-row">
               <div className="pull-right">
-                <Button className={"btn-primary"}>&nbsp; Update</Button>
+                <Button
+                  className={"btn-primary"}
+                  onClick={this.update}
+                  disabled={this.state.disableButton}
+                >
+                  Update
+                </Button>
               </div>
             </div>
           </Col>
@@ -165,6 +175,38 @@ export class Backup extends Component {
       </React.Fragment>
     );
   }
+  update = () => {
+    const { mode, destination, trunk, invitationTimeout } = this.state;
+
+    const backupData = {
+      mode,
+      trunk,
+      destination
+    };
+
+    const trunkData = {
+      invitationTimeout
+    };
+
+    this.setState({ disableButton: true }, () =>
+      this.props
+        .fetchPutUpdateTrunkGroup(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          this.props.match.params.trunkGroupName,
+          trunkData
+        )
+        .then(() =>
+          this.props.fetchPutUpdateBackupByTrunkGtoup(
+            this.props.match.params.tenantId,
+            this.props.match.params.groupId,
+            this.props.match.params.trunkGroupName,
+            backupData
+          )
+        )
+        .then(() => this.setState({ disableButton: false }))
+    );
+  };
 
   changeGroups = (groupId, name) => {
     this.setState({
@@ -184,7 +226,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  fetchGetBackupByTrunkGroup
+  fetchGetBackupByTrunkGroup,
+  fetchPutUpdateBackupByTrunkGtoup,
+  fetchPutUpdateTrunkGroup
 };
 
 export default withRouter(

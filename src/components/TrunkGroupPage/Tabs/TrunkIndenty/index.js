@@ -12,12 +12,13 @@ import Panel from "react-bootstrap/lib/Panel";
 
 import {
   fetchGetGroupById,
-  postAddKeyToApplication
+  fetchPutUpdateTrunkGroup
 } from "../../../../store/actions";
 import Loading from "../../../../common/Loading";
 
 export class TrunkIndenty extends Component {
   state = {
+    disableButton: false,
     isLoading: true,
     trunkGroupIdentity: null,
     otgDtgIdentity: null,
@@ -204,7 +205,13 @@ export class TrunkIndenty extends Component {
           <Col md={12}>
             <div className="button-row">
               <div className="pull-right">
-                <Button className={"btn-primary"}>Update</Button>
+                <Button
+                  className={"btn-primary"}
+                  onClick={this.update}
+                  disabled={this.state.disableButton}
+                >
+                  Update
+                </Button>
               </div>
             </div>
           </Col>
@@ -212,6 +219,47 @@ export class TrunkIndenty extends Component {
       </React.Fragment>
     );
   }
+  update = () => {
+    const {
+      trunkGroupIdentity,
+      otgDtgIdentity,
+      allowTerminationToTrunkGroupIdentity,
+      allowTerminationToDtgIdentity,
+      includeTrunkGroupIdentity,
+      includeDtgIdentity,
+      includeTrunkGroupIdentityForNetworkCalls,
+      includeOtgIdentityForNetworkCalls
+    } = this.state;
+
+    const data = {
+      trunkGroupIdentity: trunkGroupIdentity && trunkGroupIdentity,
+      otgDtgIdentity: otgDtgIdentity && otgDtgIdentity,
+      allowTerminationToTrunkGroupIdentity:
+        allowTerminationToTrunkGroupIdentity &&
+        allowTerminationToTrunkGroupIdentity,
+      allowTerminationToDtgIdentity:
+        allowTerminationToDtgIdentity && allowTerminationToDtgIdentity,
+      includeTrunkGroupIdentity:
+        includeTrunkGroupIdentity && includeTrunkGroupIdentity,
+      includeDtgIdentity: includeDtgIdentity && includeDtgIdentity,
+      includeTrunkGroupIdentityForNetworkCalls:
+        includeTrunkGroupIdentityForNetworkCalls &&
+        includeTrunkGroupIdentityForNetworkCalls,
+      includeOtgIdentityForNetworkCalls:
+        includeOtgIdentityForNetworkCalls && includeOtgIdentityForNetworkCalls
+    };
+
+    this.setState({ disableButton: true }, () =>
+      this.props
+        .fetchPutUpdateTrunkGroup(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          this.props.match.params.trunkGroupName,
+          data
+        )
+        .then(() => this.setState({ disableButton: false }))
+    );
+  };
 }
 
 const mapStateToProps = state => ({
@@ -219,7 +267,7 @@ const mapStateToProps = state => ({
   group: state.group
 });
 
-const mapDispatchToProps = { fetchGetGroupById };
+const mapDispatchToProps = { fetchGetGroupById, fetchPutUpdateTrunkGroup };
 
 export default withRouter(
   connect(

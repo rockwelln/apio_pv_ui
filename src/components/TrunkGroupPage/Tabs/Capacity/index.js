@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
 import Checkbox from "react-bootstrap/lib/Checkbox";
 import Row from "react-bootstrap/lib/Row";
@@ -7,8 +8,11 @@ import Col from "react-bootstrap/lib/Col";
 import FormControl from "react-bootstrap/lib/FormControl";
 import Button from "react-bootstrap/lib/Button";
 
+import { fetchPutUpdateTrunkGroup } from "../../../../store/actions";
+
 export class Capacity extends Component {
   state = {
+    disableButton: false,
     maxActiveCalls: null,
     maxIncomingCalls: null,
     maxOutgoingCalls: null,
@@ -97,7 +101,13 @@ export class Capacity extends Component {
           <Col md={12}>
             <div className="button-row">
               <div className="pull-right">
-                <Button className={"btn-primary"}>&nbsp; Update</Button>
+                <Button
+                  className={"btn-primary"}
+                  onClick={this.update}
+                  disabled={this.state.disableButton}
+                >
+                  Update
+                </Button>
               </div>
             </div>
           </Col>
@@ -105,15 +115,43 @@ export class Capacity extends Component {
       </React.Fragment>
     );
   }
+  update = () => {
+    const {
+      maxActiveCalls,
+      maxIncomingCalls,
+      maxOutgoingCalls,
+      enableBursting
+    } = this.state;
+
+    const data = {
+      maxActiveCalls: maxActiveCalls && maxActiveCalls,
+      maxIncomingCalls: maxIncomingCalls && maxIncomingCalls,
+      maxOutgoingCalls: maxOutgoingCalls && maxOutgoingCalls,
+      enableBursting: enableBursting && enableBursting
+    };
+
+    this.setState({ disableButton: true }, () =>
+      this.props
+        .fetchPutUpdateTrunkGroup(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          this.props.match.params.trunkGroupName,
+          data
+        )
+        .then(() => this.setState({ disableButton: false }))
+    );
+  };
 }
 
 const mapStateToProps = state => ({
   trunkGroup: state.trunkGroup
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { fetchPutUpdateTrunkGroup };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Capacity);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Capacity)
+);

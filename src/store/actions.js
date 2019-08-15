@@ -283,6 +283,16 @@ export const putUpdateKey = data => ({
   data
 });
 
+export const putUpdateTrunkGroup = data => ({
+  type: actionType.PUT_UPDATE_TRUNK_GROUP,
+  data
+});
+
+export const putUpdateBackupByTrunkGtoup = data => ({
+  type: actionType.PUT_UPDATE_BACKUP_BY_TRUNK_GROUP,
+  data
+});
+
 export const deleteTenant = data => ({
   type: actionType.DELETE_TENANT,
   data
@@ -1419,6 +1429,56 @@ export function fetchPutUpdateKey(appName, keyName, data) {
           <FormattedMessage
             id="update-kay-failed"
             defaultMessage="Failed to update key!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchPutUpdateBackupByTrunkGtoup(
+  tenantId,
+  groupId,
+  trunkGroupName,
+  data
+) {
+  return function(dispatch) {
+    return fetch_put(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/services/trunk_groups/${trunkGroupName}/backup`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => dispatch(putUpdateBackupByTrunkGtoup(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="update-trunk-group-backup-failed"
+            defaultMessage="Failed to update trunk group backup!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchPutUpdateTrunkGroup(
+  tenantId,
+  groupId,
+  trunkGroupName,
+  data
+) {
+  return function(dispatch) {
+    return fetch_put(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/services/trunk_groups/${trunkGroupName}/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => dispatch(putUpdateTrunkGroup(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="update-trunk-group-failed"
+            defaultMessage="Failed to update trunk group!"
           />,
           error.message
         )

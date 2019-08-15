@@ -540,6 +540,18 @@ function mainReducer(state = initialState, action) {
         keyValue: action.data
       };
     }
+    case actionType.PUT_UPDATE_TRUNK_GROUP: {
+      return {
+        ...state,
+        trunkGroup: action.data
+      };
+    }
+    case actionType.PUT_UPDATE_BACKUP_BY_TRUNK_GROUP: {
+      return {
+        ...state,
+        trunkGroupBackup: action.data
+      };
+    }
     case actionType.DELETE_TENANT: {
       return {
         ...state
