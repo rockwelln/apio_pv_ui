@@ -26,27 +26,9 @@ export class Advanced extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <React.Fragment className={"margin-1"}>
         <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-33"}>
-              Domain used for overwrite
-            </div>
-            <div>
-              <FormControl
-                type="text"
-                value={this.state.peeringDomain}
-                onChange={e => {
-                  this.setState({
-                    peeringDomain: e.target.value
-                  });
-                }}
-              />
-            </div>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={12}>
             <Checkbox
               checked={this.state.routeToPeeringDomain}
               onChange={e => {
@@ -55,10 +37,20 @@ export class Advanced extends Component {
             >
               Overwrite the domain of the R-URI for outgoing calls
             </Checkbox>
+            <FormControl
+              className={"width-auto margin-left-1"}
+              type="text"
+              value={this.state.peeringDomain}
+              onChange={e => {
+                this.setState({
+                  peeringDomain: e.target.value
+                });
+              }}
+            />
           </Col>
         </Row>
-        <Row>
-          <Col md={12}>
+        <Row className={"margin-top-1"}>
+          <Col md={12} className={"flex align-items-center"}>
             <Checkbox
               checked={this.state.prefixEnabled}
               onChange={e => {
@@ -67,22 +59,16 @@ export class Advanced extends Component {
             >
               Add prefix to R-URI for outgoing calls
             </Checkbox>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-33"}>Prefix</div>
-            <div>
-              <FormControl
-                type="text"
-                value={this.state.prefix}
-                onChange={e => {
-                  this.setState({
-                    prefix: e.target.value
-                  });
-                }}
-              />
-            </div>
+            <FormControl
+              className={"width-auto margin-left-1"}
+              type="text"
+              value={this.state.prefix}
+              onChange={e => {
+                this.setState({
+                  prefix: e.target.value
+                });
+              }}
+            />
           </Col>
         </Row>
         <Row className={"margin-top-1"}>
