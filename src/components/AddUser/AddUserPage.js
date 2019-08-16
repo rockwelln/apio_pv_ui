@@ -489,7 +489,7 @@ export class AddUserPage extends Component {
     };
 
     const clearData = removeEmpty(data);
-    console.log(clearData);
+
     this.setState({ buttonName: "Creating..." }, () =>
       this.props
         .fetchPostCreateUserToGroup(

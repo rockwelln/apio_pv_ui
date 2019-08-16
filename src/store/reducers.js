@@ -95,7 +95,8 @@ const initialState = {
   applications: [],
   applicationKeys: [],
   keyValue: {},
-  fetchTrunksGroupsFail: false
+  fetchTrunksGroupsFail: false,
+  localUsers: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -400,6 +401,12 @@ function mainReducer(state = initialState, action) {
         fetchTrunksGroupsFail: false
       };
     }
+    case actionType.GET_LOCAL_USERS: {
+      return {
+        ...state,
+        localUsers: action.data.local_users
+      };
+    }
     case actionType.POST_CREATE_GROUP_ADMIN: {
       return {
         ...state,
@@ -477,6 +484,11 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.POST_ADD_KEY_TO_APPLICATION: {
+      return {
+        ...state
+      };
+    }
+    case actionType.POST_CREATE_LOCAL_USER: {
       return {
         ...state
       };

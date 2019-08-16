@@ -63,6 +63,13 @@ const linkByCrumb = (item, lastItem, i, path, match) => {
   if (crumb === "adduser") {
     return "Add user";
   }
+  if (crumb === "localusers") {
+    return (
+      <Link to={`/provisioning/${match.params.gwName}/localusers`}>
+        Local users
+      </Link>
+    );
+  }
   return crumb;
 };
 

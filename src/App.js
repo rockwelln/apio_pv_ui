@@ -43,6 +43,8 @@ import AddUser from "./components/AddUser";
 import TrunkGroupPage from "./components/TrunkGroupPage";
 import ConfigPage from "./components/Configs";
 import TemplatePage from "./components/TemplatePage";
+import LocalUsers from "./components/LocalUsers";
+import AddLocalUsers from "./components/AddLocalUser";
 
 import "./App.css";
 import loading from "./loading.gif";
@@ -271,6 +273,28 @@ class App extends Component {
                     {...props}
                   />
                 )}
+                exact
+              />
+              <Route
+                path="/provisioning/:gwName/localusers"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <LocalUsers />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/provisioning/:gwName/localusers/adduser"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <AddLocalUsers />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
                 exact
               />
               <Route

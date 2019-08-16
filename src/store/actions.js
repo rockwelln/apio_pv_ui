@@ -175,6 +175,11 @@ export const getTrunksGroupsByGroupFail = data => ({
   data
 });
 
+export const getLocalUsers = data => ({
+  type: actionType.GET_LOCAL_USERS,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -230,6 +235,11 @@ export const postAddGroupServicesToGroup = data => ({
 
 export const postAddKeyToApplication = data => ({
   type: actionType.POST_ADD_KEY_TO_APPLICATION,
+  data
+});
+
+export const postCreateLocalUser = data => ({
+  type: actionType.POST_CREATE_LOCAL_USER,
   data
 });
 
@@ -1039,6 +1049,24 @@ export function fetchGetValueOfKey(appName, keyName) {
   };
 }
 
+export function fetchGetLocalUsers() {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/local/apio_users/`
+    )
+      .then(data => dispatch(getLocalUsers(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-local-users-failed"
+            defaultMessage="Failed to fetch local users!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
 export function fetchPostCreateGroupAdmin(tenantId, groupId, data) {
   return function(dispatch) {
     return fetch_post(
@@ -1245,6 +1273,26 @@ export function fetchPostAddKeyToApplication(appName, data) {
           <FormattedMessage
             id="failed-add-key"
             defaultMessage="Failed add key!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchPostCreateLocalUser(data) {
+  return function(dispatch) {
+    return fetch_post(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/local/apio_users/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => dispatch(postCreateLocalUser(data)))
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-create-local-user"
+            defaultMessage="Failed create local user!"
           />,
           error.message
         );
