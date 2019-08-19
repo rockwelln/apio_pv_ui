@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { withRouter } from "react-router";
 
 import Table from "react-bootstrap/lib/Table";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
@@ -103,10 +105,16 @@ export class PhoneNumbersTab extends Component {
             </InputGroup>
           </Col>
           <Col md={1}>
-            <Glyphicon
-              className={"x-large"}
-              glyph="glyphicon glyphicon-plus-sign"
-            />
+            <Link
+              to={`/provisioning/${this.props.match.params.gwName}/tenants/${
+                this.props.tenantId
+              }/groups/${this.props.groupId}/addphone`}
+            >
+              <Glyphicon
+                className={"x-large"}
+                glyph="glyphicon glyphicon-plus-sign"
+              />
+            </Link>
           </Col>
         </Row>
         {paginationPhoneNumbers.length ? (
@@ -432,7 +440,9 @@ const mapDispatchToProps = {
   fetchGetPhoneNumbersByGroupId
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PhoneNumbersTab);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(PhoneNumbersTab)
+);
