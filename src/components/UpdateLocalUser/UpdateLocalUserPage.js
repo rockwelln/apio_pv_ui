@@ -69,7 +69,7 @@ export class UpdateLocalUserPage extends Component {
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
-          <div className={"header"}>{`Add a new local user`}</div>
+          <div className={"header"}>{`Edit local user`}</div>
         </div>
         <div className={"panel-body"}>
           <Row>
