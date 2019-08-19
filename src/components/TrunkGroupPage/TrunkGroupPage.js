@@ -53,7 +53,6 @@ class TrunkGroupPage extends Component {
     if (isLoading) {
       return <Loading />;
     }
-    console.log(this.props.trunkGroup);
     return (
       <React.Fragment>
         <div className={"panel-heading"}>

@@ -57,7 +57,6 @@ export class TrunkIndenty extends Component {
   }
 
   render() {
-    console.log(this.state);
     if (this.state.isLoading) {
       return <Loading />;
     }

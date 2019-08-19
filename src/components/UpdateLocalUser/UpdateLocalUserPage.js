@@ -65,7 +65,6 @@ export class UpdateLocalUserPage extends Component {
       username,
       userType
     } = this.state.user;
-    console.log(this.state.user);
     return (
       <React.Fragment>
         <div className={"panel-heading"}>

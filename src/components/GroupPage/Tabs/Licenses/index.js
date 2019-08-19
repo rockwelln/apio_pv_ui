@@ -669,7 +669,6 @@ export class Licenses extends Component {
         return prev;
       }, [])
     };
-    console.log(authorisedServices);
 
     this.props
       .fetchPutUpdateGroupServicesByGroupId(

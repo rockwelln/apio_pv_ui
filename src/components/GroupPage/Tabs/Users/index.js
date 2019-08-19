@@ -75,7 +75,6 @@ export class Users extends Component {
       usersForDelete,
       showDelete
     } = this.state;
-    console.log(this.state.users, this.state.paginationUsers);
     if ((isLoading, pagination)) {
       return <Loading />;
     }
