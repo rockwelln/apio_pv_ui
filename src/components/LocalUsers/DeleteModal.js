@@ -8,7 +8,7 @@ import Button from "react-bootstrap/lib/Button";
 
 import { FormattedMessage } from "react-intl";
 
-//import { fetchDeleteUserFromGroup } from "../../../../store/actions";
+import { fetchDeleteLocalUser } from "../../store/actions";
 
 class DeleteModal extends Component {
   constructor(props) {
@@ -17,24 +17,18 @@ class DeleteModal extends Component {
     this.onDelete = this.onDelete.bind(this);
   }
 
-  onDelete(userId) {
-    const { onClose } = this.props;
+  onDelete() {
+    const { onClose, username } = this.props;
     this.setState({ deleting: true });
 
-    this.props
-      .fetchDeleteUserFromGroup(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId,
-        userId
-      )
-      .then(() => {
-        this.setState({ deleting: false });
-        onClose && onClose(true);
-      });
+    this.props.fetchDeleteLocalUser(username).then(() => {
+      this.setState({ deleting: false });
+      onClose && onClose(true);
+    });
   }
 
   render() {
-    const { userId, show, onClose } = this.props;
+    const { username, show, onClose } = this.props;
     const { deleting } = this.state;
     return (
       <Modal
@@ -59,12 +53,12 @@ class DeleteModal extends Component {
           <p>
             <FormattedMessage
               id="confirm-delete-warning"
-              defaultMessage={`You are about to delete the user ${userId}!`}
+              defaultMessage={`You are about to delete the user ${username}!`}
             />
           </p>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={() => this.onDelete(userId)} bsStyle="danger">
+          <Button onClick={() => this.onDelete()} bsStyle="danger">
             <FormattedMessage id="delete" defaultMessage="Delete" />
           </Button>
           <Button onClick={() => onClose && onClose(false)} disabled={deleting}>
@@ -76,7 +70,7 @@ class DeleteModal extends Component {
   }
 }
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { fetchDeleteLocalUser };
 
 export default withRouter(
   connect(

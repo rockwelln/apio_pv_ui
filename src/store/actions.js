@@ -180,6 +180,11 @@ export const getLocalUsers = data => ({
   data
 });
 
+export const getLocalUser = data => ({
+  type: actionType.GET_LOCAL_USER,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -303,6 +308,11 @@ export const putUpdateBackupByTrunkGtoup = data => ({
   data
 });
 
+export const putUpdateLocalUser = data => ({
+  type: actionType.PUT_UPDATE_LOCAL_USER,
+  data
+});
+
 export const deleteTenant = data => ({
   type: actionType.DELETE_TENANT,
   data
@@ -348,6 +358,11 @@ export const deleteTrunkGroup = data => ({
 
 export const deleteKey = data => ({
   type: actionType.DELETE_KEY,
+  data
+});
+
+export const deleteLocalUser = data => ({
+  type: actionType.DELETE_LOCAL_USER,
   data
 });
 
@@ -692,18 +707,16 @@ export function fetchGetTrunkByGroupID(tenantId, groupId) {
       `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/features/trunk_groups`
     )
       .then(data => dispatch(getTrunkByGroupID(data)))
-      .catch(
-        error => (
-          dispatch(getTrunksGroupsByGroupFail()),
-          NotificationsManager.error(
-            <FormattedMessage
-              id="fetch-trunk-failed"
-              defaultMessage="Failed to fetch trunk!"
-            />,
-            error.message
-          )
-        )
-      );
+      .catch(error => {
+        dispatch(getTrunksGroupsByGroupFail());
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-trunk-failed"
+            defaultMessage="Failed to fetch trunk!"
+          />,
+          error.message
+        );
+      });
   };
 }
 
@@ -1060,6 +1073,24 @@ export function fetchGetLocalUsers() {
           <FormattedMessage
             id="fetch-local-users-failed"
             defaultMessage="Failed to fetch local users!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetLocalUser(username) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/local/apio_users/${username}`
+    )
+      .then(data => dispatch(getLocalUser(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-local-user-failed"
+            defaultMessage="Failed to fetch local user!"
           />,
           error.message
         )
@@ -1509,6 +1540,26 @@ export function fetchPutUpdateBackupByTrunkGtoup(
   };
 }
 
+export function fetchPutUpdateLocalUser(username, data) {
+  return function(dispatch) {
+    return fetch_put(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/local/apio_users/${username}/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => dispatch(putUpdateLocalUser(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="update-local-user-failed"
+            defaultMessage="Failed to update local user!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
 export function fetchPutUpdateTrunkGroup(
   tenantId,
   groupId,
@@ -1762,6 +1813,27 @@ export function fetchDeleteKey(appName, keyName) {
           <FormattedMessage
             id="failed-to-delete-key"
             defaultMessage="Failed to delete key!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchDeleteLocalUser(username) {
+  return function(dispatch) {
+    return fetch_delete(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/local/apio_users/${username}`
+    )
+      .then(data => {
+        dispatch(deleteLocalUser(data));
+        return "deleted";
+      })
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-delete-user"
+            defaultMessage="Failed to delete user!"
           />,
           error.message
         )

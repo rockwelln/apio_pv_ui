@@ -33,7 +33,7 @@ export class LocalUsers extends Component {
     showDelete: false
   };
 
-  componentDidMount() {
+  fetchReq = () => {
     this.props.fetchGetLocalUsers().then(() =>
       this.setState(
         {
@@ -48,6 +48,16 @@ export class LocalUsers extends Component {
         () => this.pagination()
       )
     );
+  };
+
+  componentDidMount() {
+    this.fetchReq();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.localUsers.length !== this.props.localUsers.length) {
+      this.fetchReq();
+    }
   }
 
   render() {
@@ -246,12 +256,7 @@ export class LocalUsers extends Component {
                           handleSingleCheckboxClick={
                             this.handleSingleCheckboxClick
                           }
-                          onReload={() =>
-                            this.props.fetchGetUsersByGroupId(
-                              this.props.tenantId,
-                              this.props.groupId
-                            )
-                          }
+                          onReload={() => this.fetchReq()}
                         />
                       ))}
                     </tbody>

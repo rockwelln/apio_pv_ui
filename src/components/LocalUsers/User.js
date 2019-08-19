@@ -3,7 +3,6 @@ import { withRouter } from "react-router";
 
 import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
-import Checkbox from "react-bootstrap/lib/Checkbox";
 
 import { Link } from "react-router-dom";
 
@@ -12,11 +11,19 @@ import DeleteModal from "./DeleteModal";
 class User extends Component {
   state = { showDelete: false };
   render() {
-    const { user, onReload, tenantId, groupId, index } = this.props;
+    const { user, onReload } = this.props;
     const { showDelete } = this.state;
     return (
-      <tr key={user.userId}>
-        <td>{user.username}</td>
+      <tr>
+        <td>
+          <Link
+            to={`/provisioning/${
+              this.props.match.params.gwName
+            }/localusers/user/${user.username}`}
+          >
+            {user.username}
+          </Link>
+        </td>
         <td>{user.firstName}</td>
         <td>{user.lastName}</td>
         <td>{user.emailAddress}</td>
@@ -34,13 +41,12 @@ class User extends Component {
             />
           </ButtonToolbar>
           <DeleteModal
-            userId={user.userId}
+            username={user.username}
             show={showDelete}
             onClose={e => {
-              onReload && onReload(tenantId, groupId);
+              onReload && onReload();
               this.setState({ showDelete: false });
             }}
-            {...this.props}
           />
         </td>
       </tr>

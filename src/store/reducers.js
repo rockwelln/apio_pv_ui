@@ -96,7 +96,8 @@ const initialState = {
   applicationKeys: [],
   keyValue: {},
   fetchTrunksGroupsFail: false,
-  localUsers: []
+  localUsers: [],
+  localUser: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -407,6 +408,12 @@ function mainReducer(state = initialState, action) {
         localUsers: action.data.local_users
       };
     }
+    case actionType.GET_LOCAL_USER: {
+      return {
+        ...state,
+        localUser: action.data
+      };
+    }
     case actionType.POST_CREATE_GROUP_ADMIN: {
       return {
         ...state,
@@ -564,6 +571,12 @@ function mainReducer(state = initialState, action) {
         trunkGroupBackup: action.data
       };
     }
+    case actionType.PUT_UPDATE_LOCAL_USER: {
+      return {
+        ...state,
+        localUser: action.data
+      };
+    }
     case actionType.DELETE_TENANT: {
       return {
         ...state
@@ -616,6 +629,11 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.DELETE_KEY: {
+      return {
+        ...state
+      };
+    }
+    case actionType.DELETE_LOCAL_USER: {
       return {
         ...state
       };

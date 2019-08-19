@@ -12,41 +12,44 @@ import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
-import { fetchPostCreateLocalUser } from "../../store/actions";
+import {
+  fetchGetLocalUser,
+  fetchPutUpdateLocalUser
+} from "../../store/actions";
 import { removeEmpty } from "../remuveEmptyInObject";
 
 import { USERTYPES } from "../../constants";
 
-export class AddLocalUserPage extends Component {
+export class UpdateLocalUserPage extends Component {
   state = {
-    username: "",
-    emailAddress: "",
-    firstName: "",
-    lastName: "",
-    language: "English",
-    userNameError: null,
+    user: {},
     emailIsValid: null,
     firstNameError: null,
     lastNameError: null,
-    password: "",
     passwordError: null,
-    buttonName: "Create",
-    userType: "",
+    buttonName: "Update",
+    password: "",
     confirmPassword: "",
     confirmPasswordError: null
   };
 
+  fetchReq() {
+    this.props
+      .fetchGetLocalUser(this.props.match.params.localUserName)
+      .then(() =>
+        this.setState({ user: this.props.localUser, isLoading: false })
+      );
+  }
+
+  componentDidMount() {
+    this.fetchReq();
+  }
+
   render() {
     const {
-      username,
-      emailAddress,
-      firstName,
-      lastName,
-      language,
       emailIsValid,
       firstNameError,
       lastNameError,
-      userNameError,
       password,
       passwordError,
       buttonName,
@@ -54,6 +57,15 @@ export class AddLocalUserPage extends Component {
       confirmPasswordError
     } = this.state;
 
+    const {
+      emailAddress,
+      firstName,
+      lastName,
+      language,
+      username,
+      userType
+    } = this.state.user;
+    console.log(this.state.user);
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
@@ -64,16 +76,13 @@ export class AddLocalUserPage extends Component {
             <Col md={8}>
               <Form horizontal className={"margin-1"}>
                 <FormGroup controlId="addUser">
-                  <FormGroup
-                    controlId="new-userId"
-                    validationState={userNameError}
-                  >
+                  <FormGroup controlId="new-userId">
                     <Col
                       componentClass={ControlLabel}
                       md={3}
                       className={"text-left"}
                     >
-                      Username{"\u002a"}
+                      Username
                     </Col>
                     <Col md={9}>
                       <FormControl
@@ -81,18 +90,8 @@ export class AddLocalUserPage extends Component {
                         placeholder="Username"
                         autoComplete="new-userId"
                         defaultValue={username}
-                        onChange={e =>
-                          this.setState({
-                            username: e.target.value,
-                            userNameError: null
-                          })
-                        }
+                        disabled
                       />
-                      {userNameError && (
-                        <HelpBlock>
-                          Field is required and min length 6 characters
-                        </HelpBlock>
-                      )}
                     </Col>
                   </FormGroup>
                   <FormGroup
@@ -104,7 +103,7 @@ export class AddLocalUserPage extends Component {
                       md={3}
                       className={"text-left"}
                     >
-                      Email{"\u002a"}
+                      Email
                     </Col>
                     <Col md={9}>
                       <FormControl
@@ -113,16 +112,15 @@ export class AddLocalUserPage extends Component {
                         defaultValue={emailAddress}
                         onChange={e =>
                           this.setState({
-                            emailAddress: e.target.value,
+                            user: {
+                              ...this.state.user,
+                              emailAddress: e.target.value
+                            },
                             emailIsValid: null
                           })
                         }
                       />
-                      {emailIsValid && (
-                        <HelpBlock>
-                          Field is required or invalid format
-                        </HelpBlock>
-                      )}
+                      {emailIsValid && <HelpBlock>Invalid format</HelpBlock>}
                     </Col>
                   </FormGroup>
                   <FormGroup
@@ -134,7 +132,7 @@ export class AddLocalUserPage extends Component {
                       md={3}
                       className={"text-left"}
                     >
-                      First Name{"\u002a"}
+                      First Name
                     </Col>
                     <Col md={9}>
                       <FormControl
@@ -143,7 +141,10 @@ export class AddLocalUserPage extends Component {
                         defaultValue={firstName}
                         onChange={e =>
                           this.setState({
-                            firstName: e.target.value,
+                            user: {
+                              ...this.state.user,
+                              firstName: e.target.value
+                            },
                             firstNameError: null
                           })
                         }
@@ -162,7 +163,7 @@ export class AddLocalUserPage extends Component {
                       md={3}
                       className={"text-left"}
                     >
-                      Last Name{"\u002a"}
+                      Last Name
                     </Col>
                     <Col md={9}>
                       <FormControl
@@ -171,7 +172,10 @@ export class AddLocalUserPage extends Component {
                         defaultValue={lastName}
                         onChange={e =>
                           this.setState({
-                            lastName: e.target.value,
+                            user: {
+                              ...this.state.user,
+                              lastName: e.target.value
+                            },
                             lastNameError: null
                           })
                         }
@@ -190,7 +194,7 @@ export class AddLocalUserPage extends Component {
                       md={3}
                       className={"text-left"}
                     >
-                      Password{"\u002a"}
+                      Password
                     </Col>
                     <Col md={9}>
                       <FormControl
@@ -213,7 +217,7 @@ export class AddLocalUserPage extends Component {
                     </Col>
                   </FormGroup>
                   <FormGroup
-                    controlId="new-user-password"
+                    controlId="new-user-password2"
                     validationState={passwordError}
                   >
                     <Col
@@ -221,7 +225,7 @@ export class AddLocalUserPage extends Component {
                       md={3}
                       className={"text-left"}
                     >
-                      Confirm password {"\u002a"}
+                      Confirm password
                     </Col>
                     <Col md={9}>
                       <FormControl
@@ -247,7 +251,7 @@ export class AddLocalUserPage extends Component {
                       md={3}
                       className={"text-left"}
                     >
-                      Language{"\u002a"}
+                      Language
                     </Col>
                     <Col md={9}>
                       <FormControl
@@ -264,15 +268,18 @@ export class AddLocalUserPage extends Component {
                       md={3}
                       className={"text-left"}
                     >
-                      User type{"\u002a"}
+                      User type
                     </Col>
                     <Col md={9}>
                       <FormControl
                         componentClass="select"
-                        defaultValue={this.state.userType}
+                        value={userType}
                         onChange={e =>
                           this.setState({
-                            userType: e.target.value
+                            user: {
+                              ...this.state.user,
+                              userType: e.target.value
+                            }
                           })
                         }
                       >
@@ -293,7 +300,7 @@ export class AddLocalUserPage extends Component {
                           onClick={this.addUser}
                           type="submit"
                           className="btn-primary"
-                          disabled={buttonName === "Creating..."}
+                          disabled={buttonName === "Updating..."}
                         >
                           <Glyphicon glyph="glyphicon glyphicon-ok" />{" "}
                           {buttonName}
@@ -316,41 +323,16 @@ export class AddLocalUserPage extends Component {
 
   addUser = e => {
     e.preventDefault();
+    const { password, confirmPassword } = this.state;
+
     const {
       emailAddress,
       firstName,
       lastName,
-      username,
-      password,
       language,
-      userType,
-      confirmPassword
-    } = this.state;
-
-    if (!username || username.length < 8) {
-      this.setState({ userNameError: "error" });
-      return;
-    }
-    if (!emailAddress || !this.validateEmail(emailAddress)) {
-      this.setState({ emailIsValid: "error" });
-      return;
-    }
-    if (!firstName) {
-      this.setState({ firstNameError: "error" });
-      return;
-    }
-    if (!lastName) {
-      this.setState({ lastNameError: "error" });
-      return;
-    }
-    if (!password || password.length < 6) {
-      this.setState({ passwordError: "error" });
-      return;
-    }
-    if (password !== confirmPassword) {
-      this.setState({ confirmPasswordError: "error" });
-      return;
-    }
+      username,
+      userType
+    } = this.state.user;
 
     const data = {
       emailAddress,
@@ -363,29 +345,31 @@ export class AddLocalUserPage extends Component {
       userType
     };
 
+    if (!this.validateEmail(emailAddress)) {
+      this.setState({ emailIsValid: "error" });
+      return;
+    }
     const clearData = removeEmpty(data);
-    this.setState({ buttonName: "Creating..." }, () =>
+    this.setState({ buttonName: "Updating..." }, () =>
       this.props
-        .fetchPostCreateLocalUser(clearData)
-        .then(res =>
-          this.setState(
-            { buttonName: "Create" },
-            () =>
-              res &&
-              this.props.history.push(
-                `/provisioning/${this.props.match.params.gwName}/localusers`
-              )
-          )
+        .fetchPutUpdateLocalUser(
+          this.props.match.params.localUserName,
+          clearData
         )
+        .then(res => this.setState({ buttonName: "Update" }))
     );
   };
 }
 
-const mapDispatchToProps = { fetchPostCreateLocalUser };
+const mapStateToProps = state => ({
+  localUser: state.localUser
+});
+
+const mapDispatchToProps = { fetchGetLocalUser, fetchPutUpdateLocalUser };
 
 export default withRouter(
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
-  )(AddLocalUserPage)
+  )(UpdateLocalUserPage)
 );

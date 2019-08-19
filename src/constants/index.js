@@ -11,3 +11,13 @@ export const trunkGroupMode = [
   { name: "Reroute", value: "Reroute" },
   { name: "Forward", value: "Forward" }
 ];
+
+export const USERTYPES = [
+  { name: "none", value: "" },
+  { name: "Enduser", value: "enduser" },
+  { name: "Customer administrator", value: "customer_administrator" },
+  { name: "Customer support", value: "customer_support" },
+  { name: "Super customer support", value: "super_customer_support" },
+  { name: "Screener", value: "screener" },
+  { name: "Reseller", value: "reseller" }
+];

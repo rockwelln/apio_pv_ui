@@ -45,6 +45,7 @@ import ConfigPage from "./components/Configs";
 import TemplatePage from "./components/TemplatePage";
 import LocalUsers from "./components/LocalUsers";
 import AddLocalUsers from "./components/AddLocalUser";
+import UpdateLocalUser from "./components/UpdateLocalUser";
 
 import "./App.css";
 import loading from "./loading.gif";
@@ -280,6 +281,17 @@ class App extends Component {
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <LocalUsers />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/provisioning/:gwName/localusers/user/:localUserName"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <UpdateLocalUser />
                   ) : (
                     <NotAllowed />
                   )
