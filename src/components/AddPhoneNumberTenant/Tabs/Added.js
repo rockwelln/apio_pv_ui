@@ -26,7 +26,7 @@ export class Added extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.props.addedNumbersToTenant.added.map((number, i) => (
+              {this.props.added.map((number, i) => (
                 <tr key={i + ""}>
                   <td>{number.phoneNumber}</td>
                   <td>{number.status}</td>
@@ -55,18 +55,14 @@ export class Added extends Component {
   }
 
   copyToClipBoard = () => {
-    if (this.props.addedNumbersToTenant.added) {
-      const toCopy = JSON.stringify(this.props.addedNumbersToTenant.added);
+    if (this.props.added) {
+      const toCopy = JSON.stringify(this.props.added);
       navigator.clipboard.writeText(toCopy);
     }
   };
 }
 
-const mapStateToProps = state => ({
-  addedNumbersToTenant: state.addedNumbersToTenant
-});
-
 export default connect(
-  mapStateToProps,
+  null,
   null
 )(Added);

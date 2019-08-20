@@ -12,7 +12,7 @@ import DeleteModal from "./DeleteModal";
 class Group extends Component {
   state = { showDelete: false };
   render() {
-    const { user, onReload, tenantId, groupId, index } = this.props;
+    const { user, onReload, tenantId, groupId } = this.props;
     const { showDelete } = this.state;
     return (
       <tr key={user.userId}>

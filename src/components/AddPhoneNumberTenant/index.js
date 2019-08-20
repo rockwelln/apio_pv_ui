@@ -8,9 +8,7 @@ import Breadcrumb from "../../common/Breadcrumb";
 import Sidebar from "../../common/Sidebar";
 import Title from "../../common/Title";
 
-import Basic from "./Basic";
-import Validated from "./Validated";
-import Info from "./Info";
+import Steps from "./Steps";
 
 export class AddPhoneNumberTenant extends Component {
   render() {
@@ -27,36 +25,14 @@ export class AddPhoneNumberTenant extends Component {
             <Row>
               <Breadcrumb />
             </Row>
-            <Row className={"panel panel-default"}>{this.returnStep()}</Row>
+            <Row className={"panel panel-default"}>
+              <Steps />
+            </Row>
           </Col>
         </Row>
       </React.Fragment>
     );
   }
-
-  //Steps of add phone number
-  returnStep = () => {
-    switch (this.props.addPhoneTenantStep) {
-      case "Basic": {
-        return <Basic />;
-      }
-      case "Validated": {
-        return <Validated />;
-      }
-      case "Info": {
-        return <Info />;
-      }
-      default:
-        return <Basic />;
-    }
-  };
 }
 
-const mapStateToProps = state => ({
-  addPhoneTenantStep: state.addPhoneTenantStep
-});
-
-export default connect(
-  mapStateToProps,
-  null
-)(AddPhoneNumberTenant);
+export default connect()(AddPhoneNumberTenant);

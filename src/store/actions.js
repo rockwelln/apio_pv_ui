@@ -185,6 +185,11 @@ export const getLocalUser = data => ({
   data
 });
 
+export const getAvailableNumbersByTenantID = data => ({
+  type: actionType.GET_AVAILABLE_NUMBERS_BY_TENANT_ID,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -245,6 +250,11 @@ export const postAddKeyToApplication = data => ({
 
 export const postCreateLocalUser = data => ({
   type: actionType.POST_CREATE_LOCAL_USER,
+  data
+});
+
+export const postAssignPhoneNumbersToGroup = data => ({
+  type: actionType.POST_ASSIGN_PHONE_NUMBERS_TO_GROUP,
   data
 });
 
@@ -1080,6 +1090,24 @@ export function fetchGetLocalUsers() {
   };
 }
 
+export function fetchGetAvailableNumbersByTenantID(tenantId) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/numbers?available=true`
+    )
+      .then(data => dispatch(getAvailableNumbersByTenantID(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-phone-numbers-failed"
+            defaultMessage="Failed to fetch phone numbers!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
 export function fetchGetLocalUser(username) {
   return function(dispatch) {
     return fetch_get(
@@ -1324,6 +1352,29 @@ export function fetchPostCreateLocalUser(data) {
           <FormattedMessage
             id="failed-create-local-user"
             defaultMessage="Failed create local user!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchPostAssignPhoneNumbersToGroup(tenantId, groupId, data) {
+  return function(dispatch) {
+    return fetch_post(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/numbers/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => {
+        dispatch(postAssignPhoneNumbersToGroup(data));
+        return "success";
+      })
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-assign-phonenumbers"
+            defaultMessage="Failed to assign phonenumbers!"
           />,
           error.message
         );

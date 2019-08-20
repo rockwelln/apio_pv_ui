@@ -97,7 +97,9 @@ const initialState = {
   keyValue: {},
   fetchTrunksGroupsFail: false,
   localUsers: [],
-  localUser: {}
+  localUser: {},
+  availableNumbersTenant: [],
+  addedNumbersToGroup: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -414,6 +416,24 @@ function mainReducer(state = initialState, action) {
         localUser: action.data
       };
     }
+    case actionType.GET_AVAILABLE_NUMBERS_BY_TENANT_ID: {
+      const phoneNumbers = action.data.available_phoneNumbers.map(phone => ({
+        ...phone,
+        rangeStart:
+          (phone.phoneNumbers && phone.phoneNumbers.split(" - ").slice(0)[0]) ||
+          phone.phoneNumber ||
+          "",
+        rangeEnd:
+          (phone.phoneNumbers &&
+            phone.phoneNumbers.split(" - ").slice(-1)[0]) ||
+          "",
+        phoneChecked: false
+      }));
+      return {
+        ...state,
+        availableNumbersTenant: phoneNumbers
+      };
+    }
     case actionType.POST_CREATE_GROUP_ADMIN: {
       return {
         ...state,
@@ -498,6 +518,23 @@ function mainReducer(state = initialState, action) {
     case actionType.POST_CREATE_LOCAL_USER: {
       return {
         ...state
+      };
+    }
+    case actionType.POST_ASSIGN_PHONE_NUMBERS_TO_GROUP: {
+      const warning = action.data.warning;
+      const added = action.data.result.filter(
+        number => number.status === "added"
+      );
+      const rejected = action.data.result.filter(
+        number => number.status === "rejected"
+      );
+      return {
+        ...state,
+        addedNumbersToGroup: {
+          warning,
+          added,
+          rejected
+        }
       };
     }
     case actionType.PUT_UPDATE_USER: {

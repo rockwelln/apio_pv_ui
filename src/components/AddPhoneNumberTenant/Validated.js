@@ -38,12 +38,14 @@ export class Basic extends Component {
                     this.props.match.params.gwName
                   }/tenants/${this.props.match.params.tenantId}`}
                 >
-                  <Button
-                    className={"margin-left-1 btn-danger"}
-                    onClick={() => this.props.refuseAddPhoneToTenant()}
-                  >
-                    Cancel
-                  </Button>
+                  {this.props.isGroupPage ? null : (
+                    <Button
+                      className={"margin-left-1 btn-danger"}
+                      onClick={() => this.props.refuseAddPhoneToTenant()}
+                    >
+                      Cancel
+                    </Button>
+                  )}
                 </Link>
               </div>
             </Col>

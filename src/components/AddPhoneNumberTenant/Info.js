@@ -13,11 +13,20 @@ import Tab from "react-bootstrap/lib/Tab";
 import Added from "./Tabs/Added";
 import Rejected from "./Tabs/Rejected";
 
+import {
+  fetchPostAssignPhoneNumbersToGroup,
+  changeStepOfAddPhoneTenant
+} from "../../store/actions";
+
 export class Info extends Component {
+  state = {
+    addButton: "Add now"
+  };
   render() {
     return (
       //body
       <div className={"panel-body"}>
+        {this.props.isGroupPage && <div>Results added to tennant</div>}
         {this.props.addedNumbersToTenant.warning && (
           <Row>
             <Col md={12}>
@@ -32,7 +41,7 @@ export class Info extends Component {
             eventKey={0}
             title={`Added (${this.props.addedNumbersToTenant.added.length})`}
           >
-            <Added />
+            <Added added={this.props.addedNumbersToTenant.added} />
           </Tab>
           <Tab
             eventKey={1}
@@ -40,38 +49,76 @@ export class Info extends Component {
               this.props.addedNumbersToTenant.rejected.length
             })`}
           >
-            <Rejected />
+            <Rejected rejected={this.props.addedNumbersToTenant.rejected} />
           </Tab>
         </Tabs>
         {/**Button for finish */}
         <Row className={"margin-1"}>
           <div className="button-row">
             <div className="pull-right">
-              <Link
-                to={`/provisioning/${this.props.match.params.gwName}/tenants/${
-                  this.props.match.params.tenantId
-                }`}
-              >
-                <Button
-                  onClick={this.addPhoneNumbers}
-                  className={"btn-primary"}
+              {this.props.isGroupPage ? (
+                <React.Fragment>
+                  <Button
+                    onClick={this.addNumbersToGroup}
+                    className={"btn-primary"}
+                    disabled={this.state.addButton === "Adding..."}
+                  >
+                    {this.state.addButton}
+                  </Button>
+                  <div className={"color-error"}>{this.props.errorMessage}</div>
+                </React.Fragment>
+              ) : (
+                <Link
+                  to={`/provisioning/${
+                    this.props.match.params.gwName
+                  }/tenants/${this.props.match.params.tenantId}`}
                 >
-                  OK
-                </Button>
-              </Link>
+                  <Button
+                    onClick={this.addPhoneNumbers}
+                    className={"btn-primary"}
+                  >
+                    OK
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         </Row>
       </div>
     );
   }
+
+  addNumbersToGroup = () => {
+    this.setState({ errorMessage: null, addButton: "Adding..." });
+    const numbers = this.props.addedNumbersToTenant.added.map(phone => ({
+      phoneNumber: phone.phoneNumber
+    }));
+    const data = { numbers };
+    this.props
+      .fetchPostAssignPhoneNumbersToGroup(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        data
+      )
+      .then(res =>
+        res === "success"
+          ? this.props.changeStepOfAddPhoneTenant("InfoGroup")
+          : this.setState({
+              errorMessage: "Failed assign numbers",
+              addButton: "Add now"
+            })
+      );
+  };
 }
 
 const mapStateToProps = state => ({
   addedNumbersToTenant: state.addedNumbersToTenant
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  fetchPostAssignPhoneNumbersToGroup,
+  changeStepOfAddPhoneTenant
+};
 
 export default withRouter(
   connect(
