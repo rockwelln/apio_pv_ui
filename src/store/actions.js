@@ -185,6 +185,11 @@ export const getLocalUser = data => ({
   data
 });
 
+export const getSearchUsers = data => ({
+  type: actionType.GET_SEARCH_USERS,
+  data
+});
+
 export const getAvailableNumbersByTenantID = data => ({
   type: actionType.GET_AVAILABLE_NUMBERS_BY_TENANT_ID,
   data
@@ -1083,6 +1088,25 @@ export function fetchGetLocalUsers() {
           <FormattedMessage
             id="fetch-local-users-failed"
             defaultMessage="Failed to fetch local users!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetSearchUsers(data) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/search/users/`,
+      data
+    )
+      .then(data => dispatch(getSearchUsers(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="search-users-failed"
+            defaultMessage="Failed to search users!"
           />,
           error.message
         )

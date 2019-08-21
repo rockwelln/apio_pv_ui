@@ -47,6 +47,7 @@ import LocalUsers from "./components/LocalUsers";
 import AddLocalUsers from "./components/AddLocalUser";
 import UpdateLocalUser from "./components/UpdateLocalUser";
 import AddPhoneNumberGroup from "./components/AddPhoneNumberGroup";
+import SearchPage from "./components/SearchPage";
 
 import "./App.css";
 import loading from "./loading.gif";
@@ -102,7 +103,7 @@ class App extends Component {
   }
 
   getUserInfo(auth_token) {
-    fetch_get("/api/v01/system/users/local", auth_token)
+    fetch_get("/api/v01/system/users/local")
       .then(data => {
         this.setState({ user_info: data });
         this.props.onLanguageUpdate(data.language);
@@ -275,6 +276,17 @@ class App extends Component {
                     {...props}
                   />
                 )}
+                exact
+              />
+              <Route
+                path="/provisioning/:gwName/search"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <SearchPage />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
                 exact
               />
               <Route

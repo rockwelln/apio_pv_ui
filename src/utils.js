@@ -98,8 +98,8 @@ export function fetch_get(url, token) {
     method: "GET",
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${getCookie("auth_token")}`,
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getCookie("auth_token")}`
     }
   })
     .then(checkStatus)
