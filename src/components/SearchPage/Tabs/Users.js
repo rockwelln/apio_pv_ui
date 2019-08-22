@@ -8,6 +8,7 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import Radio from "react-bootstrap/lib/Radio";
 import Button from "react-bootstrap/lib/Button";
+import HelpBlock from "react-bootstrap/lib/HelpBlock";
 
 import { removeEmpty } from "../../remuveEmptyInObject";
 import { fetchGetSearchUsers } from "../../../store/actions";
@@ -21,7 +22,7 @@ export class Users extends Component {
     insensitiveEmailAddressContains: "",
     insensitiveUserInTrunkGroupEquals: null,
     insensitiveGroupIdContains: "",
-    responseSizeLimit: null,
+    responseSizeLimit: undefined,
     showLastName: false,
     showFirstName: false,
     showPhoneNumber: false,
@@ -29,11 +30,11 @@ export class Users extends Component {
     showUserInTrunkGroup: false,
     showGroupId: false,
     showSizeLimit: false,
-    buttonSearch: "Search"
+    buttonSearch: "Search",
+    sizeError: null
   };
 
   render() {
-    console.log(this.props.users);
     return (
       <React.Fragment>
         <Row className={"margin-top-1"}>
@@ -296,16 +297,25 @@ export class Users extends Component {
                 Max number of results:
               </div>
               <div className={"margin-right-1 flex-basis-33"}>
-                <FormControl
-                  type="number"
-                  min={1}
-                  value={this.state.responseSizeLimit}
-                  onChange={e => {
-                    this.setState({
-                      responseSizeLimit: e.target.value
-                    });
-                  }}
-                />
+                <FormGroup
+                  controlId="size"
+                  validationState={this.state.sizeError}
+                >
+                  <FormControl
+                    type="number"
+                    min={1}
+                    value={this.state.responseSizeLimit}
+                    onChange={e => {
+                      this.setState({
+                        responseSizeLimit: e.target.value,
+                        sizeError: null
+                      });
+                    }}
+                  />
+                  {this.state.sizeError && (
+                    <HelpBlock>Can be empty, if not it should be > 0</HelpBlock>
+                  )}
+                </FormGroup>
               </div>
             </Col>
           </Row>
@@ -345,8 +355,14 @@ export class Users extends Component {
       insensitivePhoneNumberContains,
       insensitiveEmailAddressContains,
       insensitiveUserInTrunkGroupEquals,
-      insensitiveGroupIdContains
+      insensitiveGroupIdContains,
+      responseSizeLimit
     } = this.state;
+
+    if (responseSizeLimit && responseSizeLimit < 1) {
+      this.setState({ sizeError: "error" });
+      return;
+    }
 
     const data = {
       insensitiveUserIdContains,
@@ -355,12 +371,16 @@ export class Users extends Component {
       insensitivePhoneNumberContains,
       insensitiveEmailAddressContains,
       insensitiveUserInTrunkGroupEquals,
-      insensitiveGroupIdContains
+      insensitiveGroupIdContains,
+      responseSizeLimit
     };
     const clearData = removeEmpty(data);
+    const queryString = Object.keys(clearData)
+      .map(key => key + "=" + clearData[key])
+      .join("&");
     this.setState({ buttonSearch: "Searching..." }, () =>
       this.props
-        .fetchGetSearchUsers(clearData)
+        .fetchGetSearchUsers(queryString)
         .then(() => this.setState({ buttonSearch: "Search" }))
     );
   };

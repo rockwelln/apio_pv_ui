@@ -100,7 +100,8 @@ const initialState = {
   localUser: {},
   availableNumbersTenant: [],
   addedNumbersToGroup: {},
-  usersFound: []
+  usersFound: [],
+  groupsFound: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -421,6 +422,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         usersFound: action.data.users
+      };
+    }
+    case actionType.GET_SEARCH_GROUPS: {
+      return {
+        ...state,
+        groupsFound: action.data.groups
       };
     }
     case actionType.GET_AVAILABLE_NUMBERS_BY_TENANT_ID: {

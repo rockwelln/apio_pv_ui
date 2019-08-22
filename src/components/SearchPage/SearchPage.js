@@ -4,6 +4,7 @@ import Tabs from "react-bootstrap/lib/Tabs";
 import Tab from "react-bootstrap/lib/Tab";
 
 import Users from "./Tabs/Users";
+import Groups from "./Tabs/Groups";
 
 class SearchPage extends Component {
   render() {
@@ -18,7 +19,7 @@ class SearchPage extends Component {
               <Users />
             </Tab>
             <Tab eventKey={1} title="GROUPS">
-              GroupsTab
+              <Groups />
             </Tab>
           </Tabs>
         </div>

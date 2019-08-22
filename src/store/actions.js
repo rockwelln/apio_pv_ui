@@ -190,6 +190,11 @@ export const getSearchUsers = data => ({
   data
 });
 
+export const getSearchGroups = data => ({
+  type: actionType.GET_SEARCH_GROUPS,
+  data
+});
+
 export const getAvailableNumbersByTenantID = data => ({
   type: actionType.GET_AVAILABLE_NUMBERS_BY_TENANT_ID,
   data
@@ -1098,8 +1103,7 @@ export function fetchGetLocalUsers() {
 export function fetchGetSearchUsers(data) {
   return function(dispatch) {
     return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/search/users/`,
-      data
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/search/users?${data}`
     )
       .then(data => dispatch(getSearchUsers(data)))
       .catch(error =>
@@ -1107,6 +1111,24 @@ export function fetchGetSearchUsers(data) {
           <FormattedMessage
             id="search-users-failed"
             defaultMessage="Failed to search users!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetSearchGroups(data) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/search/users?${data}`
+    )
+      .then(data => dispatch(getSearchGroups(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="search-groups-failed"
+            defaultMessage="Failed to search groups!"
           />,
           error.message
         )
