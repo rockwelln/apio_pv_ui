@@ -1121,7 +1121,7 @@ export function fetchGetSearchUsers(data) {
 export function fetchGetSearchGroups(data) {
   return function(dispatch) {
     return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/search/users?${data}`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/search/groups?${data}`
     )
       .then(data => dispatch(getSearchGroups(data)))
       .catch(error =>

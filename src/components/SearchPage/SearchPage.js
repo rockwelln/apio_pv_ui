@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import Tabs from "react-bootstrap/lib/Tabs";
 import Tab from "react-bootstrap/lib/Tab";
 
-import Users from "./Tabs/Users";
-import Groups from "./Tabs/Groups";
+import Users from "./Tabs/Users/Users";
+import Groups from "./Tabs/Groups/Groups";
 
 class SearchPage extends Component {
   render() {
