@@ -24,6 +24,8 @@ to be completed with Code of Conduct...
 ## Authors
 
 * **Norman Denayer** - *Initial work* - https://github.com/rockwelln
+* **Bart Coelmont** - *Product owner*
+* **Viktor Smakhtin** - *Developper*
 
 ## License
 
