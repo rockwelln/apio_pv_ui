@@ -3,7 +3,6 @@ import { withRouter } from "react-router";
 
 import { Link } from "react-router-dom";
 import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
-//import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import DeleteModal from "./DeleteModal";
@@ -33,9 +32,9 @@ class Tenant extends Component {
             {t.tenantId}
           </Link>
         </td>
-        <td>{t.name}</td>
-        <td>{t.type}</td>
-        <td>/</td>
+        <td>{t.tina_id}</td>
+        <td>{t.vlan_uuid}</td>
+        <td>{t.ll_id}</td>
         <td>
           <ButtonToolbar>
             <Glyphicon

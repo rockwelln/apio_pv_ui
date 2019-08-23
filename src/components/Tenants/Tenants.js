@@ -50,7 +50,7 @@ class Tenants extends Component {
             if (a.tenantId > b.tenantId) return 1;
             return 0;
           }),
-          sortedBy: "id",
+          sortedBy: "tenantId",
           isLoading: false
         },
         () => this.pagination()
@@ -156,38 +156,44 @@ class Tenants extends Component {
                   <Table hover>
                     <thead>
                       <tr>
-                        <th style={{ width: "24%" }}>
+                        <th>
                           <FormattedMessage
                             id="tenant-id"
-                            defaultMessage="ID"
+                            defaultMessage="Tenant ID"
                           />
                           <Glyphicon
                             glyph="glyphicon glyphicon-sort"
-                            onClick={this.sortByID}
+                            onClick={this.sortByTenantID}
                           />
                         </th>
-                        <th style={{ width: "24%" }}>
-                          <FormattedMessage id="name" defaultMessage="Name" />
-                          <Glyphicon
-                            glyph="glyphicon glyphicon-sort"
-                            onClick={this.sortByName}
-                          />
-                        </th>
-                        <th style={{ width: "24%" }}>
-                          <FormattedMessage id="type" defaultMessage="Type" />
-                          <Glyphicon
-                            glyph="glyphicon glyphicon-sort"
-                            onClick={this.sortByType}
-                          />
-                        </th>
-                        <th style={{ width: "24%" }}>
+                        <th>
                           <FormattedMessage
-                            id="reseller"
-                            defaultMessage="Reseller"
+                            id="tina"
+                            defaultMessage="Tina ID"
                           />
-                          <Glyphicon glyph="glyphicon glyphicon-sort" />
+                          <Glyphicon
+                            glyph="glyphicon glyphicon-sort"
+                            onClick={this.sortByTinaID}
+                          />
                         </th>
-                        <th style={{ width: "4%" }} />
+                        <th>
+                          <FormattedMessage
+                            id="uuid"
+                            defaultMessage="Vlan UUID"
+                          />
+                          <Glyphicon
+                            glyph="glyphicon glyphicon-sort"
+                            onClick={this.sortByVlanUUID}
+                          />
+                        </th>
+                        <th>
+                          <FormattedMessage id="llid" defaultMessage="LLID" />
+                          <Glyphicon
+                            glyph="glyphicon glyphicon-sort"
+                            onClick={this.sortByLLID}
+                          />
+                        </th>
+                        <th />
                       </tr>
                     </thead>
                     <tbody>
@@ -280,16 +286,17 @@ class Tenants extends Component {
       .filter(
         tennant =>
           tennant.tenantId.toLowerCase().includes(searchValue.toLowerCase()) ||
-          tennant.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-          tennant.type.toLowerCase().includes(searchValue.toLowerCase())
+          tennant.tina_id.toLowerCase().includes(searchValue.toLowerCase()) ||
+          tennant.vlan_uuid.toLowerCase().includes(searchValue.toLowerCase()) ||
+          tennant.ll_id.toLowerCase().includes(searchValue.toLowerCase())
       )
       .map(tenant => tenant);
     this.setState({ tenants: SearchArray }, () => this.pagination());
   };
 
-  sortByID = () => {
+  sortByTenantID = () => {
     const { tenants, sortedBy } = this.state;
-    if (sortedBy === "id") {
+    if (sortedBy === "tenantId") {
       const tenansSorted = tenants.reverse();
       this.setState({ tenants: tenansSorted }, () => this.pagination());
     } else {
@@ -298,41 +305,58 @@ class Tenants extends Component {
         if (a.tenantId > b.tenantId) return 1;
         return 0;
       });
-      this.setState({ tenants: tenansSorted, sortedBy: "id" }, () =>
+      this.setState({ tenants: tenansSorted, sortedBy: "tenantId" }, () =>
         this.pagination()
       );
     }
   };
 
-  sortByName = () => {
+  sortByTinaID = () => {
     const { tenants, sortedBy } = this.state;
-    if (sortedBy === "name") {
+    if (sortedBy === "tina_id") {
       const tenansSorted = tenants.reverse();
       this.setState({ tenants: tenansSorted }, () => this.pagination());
     } else {
       const tenansSorted = tenants.sort((a, b) => {
-        if (a.name < b.name) return -1;
-        if (a.name > b.name) return 1;
+        if (a.tina_id < b.tina_id) return -1;
+        if (a.tina_id > b.tina_id) return 1;
         return 0;
       });
-      this.setState({ tenants: tenansSorted, sortedBy: "name" }, () =>
+      this.setState({ tenants: tenansSorted, sortedBy: "tina_id" }, () =>
         this.pagination()
       );
     }
   };
 
-  sortByType = () => {
+  sortByVlanUUID = () => {
     const { tenants, sortedBy } = this.state;
-    if (sortedBy === "type") {
+    if (sortedBy === "vlan_uuid") {
       const tenansSorted = tenants.reverse();
       this.setState({ tenants: tenansSorted }, () => this.pagination());
     } else {
       const tenansSorted = tenants.sort((a, b) => {
-        if (a.type < b.type) return -1;
-        if (a.type > b.type) return 1;
+        if (a.vlan_uuid < b.vlan_uuid) return -1;
+        if (a.vlan_uuid > b.vlan_uuid) return 1;
         return 0;
       });
-      this.setState({ tenants: tenansSorted, sortedBy: "type" }, () =>
+      this.setState({ tenants: tenansSorted, sortedBy: "vlan_uuid" }, () =>
+        this.pagination()
+      );
+    }
+  };
+
+  sortByLLID = () => {
+    const { tenants, sortedBy } = this.state;
+    if (sortedBy === "ll_id") {
+      const tenansSorted = tenants.reverse();
+      this.setState({ tenants: tenansSorted }, () => this.pagination());
+    } else {
+      const tenansSorted = tenants.sort((a, b) => {
+        if (a.ll_id < b.ll_id) return -1;
+        if (a.ll_id > b.ll_id) return 1;
+        return 0;
+      });
+      this.setState({ tenants: tenansSorted, sortedBy: "ll_id" }, () =>
         this.pagination()
       );
     }

@@ -25,9 +25,9 @@ export class Sidebar extends Component {
           <LinkContainer
             to={`/provisioning/${this.props.match.params.gwName}/tenants`}
           >
-            <NavItem eventKey={0}>TENANTS</NavItem>
+            <NavItem eventKey={0}>ENTREPRISES</NavItem>
           </LinkContainer>
-          <LinkContainer
+          {/* <LinkContainer
             to={`/provisioning/${this.props.match.params.gwName}/search`}
           >
             <NavItem eventKey={1}>SEARCH</NavItem>
@@ -57,7 +57,7 @@ export class Sidebar extends Component {
             to={`/provisioning/${this.props.match.params.gwName}/localusers`}
           >
             <NavItem eventKey={0}>LOCAL USERS</NavItem>
-          </LinkContainer>
+          </LinkContainer> */}
         </Nav>
       </React.Fragment>
     );

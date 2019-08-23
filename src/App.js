@@ -30,6 +30,8 @@ import { ResetPasswordPage, RESET_PASSWORD_PREFIX } from "./reset_password";
 import AsyncApioNavBar from "./components/Header";
 import LoginPage from "./components/LoginPage";
 import Tenants from "./components/Tenants";
+import AddEntreprises from "./components/AddEntreprises";
+
 import TenantPage from "./components/TenantPage";
 import GroupPage from "./components/GroupPage";
 import UserPage from "./components/UserPage";
@@ -279,6 +281,28 @@ class App extends Component {
                 exact
               />
               <Route
+                path="/provisioning/:gwName/tenants"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <Tenants />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/provisioning/:gwName/tenants/add"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <AddEntreprises />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              {/* <Route
                 path="/provisioning/:gwName/search"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
@@ -537,7 +561,7 @@ class App extends Component {
                   )
                 }
                 exact
-              />
+              /> */}
               <Route path="/" exact>
                 <Redirect to="/dashboard" />
               </Route>

@@ -508,8 +508,11 @@ export const removeSuccesfulValidPhoneTenant = data => ({
 });
 
 export function fetchGetTenants(cancelLoad) {
+  ////////////////////
   return function(dispatch) {
-    return fetch_get(`${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/`)
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/`
+    )
       .then(data => !cancelLoad && dispatch(getTenants(data)))
       .catch(error =>
         NotificationsManager.error(
@@ -1266,13 +1269,17 @@ export function fetchPostAssignUserServicePacks(
 }
 
 export function fetchPostCreateTenant(data) {
+  /////////////////////////////////////
   return function(dispatch) {
     return fetch_post(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/`,
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/`,
       data
     )
       .then(resp => resp.json())
-      .then(data => dispatch(postCreateTenant(data)))
+      .then(data => {
+        dispatch(postCreateTenant(data));
+        return "created";
+      })
       .catch(error => {
         NotificationsManager.error(
           <FormattedMessage
