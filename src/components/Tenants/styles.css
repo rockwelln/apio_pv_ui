@@ -15,7 +15,7 @@
 }
 
 .margin-0 {
-  margin: 0;
+  margin: 0 !important;
 }
 
 .padding-0 {
@@ -44,6 +44,10 @@
 
 .margin-right-1 {
   margin-right: 10px !important;
+}
+
+.margin-right-2 {
+  margin-right: 20px !important;
 }
 
 .indent-top-bottom-1 {
@@ -203,8 +207,16 @@ textarea {
   flex-basis: 33.33%;
 }
 
+.flex-basis-11 {
+  flex-basis: 11.11%;
+}
+
 .flex-basis-66 {
   flex-basis: 66.66%;
+}
+
+.flex-basis-5 {
+  flex-basis: 5.5%;
 }
 
 .height-30 {

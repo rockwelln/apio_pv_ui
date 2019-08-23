@@ -31,6 +31,7 @@ import AsyncApioNavBar from "./components/Header";
 import LoginPage from "./components/LoginPage";
 import Tenants from "./components/Tenants";
 import AddEntreprises from "./components/AddEntreprises";
+import AddGroup from "./components/AddGroup";
 
 import TenantPage from "./components/TenantPage";
 import GroupPage from "./components/GroupPage";
@@ -302,6 +303,30 @@ class App extends Component {
                 }
                 exact
               />
+              <Route
+                path="/provisioning/:gwName/tenants/:tenantId"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <TenantPage
+                      notifications={this._notificationSystem.current}
+                    />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/provisioning/:gwName/tenants/:tenantId/addgroup"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <AddGroup />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
               {/* <Route
                 path="/provisioning/:gwName/search"
                 component={props =>
@@ -398,30 +423,6 @@ class App extends Component {
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <CreateTenant />
-                  ) : (
-                    <NotAllowed />
-                  )
-                }
-                exact
-              />
-              <Route
-                path="/provisioning/:gwName/tenants/:tenantId"
-                component={props =>
-                  isAllowed(ui_profile, pages.data_tenants) ? (
-                    <TenantPage
-                      notifications={this._notificationSystem.current}
-                    />
-                  ) : (
-                    <NotAllowed />
-                  )
-                }
-                exact
-              />
-              <Route
-                path="/provisioning/:gwName/tenants/:tenantId/addgroup"
-                component={props =>
-                  isAllowed(ui_profile, pages.data_tenants) ? (
-                    <CreateGroup />
                   ) : (
                     <NotAllowed />
                   )
