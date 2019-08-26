@@ -12,7 +12,7 @@ import Radio from "react-bootstrap/lib/Radio";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import Checkbox from "react-bootstrap/lib/Checkbox";
 
-import { fetchPostCreateTenant } from "../../store/actions";
+import { fetchPostCreateGroup } from "../../store/actions";
 import { removeEmpty } from "../remuveEmptyInObject";
 
 import {
@@ -34,11 +34,11 @@ export class AddGroup extends Component {
     ccli: "",
     typeOfIad: "",
     typeOfAccess: "",
-    numbersOfChannels: undefined,
+    numberOfChannels: undefined,
     serviceType: "",
     additionnalRedundancy: false,
     zipCode: "",
-    showServiceConfiguration: true,
+    showServiceConfiguration: false,
     ncosValue: "",
     clip: false,
     colp: false,
@@ -48,16 +48,11 @@ export class AddGroup extends Component {
     dtmf: "RFC2833",
     channelHunting: "Lowest available channel first",
     direction: "",
-    channelIn: "",
+    channelsIn: "",
     channelOut: "",
     dstNumberPra: "",
     ntlNumberPra: "",
     intlNumberPra: "",
-
-    templateName: "",
-    tinaId: "",
-    vlanUuid: "",
-    llid: "",
     buttonName: "Create"
   };
   render() {
@@ -126,6 +121,7 @@ export class AddGroup extends Component {
                         className={"margin-0 flex margin-right-2"}
                         key={i + ""}
                         name="typeOfIad"
+                        disabled={type.disabled}
                         value={type.value}
                         checked={type.value === this.state.typeOfIad}
                         onChange={e =>
@@ -150,6 +146,7 @@ export class AddGroup extends Component {
                   <FormGroup className={"margin-0 flex"}>
                     {TYPEOFACCESS.map((type, i) => (
                       <Radio
+                        disabled={type.disabled}
                         className={"margin-0 flex margin-right-2"}
                         key={i + ""}
                         name="typeOfAccess"
@@ -176,10 +173,10 @@ export class AddGroup extends Component {
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
                     type="number"
-                    value={this.state.numbersOfChannels}
+                    value={this.state.numberOfChannels}
                     placeholder={"Numbers of Channels"}
                     onChange={e =>
-                      this.setState({ numbersOfChannels: e.target.value })
+                      this.setState({ numberOfChannels: e.target.value })
                     }
                   />
                 </div>
@@ -491,10 +488,10 @@ export class AddGroup extends Component {
                     <div className={"margin-right-1 flex-basis-11"}>
                       <FormControl
                         type="text"
-                        value={this.state.channelIn}
+                        value={this.state.channeslIn}
                         placeholder={"In"}
                         onChange={e =>
-                          this.setState({ channelIn: e.target.value })
+                          this.setState({ channelsIn: e.target.value })
                         }
                       />
                     </div>
@@ -593,10 +590,9 @@ export class AddGroup extends Component {
                 <div className="button-row">
                   <div className="pull-right">
                     <Button
-                      onClick={this.AddEntreprise}
+                      onClick={this.AddGroup}
                       type="submit"
                       className="btn-primary"
-                      disabled
                     >
                       <Glyphicon glyph="glyphicon glyphicon-ok" />{" "}
                       {this.state.buttonName}
@@ -613,36 +609,68 @@ export class AddGroup extends Component {
 
   cancelClick = () => {
     this.props.history.push(
-      `/provisioning/${this.props.match.params.gwName}/tenants/${
-        this.props.match.params.tenantId
-      }`
+      `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}`
     );
   };
 
-  AddEntreprise = () => {
+  AddGroup = () => {
     const {
-      entrerpriseName,
-      templateName,
-      tinaId,
-      vlanUuid,
-      llid
+      groupName,
+      ccli,
+      typeOfIad,
+      typeOfAccess,
+      numberOfChannels,
+      serviceType,
+      additionnalRedundancy,
+      zipCode,
+      ncosValue,
+      clip,
+      colp,
+      clir,
+      colr,
+      adviceOfCharge,
+      dtmf,
+      channelHunting,
+      direction,
+      channelsIn,
+      channelOut,
+      dstNumberPra,
+      ntlNumberPra,
+      intlNumberPra
     } = this.state;
 
     const data = {
-      name: entrerpriseName,
-      tina_id: tinaId,
-      vlan_uuid: vlanUuid,
-      ll_id: llid,
-      templateName
+      groupName,
+      cliName: ccli,
+      zipCode,
+      numberOfChannels: Number(numberOfChannels),
+      pbxType: typeOfIad,
+      accessType: typeOfAccess,
+      serviceType,
+      np1Redundancy: additionnalRedundancy,
+      ncos: ncosValue,
+      clip,
+      colp,
+      clir,
+      colr,
+      aoc: adviceOfCharge,
+      direction,
+      channelsIn,
+      channelOut,
+      channelHunting,
+      dtmf,
+      sip_nat_dst: dstNumberPra,
+      sip_nat_src: ntlNumberPra,
+      sip_int_src: intlNumberPra
     };
     const clearData = removeEmpty(data);
     this.setState({ buttonName: "Creating..." }, () =>
       this.props
-        .fetchPostCreateTenant(clearData)
+        .fetchPostCreateGroup(this.props.match.params.tenantId, clearData)
         .then(res =>
-          res === "created"
+          true //res === "created"
             ? this.props.history.push(
-                `/provisioning/${this.props.match.params.gwName}/tenants`
+                `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}`
               )
             : this.setState({ buttonName: "Create" })
         )
@@ -650,7 +678,7 @@ export class AddGroup extends Component {
   };
 }
 
-const mapDispatchToProps = { fetchPostCreateTenant };
+const mapDispatchToProps = { fetchPostCreateGroup };
 
 export default withRouter(
   connect(

@@ -527,9 +527,10 @@ export function fetchGetTenants(cancelLoad) {
 }
 
 export function fetchGetTenantById(Id) {
+  //////////////////////////////
   return function(dispatch) {
     return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${Id}`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${Id}`
     )
       .then(data => dispatch(getTenantById(data)))
       .catch(error =>
@@ -1293,13 +1294,17 @@ export function fetchPostCreateTenant(data) {
 }
 
 export function fetchPostCreateGroup(tenantId, data) {
+  ///////////////////////////////////
   return function(dispatch) {
     return fetch_post(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/`,
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/`,
       data
     )
       .then(res => res.json())
-      .then(data => dispatch(postCreateGroup(data)))
+      .then(data => {
+        dispatch(postCreateGroup(data));
+        return "created";
+      })
       .catch(error => {
         NotificationsManager.error(
           <FormattedMessage

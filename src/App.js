@@ -32,6 +32,7 @@ import LoginPage from "./components/LoginPage";
 import Tenants from "./components/Tenants";
 import AddEntreprises from "./components/AddEntreprises";
 import AddGroup from "./components/AddGroup";
+import EntreprisesPage from "./components/EntreprisesPage";
 
 import TenantPage from "./components/TenantPage";
 import GroupPage from "./components/GroupPage";
@@ -307,9 +308,7 @@ class App extends Component {
                 path="/provisioning/:gwName/tenants/:tenantId"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
-                    <TenantPage
-                      notifications={this._notificationSystem.current}
-                    />
+                    <EntreprisesPage />
                   ) : (
                     <NotAllowed />
                   )

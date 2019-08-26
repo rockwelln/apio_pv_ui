@@ -23,17 +23,17 @@ export const USERTYPES = [
 ];
 
 export const TYPEOFIAD = [
-  { name: "PRA", value: "PRA" },
-  { name: "BRA", value: "BRA" },
-  { name: "SIP", value: "SIP" },
-  { name: "PRA then SIP", value: "PRA then SIP" },
-  { name: "SIP then PRA", value: "SIP then PRA" }
+  { name: "PRA", value: "PRA", disabled: false },
+  { name: "BRA", value: "BRA", disabled: true },
+  { name: "SIP", value: "SIP", disabled: true },
+  { name: "PRA then SIP", value: "PRA then SIP", disabled: true },
+  { name: "SIP then PRA", value: "SIP then PRA", disabled: true }
 ];
 
 export const TYPEOFACCESS = [
-  { name: "COAX", value: "COAX" },
-  { name: "VDSL", value: "VDSL" },
-  { name: "FIBER", value: "FIBER" }
+  { name: "COAX", value: "COAX", disabled: true },
+  { name: "VDSL", value: "VDSL", disabled: true },
+  { name: "FIBER", value: "FIBER", disabled: false }
 ];
 
 export const SERVICETYPE = [
@@ -41,11 +41,11 @@ export const SERVICETYPE = [
   { name: "Service redundant type 2", value: "2" },
   { name: "Service redundant type 3", value: "3" },
   { name: "Service redundant type 4", value: "4" },
-  { name: "Service redundant dual type 2 (2 EDU)", value: "a" },
-  { name: "Service redundant dual type 2 bis (2 EDU)", value: "b" },
-  { name: "Service redundant dual type 5 (2 EDU)", value: "5" },
-  { name: "Service redundant dual type 5 bis (2 EDU)", value: "c" },
-  { name: "Service redundant dual type 6 (2 EDU)", value: "6" },
+  { name: "Service redundant dual type 2 (2 EDU)", value: "D2" },
+  { name: "Service redundant dual type 2 bis (2 EDU)", value: "D2b" },
+  { name: "Service redundant type 5 (2 EDU)", value: "5" },
+  { name: "Service redundant type 5 bis (2 EDU)", value: "5b" },
+  { name: "Service redundant type 6 (2 EDU)", value: "6" },
   { name: "Service redundant type 7", value: "7" }
 ];
 
@@ -84,18 +84,42 @@ export const DIRECTION = [
 
 export const DESTINATIONNUMBERSPRA = [
   { name: "No-fromating rule", value: "None" },
-  { name: "National format with leadig 0's", value: "Strip + and add 00" },
-  { name: "National format without leadig 0's", value: "Strip +" },
-  { name: "National: E164 without leading +", value: "a" }
+  {
+    name: "International format (E164) without leadig 0's",
+    value: "Strip + and TON/NPI intl"
+  },
+  {
+    name: "International format with leadig 0's",
+    value: "Strip + and add 00 and TON/NPI intl"
+  }
 ];
 export const NATIONNUMBERSPRA = [
   { name: "No-fromating rule", value: "None" },
-  { name: "National format with leadig 0's", value: "Strip 0" },
-  { name: "National format without leadig 0's", value: "Strip 0 and add +32" },
-  { name: "National: E164 without leading +", value: "Strip 0 and add 32" }
+  {
+    name: "National format with leadig 0's",
+    value: "Do not strip 0 and TON/NPI natl"
+  },
+  {
+    name: "National format without leadig 0's",
+    value: "Strip 0 and TON/NPI natl"
+  },
+  {
+    name: "National: E164 without leading +",
+    value: "Strip 0 and add 32 and TON/NPI natl"
+  }
 ];
 export const INTERNATIONNUMBERSPRA = [
   { name: "No-fromating rule", value: "None" },
-  { name: "International format (E164) without leadig 0's", value: "a" },
-  { name: "International format with leadig 0's", value: "b" }
+  {
+    name: "National format with leadig 0's",
+    value: "Do not strip 0 and TON/NPI natl"
+  },
+  {
+    name: "National format without leadig 0's",
+    value: "Strip 0 and TON/NPI natl"
+  },
+  {
+    name: "National: E164 without leading +",
+    value: "Strip 0 and add 32 and TON/NPI natl"
+  }
 ];
