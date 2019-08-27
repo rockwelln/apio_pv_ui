@@ -56,7 +56,6 @@ export class AddGroup extends Component {
     buttonName: "Create"
   };
   render() {
-    console.log(this.state.adviceOfCharge);
     return (
       <React.Fragment>
         <Panel className={"margin-0"}>

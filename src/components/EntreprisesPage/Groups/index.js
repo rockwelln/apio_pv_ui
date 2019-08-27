@@ -18,6 +18,11 @@ import { fetchGetGroupsByTenantId } from "../../../store/actions";
 import Group from "./Group";
 import { countsPerPages } from "../../../constants";
 
+const fakeGroup = {
+  groupId: "fake_group_Id",
+  groupName: "fake group name"
+};
+
 export class GroupsTab extends Component {
   state = {
     searchValue: "",
@@ -32,20 +37,22 @@ export class GroupsTab extends Component {
   };
 
   fetchReq() {
-    this.props.fetchGetGroupsByTenantId(this.props.tenantId).then(() =>
-      this.setState(
-        {
-          groups: this.props.groups.sort((a, b) => {
-            if (a.groupId < b.groupId) return -1;
-            if (a.groupId > b.groupId) return 1;
-            return 0;
-          }),
-          isLoading: false,
-          sortedBy: "id"
-        },
-        () => this.pagination()
-      )
-    );
+    this.props
+      .fetchGetGroupsByTenantId(this.props.match.params.tenantId)
+      .then(() =>
+        this.setState(
+          {
+            groups: this.props.groups.sort((a, b) => {
+              if (a.groupId < b.groupId) return -1;
+              if (a.groupId > b.groupId) return 1;
+              return 0;
+            }),
+            isLoading: false,
+            sortedBy: "id"
+          },
+          () => this.pagination()
+        )
+      );
   }
 
   componentDidMount() {
@@ -132,55 +139,41 @@ export class GroupsTab extends Component {
             </div>
           </Col>
         </Row>
-        {paginationGroups.length ? (
+        {/*{paginationGroups.length ? (*/}
+        {true ? (
           <React.Fragment>
             <Row>
               <Col mdOffset={1} md={10}>
                 <Table hover>
                   <thead>
                     <tr>
-                      <th style={{ width: "24%" }}>
+                      <th>
                         <FormattedMessage id="tenant-id" defaultMessage="ID" />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
                           onClick={this.sortByID}
                         />
                       </th>
-                      <th style={{ width: "24%" }}>
+                      <th>
                         <FormattedMessage id="name" defaultMessage="Name" />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
                           onClick={this.sortByName}
                         />
                       </th>
-                      <th style={{ width: "24%" }}>
-                        <FormattedMessage
-                          id="type"
-                          defaultMessage="User limit"
-                        />
-                        <Glyphicon
-                          glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByUserLimit}
-                        />
-                      </th>
-                      <th style={{ width: "24%" }}>
-                        <FormattedMessage
-                          id="reseller"
-                          defaultMessage="Reseller"
-                        />
-                        <Glyphicon glyph="glyphicon glyphicon-sort" />
-                      </th>
-                      <th style={{ width: "4%" }} />
+
+                      <th />
                     </tr>
                   </thead>
                   <tbody>
-                    {paginationGroups[page].map(group => (
+                    <Group group={fakeGroup} />
+                    {/* {paginationGroups[page].map(group => (
                       <Group
                         key={group.groupId}
                         group={group}
                         onReload={() => this.fetchReq()}
                       />
-                    ))}
+                    ))} */}
                   </tbody>
                 </Table>
               </Col>

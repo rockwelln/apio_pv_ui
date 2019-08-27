@@ -1,27 +1,31 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
 
-import { Link } from "react-router-dom";
 import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import DeleteModal from "./DeleteModal";
 
-class Group extends Component {
+class Admin extends Component {
   state = { showDelete: false };
   render() {
-    const { group, onReload } = this.props;
+    const { admin, onReload } = this.props;
     const { showDelete } = this.state;
     return (
-      <tr key={group.groupId}>
+      <tr>
         <td>
           <Link
-            to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${group.groupId}`}
+            to={`/provisioning/${this.props.match.params.gwName}/tenants/${
+              this.props.tenantId
+            }/groups/${this.props.groupId}/admins/${admin.userId}`}
           >
-            {group.groupId}
+            {admin.userId}
           </Link>
         </td>
-        <td>{group.groupName}</td>
+        <td>{admin.firstName}</td>
+        <td>{admin.lastName}</td>
+        <td>{admin.language}</td>
         <td>
           <ButtonToolbar>
             <Glyphicon
@@ -30,7 +34,10 @@ class Group extends Component {
             />
           </ButtonToolbar>
           <DeleteModal
-            groupId={group.groupId}
+            notifications={this.props.notifications}
+            adminId={admin.userId}
+            tenantId={this.props.tenantId}
+            groupId={this.props.groupId}
             show={showDelete}
             onClose={e => {
               onReload && onReload();
@@ -44,4 +51,4 @@ class Group extends Component {
   }
 }
 
-export default withRouter(Group);
+export default withRouter(Admin);

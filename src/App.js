@@ -33,6 +33,7 @@ import Tenants from "./components/Tenants";
 import AddEntreprises from "./components/AddEntreprises";
 import AddGroup from "./components/AddGroup";
 import EntreprisesPage from "./components/EntreprisesPage";
+import AddIAD from "./components/AddIAD";
 
 import TenantPage from "./components/TenantPage";
 import GroupPage from "./components/GroupPage";
@@ -326,6 +327,28 @@ class App extends Component {
                 }
                 exact
               />
+              <Route
+                path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <GroupPage />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/addiad"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <AddIAD />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
               {/* <Route
                 path="/provisioning/:gwName/search"
                 component={props =>
@@ -433,19 +456,6 @@ class App extends Component {
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <AddPhoneNumberTenant />
-                  ) : (
-                    <NotAllowed />
-                  )
-                }
-                exact
-              />
-              <Route
-                path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId"
-                component={props =>
-                  isAllowed(ui_profile, pages.data_tenants) ? (
-                    <GroupPage
-                      notifications={this._notificationSystem.current}
-                    />
                   ) : (
                     <NotAllowed />
                   )

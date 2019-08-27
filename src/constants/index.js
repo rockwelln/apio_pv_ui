@@ -123,3 +123,14 @@ export const INTERNATIONNUMBERSPRA = [
     value: "Strip 0 and add 32 and TON/NPI natl"
   }
 ];
+
+export const TRANSPORTMODE = [
+  { name: "UDP", value: "udp" },
+  { name: "TCP", value: "tcp" }
+];
+
+export const IP1MODE = [
+  { name: "IPv4", value: "IPv4" },
+  { name: "IPv6", value: "IPv6" },
+  { name: "Disabled", value: "Disabled" }
+];

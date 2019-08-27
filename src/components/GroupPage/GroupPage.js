@@ -14,6 +14,7 @@ import Details from "./Tabs/Details";
 import Devices from "./Tabs/Devices";
 import Admins from "./Tabs/Admins";
 import TrunksGroup from "./Tabs/TrunksGroup";
+import IADs from "./Tabs/IADs";
 
 import { fetchGetTenantById, fetchGetGroupById } from "../../store/actions";
 
@@ -64,9 +65,7 @@ class TenantPage extends Component {
       <React.Fragment>
         <div className={"panel-heading"}>
           <p className={"header"}>
-            {`GROUP: ${group.groupName} (${
-              this.props.match.params.groupId
-            }) of tenant ${tenant.name} (${tenant.tenantId})`}
+            {`GROUP: ${group.groupName} (${this.props.match.params.groupId}) of tenant ${tenant.name} (${tenant.tenantId})`}
             <Glyphicon
               glyph="glyphicon glyphicon-trash"
               onClick={() => this.setState({ showDelete: true })}
@@ -83,7 +82,19 @@ class TenantPage extends Component {
         </div>
         <div className={"panel-body"}>
           <Tabs defaultActiveKey={0} id={`group_tabs${this.tabsIdSuffix}`}>
-            <Tab eventKey={0} title="LICENSES">
+            <Tab eventKey={0} title="Specifications">
+              Specifications
+            </Tab>
+            <Tab eventKey={1} title="IADs">
+              <IADs />
+            </Tab>
+            <Tab eventKey={2} title="Numbers">
+              Numbers
+            </Tab>
+            <Tab eventKey={3} title="Redundency">
+              Redundency
+            </Tab>
+            {/* <Tab eventKey={0} title="LICENSES">
               <Licenses
                 tenantId={this.props.match.params.tenantId}
                 groupId={this.props.match.params.groupId}
@@ -122,7 +133,7 @@ class TenantPage extends Component {
             </Tab>
             <Tab eventKey={6} title="DETAILS">
               <Details group={group} isLoading={isLoadingTenant} />
-            </Tab>
+            </Tab> */}
           </Tabs>
         </div>
       </React.Fragment>
