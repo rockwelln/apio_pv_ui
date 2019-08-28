@@ -84,7 +84,7 @@ export class PhoneNumbersTab extends Component {
               </InputGroup.Addon>
               <FormattedMessage
                 id="search_placeholder"
-                defaultMessage="Group ID or Name"
+                defaultMessage="placeholder"
               >
                 {placeholder => (
                   <FormControl
@@ -106,9 +106,7 @@ export class PhoneNumbersTab extends Component {
           </Col>
           <Col md={1}>
             <Link
-              to={`/provisioning/${this.props.match.params.gwName}/tenants/${
-                this.props.tenantId
-              }/groups/${this.props.groupId}/addphone`}
+              to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.tenantId}/groups/${this.props.groupId}/addphone`}
             >
               <Glyphicon
                 className={"x-large"}

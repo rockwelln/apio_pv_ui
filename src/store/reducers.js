@@ -101,11 +101,19 @@ const initialState = {
   availableNumbersTenant: [],
   addedNumbersToGroup: {},
   usersFound: [],
-  groupsFound: []
+  groupsFound: [],
+  ////////////////////////////
+  iads: []
 };
 
 function mainReducer(state = initialState, action) {
   switch (action.type) {
+    case actionType.GET_IADS: {
+      return {
+        ...state,
+        iads: action.data
+      };
+    }
     case actionType.GET_TENANTS: {
       return {
         ...state,

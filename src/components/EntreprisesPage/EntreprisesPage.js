@@ -6,16 +6,26 @@ import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import FormControl from "react-bootstrap/lib/FormControl";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
+import Button from "react-bootstrap/lib/Button";
 
 import Loading from "../../common/Loading";
 import Groups from "./Groups";
 
 import { fetchGetTenantById } from "../../store/actions";
 
+const OPTIONS = [
+  { name: "option 1" },
+  { name: "option 2" },
+  { name: "option 3" },
+  { name: "option 4" },
+  { name: "option 5" }
+];
+
 class TenantPage extends Component {
   state = {
     isLoading: true,
-    showDelete: false
+    showDelete: false,
+    isDisabled: true
   };
 
   componentDidMount() {
@@ -33,18 +43,28 @@ class TenantPage extends Component {
     console.log(tenant);
     return (
       <React.Fragment>
-        <div className={"panel-heading"}>
-          <div className={"header"}>ENTREPRISES NAME: xxxxx</div>
-        </div>
         <div className={"panel-body"}>
           <Row className={"margin-top-1"}>
             <Col md={12} className={"flex align-items-center"}>
-              <div className={"margin-right-1 flex font-24"}>
+              <FormControl
+                type="text"
+                placeholder={"ID"}
+                disabled={this.state.isDisabled}
+                className={"header flex-basis-50"}
+              />
+            </Col>
+          </Row>
+          <Row className={"margin-top-1"}>
+            <Col md={12} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex font-24 align-items-center"}>
                 <div className={"margin-right-1"}>Details</div>
-                <Glyphicon
-                  Glyphicon
-                  glyph="glyphicon glyphicon-pencil"
-                ></Glyphicon>
+                {this.state.isDisabled && (
+                  <Glyphicon
+                    className={"font-18"}
+                    glyph="glyphicon glyphicon-pencil"
+                    onClick={() => this.setState({ isDisabled: false })}
+                  ></Glyphicon>
+                )}
               </div>
             </Col>
           </Row>
@@ -69,7 +89,7 @@ class TenantPage extends Component {
                   type="text"
                   value={"xxxxx"}
                   placeholder={"TINA ID"}
-                  disabled
+                  disabled={this.state.isDisabled}
                 />
               </div>
             </Col>
@@ -84,7 +104,7 @@ class TenantPage extends Component {
                   type="text"
                   value={"xxxxx"}
                   placeholder={"VLAN UUID"}
-                  disabled
+                  disabled={this.state.isDisabled}
                 />
               </div>
             </Col>
@@ -97,7 +117,7 @@ class TenantPage extends Component {
                   type="text"
                   value={"xxxxxxx"}
                   placeholder={"LLID"}
-                  disabled
+                  disabled={this.state.isDisabled}
                 />
               </div>
             </Col>
@@ -112,21 +132,42 @@ class TenantPage extends Component {
                   type="text"
                   value={"option 1"}
                   placeholder={"Template Name"}
-                  disabled
+                  disabled={this.state.isDisabled}
                 />
               </div>
             </Col>
           </Row>
-          <Row className={"margin-top-1"}>
-            <Col md={12} className={"flex align-items-center"}>
-              <div className={"margin-right-1 flex font-24"}>Groups</div>
-            </Col>
-          </Row>
-          <Row className={"margin-top-1"}>
-            <Col md={12}>
-              <Groups />
-            </Col>
-          </Row>
+          {!this.state.isDisabled && (
+            <Row>
+              <Col md={12}>
+                <div className="button-row">
+                  <div className="pull-right">
+                    <Button
+                      onClick={() => this.setState({ isDisabled: true })}
+                      type="submit"
+                      className="btn-primary"
+                    >
+                      <Glyphicon glyph="glyphicon glyphicon-ok" />
+                      Update
+                    </Button>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          )}
+          <div className={"relative"}>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex font-24"}>Groups</div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12}>
+                <Groups />
+              </Col>
+            </Row>
+            {!this.state.isDisabled && <div className={"disabled"} />}
+          </div>
         </div>
       </React.Fragment>
     );

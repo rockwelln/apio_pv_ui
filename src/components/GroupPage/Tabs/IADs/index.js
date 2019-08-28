@@ -16,7 +16,7 @@ import { FormattedMessage } from "react-intl";
 import Loading from "../../../../common/Loading";
 import IAD from "./IAD";
 
-import { fetchGetAdminsByGroupId } from "../../../../store/actions";
+import { fetchGetIADs } from "../../../../store/actions";
 import { countsPerPages } from "../../../../constants";
 
 export class IADs extends Component {
@@ -32,22 +32,10 @@ export class IADs extends Component {
   };
 
   fetchAdmins = () => {
-    this.props
-      .fetchGetAdminsByGroupId(this.props.tenantId, this.props.groupId)
-      .then(() =>
-        this.setState(
-          {
-            admins: this.props.admins.sort((a, b) => {
-              if (a.userId < b.userId) return -1;
-              if (a.userId > b.userId) return 1;
-              return 0;
-            }),
-            isLoading: false,
-            sortedBy: "userId"
-          },
-          () => this.pagination()
-        )
-      );
+    this.props.fetchGetIADs(
+      this.props.match.params.tenantId,
+      this.props.match.params.groupId
+    );
   };
 
   componentDidMount() {
@@ -81,7 +69,7 @@ export class IADs extends Component {
               </InputGroup.Addon>
               <FormattedMessage
                 id="search_placeholder"
-                defaultMessage="User ID or name"
+                defaultMessage="placeholder"
               >
                 {placeholder => (
                   <FormControl
@@ -357,7 +345,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  fetchGetAdminsByGroupId
+  fetchGetIADs
 };
 
 export default withRouter(

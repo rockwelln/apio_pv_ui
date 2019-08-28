@@ -25,7 +25,9 @@
 .margin-1 {
   margin: 10px !important;
 }
-
+.margin-bottom-1 {
+  margin-bottom: 10px !important;
+}
 .margin-bottom-4 {
   margin-bottom: 40px !important;
 }
@@ -200,7 +202,7 @@ textarea {
 }
 
 .flex-basis-16 {
-  flex-basis: 16%;
+  flex-basis: 15.5%;
 }
 
 .flex-basis-33 {
@@ -218,6 +220,9 @@ textarea {
 .flex-basis-5 {
   flex-basis: 5.5%;
 }
+.flex-basis-50 {
+  flex-basis: 50%;
+}
 
 .height-30 {
   height: 300px !important;
@@ -231,4 +236,22 @@ textarea {
 
 .flex-1 {
   flex: 1;
+}
+
+.font-18 {
+  font-size: 18px;
+}
+
+.disabled {
+  width: calc(100% + 32px);
+  height: calc(100% + 16px);
+  position: absolute;
+  top: 0;
+  left: -16px;
+  background-color: #eee;
+  z-index: 10;
+  opacity: 0.3;
+}
+.relative {
+  position: relative;
 }

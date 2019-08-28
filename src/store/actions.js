@@ -507,6 +507,12 @@ export const removeSuccesfulValidPhoneTenant = data => ({
   data
 });
 
+//////////////////////
+export const getIADs = data => ({
+  type: actionType.GET_IADS,
+  data
+});
+
 export function fetchGetTenants(cancelLoad) {
   ////////////////////
   return function(dispatch) {
@@ -538,6 +544,25 @@ export function fetchGetTenantById(Id) {
           <FormattedMessage
             id="fetch-tenant-failed"
             defaultMessage="Failed to fetch tenant details!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetIADs(tenantId, groupId) {
+  //////////////////////////////
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/trunk_groups/`
+    )
+      .then(data => dispatch(getIADs(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-IADs-failed"
+            defaultMessage="Failed to fetch IADs!"
           />,
           error.message
         )
@@ -636,9 +661,10 @@ export function fetchGetUsersByGroupId(tenantId, groupId) {
 }
 
 export function fetchGetPhoneNumbersByGroupId(tenantId, groupId) {
+  //////////////////////
   return function(dispatch) {
     return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/numbers?assignement=true`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/numbers/`
     )
       .then(data => dispatch(getPhoneNumbersByGroupId(data)))
       .catch(error =>

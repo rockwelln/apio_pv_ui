@@ -89,7 +89,10 @@ class TenantPage extends Component {
               <IADs />
             </Tab>
             <Tab eventKey={2} title="Numbers">
-              Numbers
+              <PhoneNumbers
+                tenantId={this.props.match.params.tenantId}
+                groupId={this.props.match.params.groupId}
+              />
             </Tab>
             <Tab eventKey={3} title="Redundency">
               Redundency

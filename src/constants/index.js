@@ -134,3 +134,8 @@ export const IP1MODE = [
   { name: "IPv6", value: "IPv6" },
   { name: "Disabled", value: "Disabled" }
 ];
+
+export const STATENUMBERS = [
+  { name: "Active", value: "Active" },
+  { name: "pre-Active", value: "preActive" }
+];
