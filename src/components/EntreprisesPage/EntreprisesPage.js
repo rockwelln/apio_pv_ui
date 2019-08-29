@@ -14,18 +14,19 @@ import Groups from "./Groups";
 import { fetchGetTenantById } from "../../store/actions";
 
 const OPTIONS = [
-  { name: "option 1" },
-  { name: "option 2" },
-  { name: "option 3" },
-  { name: "option 4" },
-  { name: "option 5" }
+  { name: "option 1", value: "option 1" },
+  { name: "option 2", value: "option 2" },
+  { name: "option 3", value: "option 3" },
+  { name: "option 4", value: "option 4" },
+  { name: "option 5", value: "option 5" }
 ];
 
 class TenantPage extends Component {
   state = {
     isLoading: true,
     showDelete: false,
-    isDisabled: true
+    isDisabled: true,
+    option: "option 1"
   };
 
   componentDidMount() {
@@ -46,12 +47,20 @@ class TenantPage extends Component {
         <div className={"panel-body"}>
           <Row className={"margin-top-1"}>
             <Col md={12} className={"flex align-items-center"}>
-              <FormControl
-                type="text"
-                placeholder={"ID"}
-                disabled={this.state.isDisabled}
-                className={"header flex-basis-50"}
-              />
+              {this.state.isDisabled ? (
+                <React.Fragment>
+                  <div className={"header margin-right-2"}>
+                    EXAMPLE ENTREPRISE
+                  </div>
+                </React.Fragment>
+              ) : (
+                <FormControl
+                  type="text"
+                  placeholder={"ENTREPRISES NAME"}
+                  disabled={this.state.isDisabled}
+                  className={"header flex-basis-50 margin-right-2"}
+                />
+              )}
             </Col>
           </Row>
           <Row className={"margin-top-1"}>
@@ -129,11 +138,17 @@ class TenantPage extends Component {
               </div>
               <div className={"margin-right-1 flex-basis-33"}>
                 <FormControl
-                  type="text"
-                  value={"option 1"}
-                  placeholder={"Template Name"}
+                  componentClass="select"
                   disabled={this.state.isDisabled}
-                />
+                  value={this.state.option}
+                  onChange={e => this.setState({ option: e.target.value })}
+                >
+                  {OPTIONS.map((type, i) => (
+                    <option key={i} value={type.value}>
+                      {type.name}
+                    </option>
+                  ))}
+                </FormControl>
               </div>
             </Col>
           </Row>
@@ -166,7 +181,7 @@ class TenantPage extends Component {
                 <Groups />
               </Col>
             </Row>
-            {!this.state.isDisabled && <div className={"disabled"} />}
+            {!this.state.isDisabled && <div className={"disabled-area"} />}
           </div>
         </div>
       </React.Fragment>

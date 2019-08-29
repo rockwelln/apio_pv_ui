@@ -242,7 +242,7 @@ textarea {
   font-size: 18px;
 }
 
-.disabled {
+.disabled-area {
   width: calc(100% + 32px);
   height: calc(100% + 16px);
   position: absolute;

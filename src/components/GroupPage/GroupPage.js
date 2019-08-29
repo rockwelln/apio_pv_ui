@@ -15,6 +15,7 @@ import Devices from "./Tabs/Devices";
 import Admins from "./Tabs/Admins";
 import TrunksGroup from "./Tabs/TrunksGroup";
 import IADs from "./Tabs/IADs";
+import Specifications from "./Tabs/Specification";
 
 import { fetchGetTenantById, fetchGetGroupById } from "../../store/actions";
 
@@ -83,7 +84,7 @@ class TenantPage extends Component {
         <div className={"panel-body"}>
           <Tabs defaultActiveKey={0} id={`group_tabs${this.tabsIdSuffix}`}>
             <Tab eventKey={0} title="Specifications">
-              Specifications
+              <Specifications />
             </Tab>
             <Tab eventKey={1} title="IADs">
               <IADs />
