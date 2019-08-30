@@ -175,7 +175,7 @@ export class Edit extends Component {
     const groupSelection = [...this.state.groupSelection];
     const selected = groupSelection.filter(group => group.checked);
     const notSelected = groupSelection.filter(group => !group.checked);
-    selectedGroups.push(...[...selected]);
+    selectedGroups.push(...selected);
     this.setState({ selectedGroups, groupSelection: notSelected });
   };
 }
