@@ -14,8 +14,10 @@ import Details from "./Tabs/Details";
 import Devices from "./Tabs/Devices";
 import Admins from "./Tabs/Admins";
 import TrunksGroup from "./Tabs/TrunksGroup";
+
 import IADs from "./Tabs/IADs";
 import Specifications from "./Tabs/Specification";
+import Redundancy from "./Tabs/Redundancy";
 
 import { fetchGetTenantById, fetchGetGroupById } from "../../store/actions";
 
@@ -95,8 +97,8 @@ class TenantPage extends Component {
                 groupId={this.props.match.params.groupId}
               />
             </Tab>
-            <Tab eventKey={3} title="Redundency">
-              Redundency
+            <Tab eventKey={3} title="Redundancy">
+              <Redundancy />
             </Tab>
             {/* <Tab eventKey={0} title="LICENSES">
               <Licenses

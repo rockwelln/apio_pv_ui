@@ -139,3 +139,8 @@ export const STATENUMBERS = [
   { name: "Active", value: "Active" },
   { name: "pre-Active", value: "preActive" }
 ];
+
+export const MODEREDUNDANCY = [
+  { name: "Overflow", value: "Overflow" },
+  { name: "Loadbalancing", value: "Loadbalancing" }
+];

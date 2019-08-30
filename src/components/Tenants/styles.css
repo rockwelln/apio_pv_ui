@@ -255,3 +255,19 @@ textarea {
 .relative {
   position: relative;
 }
+
+.margin-left-08 {
+  margin-left: 8px !important;
+}
+
+.flex-direction-column {
+  flex-direction: column;
+}
+
+.font-size-10 {
+  font-size: 10px;
+}
+
+.grey50-color {
+  color: #808080 !important;
+}
