@@ -1721,9 +1721,10 @@ export function fetchPutUpdateTrunkGroup(
 }
 
 export function fetchDeleteTenant(ID) {
+  ////////////////////////////////////
   return function(dispatch) {
     return fetch_delete(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${ID}`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${ID}`
     )
       .then(data => {
         dispatch(deleteTenant(data));

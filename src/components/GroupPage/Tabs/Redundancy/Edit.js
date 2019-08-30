@@ -108,7 +108,7 @@ export class Edit extends Component {
                       <div className={"flex flex-direction-column"}>
                         <Glyphicon
                           glyph={`glyphicon glyphicon-menu-up ${i === 0 &&
-                            "grey50-color"}`}
+                            "gray50-color"}`}
                           className={"font-size-10"}
                           onClick={() => {
                             i !== 0 && this.raisePriority(i);
@@ -117,7 +117,7 @@ export class Edit extends Component {
                         <Glyphicon
                           glyph={`glyphicon glyphicon-menu-down ${this.state
                             .selectedGroups.length ===
-                            i + 1 && "grey50-color"}`}
+                            i + 1 && "gray50-color"}`}
                           className={"font-size-10"}
                           onClick={() => this.lowerPriority(i)}
                         />
