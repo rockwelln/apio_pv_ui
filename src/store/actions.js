@@ -1896,7 +1896,7 @@ export function fetchDeleteUserFromGroup(tenantId, groupId, userName) {
 export function fetchDeleteGroupFromTenant(tenantId, groupId) {
   return function(dispatch) {
     return fetch_delete(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/`
     )
       .then(data => {
         dispatch(deleteGroupFromTenant(data));

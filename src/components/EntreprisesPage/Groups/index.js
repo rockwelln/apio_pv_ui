@@ -18,17 +18,32 @@ import { fetchGetGroupsByTenantId } from "../../../store/actions";
 import Group from "./Group";
 import { countsPerPages } from "../../../constants";
 
-const fakeGroup = {
-  groupId: "fake_group_Id",
-  groupName: "fake group name"
-};
-
 export class GroupsTab extends Component {
   state = {
     searchValue: "",
     isLoading: true,
     sortedBy: "",
     groups: [],
+    fakeGroups: [
+      {
+        groupId: "fake_group_Id",
+        groupName: "fake group name"
+      },
+      {
+        groupId: "fake_group_Id_1",
+        groupName: "fake group name 1"
+      }
+    ],
+    groupsForSearch: [
+      {
+        groupId: "fake_group_Id",
+        groupName: "fake group name"
+      },
+      {
+        groupId: "fake_group_Id_1",
+        groupName: "fake group name 1"
+      }
+    ],
     paginationGroups: [],
     countPerPage: 25,
     page: 0,
@@ -166,14 +181,9 @@ export class GroupsTab extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    <Group group={fakeGroup} />
-                    {/* {paginationGroups[page].map(group => (
-                      <Group
-                        key={group.groupId}
-                        group={group}
-                        onReload={() => this.fetchReq()}
-                      />
-                    ))} */}
+                    {this.state.fakeGroups.map(group => (
+                      <Group key={group.groupId} group={group} />
+                    ))}
                   </tbody>
                 </Table>
               </Col>
@@ -250,62 +260,45 @@ export class GroupsTab extends Component {
 
   filterBySearchValue = () => {
     const { searchValue } = this.state;
-    const SearchArray = this.props.groups
+    const SearchArray = this.state.groupsForSearch
       .filter(
         group =>
           group.groupId.toLowerCase().includes(searchValue.toLowerCase()) ||
           group.groupName.toLowerCase().includes(searchValue.toLowerCase())
       )
       .map(group => group);
-    this.setState({ groups: SearchArray }, () => this.pagination());
+    this.setState({ fakeGroups: SearchArray }, () => this.pagination());
   };
 
   sortByID = () => {
-    const { groups, sortedBy } = this.state;
+    const { groups, sortedBy, fakeGroups } = this.state;
     if (sortedBy === "id") {
-      const groupsSorted = groups.reverse();
-      this.setState({ groups: groupsSorted }, () => this.pagination());
+      const groupsSorted = fakeGroups.reverse();
+      this.setState({ fakeGroups: groupsSorted }, () => this.pagination());
     } else {
-      const groupsSorted = groups.sort((a, b) => {
+      const groupsSorted = fakeGroups.sort((a, b) => {
         if (a.groupId < b.groupId) return -1;
         if (a.groupId > b.groupId) return 1;
         return 0;
       });
-      this.setState({ groups: groupsSorted, sortedBy: "id" }, () =>
+      this.setState({ fakeGroups: groupsSorted, sortedBy: "id" }, () =>
         this.pagination()
       );
     }
   };
 
   sortByName = () => {
-    const { groups, sortedBy } = this.state;
+    const { groups, sortedBy, fakeGroups } = this.state;
     if (sortedBy === "name") {
-      const groupsSorted = groups.reverse();
-      this.setState({ groups: groupsSorted }, () => this.pagination());
+      const groupsSorted = fakeGroups.reverse();
+      this.setState({ fakeGroups: groupsSorted }, () => this.pagination());
     } else {
-      const groupsSorted = groups.sort((a, b) => {
+      const groupsSorted = fakeGroups.sort((a, b) => {
         if (a.groupName < b.groupName) return -1;
         if (a.groupName > b.groupName) return 1;
         return 0;
       });
-      this.setState({ groups: groupsSorted, sortedBy: "name" }, () =>
-        this.pagination()
-      );
-    }
-  };
-
-  sortByUserLimit = () => {
-    const { groups, sortedBy } = this.state;
-    if (sortedBy === "limit") {
-      const groupsSorted = groups.reverse();
-      this.setState({ groups: groupsSorted }, () => this.pagination());
-    } else {
-      const groupsSorted = groups.sort((a, b) => {
-        if (a.userLimit < b.userLimit) return -1;
-        if (a.userLimit > b.userLimit) return 1;
-        return 0;
-      });
-      this.setState({ groups: groupsSorted, sortedBy: "limit" }, () =>
+      this.setState({ fakeGroups: groupsSorted, sortedBy: "name" }, () =>
         this.pagination()
       );
     }
