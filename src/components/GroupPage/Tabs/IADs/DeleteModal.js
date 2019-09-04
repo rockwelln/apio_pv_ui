@@ -52,7 +52,7 @@ class DeleteModal extends Component {
           <p>
             <FormattedMessage
               id="confirm-delete-warning"
-              defaultMessage={`You are about to delete the admin ${adminId}!`}
+              defaultMessage={`You are about to delete the iad ${adminId}!`}
             />
           </p>
         </Modal.Body>

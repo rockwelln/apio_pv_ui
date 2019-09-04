@@ -35,15 +35,20 @@ export class AddIAD extends Component {
     eduVIF: "",
     transportMode: "",
     ip1mode: "",
-    ipv4Address: "",
-    ipv4Netmask: "",
-    ipv6Address: "",
-    ipv6Netmask: "",
+    ip2mode: "",
+    ipv4Address1: "",
+    ipv4Netmask1: "",
+    ipv6Address1: "",
+    ipv6Netmask1: "",
+    ipv4Address2: "",
+    ipv4Netmask2: "",
+    ipv6Address2: "",
+    ipv6Netmask2: "",
     protocolMode: "",
     dtmf: "",
     channelHunting: "",
     direction: "",
-    channeslIn: "",
+    channelsIn: "",
     channelOut: "",
     buttonName: "Create"
   };
@@ -323,10 +328,10 @@ export class AddIAD extends Component {
                   <div className={"margin-right-1 flex-basis-16"}>
                     <FormControl
                       type="text"
-                      value={this.state.ipv4Address}
+                      value={this.state.ipv4Address1}
                       placeholder={"IPv4 address"}
                       onChange={e =>
-                        this.setState({ ipv4Address: e.target.value })
+                        this.setState({ ipv4Address1: e.target.value })
                       }
                     />
                   </div>
@@ -336,10 +341,10 @@ export class AddIAD extends Component {
                   <div className={"margin-right-1 flex-basis-16"}>
                     <FormControl
                       type="text"
-                      value={this.state.ipv4Netmask}
+                      value={this.state.ipv4Netmask1}
                       placeholder={"IPv4 netmask"}
                       onChange={e =>
-                        this.setState({ ipv4Netmask: e.target.value })
+                        this.setState({ ipv4Netmask1: e.target.value })
                       }
                     />
                   </div>
@@ -356,10 +361,10 @@ export class AddIAD extends Component {
                   <div className={"margin-right-1 flex-basis-16"}>
                     <FormControl
                       type="text"
-                      value={this.state.ipv6Address}
+                      value={this.state.ipv6Address1}
                       placeholder={"IPv6 address"}
                       onChange={e =>
-                        this.setState({ ipv6Address: e.target.value })
+                        this.setState({ ipv6Address1: e.target.value })
                       }
                     />
                   </div>
@@ -369,10 +374,103 @@ export class AddIAD extends Component {
                   <div className={"margin-right-1 flex-basis-16"}>
                     <FormControl
                       type="text"
-                      value={this.state.ipv6Netmask}
+                      value={this.state.ipv6Netmask1}
                       placeholder={"IPv6 netmask"}
                       onChange={e =>
-                        this.setState({ ipv6Netmask: e.target.value })
+                        this.setState({ ipv6Netmask1: e.target.value })
+                      }
+                    />
+                  </div>
+                </Col>
+              </Row>
+            )}
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  IP 2 mode
+                </div>
+                <div className={"margin-right-1 flex"}>
+                  <FormGroup className={"margin-0 flex"}>
+                    {IP1MODE.map((type, i) => (
+                      <Radio
+                        className={"margin-0 flex margin-right-2"}
+                        key={i + ""}
+                        name="ip2mode"
+                        value={type.value}
+                        checked={type.value === this.state.ip2mode}
+                        onChange={e =>
+                          this.setState({
+                            ip2mode: e.target.value
+                          })
+                        }
+                      >
+                        <div className="font-weight-bold flex">{type.name}</div>
+                      </Radio>
+                    ))}
+                  </FormGroup>
+                </div>
+              </Col>
+            </Row>
+            {this.state.ip2mode === "IPv4" && (
+              <Row className={"margin-top-1"}>
+                <Col md={12} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex flex-basis-16"}></div>
+                  <div className={"margin-right-1 flex flex-basis-16"}>
+                    IPv4 address
+                  </div>
+                  <div className={"margin-right-1 flex-basis-16"}>
+                    <FormControl
+                      type="text"
+                      value={this.state.ipv4Address2}
+                      placeholder={"IPv4 address"}
+                      onChange={e =>
+                        this.setState({ ipv4Address2: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className={"margin-right-1 flex flex-basis-16"}>
+                    IPv4 netmask
+                  </div>
+                  <div className={"margin-right-1 flex-basis-16"}>
+                    <FormControl
+                      type="text"
+                      value={this.state.ipv4Netmask2}
+                      placeholder={"IPv4 netmask"}
+                      onChange={e =>
+                        this.setState({ ipv4Netmask2: e.target.value })
+                      }
+                    />
+                  </div>
+                </Col>
+              </Row>
+            )}
+            {this.state.ip2mode === "IPv6" && (
+              <Row className={"margin-top-1"}>
+                <Col md={12} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex flex-basis-16"}></div>
+                  <div className={"margin-right-1 flex flex-basis-16"}>
+                    IPv6 address
+                  </div>
+                  <div className={"margin-right-1 flex-basis-16"}>
+                    <FormControl
+                      type="text"
+                      value={this.state.ipv6Address2}
+                      placeholder={"IPv6 address"}
+                      onChange={e =>
+                        this.setState({ ipv6Address2: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className={"margin-right-1 flex flex-basis-16"}>
+                    IPv6 netmask
+                  </div>
+                  <div className={"margin-right-1 flex-basis-16"}>
+                    <FormControl
+                      type="text"
+                      value={this.state.ipv6Netmask2}
+                      placeholder={"IPv6 netmask"}
+                      onChange={e =>
+                        this.setState({ ipv6Netmask2: e.target.value })
                       }
                     />
                   </div>
@@ -506,7 +604,7 @@ export class AddIAD extends Component {
                 <div className={"margin-right-1 flex-basis-11"}>
                   <FormControl
                     type="text"
-                    value={this.state.channeslIn}
+                    value={this.state.channelsIn}
                     placeholder={"In"}
                     onChange={e =>
                       this.setState({ channelsIn: e.target.value })

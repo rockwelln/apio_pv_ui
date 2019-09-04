@@ -76,8 +76,8 @@ export class PhoneNumbersTab extends Component {
     }
     return (
       <React.Fragment>
-        <Row className={"margin-top-2"}>
-          <Col mdOffset={1} md={10}>
+        <Row className={"margin-top-2 flex align-items-center"}>
+          <Col mdOffset={1} md={8}>
             <InputGroup className={"margin-left-negative-4"}>
               <InputGroup.Addon>
                 <Glyphicon glyph="lyphicon glyphicon-search" />
@@ -112,6 +112,13 @@ export class PhoneNumbersTab extends Component {
                 className={"x-large"}
                 glyph="glyphicon glyphicon-plus-sign"
               />
+            </Link>
+          </Col>
+          <Col md={2}>
+            <Link
+              to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.tenantId}/groups/${this.props.groupId}/modifyphone`}
+            >
+              modify portability states
             </Link>
           </Col>
         </Row>

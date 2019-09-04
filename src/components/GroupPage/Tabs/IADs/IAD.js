@@ -10,22 +10,19 @@ import DeleteModal from "./DeleteModal";
 class Admin extends Component {
   state = { showDelete: false };
   render() {
-    const { admin, onReload } = this.props;
+    const { onReload, iad } = this.props;
     const { showDelete } = this.state;
     return (
       <tr>
         <td>
           <Link
-            to={`/provisioning/${this.props.match.params.gwName}/tenants/${
-              this.props.tenantId
-            }/groups/${this.props.groupId}/admins/${admin.userId}`}
+            to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/iad/${iad.id}`}
           >
-            {admin.userId}
+            {iad.id}
           </Link>
         </td>
-        <td>{admin.firstName}</td>
-        <td>{admin.lastName}</td>
-        <td>{admin.language}</td>
+        <td>{iad.type}</td>
+        <td>{iad.mac}</td>
         <td>
           <ButtonToolbar>
             <Glyphicon
@@ -35,7 +32,7 @@ class Admin extends Component {
           </ButtonToolbar>
           <DeleteModal
             notifications={this.props.notifications}
-            adminId={admin.userId}
+            adminId={iad.id}
             tenantId={this.props.tenantId}
             groupId={this.props.groupId}
             show={showDelete}

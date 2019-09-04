@@ -17,6 +17,7 @@ const convertCrumb = crumb => {
 //Links and rename path for crumb
 const linkByCrumb = (item, lastItem, i, path, match) => {
   const crumb = convertCrumb(item);
+  console.log(crumb);
   if (crumb === "tenants" && !lastItem.includes(crumb)) {
     return (
       <Link to={`/provisioning/${match.params.gwName}/tenants`}>{crumb}</Link>
@@ -37,17 +38,6 @@ const linkByCrumb = (item, lastItem, i, path, match) => {
         }/groups/${crumb}`}
       >
         {crumb}
-      </Link>
-    );
-  }
-  if (path[i - 3] === "tenants" && !lastItem.includes(crumb)) {
-    return (
-      <Link
-        to={`/provisioning/${match.params.gwName}/tenants/${
-          match.params.tenantId
-        }/groups/${match.params.groupId}/trunkgroup/${crumb}`}
-      >
-        {crumb === match.params.trunkGroupName && match.params.trunkGroupName}
       </Link>
     );
   }
@@ -85,7 +75,8 @@ const BreadcrumbComponent = ({ location, match }) => {
   if (
     path[indexForGroupLevel] === "users" ||
     path[indexForGroupLevel] === "admins" ||
-    path[indexForGroupLevel] === "trunkgroup"
+    path[indexForGroupLevel] === "trunkgroup" ||
+    path[indexForGroupLevel] === "iad"
   ) {
     path.splice(indexForGroupLevel, 1);
   }
@@ -97,6 +88,7 @@ const BreadcrumbComponent = ({ location, match }) => {
   }
 
   const lastItem = path.slice(-1);
+  console.log(path);
   return (
     <Breadcrumb>
       {path.map((item, i) => (

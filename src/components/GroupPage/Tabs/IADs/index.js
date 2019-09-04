@@ -26,6 +26,18 @@ export class IADs extends Component {
     isLoading: true,
     sortedBy: "",
     countPerPage: 25,
+    fakeIADs: [
+      {
+        id: "IAD1",
+        type: "first",
+        mac: "192.0.2.235"
+      },
+      {
+        id: "IAD2",
+        type: "second",
+        mac: "2001:0DB8:AA10:0001:0000:0000:0000:00FB"
+      }
+    ],
     page: 0,
     pagination: true,
     countPages: null
@@ -121,55 +133,48 @@ export class IADs extends Component {
             </div>
           </Col>
         </Row>
-        {paginationAdmins.length ? (
-          <React.Fragment>
-            <Row>
-              <Col mdOffset={1} md={10}>
-                <Table hover>
-                  <thead>
-                    <tr>
-                      <th style={{ width: "24%" }}>
-                        <FormattedMessage
-                          id="tenant-id"
-                          defaultMessage="User ID"
-                        />
-                        <Glyphicon
-                          glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByUserId}
-                        />
-                      </th>
-                      <th style={{ width: "24%" }}>
-                        <FormattedMessage
-                          id="name"
-                          defaultMessage="First name"
-                        />
-                        <Glyphicon
-                          glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByFirstName}
-                        />
-                      </th>
-                      <th style={{ width: "24%" }}>
-                        <FormattedMessage
-                          id="type"
-                          defaultMessage="Last name"
-                        />
-                        <Glyphicon
-                          glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByLastName}
-                        />
-                      </th>
-                      <th style={{ width: "24%" }}>
-                        <FormattedMessage id="type" defaultMessage="Language" />
-                        <Glyphicon
-                          glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByAssignedToGroup}
-                        />
-                      </th>
-                      <th style={{ width: "4%" }} />
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {paginationAdmins[page].map(admin => (
+        {/*paginationAdmins.length ? (*/}
+        <React.Fragment>
+          <Row>
+            <Col mdOffset={1} md={10}>
+              <Table hover>
+                <thead>
+                  <tr>
+                    <th>
+                      <FormattedMessage
+                        id="tenant-id"
+                        defaultMessage="IAD ID"
+                      />
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-sort"
+                        onClick={this.sortByUserId}
+                      />
+                    </th>
+                    <th style={{ width: "24%" }}>
+                      <FormattedMessage id="name" defaultMessage="IAD Type" />
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-sort"
+                        onClick={this.sortByFirstName}
+                      />
+                    </th>
+                    <th>
+                      <FormattedMessage
+                        id="type"
+                        defaultMessage="Mac Address"
+                      />
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-sort"
+                        onClick={this.sortByLastName}
+                      />
+                    </th>
+                    <th />
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.fakeIADs.map(iad => (
+                    <IAD key={iad.id} iad={iad} />
+                  ))}
+                  {/* {paginationAdmins[page].map(admin => (
                       <IAD
                         key={admin.userId}
                         tenantId={this.props.tenantId}
@@ -183,31 +188,28 @@ export class IADs extends Component {
                           )
                         }
                       />
-                    ))}
-                  </tbody>
-                </Table>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={11}>
-                <div className="flex flex-row flex-end-center">
-                  <Pagination className={"indent-top-bottom-1"}>
-                    <Pagination.Prev onClick={this.decrementPage} />
-                    <Pagination.Item>{this.state.page + 1}</Pagination.Item>
-                    <Pagination.Next onClick={this.incrementPage} />
-                  </Pagination>
-                </div>
-              </Col>
-            </Row>
-          </React.Fragment>
-        ) : (
-          <Col mdOffset={1} md={10}>
-            <FormattedMessage
-              id="notFound"
-              defaultMessage="No IADs were found"
-            />
-          </Col>
-        )}
+                    ))} */}
+                </tbody>
+              </Table>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={11}>
+              <div className="flex flex-row flex-end-center">
+                <Pagination className={"indent-top-bottom-1"}>
+                  <Pagination.Prev onClick={this.decrementPage} />
+                  <Pagination.Item>{this.state.page + 1}</Pagination.Item>
+                  <Pagination.Next onClick={this.incrementPage} />
+                </Pagination>
+              </div>
+            </Col>
+          </Row>
+        </React.Fragment>
+        {/* ) : (
+        <Col mdOffset={1} md={10}>
+          <FormattedMessage id="notFound" defaultMessage="No IADs were found" />
+        </Col>
+        )} */}
       </React.Fragment>
     );
   }

@@ -28,7 +28,9 @@ export class AddPhoneNumber extends Component {
         <Panel className={"margin-0"}>
           <Panel.Heading>
             <div className={"header"}>
-              ADD NUMBERS
+              {this.props.location.pathname.includes("modifyphone")
+                ? "MODIFY NUMBERS"
+                : "ADD NUMBERS"}
               <Button
                 className={"margin-left-1 btn-danger"}
                 onClick={this.cancelClick}
