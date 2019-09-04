@@ -125,7 +125,7 @@ export class PhoneNumbersTab extends Component {
         {paginationPhoneNumbers.length ? (
           <React.Fragment>
             <Row>
-              <Col mdOffset={1} md={10}>
+              <Col mdOffset={1} md={8}>
                 <div className={"flex space-between indent-top-bottom-1"}>
                   <div className={"flex align-items-center"}>
                     <Checkbox
@@ -437,8 +437,11 @@ export class PhoneNumbersTab extends Component {
   };
 }
 
-const mapStateToProps = state => ({
-  phoneNumbers: state.phoneNumbersByGroup
+const mapStateToProps = () => ({
+  phoneNumbers: [
+    { rangeStart: "0392392304", rangeEnd: "0392392312" },
+    { rangeStart: "0392392323", rangeEnd: "" }
+  ]
 });
 
 const mapDispatchToProps = {

@@ -27,7 +27,7 @@ class DeleteModal extends Component {
   }
 
   render() {
-    const { rangeStart, show, onClose } = this.props;
+    const { rangeStart, show, onClose, rangeEnd } = this.props;
     const { deleting } = this.state;
     return (
       <Modal
@@ -52,7 +52,8 @@ class DeleteModal extends Component {
           <p>
             <FormattedMessage
               id="confirm-delete-warning"
-              defaultMessage={`You are about to delete the phone ${rangeStart}!`}
+              defaultMessage={`You are about to delete the phone ${rangeStart}${rangeEnd &&
+                ` to ${rangeEnd}`}!`}
             />
           </p>
         </Modal.Body>

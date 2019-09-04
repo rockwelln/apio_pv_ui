@@ -39,6 +39,7 @@ export default class PhoneNumber extends Component {
             </ButtonToolbar>
             <DeleteModal
               rangeStart={number.rangeStart}
+              rangeEnd={number.rangeEnd}
               show={showDelete}
               onClose={e => {
                 onReload && onReload(number.rangeStart);
