@@ -17,7 +17,6 @@ const convertCrumb = crumb => {
 //Links and rename path for crumb
 const linkByCrumb = (item, lastItem, i, path, match) => {
   const crumb = convertCrumb(item);
-  console.log(crumb);
   if (crumb === "tenants" && !lastItem.includes(crumb)) {
     return (
       <Link to={`/provisioning/${match.params.gwName}/tenants`}>{crumb}</Link>
@@ -88,7 +87,6 @@ const BreadcrumbComponent = ({ location, match }) => {
   }
 
   const lastItem = path.slice(-1);
-  console.log(path);
   return (
     <Breadcrumb>
       {path.map((item, i) => (
