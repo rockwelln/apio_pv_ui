@@ -15,7 +15,6 @@ import { removeEmpty } from "../remuveEmptyInObject";
 export class AddEntreprises extends Component {
   state = {
     entrerpriseName: "",
-    templateName: "",
     tinaId: "",
     vlanUuid: "",
     llid: "",
@@ -36,7 +35,7 @@ export class AddEntreprises extends Component {
               </Button>
             </div>
             <div>
-              Enter yout Entrerprises name, select a template name and your
+              Enter yout Entrerprises name, your customer IDs and your
               Entrerprise ID will be auto-generated
             </div>
           </Panel.Heading>
@@ -61,24 +60,6 @@ export class AddEntreprises extends Component {
                       this.setState({ entrerpriseName: e.target.value })
                     }
                   />
-                </div>
-              </Col>
-            </Row>
-            <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>
-                  Template Name
-                </div>
-                <div className={"margin-right-1 flex-basis-33"}>
-                  <FormControl
-                    componentClass="select"
-                    value={this.state.templateName}
-                    onChange={e =>
-                      this.setState({ templateName: e.target.value })
-                    }
-                  >
-                    <option value={""}>none</option>
-                  </FormControl>
                 </div>
               </Col>
             </Row>
@@ -170,20 +151,13 @@ export class AddEntreprises extends Component {
   };
 
   AddEntreprise = () => {
-    const {
-      entrerpriseName,
-      templateName,
-      tinaId,
-      vlanUuid,
-      llid
-    } = this.state;
+    const { entrerpriseName, tinaId, vlanUuid, llid } = this.state;
 
     const data = {
       name: entrerpriseName,
       tina_id: tinaId,
       vlan_uuid: vlanUuid,
-      ll_id: llid,
-      templateName
+      ll_id: llid
     };
     const clearData = removeEmpty(data);
     this.setState({ buttonName: "Creating..." }, () =>
@@ -192,7 +166,7 @@ export class AddEntreprises extends Component {
         .then(res =>
           res === "created"
             ? this.props.history.push(
-                `/provisioning/${this.props.match.params.gwName}/tenants`
+                `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.createdTenant.tenantId}`
               )
             : this.setState({ buttonName: "Create" })
         )
@@ -200,11 +174,15 @@ export class AddEntreprises extends Component {
   };
 }
 
+const mapStateToProps = state => ({
+  createdTenant: state.createdTenant
+});
+
 const mapDispatchToProps = { fetchPostCreateTenant };
 
 export default withRouter(
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   )(AddEntreprises)
 );
