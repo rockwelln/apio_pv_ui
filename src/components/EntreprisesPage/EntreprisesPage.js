@@ -11,28 +11,26 @@ import Button from "react-bootstrap/lib/Button";
 import Loading from "../../common/Loading";
 import Groups from "./Groups";
 
-import { fetchGetTenantById } from "../../store/actions";
+import { removeEmpty } from "../remuveEmptyInObject";
 
-const OPTIONS = [
-  { name: "option 1", value: "option 1" },
-  { name: "option 2", value: "option 2" },
-  { name: "option 3", value: "option 3" },
-  { name: "option 4", value: "option 4" },
-  { name: "option 5", value: "option 5" }
-];
+import {
+  fetchGetTenantById,
+  fetchPutUpdateTenantDetails
+} from "../../store/actions";
 
 class TenantPage extends Component {
   state = {
     isLoading: true,
     showDelete: false,
-    isDisabled: true,
-    option: "option 1"
+    isDisabled: true
   };
 
   componentDidMount() {
     this.props
       .fetchGetTenantById(this.props.match.params.tenantId)
-      .then(() => this.setState({ isLoading: false }));
+      .then(() =>
+        this.setState({ isLoading: false, tenant: this.props.tenant })
+      );
   }
 
   render() {
@@ -50,15 +48,21 @@ class TenantPage extends Component {
               {this.state.isDisabled ? (
                 <React.Fragment>
                   <div className={"header margin-right-2"}>
-                    EXAMPLE ENTREPRISE
+                    {this.props.tenant.name}
                   </div>
                 </React.Fragment>
               ) : (
                 <FormControl
                   type="text"
                   placeholder={"ENTREPRISES NAME"}
+                  value={this.state.tenant.name}
                   disabled={this.state.isDisabled}
                   className={"header flex-basis-50 margin-right-2"}
+                  onChange={e =>
+                    this.setState({
+                      tenant: { ...this.state.tenant, name: e.target.value }
+                    })
+                  }
                 />
               )}
             </Col>
@@ -83,7 +87,7 @@ class TenantPage extends Component {
               <div className={"margin-right-1 flex-basis-33"}>
                 <FormControl
                   type="text"
-                  value={"ENTxxxxxxxxxxx"}
+                  value={this.props.tenant.tenantId}
                   placeholder={"ID"}
                   disabled
                 />
@@ -96,7 +100,12 @@ class TenantPage extends Component {
               <div className={"margin-right-1 flex-basis-33"}>
                 <FormControl
                   type="text"
-                  value={"xxxxx"}
+                  value={this.state.tenant.tina_id}
+                  onChange={e =>
+                    this.setState({
+                      tenant: { ...this.state.tenant, tina_id: e.target.value }
+                    })
+                  }
                   placeholder={"TINA ID"}
                   disabled={this.state.isDisabled}
                 />
@@ -111,7 +120,15 @@ class TenantPage extends Component {
               <div className={"margin-right-1 flex-basis-33"}>
                 <FormControl
                   type="text"
-                  value={"xxxxx"}
+                  value={this.state.tenant.vlan_uuid}
+                  onChange={e =>
+                    this.setState({
+                      tenant: {
+                        ...this.state.tenant,
+                        vlan_uuid: e.target.value
+                      }
+                    })
+                  }
                   placeholder={"VLAN UUID"}
                   disabled={this.state.isDisabled}
                 />
@@ -124,31 +141,15 @@ class TenantPage extends Component {
               <div className={"margin-right-1 flex-basis-33"}>
                 <FormControl
                   type="text"
-                  value={"xxxxxxx"}
+                  value={this.state.tenant.ll_id}
+                  onChange={e =>
+                    this.setState({
+                      tenant: { ...this.state.tenant, ll_id: e.target.value }
+                    })
+                  }
                   placeholder={"LLID"}
                   disabled={this.state.isDisabled}
                 />
-              </div>
-            </Col>
-          </Row>
-          <Row className={"margin-top-1"}>
-            <Col md={12} className={"flex align-items-center"}>
-              <div className={"margin-right-1 flex flex-basis-16"}>
-                Template Name
-              </div>
-              <div className={"margin-right-1 flex-basis-33"}>
-                <FormControl
-                  componentClass="select"
-                  disabled={this.state.isDisabled}
-                  value={this.state.option}
-                  onChange={e => this.setState({ option: e.target.value })}
-                >
-                  {OPTIONS.map((type, i) => (
-                    <option key={i} value={type.value}>
-                      {type.name}
-                    </option>
-                  ))}
-                </FormControl>
               </div>
             </Col>
           </Row>
@@ -158,7 +159,7 @@ class TenantPage extends Component {
                 <div className="button-row">
                   <div className="pull-right">
                     <Button
-                      onClick={() => this.setState({ isDisabled: true })}
+                      onClick={this.tenantUpdate}
                       type="submit"
                       className="btn-primary"
                     >
@@ -173,7 +174,7 @@ class TenantPage extends Component {
           <div className={"relative"}>
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex font-24"}>Groups</div>
+                <div className={"margin-right-1 flex font-24"}>Sites</div>
               </Col>
             </Row>
             <Row className={"margin-top-1"}>
@@ -187,10 +188,31 @@ class TenantPage extends Component {
       </React.Fragment>
     );
   }
+
+  tenantUpdate = () => {
+    const data = {
+      name: this.state.tenant.name,
+      tina_id: this.state.tenant.tina_id,
+      vlan_uuid: this.state.tenant.vlan_uuid,
+      ll_id: this.state.tenant.ll_id
+    };
+    const clearData = removeEmpty(data);
+    this.props
+      .fetchPutUpdateTenantDetails(this.props.match.params.tenantId, clearData)
+      .then(() =>
+        this.props
+          .fetchGetTenantById(this.props.match.params.tenantId)
+          .then(() =>
+            this.setState({ isLoading: false, tenant: this.props.tenant })
+          )
+      );
+    this.setState({ isDisabled: true });
+  };
 }
 
 const mapDispatchToProps = {
-  fetchGetTenantById
+  fetchGetTenantById,
+  fetchPutUpdateTenantDetails
 };
 
 const mapStateToProps = state => ({

@@ -85,7 +85,9 @@ class Tenants extends Component {
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
-          <div className={"header"}>Tenant overview</div>
+          <div className={"header"}>
+            Lookup any customer parameter here or start adding a new entreprise
+          </div>
         </div>
         <div className={"panel-body"}>
           <Row>
@@ -118,9 +120,7 @@ class Tenants extends Component {
             </Col>
             <Col md={1}>
               <Link
-                to={`/provisioning/${
-                  this.props.match.params.gwName
-                }/tenants/add`}
+                to={`/provisioning/${this.props.match.params.gwName}/tenants/add`}
               >
                 <Glyphicon
                   className={"x-large"}

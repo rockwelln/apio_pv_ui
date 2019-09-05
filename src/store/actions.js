@@ -1613,7 +1613,7 @@ export function fetchPutUpdateGroupServicesByGroupId(tenantId, groupId, data) {
 export function fetchPutUpdateTenantDetails(tenantId, data) {
   return function(dispatch) {
     return fetch_put(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}`,
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/`,
       data
     )
       .then(res => res.json())
