@@ -10,6 +10,7 @@ import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Radio from "react-bootstrap/lib/Radio";
 import FormGroup from "react-bootstrap/lib/FormGroup";
+import Table from "react-bootstrap/lib/Table";
 
 import {
   TRANSPORTMODE,
@@ -17,7 +18,9 @@ import {
   TYPEOFIAD,
   DTMF,
   CHANNELHUNTING,
-  DIRECTION
+  DIRECTION,
+  CLOCKING,
+  ISDN
 } from "../../constants";
 
 export class AddIAD extends Component {
@@ -78,34 +81,19 @@ export class AddIAD extends Component {
               </Col>
             </Row>
             <Row className={"margin-top-1"}>
-              <Col md={6} className={"flex align-items-center"}>
+              <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>ID</div>
-                <div className={"margin-right-1 flex-1"}>
+                <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl type="text" disabled />
-                </div>
-              </Col>
-              <Col md={6} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>
-                  Main number
-                </div>
-                <div className={"margin-right-1 flex-1"}>
-                  <FormControl
-                    type="text"
-                    value={this.state.mainNumber}
-                    placeholder={"Main number"}
-                    onChange={e =>
-                      this.setState({ mainNumber: e.target.value })
-                    }
-                  />
                 </div>
               </Col>
             </Row>
             <Row className={"margin-top-1"}>
-              <Col md={6} className={"flex align-items-center"}>
+              <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
                   Type of IAD
                 </div>
-                <div className={"margin-right-1 flex-1"}>
+                <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
                     type="text"
                     value={this.state.iadType}
@@ -114,24 +102,13 @@ export class AddIAD extends Component {
                   />
                 </div>
               </Col>
-              <Col md={6} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>TPID</div>
-                <div className={"margin-right-1 flex-1"}>
-                  <FormControl
-                    type="text"
-                    value={this.state.tpid}
-                    placeholder={"TPID"}
-                    onChange={e => this.setState({ tpid: e.target.value })}
-                  />
-                </div>
-              </Col>
             </Row>
             <Row className={"margin-top-1"}>
-              <Col md={6} className={"flex align-items-center"}>
+              <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
                   MAC Address
                 </div>
-                <div className={"margin-right-1 flex-1"}>
+                <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
                     type="text"
                     value={this.state.macAddress}
@@ -144,11 +121,11 @@ export class AddIAD extends Component {
               </Col>
             </Row>
             <Row className={"margin-top-1"}>
-              <Col md={6} className={"flex align-items-center"}>
+              <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
                   Pilot Number
                 </div>
-                <div className={"margin-right-1 flex-1"}>
+                <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
                     type="number"
                     value={this.state.pilotNumber}
@@ -162,35 +139,78 @@ export class AddIAD extends Component {
             </Row>
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex font-24"}>
-                  EDU configuration
-                </div>
-              </Col>
-            </Row>
-            <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  EDU Name
+                  Main number
                 </div>
-                <div className={"margin-right-1 flex-basis-16"}>
+                <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
                     type="text"
-                    value={this.state.ccli}
-                    placeholder={"EDU Name"}
-                    onChange={e => this.setState({ nameEDU: e.target.value })}
+                    value={this.state.mainNumber}
+                    placeholder={"Main number"}
+                    onChange={e =>
+                      this.setState({ mainNumber: e.target.value })
+                    }
                   />
                 </div>
               </Col>
             </Row>
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>
-                  LAN port
+                <div className={"margin-right-1 flex font-24"}>
+                  EDU configuration
                 </div>
-                <div className={"margin-right-1 flex-basis-16"}>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={6} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-33"}>
+                  EDU A Name
+                </div>
+                <div className={"margin-right-1 flex-basis-66"}>
                   <FormControl
                     type="text"
-                    value={this.state.lanPort}
+                    value={this.state.nameEDUA}
+                    placeholder={"EDU Name"}
+                    onChange={e => this.setState({ nameEDUA: e.target.value })}
+                  />
+                </div>
+              </Col>
+              <Col md={6} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-33"}>
+                  EDU B Name
+                </div>
+                <div className={"margin-right-1 flex-basis-66"}>
+                  <FormControl
+                    type="text"
+                    value={this.state.nameEDUB}
+                    placeholder={"EDU Name"}
+                    onChange={e => this.setState({ nameEDUB: e.target.value })}
+                  />
+                </div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={6} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-33"}>
+                  LAN port
+                </div>
+                <div className={"margin-right-1 flex-basis-66"}>
+                  <FormControl
+                    type="text"
+                    value={this.state.lanPortA}
+                    placeholder={"LAN port"}
+                    onChange={e => this.setState({ lanPort: e.target.value })}
+                  />
+                </div>
+              </Col>
+              <Col md={6} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-33"}>
+                  LAN port
+                </div>
+                <div className={"margin-right-1 flex-basis-66"}>
+                  <FormControl
+                    type="text"
+                    value={this.state.lanPortB}
                     placeholder={"LAN port"}
                     onChange={e => this.setState({ lanPort: e.target.value })}
                   />
@@ -198,61 +218,113 @@ export class AddIAD extends Component {
               </Col>
             </Row>
             <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>
+              <Col md={6} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-33"}>
                   WAN port
                 </div>
-                <div className={"margin-right-1 flex-basis-16"}>
+                <div className={"margin-right-1 flex-basis-66"}>
                   <FormControl
                     type="text"
-                    value={this.state.wanPort}
+                    value={this.state.wanPortA}
                     placeholder={"WAN port"}
-                    onChange={e => this.setState({ wanPort: e.target.value })}
+                    onChange={e => this.setState({ wanPortA: e.target.value })}
+                  />
+                </div>
+              </Col>
+              <Col md={6} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-33"}>
+                  WAN port
+                </div>
+                <div className={"margin-right-1 flex-basis-66"}>
+                  <FormControl
+                    type="text"
+                    value={this.state.wanPortB}
+                    placeholder={"WAN port"}
+                    onChange={e => this.setState({ wanPortB: e.target.value })}
                   />
                 </div>
               </Col>
             </Row>
             <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>
+              <Col md={6} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-33"}>
                   SR name
                 </div>
-                <div className={"margin-right-1 flex-basis-16"}>
+                <div className={"margin-right-1 flex-basis-66"}>
                   <FormControl
                     type="text"
-                    value={this.state.srName}
+                    value={this.state.srNameA}
                     placeholder={"SR name"}
-                    onChange={e => this.setState({ srName: e.target.value })}
+                    onChange={e => this.setState({ srNameA: e.target.value })}
+                  />
+                </div>
+              </Col>
+              <Col md={6} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-33"}>
+                  SR name
+                </div>
+                <div className={"margin-right-1 flex-basis-66"}>
+                  <FormControl
+                    type="text"
+                    value={this.state.srNameB}
+                    placeholder={"SR name"}
+                    onChange={e => this.setState({ srNameB: e.target.value })}
                   />
                 </div>
               </Col>
             </Row>
             <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>
+              <Col md={6} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-33"}>
                   SR SAP
                 </div>
-                <div className={"margin-right-1 flex-basis-16"}>
+                <div className={"margin-right-1 flex-basis-66"}>
                   <FormControl
                     type="text"
-                    value={this.state.srSAP}
+                    value={this.state.srSAPA}
                     placeholder={"SR SAP"}
-                    onChange={e => this.setState({ srSAP: e.target.value })}
+                    onChange={e => this.setState({ srSAPA: e.target.value })}
+                  />
+                </div>
+              </Col>
+              <Col md={6} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-33"}>
+                  SR SAP
+                </div>
+                <div className={"margin-right-1 flex-basis-66"}>
+                  <FormControl
+                    type="text"
+                    value={this.state.srSAPB}
+                    placeholder={"SR SAP"}
+                    onChange={e => this.setState({ srSAPB: e.target.value })}
                   />
                 </div>
               </Col>
             </Row>
             <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>
+              <Col md={6} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-33"}>
                   EDU VIF
                 </div>
-                <div className={"margin-right-1 flex-basis-16"}>
+                <div className={"margin-right-1 flex-basis-66"}>
                   <FormControl
                     type="text"
-                    value={this.state.eduVIF}
+                    value={this.state.eduVIFA}
                     placeholder={"EDU VIF"}
-                    onChange={e => this.setState({ eduVIF: e.target.value })}
+                    onChange={e => this.setState({ eduVIFA: e.target.value })}
+                  />
+                </div>
+              </Col>
+              <Col md={6} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-33"}>
+                  EDU VIF
+                </div>
+                <div className={"margin-right-1 flex-basis-66"}>
+                  <FormControl
+                    type="text"
+                    value={this.state.eduVIFB}
+                    placeholder={"EDU VIF"}
+                    onChange={e => this.setState({ eduVIFB: e.target.value })}
                   />
                 </div>
               </Col>
@@ -294,7 +366,7 @@ export class AddIAD extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  IP 1 mode
+                  IAD LAN address
                 </div>
                 <div className={"margin-right-1 flex"}>
                   <FormGroup className={"margin-0 flex"}>
@@ -387,7 +459,7 @@ export class AddIAD extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  IP 2 mode
+                  IP-PBX address
                 </div>
                 <div className={"margin-right-1 flex"}>
                   <FormGroup className={"margin-0 flex"}>
@@ -479,34 +551,6 @@ export class AddIAD extends Component {
             )}
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>
-                  Protocol mode
-                </div>
-                <div className={"margin-right-1 flex"}>
-                  <FormGroup className={"margin-0 flex"}>
-                    {TYPEOFIAD.map((type, i) => (
-                      <Radio
-                        className={"margin-0 flex margin-right-2"}
-                        key={i + ""}
-                        name="typeOfIad"
-                        disabled={type.disabled}
-                        value={type.value}
-                        checked={type.value === this.state.protocolMode}
-                        onChange={e =>
-                          this.setState({
-                            protocolMode: e.target.value
-                          })
-                        }
-                      >
-                        <div className="font-weight-bold flex">{type.name}</div>
-                      </Radio>
-                    ))}
-                  </FormGroup>
-                </div>
-              </Col>
-            </Row>
-            <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex font-24"}>
                   Override of the default Group option
                 </div>
@@ -534,37 +578,6 @@ export class AddIAD extends Component {
                       </Radio>
                     ))}
                   </FormGroup>
-                </div>
-              </Col>
-            </Row>
-            <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>
-                  Channel Hunting
-                </div>
-                <div className={"margin-right-1 flex-basis-33"}>
-                  <FormControl
-                    componentClass="select"
-                    value={this.state.channelHunting}
-                    onChange={e =>
-                      this.setState({ channelHunting: e.target.value })
-                    }
-                  >
-                    {CHANNELHUNTING.map((type, i) => (
-                      <option key={i} value={type.value}>
-                        {type.name}
-                      </option>
-                    ))}
-                  </FormControl>
-                </div>
-              </Col>
-            </Row>
-            <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"} />
-                <div className={"margin-right-1 flex-basis-33"}>
-                  {"\u26a0"} Will only work on lowest IAD, not recommended
-                  unless only 1 IAD on site
                 </div>
               </Col>
             </Row>
@@ -600,28 +613,44 @@ export class AddIAD extends Component {
                 <div className={"margin-right-1 flex flex-basis-16"}>
                   Numbers Of Channels{"\u002a"}
                 </div>
-                <div className={"margin-right-1 flex"}>In</div>
-                <div className={"margin-right-1 flex-basis-11"}>
-                  <FormControl
-                    type="text"
-                    value={this.state.channelsIn}
-                    placeholder={"In"}
-                    onChange={e =>
-                      this.setState({ channelsIn: e.target.value })
-                    }
-                  />
-                </div>
-                <div className={"margin-right-1 flex"}>Out</div>
-                <div className={"margin-right-1 flex-basis-11"}>
-                  <FormControl
-                    type="text"
-                    value={this.state.channelOut}
-                    placeholder={"Out"}
-                    onChange={e =>
-                      this.setState({ channelOut: e.target.value })
-                    }
-                  />
-                </div>
+                {this.state.direction === "Uni" && (
+                  <div className={"margin-right-1 flex-basis-33"}>
+                    <FormControl
+                      type="text"
+                      value={this.state.numbersOfChannels}
+                      placeholder={"Numbers Of Channels"}
+                      onChange={e =>
+                        this.setState({ numbersOfChannels: e.target.value })
+                      }
+                    />
+                  </div>
+                )}
+                {this.state.direction === "Bi" && (
+                  <React.Fragment>
+                    <div className={"margin-right-1 flex"}>In</div>
+                    <div className={"margin-right-1 flex-basis-11"}>
+                      <FormControl
+                        type="text"
+                        value={this.state.channelsIn}
+                        placeholder={"In"}
+                        onChange={e =>
+                          this.setState({ channelsIn: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className={"margin-right-1 flex"}>Out</div>
+                    <div className={"margin-right-1 flex-basis-11"}>
+                      <FormControl
+                        type="text"
+                        value={this.state.channelOut}
+                        placeholder={"Out"}
+                        onChange={e =>
+                          this.setState({ channelOut: e.target.value })
+                        }
+                      />
+                    </div>
+                  </React.Fragment>
+                )}
               </Col>
             </Row>
             <Row className={"margin-top-1"}>
@@ -629,6 +658,121 @@ export class AddIAD extends Component {
                 <div className={"margin-right-1 flex flex-basis-16"} />
                 <div className={"margin-right-1 flex-basis-33"}>
                   {"\u002a"} Don't exceed your IADs capacity (avalible: xxxxx)
+                </div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex font-24"}>PRA Info</div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <Table hover bordered>
+                  <thead>
+                    <tr>
+                      <th>PRA TPID</th>
+                      <th>PRA CID</th>
+                      <th>PRA PORT</th>
+                      <th>PRA MAINT nr</th>
+                      <th>MODE</th>
+                      <th>
+                        ACTIVE
+                        <Glyphicon
+                          glyph="glyphicon glyphicon-sort"
+                          onClick={this.sortByRangeEnd}
+                        />
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </Table>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  Clocking
+                </div>
+                <div className={"margin-right-1 flex"}>
+                  <FormGroup className={"margin-0 flex"}>
+                    {CLOCKING.map((type, i) => (
+                      <Radio
+                        className={"margin-0 flex margin-right-2"}
+                        key={i + ""}
+                        name="clocking"
+                        value={type.value}
+                        checked={type.value === this.state.clocking}
+                        onChange={e =>
+                          this.setState({
+                            clocking: e.target.value
+                          })
+                        }
+                      >
+                        <div className="font-weight-bold flex">{type.name}</div>
+                      </Radio>
+                    ))}
+                  </FormGroup>
+                </div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>ISDN</div>
+                <div className={"margin-right-1 flex"}>
+                  <FormGroup className={"margin-0 flex"}>
+                    {ISDN.map((type, i) => (
+                      <Radio
+                        className={"margin-0 flex margin-right-2"}
+                        key={i + ""}
+                        name="isdn"
+                        value={type.value}
+                        checked={type.value === this.state.isdn}
+                        onChange={e =>
+                          this.setState({
+                            isdn: e.target.value
+                          })
+                        }
+                      >
+                        <div className="font-weight-bold flex">{type.name}</div>
+                      </Radio>
+                    ))}
+                  </FormGroup>
+                </div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  Dual Power
+                </div>
+                <div className={"margin-right-1 flex"}>
+                  <FormGroup className={"margin-0 flex"}>
+                    <Radio
+                      className={"margin-0 flex margin-right-2"}
+                      name="dualPower"
+                      checked={this.state.dualPower}
+                      onChange={e =>
+                        this.setState({
+                          virtualSite: true
+                        })
+                      }
+                    >
+                      <div className="font-weight-bold flex">Yes</div>
+                    </Radio>
+                    <Radio
+                      className={"margin-0 flex margin-right-2"}
+                      name="dualPower"
+                      checked={!this.state.dualPower}
+                      onChange={e =>
+                        this.setState({
+                          virtualSite: false
+                        })
+                      }
+                    >
+                      <div className="font-weight-bold flex">No</div>
+                    </Radio>
+                  </FormGroup>
                 </div>
               </Col>
             </Row>

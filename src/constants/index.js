@@ -144,3 +144,10 @@ export const MODEREDUNDANCY = [
   { name: "Overflow", value: "Overflow" },
   { name: "Loadbalancing", value: "Loadbalancing" }
 ];
+
+export const CLOCKING = [
+  { name: "Master", value: "Master" },
+  { name: "Slave", value: "Slave" }
+];
+
+export const ISDN = [{ name: "NT", value: "NT" }, { name: "TE", value: "TE" }];

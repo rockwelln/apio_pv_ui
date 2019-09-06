@@ -20,12 +20,12 @@ import { TYPEOFIAD, TYPEOFACCESS, SERVICETYPE } from "../../constants";
 export class AddGroup extends Component {
   state = {
     siteName: "",
-    mainNumber: null,
+    mainNumber: undefined,
     zipCode: "",
     virtualSite: false,
     typeOfIad: "",
     typeOfAccess: "",
-    numberOfChannels: null,
+    numberOfChannels: undefined,
     serviceType: "",
     buttonName: "Create"
   };
