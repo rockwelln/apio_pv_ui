@@ -85,12 +85,16 @@ export const DIRECTION = [
 export const DESTINATIONNUMBERSPRA = [
   { name: "No-fromating rule", value: "None" },
   {
-    name: "International format (E164) without leadig 0's",
-    value: "Strip + and TON/NPI intl"
+    name: "National format with leadig 0's",
+    value: "Do not strip 0 and TON/NPI natl"
   },
   {
-    name: "International format with leadig 0's",
-    value: "Strip + and add 00 and TON/NPI intl"
+    name: "National format without leadig 0's",
+    value: "Strip 0 and TON/NPI natl"
+  },
+  {
+    name: "National: E164 without leading +",
+    value: "Strip 0 and add 32 and TON/NPI natl"
   }
 ];
 export const NATIONNUMBERSPRA = [
@@ -111,16 +115,12 @@ export const NATIONNUMBERSPRA = [
 export const INTERNATIONNUMBERSPRA = [
   { name: "No-fromating rule", value: "None" },
   {
-    name: "National format with leadig 0's",
-    value: "Do not strip 0 and TON/NPI natl"
+    name: "International format (E164) without leadig 0's",
+    value: "Strip + and TON/NPI intl"
   },
   {
-    name: "National format without leadig 0's",
-    value: "Strip 0 and TON/NPI natl"
-  },
-  {
-    name: "National: E164 without leading +",
-    value: "Strip 0 and add 32 and TON/NPI natl"
+    name: "International format with leadig 0's",
+    value: "Strip + and add 00 and TON/NPI intl"
   }
 ];
 

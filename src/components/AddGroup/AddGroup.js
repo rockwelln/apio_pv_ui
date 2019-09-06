@@ -287,6 +287,7 @@ export class AddGroup extends Component {
 
     const data = {
       groupName: siteName,
+      cliName: siteName,
       zipCode,
       numberOfChannels: Number(numberOfChannels),
       pbxType: typeOfIad,

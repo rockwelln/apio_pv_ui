@@ -159,11 +159,21 @@ class Tenants extends Component {
                         <th>
                           <FormattedMessage
                             id="tenant-id"
-                            defaultMessage="Tenant ID"
+                            defaultMessage="Entreprise ID"
                           />
                           <Glyphicon
                             glyph="glyphicon glyphicon-sort"
                             onClick={this.sortByTenantID}
+                          />
+                        </th>
+                        <th>
+                          <FormattedMessage
+                            id="tenant-id"
+                            defaultMessage="Entreprise name"
+                          />
+                          <Glyphicon
+                            glyph="glyphicon glyphicon-sort"
+                            onClick={this.sortByTenantName}
                           />
                         </th>
                         <th>
@@ -306,6 +316,23 @@ class Tenants extends Component {
         return 0;
       });
       this.setState({ tenants: tenansSorted, sortedBy: "tenantId" }, () =>
+        this.pagination()
+      );
+    }
+  };
+
+  sortByTenantName = () => {
+    const { tenants, sortedBy } = this.state;
+    if (sortedBy === "name") {
+      const tenansSorted = tenants.reverse();
+      this.setState({ tenants: tenansSorted }, () => this.pagination());
+    } else {
+      const tenansSorted = tenants.sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      });
+      this.setState({ tenants: tenansSorted, sortedBy: "name" }, () =>
         this.pagination()
       );
     }
