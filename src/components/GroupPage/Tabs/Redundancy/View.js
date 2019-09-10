@@ -13,16 +13,8 @@ export class View extends Component {
       <React.Fragment>
         <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>Mode</div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl type="text" value={"Overflow"} disabled />
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>
-              Selected groups
+              Number Rooting
             </div>
           </Col>
         </Row>

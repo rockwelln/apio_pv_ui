@@ -50,7 +50,7 @@ export class AddIAD extends Component {
     protocolMode: "",
     dtmf: "",
     channelHunting: "",
-    direction: "",
+    direction: "Uni",
     channelsIn: "",
     channelOut: "",
     buttonName: "Create"

@@ -22,6 +22,7 @@ class Group extends Component {
           </Link>
         </td>
         <td>{group.groupName}</td>
+        <td>Column 3</td>
         <td>
           <ButtonToolbar>
             <Glyphicon

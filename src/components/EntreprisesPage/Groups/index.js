@@ -163,20 +163,35 @@ export class GroupsTab extends Component {
                   <thead>
                     <tr>
                       <th>
-                        <FormattedMessage id="tenant-id" defaultMessage="ID" />
+                        <FormattedMessage
+                          id="tenant-id"
+                          defaultMessage="SITE ID"
+                        />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
                           onClick={this.sortByID}
                         />
                       </th>
                       <th>
-                        <FormattedMessage id="name" defaultMessage="Name" />
+                        <FormattedMessage
+                          id="name"
+                          defaultMessage="SITE NAME"
+                        />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
                           onClick={this.sortByName}
                         />
                       </th>
-
+                      <th>
+                        <FormattedMessage
+                          id="tenant-id"
+                          defaultMessage="PRODUCT/ACCESS TYPE"
+                        />
+                        <Glyphicon
+                          glyph="glyphicon glyphicon-sort"
+                          onClick={this.sortByID}
+                        />
+                      </th>
                       <th />
                     </tr>
                   </thead>

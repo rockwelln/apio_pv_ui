@@ -159,7 +159,7 @@ class Tenants extends Component {
                         <th>
                           <FormattedMessage
                             id="tenant-id"
-                            defaultMessage="Entreprise ID"
+                            defaultMessage="ENTREPRISE ID"
                           />
                           <Glyphicon
                             glyph="glyphicon glyphicon-sort"
@@ -169,7 +169,7 @@ class Tenants extends Component {
                         <th>
                           <FormattedMessage
                             id="tenant-id"
-                            defaultMessage="Entreprise name"
+                            defaultMessage="ENTREPRISE NAME"
                           />
                           <Glyphicon
                             glyph="glyphicon glyphicon-sort"
@@ -179,7 +179,7 @@ class Tenants extends Component {
                         <th>
                           <FormattedMessage
                             id="tina"
-                            defaultMessage="Tina ID"
+                            defaultMessage="TINA ID"
                           />
                           <Glyphicon
                             glyph="glyphicon glyphicon-sort"
@@ -189,7 +189,7 @@ class Tenants extends Component {
                         <th>
                           <FormattedMessage
                             id="uuid"
-                            defaultMessage="Vlan UUID"
+                            defaultMessage="VLAN UUID"
                           />
                           <Glyphicon
                             glyph="glyphicon glyphicon-sort"

@@ -143,7 +143,7 @@ export class IADs extends Component {
                     <th>
                       <FormattedMessage
                         id="tenant-id"
-                        defaultMessage="IAD ID"
+                        defaultMessage="IAD's (Trunkgroups)"
                       />
                       <Glyphicon
                         glyph="glyphicon glyphicon-sort"
@@ -151,7 +151,10 @@ export class IADs extends Component {
                       />
                     </th>
                     <th style={{ width: "24%" }}>
-                      <FormattedMessage id="name" defaultMessage="IAD Type" />
+                      <FormattedMessage
+                        id="name"
+                        defaultMessage="Mac Address"
+                      />
                       <Glyphicon
                         glyph="glyphicon glyphicon-sort"
                         onClick={this.sortByFirstName}
@@ -160,7 +163,7 @@ export class IADs extends Component {
                     <th>
                       <FormattedMessage
                         id="type"
-                        defaultMessage="Mac Address"
+                        defaultMessage="Setting Status"
                       />
                       <Glyphicon
                         glyph="glyphicon glyphicon-sort"

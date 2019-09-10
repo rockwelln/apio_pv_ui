@@ -153,6 +153,26 @@ class TenantPage extends Component {
               </div>
             </Col>
           </Row>
+          <Row className={"margin-top-1"}>
+            <Col md={12} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-16"}>
+                Customer name
+              </div>
+              <div className={"margin-right-1 flex-basis-33"}>
+                <FormControl
+                  type="text"
+                  value={this.state.tenant.name}
+                  onChange={e =>
+                    this.setState({
+                      tenant: { ...this.state.tenant, name: e.target.value }
+                    })
+                  }
+                  placeholder={"Name"}
+                  disabled={this.state.isDisabled}
+                />
+              </div>
+            </Col>
+          </Row>
           {!this.state.isDisabled && (
             <Row>
               <Col md={12}>
@@ -171,19 +191,21 @@ class TenantPage extends Component {
               </Col>
             </Row>
           )}
-          <div className={"relative"}>
-            <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex font-24"}>Sites</div>
-              </Col>
-            </Row>
-            <Row className={"margin-top-1"}>
-              <Col md={12}>
-                <Groups />
-              </Col>
-            </Row>
-            {!this.state.isDisabled && <div className={"disabled-area"} />}
-          </div>
+          {this.state.isDisabled && (
+            <div className={"relative"}>
+              <Row className={"margin-top-1"}>
+                <Col md={12} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex font-24"}>Sites</div>
+                </Col>
+              </Row>
+              <Row className={"margin-top-1"}>
+                <Col md={12}>
+                  <Groups />
+                </Col>
+              </Row>
+              {!this.state.isDisabled && <div className={"disabled-area"} />}
+            </div>
+          )}
         </div>
       </React.Fragment>
     );
