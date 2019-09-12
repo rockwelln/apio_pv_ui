@@ -20,12 +20,15 @@ import {
 
 export class Info extends Component {
   state = {
-    addButton: "Add now"
+    addButton: "Add to group"
   };
   render() {
     return (
       //body
       <div className={"panel-body"}>
+        {this.props.isGroupPage && (
+          <div className={"header"}>Add numbers to group</div>
+        )}
         {this.props.isGroupPage && <div>Results added to tennant</div>}
         {this.props.addedNumbersToTenant.warning && (
           <Row>
@@ -45,9 +48,7 @@ export class Info extends Component {
           </Tab>
           <Tab
             eventKey={1}
-            title={`Rejected (${
-              this.props.addedNumbersToTenant.rejected.length
-            })`}
+            title={`Rejected (${this.props.addedNumbersToTenant.rejected.length})`}
           >
             <Rejected rejected={this.props.addedNumbersToTenant.rejected} />
           </Tab>
@@ -69,9 +70,7 @@ export class Info extends Component {
                 </React.Fragment>
               ) : (
                 <Link
-                  to={`/provisioning/${
-                    this.props.match.params.gwName
-                  }/tenants/${this.props.match.params.tenantId}`}
+                  to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}`}
                 >
                   <Button
                     onClick={this.addPhoneNumbers}
@@ -105,7 +104,7 @@ export class Info extends Component {
           ? this.props.changeStepOfAddPhoneTenant("InfoGroup")
           : this.setState({
               errorMessage: "Failed assign numbers",
-              addButton: "Add now"
+              addButton: "Add to group"
             })
       );
   };

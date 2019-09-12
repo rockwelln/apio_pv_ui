@@ -22,7 +22,7 @@ import { getRange } from "../expandRangeOfPhoneNumber";
 
 export class Basic extends Component {
   state = {
-    buttomNameAdd: "ADD"
+    buttomNameAdd: this.props.match.params.groupId ? "Add to tenant" : "ADD"
   };
   render() {
     return (
@@ -32,11 +32,11 @@ export class Basic extends Component {
           <Row>
             <Col md={12}>
               <div className={"header"}>
-                Add phone numbers
+                {this.props.match.params.groupId
+                  ? "Try to add numbers to the tenant"
+                  : "Add phone numbers"}
                 <Link
-                  to={`/provisioning/${
-                    this.props.match.params.gwName
-                  }/tenants/${this.props.match.params.tenantId}`}
+                  to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}`}
                 >
                   {this.props.isGroupPage ? null : (
                     <Button
@@ -75,6 +75,17 @@ export class Basic extends Component {
           {/**Button to send data to BE and switch to next step */}
           <Row className={"margin-1"}>
             <div className="button-row">
+              {this.props.match.params.groupId && (
+                <div className="pull-left">
+                  <Button
+                    onClick={this.toBasic}
+                    className={"btn-primary"}
+                    disabled={this.state.buttomNameAdd === "Adding..."}
+                  >
+                    Back
+                  </Button>
+                </div>
+              )}
               <div className="pull-right">
                 <Button
                   onClick={this.addPhoneNumbers}
@@ -90,6 +101,10 @@ export class Basic extends Component {
       </React.Fragment>
     );
   }
+
+  toBasic = () => {
+    this.props.changeStepOfAddPhoneTenant("Basic");
+  };
 
   addPhoneNumbers = () => {
     const data = this.props.validatedNumbersTenant.ok.reduce(
@@ -118,7 +133,13 @@ export class Basic extends Component {
             this.props.changeStepOfAddPhoneTenant("Info");
           }
         })
-        .then(() => this.setState({ buttomNameAdd: "ADD" }));
+        .then(() =>
+          this.setState({
+            buttomNameAdd: this.props.match.params.groupId
+              ? "Add to tenant"
+              : "ADD"
+          })
+        );
     });
   };
 }
