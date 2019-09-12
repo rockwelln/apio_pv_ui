@@ -101,9 +101,7 @@ export class LocalUsers extends Component {
             </Col>
             <Col className={"text-right"} md={1}>
               <Link
-                to={`/provisioning/${
-                  this.props.match.params.gwName
-                }/localusers/adduser`}
+                to={`/provisioning/${this.props.match.params.gwName}/localusers/adduser`}
               >
                 <Glyphicon
                   className={"x-large"}
@@ -172,63 +170,6 @@ export class LocalUsers extends Component {
                           <Glyphicon
                             glyph="glyphicon glyphicon-sort"
                             onClick={this.sortByLastName}
-                          />
-                        </th>
-                        <th>
-                          <FormattedMessage id="type" defaultMessage="Email" />
-                          <Glyphicon
-                            glyph="glyphicon glyphicon-sort"
-                            onClick={this.sortByEmail}
-                          />
-                        </th>
-                        <th>
-                          <FormattedMessage
-                            id="type"
-                            defaultMessage="Access Type"
-                          />
-                          <Glyphicon
-                            glyph="glyphicon glyphicon-sort"
-                            onClick={this.sortByAccessType}
-                          />
-                        </th>
-                        <th>
-                          <FormattedMessage
-                            id="type"
-                            defaultMessage="Language"
-                          />
-                          <Glyphicon
-                            glyph="glyphicon glyphicon-sort"
-                            onClick={this.sortByLanguage}
-                          />
-                        </th>
-                        <th>
-                          <FormattedMessage
-                            id="type"
-                            defaultMessage="Read only"
-                          />
-                          <Glyphicon
-                            glyph="glyphicon glyphicon-sort"
-                            onClick={this.sortByReadOnly}
-                          />
-                        </th>
-                        <th>
-                          <FormattedMessage
-                            id="type"
-                            defaultMessage="User level"
-                          />
-                          <Glyphicon
-                            glyph="glyphicon glyphicon-sort"
-                            onClick={this.sortByUserLevel}
-                          />
-                        </th>
-                        <th>
-                          <FormattedMessage
-                            id="type"
-                            defaultMessage="User profile type"
-                          />
-                          <Glyphicon
-                            glyph="glyphicon glyphicon-sort"
-                            onClick={this.sortByUserProfileType}
                           />
                         </th>
                         <th>
@@ -398,107 +339,6 @@ export class LocalUsers extends Component {
     }
   };
 
-  sortByEmail = () => {
-    const { users, sortedBy } = this.state;
-    if (sortedBy === "emailAddress") {
-      const usersSorted = users.reverse();
-      this.setState({ users: usersSorted }, () => this.pagination());
-    } else {
-      const usersSorted = users.sort((a, b) => {
-        if (a.emailAddress < b.emailAddress) return -1;
-        if (a.emailAddress > b.emailAddress) return 1;
-        return 0;
-      });
-      this.setState({ users: usersSorted, sortedBy: "emailAddress" }, () =>
-        this.pagination()
-      );
-    }
-  };
-
-  sortByAccessType = () => {
-    const { users, sortedBy } = this.state;
-    if (sortedBy === "accessType") {
-      const usersSorted = users.reverse();
-      this.setState({ users: usersSorted }, () => this.pagination());
-    } else {
-      const usersSorted = users.sort((a, b) => {
-        if (a.accessType < b.accessType) return -1;
-        if (a.accessType > b.accessType) return 1;
-        return 0;
-      });
-      this.setState({ users: usersSorted, sortedBy: "accessType" }, () =>
-        this.pagination()
-      );
-    }
-  };
-
-  sortByLanguage = () => {
-    const { users, sortedBy } = this.state;
-    if (sortedBy === "language") {
-      const usersSorted = users.reverse();
-      this.setState({ users: usersSorted }, () => this.pagination());
-    } else {
-      const usersSorted = users.sort((a, b) => {
-        if (a.language < b.language) return -1;
-        if (a.language > b.language) return 1;
-        return 0;
-      });
-      this.setState({ users: usersSorted, sortedBy: "language" }, () =>
-        this.pagination()
-      );
-    }
-  };
-
-  sortByReadOnly = () => {
-    const { users, sortedBy } = this.state;
-    if (sortedBy === "readOnly") {
-      const usersSorted = users.reverse();
-      this.setState({ users: usersSorted }, () => this.pagination());
-    } else {
-      const usersSorted = users.sort((a, b) => {
-        if (a.readOnly < b.readOnly) return -1;
-        if (a.readOnly > b.readOnly) return 1;
-        return 0;
-      });
-      this.setState({ users: usersSorted, sortedBy: "readOnly" }, () =>
-        this.pagination()
-      );
-    }
-  };
-
-  sortByUserLevel = () => {
-    const { users, sortedBy } = this.state;
-    if (sortedBy === "userLevel") {
-      const usersSorted = users.reverse();
-      this.setState({ users: usersSorted }, () => this.pagination());
-    } else {
-      const usersSorted = users.sort((a, b) => {
-        if (a.userLevel < b.userLevel) return -1;
-        if (a.userLevel > b.userLevel) return 1;
-        return 0;
-      });
-      this.setState({ users: usersSorted, sortedBy: "userLevel" }, () =>
-        this.pagination()
-      );
-    }
-  };
-
-  sortByUserProfileType = () => {
-    const { users, sortedBy } = this.state;
-    if (sortedBy === "userProfileType") {
-      const usersSorted = users.reverse();
-      this.setState({ users: usersSorted }, () => this.pagination());
-    } else {
-      const usersSorted = users.sort((a, b) => {
-        if (a.userProfileType < b.userProfileType) return -1;
-        if (a.userProfileType > b.userProfileType) return 1;
-        return 0;
-      });
-      this.setState({ users: usersSorted, sortedBy: "userProfileType" }, () =>
-        this.pagination()
-      );
-    }
-  };
   sortByUserType = () => {
     const { users, sortedBy } = this.state;
     if (sortedBy === "userType") {

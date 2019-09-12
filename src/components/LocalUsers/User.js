@@ -17,21 +17,13 @@ class User extends Component {
       <tr>
         <td>
           <Link
-            to={`/provisioning/${
-              this.props.match.params.gwName
-            }/localusers/user/${user.username}`}
+            to={`/provisioning/${this.props.match.params.gwName}/localusers/user/${user.username}`}
           >
             {user.username}
           </Link>
         </td>
         <td>{user.firstName}</td>
         <td>{user.lastName}</td>
-        <td>{user.emailAddress}</td>
-        <td>{user.accessType}</td>
-        <td>{user.language}</td>
-        <td>{user.readOnly ? "yes" : "no"}</td>
-        <td>{user.userLevel}</td>
-        <td>{user.userProfileType}</td>
         <td>{user.userType}</td>
         <td>
           <ButtonToolbar>
