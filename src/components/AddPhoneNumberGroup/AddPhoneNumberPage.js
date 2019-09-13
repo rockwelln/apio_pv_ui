@@ -9,7 +9,8 @@ import Radio from "react-bootstrap/lib/Radio";
 
 import {
   fetchGetAvailableNumbersByTenantID,
-  refuseAddPhoneToTenant
+  refuseAddPhoneToTenant,
+  changeStepOfAddPhoneTenant
 } from "../../store/actions";
 import Loading from "../../common/Loading";
 
@@ -18,6 +19,10 @@ import Steps from "../AddPhoneNumberTenant/Steps";
 
 export class AddPhoneNumberPage extends Component {
   state = { isLoadNewPhones: null, isLoading: true };
+
+  componentDidMount() {
+    this.props.changeStepOfAddPhoneTenant("Basic");
+  }
 
   componentDidUpdate(prevProps) {
     if (
@@ -118,7 +123,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   fetchGetAvailableNumbersByTenantID,
-  refuseAddPhoneToTenant
+  refuseAddPhoneToTenant,
+  changeStepOfAddPhoneTenant
 };
 
 export default withRouter(

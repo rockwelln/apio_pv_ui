@@ -14,14 +14,17 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import {
   fetchGetLocalUser,
-  fetchPutUpdateLocalUser
+  fetchPutUpdateLocalUser,
+  fetchGetLanguages
 } from "../../store/actions";
 import { removeEmpty } from "../remuveEmptyInObject";
 
+import Loading from "../../common/Loading";
 import { USERTYPES } from "../../constants";
 
 export class UpdateLocalUserPage extends Component {
   state = {
+    isLoading: true,
     user: {},
     emailIsValid: null,
     firstNameError: null,
@@ -37,7 +40,12 @@ export class UpdateLocalUserPage extends Component {
     this.props
       .fetchGetLocalUser(this.props.match.params.localUserName)
       .then(() =>
-        this.setState({ user: this.props.localUser, isLoading: false })
+        this.props.fetchGetLanguages().then(() =>
+          this.setState({
+            user: this.props.localUser,
+            isLoading: false
+          })
+        )
       );
   }
 
@@ -65,6 +73,11 @@ export class UpdateLocalUserPage extends Component {
       username,
       userType
     } = this.state.user;
+
+    if (this.state.isLoading) {
+      return <Loading />;
+    }
+
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
@@ -250,15 +263,27 @@ export class UpdateLocalUserPage extends Component {
                       md={3}
                       className={"text-left"}
                     >
-                      Language
+                      Language{"\u002a"}
                     </Col>
                     <Col md={9}>
                       <FormControl
-                        type="text"
-                        placeholder="Language"
+                        componentClass="select"
                         defaultValue={language}
-                        disabled
-                      />
+                        onChange={e =>
+                          this.setState({
+                            user: {
+                              ...this.state.user,
+                              language: e.target.value
+                            }
+                          })
+                        }
+                      >
+                        {this.props.languages.availableLanguages.map(lang => (
+                          <option key={`${lang.locale}`} value={lang.name}>
+                            {lang.name}
+                          </option>
+                        ))}
+                      </FormControl>
                     </Col>
                   </FormGroup>
                   <FormGroup controlId="userType">
@@ -361,10 +386,15 @@ export class UpdateLocalUserPage extends Component {
 }
 
 const mapStateToProps = state => ({
-  localUser: state.localUser
+  localUser: state.localUser,
+  languages: state.languages
 });
 
-const mapDispatchToProps = { fetchGetLocalUser, fetchPutUpdateLocalUser };
+const mapDispatchToProps = {
+  fetchGetLocalUser,
+  fetchPutUpdateLocalUser,
+  fetchGetLanguages
+};
 
 export default withRouter(
   connect(

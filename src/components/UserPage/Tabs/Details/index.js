@@ -19,7 +19,8 @@ import Loading from "../../../../common/Loading";
 import {
   fetchGetUserByName,
   fetchPutUpdateUser,
-  fetchGetAccessDeviceByName
+  fetchGetAccessDeviceByName,
+  fetchGetLanguages
 } from "../../../../store/actions";
 
 class Details extends Component {
@@ -32,14 +33,20 @@ class Details extends Component {
     lastName: "",
     cliFirstName: "",
     cliLastName: "",
-    language: "English",
+    language: "",
     emailIsValid: null,
     firstNameError: null,
     lastNameError: null,
-    updateMassage: ""
+    updateMassage: "",
+    isLoadingLanguages: true
   };
 
   fetchRequst = () => {
+    this.props.fetchGetLanguages().then(() =>
+      this.setState({
+        isLoadingLanguages: false
+      })
+    );
     this.props
       .fetchGetUserByName(
         this.props.match.params.tenantId,
@@ -62,6 +69,7 @@ class Details extends Component {
                   cliFirstName: this.props.user.cliFirstName,
                   cliLastName: this.props.user.cliLastName,
                   accessDevice: this.props.accessDevice,
+                  language: this.props.user.language,
                   isLoading: false
                 })
               )
@@ -71,6 +79,7 @@ class Details extends Component {
               lastName: this.props.user.lastName,
               cliFirstName: this.props.user.cliFirstName,
               cliLastName: this.props.user.cliLastName,
+              language: this.props.user.language,
               isLoading: false
             });
       });
@@ -96,10 +105,11 @@ class Details extends Component {
       emailIsValid,
       firstNameError,
       lastNameError,
-      updateMassage
+      updateMassage,
+      isLoadingLanguages
     } = this.state;
 
-    if (isLoading) {
+    if (isLoading && isLoadingLanguages) {
       return <Loading />;
     }
 
@@ -227,15 +237,24 @@ class Details extends Component {
             )}
             <FormGroup controlId="language">
               <Col componentClass={ControlLabel} md={3} className={"text-left"}>
-                Language
+                Language{"\u002a"}
               </Col>
               <Col md={9}>
                 <FormControl
-                  type="text"
-                  placeholder="Language"
+                  componentClass="select"
                   defaultValue={language}
-                  disabled
-                />
+                  onChange={e =>
+                    this.setState({
+                      language: e.target.value
+                    })
+                  }
+                >
+                  {this.props.languages.availableLanguages.map(lang => (
+                    <option key={`${lang.locale}`} value={lang.name}>
+                      {lang.name}
+                    </option>
+                  ))}
+                </FormControl>
               </Col>
             </FormGroup>
             {this.props.user.trunkEndpoint && (
@@ -490,10 +509,14 @@ class Details extends Component {
             <Col md={12} className={"padding-0"}>
               <div className="button-row">
                 <div className="pull-right">
-                  <Button onClick={this.updateUser} type="submit" className="btn-primary">
+                  <Button
+                    onClick={this.updateUser}
+                    type="submit"
+                    className="btn-primary"
+                  >
                     <Glyphicon glyph="glyphicon glyphicon-ok" /> UPDATE
                   </Button>
-                  </div>
+                </div>
               </div>
             </Col>
           </Row>
@@ -568,12 +591,14 @@ class Details extends Component {
 const mapDispatchToProps = {
   fetchGetUserByName,
   fetchPutUpdateUser,
-  fetchGetAccessDeviceByName
+  fetchGetAccessDeviceByName,
+  fetchGetLanguages
 };
 
 const mapStateToProps = state => ({
   user: state.user,
-  accessDevice: state.accessDevice
+  accessDevice: state.accessDevice,
+  languages: state.languages
 });
 
 export default withRouter(

@@ -101,7 +101,8 @@ const initialState = {
   availableNumbersTenant: [],
   addedNumbersToGroup: {},
   usersFound: [],
-  groupsFound: []
+  groupsFound: [],
+  languages: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -446,6 +447,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         availableNumbersTenant: phoneNumbers
+      };
+    }
+    case actionType.GET_LANGUAGES: {
+      return {
+        ...state,
+        languages: action.data
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN: {

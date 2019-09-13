@@ -18,7 +18,8 @@ import {
   fetchGetCategoryByName,
   fetchPostCreateUserToGroup,
   fetchGetGroupById,
-  fetchGetAvailableNumbersByGroupId
+  fetchGetAvailableNumbersByGroupId,
+  fetchGetLanguages
 } from "../../store/actions";
 import { removeEmpty } from "../remuveEmptyInObject";
 
@@ -34,7 +35,7 @@ export class AddUserPage extends Component {
     lastName: "",
     cliFirstName: "",
     cliLastName: "",
-    language: "English",
+    language: "",
     emailIsValid: null,
     firstNameError: null,
     lastNameError: null,
@@ -45,10 +46,17 @@ export class AddUserPage extends Component {
     templateName: "",
     buttonName: "Create",
     isLoadingGroup: true,
-    phoneNumber: ""
+    phoneNumber: "",
+    isLoadingLanguages: true
   };
 
   componentDidMount = () => {
+    this.props.fetchGetLanguages().then(() =>
+      this.setState({
+        language: this.props.languages.defaultLangue,
+        isLoadingLanguages: false
+      })
+    );
     this.props
       .fetchGetGroupById(
         this.props.match.params.tenantId,
@@ -84,10 +92,11 @@ export class AddUserPage extends Component {
       password,
       passwordError,
       templateName,
-      buttonName
+      buttonName,
+      isLoadingLanguages
     } = this.state;
 
-    if (isLoadingGroup || isLoadingTemplates) {
+    if (isLoadingGroup || isLoadingTemplates || isLoadingLanguages) {
       return <Loading />;
     }
 
@@ -131,9 +140,7 @@ export class AddUserPage extends Component {
                             })
                           }
                         />
-                        <InputGroup.Addon>{`@${
-                          this.props.group.defaultDomain
-                        }`}</InputGroup.Addon>
+                        <InputGroup.Addon>{`@${this.props.group.defaultDomain}`}</InputGroup.Addon>
                       </InputGroup>
                       {userIdError && (
                         <HelpBlock>
@@ -391,11 +398,20 @@ export class AddUserPage extends Component {
                     </Col>
                     <Col md={9}>
                       <FormControl
-                        type="text"
-                        placeholder="Language"
+                        componentClass="select"
                         defaultValue={language}
-                        disabled
-                      />
+                        onChange={e =>
+                          this.setState({
+                            language: e.target.value
+                          })
+                        }
+                      >
+                        {this.props.languages.availableLanguages.map(lang => (
+                          <option key={`${lang.locale}`} value={lang.name}>
+                            {lang.name}
+                          </option>
+                        ))}
+                      </FormControl>
                     </Col>
                   </FormGroup>
                 </FormGroup>
@@ -503,11 +519,7 @@ export class AddUserPage extends Component {
             () =>
               res &&
               this.props.history.push(
-                `/provisioning/${this.props.match.params.gwName}/tenants/${
-                  this.props.match.params.tenantId
-                }/groups/${this.props.match.params.groupId}/users/${
-                  this.props.createdUserInGroup.userId
-                }`
+                `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/users/${this.props.createdUserInGroup.userId}`
               )
           )
         )
@@ -519,14 +531,16 @@ const mapStateToProps = state => ({
   category: state.category,
   group: state.group,
   createdUserInGroup: state.createdUserInGroup,
-  availableNumbers: state.availableNumbers
+  availableNumbers: state.availableNumbers,
+  languages: state.languages
 });
 
 const mapDispatchToProps = {
   fetchGetCategoryByName,
   fetchPostCreateUserToGroup,
   fetchGetGroupById,
-  fetchGetAvailableNumbersByGroupId
+  fetchGetAvailableNumbersByGroupId,
+  fetchGetLanguages
 };
 
 export default withRouter(

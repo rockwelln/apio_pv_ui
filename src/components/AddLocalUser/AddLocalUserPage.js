@@ -12,8 +12,13 @@ import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
-import { fetchPostCreateLocalUser } from "../../store/actions";
+import {
+  fetchPostCreateLocalUser,
+  fetchGetLanguages
+} from "../../store/actions";
 import { removeEmpty } from "../remuveEmptyInObject";
+
+import Loading from "../../common/Loading";
 
 import { USERTYPES } from "../../constants";
 
@@ -23,7 +28,7 @@ export class AddLocalUserPage extends Component {
     emailAddress: "",
     firstName: "",
     lastName: "",
-    language: "English",
+    language: "",
     userNameError: null,
     emailIsValid: null,
     firstNameError: null,
@@ -33,8 +38,18 @@ export class AddLocalUserPage extends Component {
     buttonName: "Create",
     userType: "",
     confirmPassword: "",
-    confirmPasswordError: null
+    confirmPasswordError: null,
+    isLoading: true
   };
+
+  componentDidMount() {
+    this.props.fetchGetLanguages().then(() =>
+      this.setState({
+        isLoading: false,
+        language: this.props.languages.defaultLangue
+      })
+    );
+  }
 
   render() {
     const {
@@ -42,7 +57,6 @@ export class AddLocalUserPage extends Component {
       emailAddress,
       firstName,
       lastName,
-      language,
       emailIsValid,
       firstNameError,
       lastNameError,
@@ -53,6 +67,10 @@ export class AddLocalUserPage extends Component {
       confirmPassword,
       confirmPasswordError
     } = this.state;
+
+    if (this.state.isLoading) {
+      return <Loading />;
+    }
 
     return (
       <React.Fragment>
@@ -196,7 +214,7 @@ export class AddLocalUserPage extends Component {
                       <FormControl
                         type="password"
                         placeholder="Password"
-                        autoComplete="new-password"
+                        autoComplete="new-user-password"
                         defaultValue={password}
                         onChange={e =>
                           this.setState({
@@ -227,7 +245,7 @@ export class AddLocalUserPage extends Component {
                       <FormControl
                         type="password"
                         placeholder="Confirm Password"
-                        autoComplete="new-password"
+                        autoComplete="new-user-password"
                         defaultValue={confirmPassword}
                         onChange={e =>
                           this.setState({
@@ -251,11 +269,20 @@ export class AddLocalUserPage extends Component {
                     </Col>
                     <Col md={9}>
                       <FormControl
-                        type="text"
-                        placeholder="Language"
-                        defaultValue={language}
-                        disabled
-                      />
+                        componentClass="select"
+                        defaultValue={this.state.language}
+                        onChange={e =>
+                          this.setState({
+                            language: e.target.value
+                          })
+                        }
+                      >
+                        {this.props.languages.availableLanguages.map(lang => (
+                          <option key={`${lang.locale}`} value={lang.name}>
+                            {lang.name}
+                          </option>
+                        ))}
+                      </FormControl>
                     </Col>
                   </FormGroup>
                   <FormGroup controlId="userType">
@@ -381,11 +408,15 @@ export class AddLocalUserPage extends Component {
   };
 }
 
-const mapDispatchToProps = { fetchPostCreateLocalUser };
+const mapStateToProps = state => ({
+  languages: state.languages
+});
+
+const mapDispatchToProps = { fetchPostCreateLocalUser, fetchGetLanguages };
 
 export default withRouter(
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   )(AddLocalUserPage)
 );

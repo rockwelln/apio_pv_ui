@@ -200,6 +200,11 @@ export const getAvailableNumbersByTenantID = data => ({
   data
 });
 
+export const getLanguages = data => ({
+  type: actionType.GET_LANGUAGES,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -1165,6 +1170,24 @@ export function fetchGetLocalUser(username) {
           <FormattedMessage
             id="fetch-local-user-failed"
             defaultMessage="Failed to fetch local user!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetLanguages() {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/system/languages`
+    )
+      .then(data => dispatch(getLanguages(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-languages-failed"
+            defaultMessage="Failed to fetch languages!"
           />,
           error.message
         )

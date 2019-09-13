@@ -19,7 +19,8 @@ import {
   fetchPutUpdateGroupAdmin,
   fetchGetTenantAdminByAdminId,
   fetchGetTenantById,
-  fetchPutUpdateTenantAdmin
+  fetchPutUpdateTenantAdmin,
+  fetchGetLanguages
 } from "../../store/actions";
 
 import Loading from "../../common/Loading";
@@ -29,7 +30,7 @@ class CreateAdmin extends Component {
     updateAdminData: {
       firstName: "",
       lastName: "",
-      language: "English",
+      language: "",
       password: ""
     },
     passwordConfirmation: "",
@@ -38,7 +39,8 @@ class CreateAdmin extends Component {
     isLoadingAdmin: true,
     isUpdatedMassage: "",
     errorMassage: "",
-    errorLengthMassage: ""
+    errorLengthMassage: "",
+    isLoadingLanguages: true
   };
 
   fetchGroupAdmin = () => {
@@ -80,6 +82,9 @@ class CreateAdmin extends Component {
   };
 
   componentDidMount() {
+    this.props
+      .fetchGetLanguages()
+      .then(() => this.setState({ isLoadingLanguages: false }));
     this.props.match.params.groupId
       ? this.fetchGroupAdmin()
       : this.fetchTenantAdmin();
@@ -91,10 +96,11 @@ class CreateAdmin extends Component {
       passwordConfirmation,
       passwordNotMatch,
       isLoadingLevel,
-      isLoadingAdmin
+      isLoadingAdmin,
+      isLoadingLanguages
     } = this.state;
 
-    if (isLoadingLevel && isLoadingAdmin) {
+    if (isLoadingLevel && isLoadingAdmin && isLoadingLanguages) {
       return <Loading />;
     }
 
@@ -202,11 +208,23 @@ class CreateAdmin extends Component {
                   </Col>
                   <Col md={9}>
                     <FormControl
-                      type="text"
-                      placeholder="Language"
-                      defaultValue={updateAdminData.language}
-                      disabled
-                    />
+                      componentClass="select"
+                      value={updateAdminData.language}
+                      onChange={e =>
+                        this.setState({
+                          updateAdminData: {
+                            ...this.state.updateAdminData,
+                            language: e.target.value
+                          }
+                        })
+                      }
+                    >
+                      {this.props.languages.availableLanguages.map(lang => (
+                        <option key={`${lang.locale}`} value={lang.name}>
+                          {lang.name}
+                        </option>
+                      ))}
+                    </FormControl>
                   </Col>
                 </FormGroup>
                 <FormGroup
@@ -436,7 +454,8 @@ const mapStateToProps = state => ({
   groupDefaultDomain: state.group.defaultDomain,
   tenantDefaultDomain: state.tenant.defaultDomain,
   groupAdmin: state.groupAdmin,
-  tenantAdmin: state.tenantAdmin
+  tenantAdmin: state.tenantAdmin,
+  languages: state.languages
 });
 
 const mapDispatchToProps = {
@@ -445,7 +464,8 @@ const mapDispatchToProps = {
   fetchPutUpdateGroupAdmin,
   fetchGetTenantAdminByAdminId,
   fetchGetTenantById,
-  fetchPutUpdateTenantAdmin
+  fetchPutUpdateTenantAdmin,
+  fetchGetLanguages
 };
 
 export default withRouter(
