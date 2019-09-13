@@ -282,7 +282,8 @@ export class AddGroup extends Component {
       typeOfAccess,
       numberOfChannels,
       serviceType,
-      zipCode
+      zipCode,
+      mainNumber
     } = this.state;
 
     const data = {
@@ -292,7 +293,8 @@ export class AddGroup extends Component {
       numberOfChannels: Number(numberOfChannels),
       pbxType: typeOfIad,
       accessType: typeOfAccess,
-      serviceType
+      serviceType,
+      mainNumber
     };
     const clearData = removeEmpty(data);
     this.setState({ buttonName: "Creating..." }, () =>
