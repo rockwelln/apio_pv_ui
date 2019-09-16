@@ -2,6 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
+import {
+  fetchGetTenantLicenses,
+  fetchGetTrunkByTenantID,
+  clearErrorMassage
+} from "../../../../store/actions";
+
 import Panel from "react-bootstrap/lib/Panel";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
@@ -15,23 +21,13 @@ import { FormattedMessage } from "react-intl";
 import Loading from "../../../../common/Loading";
 import EditLicenses from "../../../../common/EditLicenses";
 
-import {
-  fetchGetLicensesByGroupId,
-  fetchGetTrunkByGroupID,
-  fetchPutUpdateGroupDetails,
-  fetchPutUpdateTrunkByGroupId,
-  clearErrorMassage,
-  fetchPutUpdateServicePacksByGroupId,
-  fetchPutUpdateGroupServicesByGroupId,
-  fetchPostAddGroupServicesToGroup
-} from "../../../../store/actions";
-
 const INFINITY = 8734;
 
 export class Licenses extends Component {
   state = {
-    isLoadingLicenses: true,
+    isLoading: true,
     isLoadingTrunk: true,
+    groupServices: [],
     showMore: false,
     trunkGroups: {},
     servicePacks: [],
@@ -41,31 +37,24 @@ export class Licenses extends Component {
     editServicePacks: false,
     editGroupServices: false
   };
-
-  fetchData = () => {
+  componentDidMount() {
     this.props
-      .fetchGetLicensesByGroupId(this.props.tenantId, this.props.groupId)
-      .then(data => {
+      .fetchGetTenantLicenses(this.props.match.params.tenantId)
+      .then(() =>
         this.setState({
-          groupServices: this.props.groupServices.groups,
-          servicePacks: this.props.servicePacks,
-          isLoadingLicenses: data ? false : true
-        });
-      });
+          isLoading: false,
+          groupServices: this.props.tenantLicenses.groups
+        })
+      );
     this.props
-      .fetchGetTrunkByGroupID(this.props.tenantId, this.props.groupId)
+      .fetchGetTrunkByTenantID(this.props.match.params.tenantId)
       .then(() => {
         this.setState({
-          trunkGroups: this.props.trunkGroups,
+          trunkGroups: this.props.tenantTrunkGroups,
           isLoadingTrunk: false
         });
       });
-  };
-
-  componentDidMount() {
-    this.fetchData();
   }
-
   render() {
     const {
       isLoadingTrunk,
@@ -76,12 +65,9 @@ export class Licenses extends Component {
       editServicePacks,
       editGroupServices
     } = this.state;
-    const { group, servicePacks, groupServices } = this.props;
-
-    if (isLoadingLicenses || isLoadingTrunk) {
+    if (this.state.isLoading || isLoadingTrunk) {
       return <Loading />;
     }
-
     return (
       <Row className={"margin-top-2 margin-left-8"}>
         <Col md={4}>
@@ -93,8 +79,7 @@ export class Licenses extends Component {
                   defaultMessage="TRUNKING CAPACITY"
                 />
                 {!editTrunkCapacity ? (
-                  !!Object.keys(trunkGroups).length &&
-                  !!trunkGroups.maxAvailableActiveCalls.maximum && (
+                  !!Object.keys(trunkGroups).length && (
                     <Button
                       onClick={() => {
                         this.props.clearErrorMassage();
@@ -113,7 +98,7 @@ export class Licenses extends Component {
                         this.props.clearErrorMassage();
                         this.setState({
                           editTrunkCapacity: false,
-                          trunkGroups: this.props.trunkGroups
+                          trunkGroups: this.props.tenantTrunkGroups
                         });
                       }}
                       className={"btn-danger panel-header-btn"}
@@ -145,12 +130,14 @@ export class Licenses extends Component {
                       <Col
                         md={4}
                         className={"text-right"}
-                      >{`${this.props.trunkGroups.maxActiveCalls}`}</Col>
+                      >{`${this.props.tenantTrunkGroups.maxActiveCalls.maximum}`}</Col>
                     ) : (
                       <Col md={4} className={"text-right"}>
                         <FormControl
                           type="number"
-                          defaultValue={this.props.trunkGroups.maxActiveCalls}
+                          defaultValue={
+                            this.props.tenantTrunkGroups.maxActiveCalls.maximum
+                          }
                           onChange={e => {
                             this.props.clearErrorMassage();
                             let target = e.currentTarget;
@@ -174,16 +161,17 @@ export class Licenses extends Component {
                     </Col>
                     {!editTrunkCapacity ? (
                       <Col md={4} className={"text-right"}>{`${
-                        this.props.trunkGroups.burstingMaxActiveCalls.unlimited
+                        this.props.tenantTrunkGroups.burstingMaxActiveCalls
+                          .unlimited
                           ? String.fromCharCode(INFINITY)
-                          : this.props.trunkGroups.burstingMaxActiveCalls
+                          : this.props.tenantTrunkGroups.burstingMaxActiveCalls
                               .maximum
                       }`}</Col>
                     ) : (
                       <Col md={4} className={"text-right"}>
                         <Checkbox
                           defaultChecked={
-                            this.props.trunkGroups.burstingMaxActiveCalls
+                            this.props.tenantTrunkGroups.burstingMaxActiveCalls
                               .unlimited
                           }
                           onChange={() => {
@@ -207,8 +195,8 @@ export class Licenses extends Component {
                           <FormControl
                             type="number"
                             defaultValue={
-                              this.props.trunkGroups.burstingMaxActiveCalls
-                                .maximum
+                              this.props.tenantTrunkGroups
+                                .burstingMaxActiveCalls.maximum
                             }
                             onChange={e => {
                               this.props.clearErrorMassage();
@@ -249,89 +237,6 @@ export class Licenses extends Component {
               )}
             </Panel>
           </Row>
-          <Row>
-            <Panel>
-              <Panel.Heading>
-                <FormattedMessage
-                  id="number_of_users"
-                  defaultMessage="Number of users"
-                />
-                {!editNumberOfUsers ? (
-                  <Button
-                    onClick={() => this.setState({ editNumberOfUsers: true })}
-                    className={"btn-primary panel-header-btn"}
-                  >
-                    <Glyphicon glyph="glyphicon glyphicon-pencil" />
-                    &nbsp; Edit
-                  </Button>
-                ) : (
-                  <React.Fragment>
-                    <Button
-                      onClick={() =>
-                        this.setState({
-                          editNumberOfUsers: false
-                        })
-                      }
-                      className={"btn-danger panel-header-btn"}
-                    >
-                      <Glyphicon glyph="glyphicon glyphicon-ban-circle" />
-                      &nbsp; Cancel
-                    </Button>
-
-                    <Button
-                      onClick={this.updateUserLimit}
-                      className={"btn-success panel-header-btn"}
-                    >
-                      <Glyphicon glyph="glyphicon glyphicon-ok-circle" />
-                      &nbsp; Save
-                    </Button>
-                  </React.Fragment>
-                )}
-              </Panel.Heading>
-              <Panel.Body>
-                <Row>
-                  <Col
-                    mdOffset={4}
-                    md={4}
-                    className={"text-center font-weight-bold"}
-                  >
-                    in use
-                  </Col>
-                  <Col md={4} className={"text-center font-weight-bold"}>
-                    limited to
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={4} className={"text-left"}>
-                    <FormattedMessage
-                      id="service_packs"
-                      defaultMessage="User limit:"
-                    />
-                  </Col>
-                  <Col
-                    md={4}
-                    className={"text-center"}
-                  >{`${group.userCount}`}</Col>
-                  {!editNumberOfUsers ? (
-                    <Col
-                      md={4}
-                      className={"text-center"}
-                    >{`${group.userLimit}`}</Col>
-                  ) : (
-                    <Col md={4} className={"text-center"}>
-                      <FormControl
-                        type="number"
-                        defaultValue={group.userLimit}
-                        onChange={e => {
-                          this.setState({ newUserLimit: e.target.value });
-                        }}
-                      />
-                    </Col>
-                  )}
-                </Row>
-              </Panel.Body>
-            </Panel>
-          </Row>
         </Col>
 
         <Col md={4}>
@@ -341,7 +246,7 @@ export class Licenses extends Component {
                 id="group_services"
                 defaultMessage="GROUP SERVICES"
               />
-              {!editGroupServices ? (
+              {/* {!editGroupServices ? (
                 <Button
                   onClick={() => {
                     this.setState({ editGroupServices: true });
@@ -373,10 +278,10 @@ export class Licenses extends Component {
                     &nbsp; Save
                   </Button>
                 </React.Fragment>
-              )}
+              )} */}
             </Panel.Heading>
 
-            {groupServices.groups.length ? (
+            {this.props.tenantLicenses.groups.length ? (
               <Panel.Body>
                 <Row>
                   <Col
@@ -392,7 +297,7 @@ export class Licenses extends Component {
                 </Row>
                 {this.state.groupServices.map((pack, i) =>
                   !this.state.showMore && !editGroupServices ? (
-                    i <= groupServices.countShown - 1 ? (
+                    i <= this.props.tenantLicenses.countShown - 1 ? (
                       <Row key={i}>
                         <Col md={5} className={"text-left"}>
                           <FormattedMessage
@@ -496,7 +401,6 @@ export class Licenses extends Component {
             )}
           </Panel>
         </Col>
-
         <Col md={4}>
           <Panel>
             <Panel.Heading>
@@ -504,7 +408,7 @@ export class Licenses extends Component {
                 id="service_packs"
                 defaultMessage="SERVICE PACKS"
               />
-              {!!servicePacks.length &&
+              {/* {!!servicePacks.length &&
                 (!editServicePacks ? (
                   <Button
                     onClick={() => this.setState({ editServicePacks: true })}
@@ -536,9 +440,9 @@ export class Licenses extends Component {
                       &nbsp; Save
                     </Button>
                   </React.Fragment>
-                ))}
+                ))} */}
             </Panel.Heading>
-            {servicePacks.length ? (
+            {this.state.servicePacks.length ? (
               <Panel.Body>
                 <Row>
                   <Col
@@ -609,172 +513,20 @@ export class Licenses extends Component {
     );
   }
 
-  updateServicePacks = () => {
-    const data = {
-      servicePacks: this.state.servicePacks
-    };
-
-    this.props
-      .fetchPutUpdateServicePacksByGroupId(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId,
-        data
-      )
-      .then(() => this.fetchData())
-      .then(() => this.setState({ editServicePacks: false }));
-  };
-
-  changeServicePacksUnlimeted = (i, checked) => {
-    this.setState(prevState => ({
-      servicePacks: [
-        ...prevState.servicePacks.slice(0, i),
-        {
-          ...prevState.servicePacks[i],
-          allocated: {
-            ...prevState.servicePacks[i].allocated,
-            unlimited: checked
-          }
-        },
-        ...prevState.servicePacks.slice(i + 1)
-      ]
-    }));
-  };
-
-  changeServicePacksMaximum = (i, max) => {
-    this.setState(prevState => ({
-      servicePacks: [
-        ...prevState.servicePacks.slice(0, i),
-        {
-          ...prevState.servicePacks[i],
-          allocated: {
-            ...prevState.servicePacks[i].allocated,
-            maximum: max
-          }
-        },
-        ...prevState.servicePacks.slice(i + 1)
-      ]
-    }));
-  };
-
-  updateGroupServices = () => {
-    const data = {
-      groupServices: this.state.groupServices
-    };
-
-    const authorisedServices = {
-      services: this.state.groupServices.reduce((prev, service) => {
-        if (
-          !(!service.allocated.unlimited && service.allocated.maximum === 0)
-        ) {
-          prev.push({ name: service.name });
-          return prev;
-        }
-        return prev;
-      }, [])
-    };
-
-    this.props
-      .fetchPutUpdateGroupServicesByGroupId(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId,
-        data
-      )
-      .then(() =>
-        this.props.fetchPostAddGroupServicesToGroup(
-          this.props.match.params.tenantId,
-          this.props.match.params.groupId,
-          authorisedServices
-        )
-      )
-      .then(() => this.fetchData())
-      .then(() => this.setState({ editGroupServices: false }));
-  };
-
-  changeGroupServicesUnlimeted = (i, checked) => {
-    this.setState(prevState => ({
-      groupServices: [
-        ...prevState.groupServices.slice(0, i),
-        {
-          ...prevState.groupServices[i],
-          allocated: {
-            ...prevState.groupServices[i].allocated,
-            unlimited: checked
-          }
-        },
-        ...prevState.groupServices.slice(i + 1)
-      ]
-    }));
-  };
-
-  changeGroupServicesMaximum = (i, max) => {
-    this.setState(prevState => ({
-      groupServices: [
-        ...prevState.groupServices.slice(0, i),
-        {
-          ...prevState.groupServices[i],
-          allocated: {
-            ...prevState.groupServices[i].allocated,
-            maximum: max
-          }
-        },
-        ...prevState.groupServices.slice(i + 1)
-      ]
-    }));
-  };
-
   handleClickShowMore = () => {
     this.setState({ showMore: !this.state.showMore });
-  };
-
-  updateUserLimit = () => {
-    const data = {
-      userLimit: this.state.newUserLimit
-        ? parseInt(this.state.newUserLimit, 10)
-        : this.props.group.userLimit
-    };
-
-    this.props
-      .fetchPutUpdateGroupDetails(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId,
-        data
-      )
-      .then(() => this.setState({ editNumberOfUsers: false }));
-  };
-
-  updateTrunkCapacity = () => {
-    const data = {
-      maxActiveCalls: this.state.trunkGroups.maxActiveCalls,
-      burstingMaxActiveCalls: this.state.trunkGroups.burstingMaxActiveCalls
-    };
-
-    this.props
-      .fetchPutUpdateTrunkByGroupId(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId,
-        data
-      )
-      .then(this.setState({ editTrunkCapacity: false }));
   };
 }
 
 const mapStateToProps = state => ({
-  group: state.group,
-  servicePacks: state.servicePacks,
-  groupServices: state.groupServices,
-  trunkGroups: state.trunkGroups,
-  groupTrunkErrorMassage: state.groupTrunkErrorMassage
+  tenantLicenses: state.tenantLicenses,
+  tenantTrunkGroups: state.tenantTrunkGroups
 });
 
 const mapDispatchToProps = {
-  fetchGetLicensesByGroupId,
-  fetchGetTrunkByGroupID,
-  fetchPutUpdateGroupDetails,
-  fetchPutUpdateTrunkByGroupId,
-  clearErrorMassage,
-  fetchPutUpdateServicePacksByGroupId,
-  fetchPutUpdateGroupServicesByGroupId,
-  fetchPostAddGroupServicesToGroup
+  fetchGetTenantLicenses,
+  fetchGetTrunkByTenantID,
+  clearErrorMassage
 };
 
 export default withRouter(

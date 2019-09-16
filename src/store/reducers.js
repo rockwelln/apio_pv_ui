@@ -102,7 +102,9 @@ const initialState = {
   addedNumbersToGroup: {},
   usersFound: [],
   groupsFound: [],
-  languages: {}
+  languages: {},
+  tenantLicenses: {},
+  tenantTrunkGroups: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -453,6 +455,54 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         languages: action.data
+      };
+    }
+    case actionType.GET_TENANT_LICENSES: {
+      const groupServicesShown = action.data.groupServices
+        .filter(
+          group =>
+            group.name === "Auto Attendant" ||
+            group.name === "Auto Attendant - Standard" ||
+            group.name === "Call Pickup" ||
+            group.name === "Hunt Group" ||
+            group.name === "Group Paging" ||
+            group.name === "Meet-me Conferencing" ||
+            group.name === "Trunk Group"
+        )
+        .sort((a, b) => {
+          if (a.name < b.name) return -1;
+          if (a.name > b.name) return 1;
+          return 0;
+        });
+      const groupServicesHide = action.data.groupServices
+        .filter(
+          group =>
+            group.name !== "Auto Attendant" &&
+            group.name !== "Auto Attendant - Standard" &&
+            group.name !== "Call Pickup" &&
+            group.name !== "Hunt Group" &&
+            group.name !== "Group Paging" &&
+            group.name !== "Meet-me Conferencing" &&
+            group.name !== "Trunk Group"
+        )
+        .sort((a, b) => {
+          if (a.name < b.name) return -1;
+          if (a.name > b.name) return 1;
+          return 0;
+        });
+      const groupServices = [...groupServicesShown, ...groupServicesHide];
+      return {
+        ...state,
+        tenantLicenses: {
+          groups: groupServices,
+          countShown: groupServicesShown.length
+        }
+      };
+    }
+    case actionType.GET_TRUNK_BY_TENANT_ID: {
+      return {
+        ...state,
+        tenantTrunkGroups: action.data
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN: {

@@ -205,6 +205,16 @@ export const getLanguages = data => ({
   data
 });
 
+export const getTenantLicenses = data => ({
+  type: actionType.GET_TENANT_LICENSES,
+  data
+});
+
+export const getTrunkByTenantID = data => ({
+  type: actionType.GET_TRUNK_BY_TENANT_ID,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -1188,6 +1198,42 @@ export function fetchGetLanguages() {
           <FormattedMessage
             id="fetch-languages-failed"
             defaultMessage="Failed to fetch languages!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetTenantLicenses(tenantId) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/licenses`
+    )
+      .then(data => dispatch(getTenantLicenses(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-licenses-failed"
+            defaultMessage="Failed to fetch licenses!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetTrunkByTenantID(tenantId) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/features/trunk_groups/`
+    )
+      .then(data => dispatch(getTrunkByTenantID(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-trunk-failed"
+            defaultMessage="Failed to fetch trunk!"
           />,
           error.message
         )
