@@ -11,6 +11,8 @@ import ToggleButtonGroup from "react-bootstrap/lib/ToggleButtonGroup";
 import FormControl from "react-bootstrap/lib/FormControl";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import Button from "react-bootstrap/lib/Button";
+import Radio from "react-bootstrap/lib/Radio";
+import FormGroup from "react-bootstrap/lib/FormGroup";
 
 import {
   changeTypeOfTenant,
@@ -30,14 +32,15 @@ export class Basic extends Component {
   state = {
     showMore: false,
     errorMessage: "",
-    domainError: ""
+    domainError: "",
+    isDefault: true
   };
 
   render() {
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
-          <Row >
+          <Row>
             <Col md={12}>
               <div className={"header"}>
                 Add new tenant
@@ -55,12 +58,12 @@ export class Basic extends Component {
             </Col>
           </Row>
         </div>
-        <div className={"panel-body"}> 
+        <div className={"panel-body"}>
           <Row>
             <Col md={12}>
               <p>
-                Select the type, configure a unique ID, a name and optionally some
-                contact details
+                Select the type, configure a unique ID, a name and optionally
+                some contact details
               </p>
             </Col>
           </Row>
@@ -166,18 +169,49 @@ export class Basic extends Component {
           </Row>
           <Row className={"margin-1"}>
             <Col componentClass={ControlLabel} md={3}>
-              Domain{"\u002a"}
+              Domain
             </Col>
             <Col md={9}>
-              <FormControl
-                type="text"
-                placeholder="Domain"
-                defaultValue={this.props.createTenant.defaultDomain}
-                onChange={e => {
-                  this.validateDomain(e.target.value);
-                  this.setState({ errorMessage: "" });
-                }}
-              />
+              <FormGroup>
+                <Radio
+                  name="domain"
+                  checked={this.state.isDefault}
+                  onClick={() => {
+                    this.props.changeDomainOfTenant("");
+                    this.setState({
+                      isDefault: !this.state.isDefault
+                    });
+                  }}
+                >
+                  <div className="font-weight-bold flex">
+                    use default domain
+                  </div>
+                </Radio>
+                <div className={"flex align-items-center"}>
+                  <Radio
+                    name="domain"
+                    className={"nowrap margin-right-1"}
+                    checked={!this.state.isDefault}
+                    onClick={() =>
+                      this.setState({
+                        isDefault: !this.state.isDefault
+                      })
+                    }
+                  >
+                    <div className="font-weight-bold flex">specify domain</div>
+                  </Radio>
+                  <FormControl
+                    type="text"
+                    placeholder="Domain"
+                    disabled={this.state.isDefault}
+                    defaultValue={this.props.createTenant.defaultDomain}
+                    onChange={e => {
+                      this.validateDomain(e.target.value);
+                      this.setState({ errorMessage: "" });
+                    }}
+                  />
+                </div>
+              </FormGroup>
             </Col>
           </Row>
           {this.state.domainError && (
@@ -253,7 +287,9 @@ export class Basic extends Component {
                     type="text"
                     placeholder="City"
                     defaultValue={this.props.createTenant.address.city}
-                    onChange={e => this.props.changeCityOfTenant(e.target.value)}
+                    onChange={e =>
+                      this.props.changeCityOfTenant(e.target.value)
+                    }
                   />
                 </Col>
               </Row>
@@ -270,11 +306,7 @@ export class Basic extends Component {
             <div class="button-row">
               <div class="pull-right">
                 <Button className={"btn-primary"} onClick={this.nextStep}>
-                  <Glyphicon
-                    glyph="glyphicon glyphicon-ok"
-                  >
-                  </Glyphicon>
-
+                  <Glyphicon glyph="glyphicon glyphicon-ok"></Glyphicon>
                   &nbsp; Next
                 </Button>
               </div>
@@ -286,8 +318,8 @@ export class Basic extends Component {
   }
 
   nextStep = () => {
-    const { tenantId, name, type, defaultDomain } = this.props.createTenant;
-    if (tenantId && name && type && defaultDomain) {
+    const { tenantId, name, type } = this.props.createTenant;
+    if (tenantId && name && type) {
       this.props.changeStepOfCreateTenant("Template");
     } else {
       this.setState({

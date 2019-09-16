@@ -220,3 +220,7 @@ textarea {
 .flex-1 {
   flex: 1;
 }
+
+.nowrap {
+  white-space: nowrap;
+}
