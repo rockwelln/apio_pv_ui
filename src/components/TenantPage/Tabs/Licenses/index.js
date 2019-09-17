@@ -5,7 +5,9 @@ import { withRouter } from "react-router";
 import {
   fetchGetTenantLicenses,
   fetchGetTrunkByTenantID,
-  clearErrorMassage
+  clearErrorMassage,
+  fetchPutUpdateTrunkByTenantId,
+  fetchPutUpdateGroupServicesByTenantId
 } from "../../../../store/actions";
 
 import Panel from "react-bootstrap/lib/Panel";
@@ -37,7 +39,8 @@ export class Licenses extends Component {
     editServicePacks: false,
     editGroupServices: false
   };
-  componentDidMount() {
+
+  fetchData() {
     this.props
       .fetchGetTenantLicenses(this.props.match.params.tenantId)
       .then(() =>
@@ -54,6 +57,9 @@ export class Licenses extends Component {
           isLoadingTrunk: false
         });
       });
+  }
+  componentDidMount() {
+    this.fetchData();
   }
   render() {
     const {
@@ -246,7 +252,7 @@ export class Licenses extends Component {
                 id="group_services"
                 defaultMessage="GROUP SERVICES"
               />
-              {/* {!editGroupServices ? (
+              {!editGroupServices ? (
                 <Button
                   onClick={() => {
                     this.setState({ editGroupServices: true });
@@ -278,7 +284,7 @@ export class Licenses extends Component {
                     &nbsp; Save
                   </Button>
                 </React.Fragment>
-              )} */}
+              )}
             </Panel.Heading>
 
             {this.props.tenantLicenses.groups.length ? (
@@ -513,8 +519,77 @@ export class Licenses extends Component {
     );
   }
 
+  changeGroupServicesUnlimeted = (i, checked) => {
+    this.setState(prevState => ({
+      groupServices: [
+        ...prevState.groupServices.slice(0, i),
+        {
+          ...prevState.groupServices[i],
+          allocated: {
+            ...prevState.groupServices[i].allocated,
+            unlimited: checked
+          }
+        },
+        ...prevState.groupServices.slice(i + 1)
+      ]
+    }));
+  };
+
+  changeGroupServicesMaximum = (i, max) => {
+    this.setState(prevState => ({
+      groupServices: [
+        ...prevState.groupServices.slice(0, i),
+        {
+          ...prevState.groupServices[i],
+          allocated: {
+            ...prevState.groupServices[i].allocated,
+            maximum: max
+          }
+        },
+        ...prevState.groupServices.slice(i + 1)
+      ]
+    }));
+  };
+
   handleClickShowMore = () => {
     this.setState({ showMore: !this.state.showMore });
+  };
+
+  updateTrunkCapacity = () => {
+    const data = {
+      maxActiveCalls: this.state.trunkGroups.maxActiveCalls,
+      burstingMaxActiveCalls: this.state.trunkGroups.burstingMaxActiveCalls
+    };
+
+    this.props
+      .fetchPutUpdateTrunkByTenantId(this.props.match.params.tenantId, data)
+      .then(this.setState({ editTrunkCapacity: false }));
+  };
+
+  updateGroupServices = () => {
+    const data = {
+      groupServices: this.state.groupServices
+    };
+
+    const authorisedServices = {
+      services: this.state.groupServices.reduce((prev, service) => {
+        if (
+          !(!service.allocated.unlimited && service.allocated.maximum === 0)
+        ) {
+          prev.push({ name: service.name });
+          return prev;
+        }
+        return prev;
+      }, [])
+    };
+
+    this.props
+      .fetchPutUpdateGroupServicesByTenantId(
+        this.props.match.params.tenantId,
+        data
+      )
+      .then(() => this.fetchData())
+      .then(() => this.setState({ editGroupServices: false }));
   };
 }
 
@@ -526,7 +601,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   fetchGetTenantLicenses,
   fetchGetTrunkByTenantID,
-  clearErrorMassage
+  clearErrorMassage,
+  fetchPutUpdateTrunkByTenantId,
+  fetchPutUpdateGroupServicesByTenantId
 };
 
 export default withRouter(

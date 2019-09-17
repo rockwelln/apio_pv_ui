@@ -348,6 +348,16 @@ export const putUpdateLocalUser = data => ({
   data
 });
 
+export const putUpdateTrunkByTenantId = data => ({
+  type: actionType.PUT_UPDATE_TRUNK_BY_TENANT_ID,
+  data
+});
+
+export const putUpdateGroupServicesByTenantId = data => ({
+  type: actionType.PUT_UPDATE_GROUP_SERVICES_BY_TENANT_ID,
+  data
+});
+
 export const deleteTenant = data => ({
   type: actionType.DELETE_TENANT,
   data
@@ -1744,6 +1754,46 @@ export function fetchPutUpdateTrunkGroup(
           <FormattedMessage
             id="update-trunk-group-failed"
             defaultMessage="Failed to update trunk group!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchPutUpdateTrunkByTenantId(tenantId, data) {
+  return function(dispatch) {
+    return fetch_put(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/features/trunk_groups/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => dispatch(putUpdateTrunkByTenantId(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="update-trunk-failed"
+            defaultMessage="Failed to update trunk!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchPutUpdateGroupServicesByTenantId(tenantId, data) {
+  return function(dispatch) {
+    return fetch_put(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/licenses/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => dispatch(putUpdateGroupServicesByTenantId(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="update-trunk-failed"
+            defaultMessage="Failed to update trunk!"
           />,
           error.message
         )

@@ -14,6 +14,7 @@ export default class EditLicenses extends Component {
   }
 
   render() {
+    console.log(this.props.changePacksUnlimeted, this.props.changePacksMaximum);
     return (
       <React.Fragment>
         {/**Unlimeted checkbox */}

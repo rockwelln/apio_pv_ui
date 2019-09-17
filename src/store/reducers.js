@@ -685,6 +685,17 @@ function mainReducer(state = initialState, action) {
         localUser: action.data
       };
     }
+    case actionType.PUT_UPDATE_TRUNK_BY_TENANT_ID: {
+      return {
+        ...state,
+        tenantTrunkGroups: action.data
+      };
+    }
+    case actionType.PUT_UPDATE_GROUP_SERVICES_BY_TENANT_ID: {
+      return {
+        ...state
+      };
+    }
     case actionType.DELETE_TENANT: {
       return {
         ...state
