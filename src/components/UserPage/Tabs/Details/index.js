@@ -109,7 +109,7 @@ class Details extends Component {
       isLoadingLanguages
     } = this.state;
 
-    if (isLoading && isLoadingLanguages) {
+    if (isLoading || isLoadingLanguages) {
       return <Loading />;
     }
 

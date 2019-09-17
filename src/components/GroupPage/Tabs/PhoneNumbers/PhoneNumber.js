@@ -38,6 +38,7 @@ export default class PhoneNumber extends Component {
               />
             </ButtonToolbar>
             <DeleteModal
+              number={number}
               rangeStart={number.rangeStart}
               show={showDelete}
               onClose={e => {

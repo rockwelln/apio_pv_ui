@@ -732,6 +732,12 @@ function mainReducer(state = initialState, action) {
         phoneDeleted: !state.phoneDeleted
       };
     }
+    case actionType.DELETE_PHONE_FROM_GROUP: {
+      return {
+        ...state,
+        phoneDeleted: !state.phoneDeleted
+      };
+    }
     case actionType.DELETE_USER_FROM_GROUP: {
       return {
         ...state

@@ -1,13 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
-//import { fetchDeleteTenant } from "../../store/actions";
+import { fetchDeletePhoneFromGroup } from "../../../../store/actions";
 
 import Modal from "react-bootstrap/lib/Modal";
 import Alert from "react-bootstrap/lib/Alert";
 import Button from "react-bootstrap/lib/Button";
 
 import { FormattedMessage } from "react-intl";
+
+import { getRange } from "../../../expandRangeOfPhoneNumber";
 
 class DeleteModal extends Component {
   constructor(props) {
@@ -20,10 +23,30 @@ class DeleteModal extends Component {
     const { onClose } = this.props;
     this.setState({ deleting: true });
 
-    this.props.fetchDeleteTenant(rangeStart).then(() => {
-      this.setState({ deleting: false });
-      onClose && onClose(true);
-    });
+    const allNumbers = [];
+
+    if (this.props.number.rangeEnd) {
+      const expandedRange = getRange(
+        this.props.number.rangeStart,
+        this.props.number.rangeEnd
+      );
+      allNumbers.push(...expandedRange);
+    } else allNumbers.push(this.props.number.rangeStart);
+
+    const data = {
+      numbers: allNumbers.map(number => ({ phoneNumber: number }))
+    };
+
+    this.props
+      .fetchDeletePhoneFromGroup(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        data
+      )
+      .then(() => {
+        this.setState({ deleting: false });
+        onClose && onClose(true);
+      });
   }
 
   render() {
@@ -57,11 +80,7 @@ class DeleteModal extends Component {
           </p>
         </Modal.Body>
         <Modal.Footer>
-          <Button
-            onClick={() => this.onDelete(rangeStart)}
-            bsStyle="danger"
-            disabled={true}
-          >
+          <Button onClick={() => this.onDelete(rangeStart)} bsStyle="danger">
             <FormattedMessage id="delete" defaultMessage="Delete" />
           </Button>
           <Button onClick={() => onClose && onClose(false)} disabled={deleting}>
@@ -74,10 +93,12 @@ class DeleteModal extends Component {
 }
 
 const mapDispatchToProps = {
-  //fetchDeleteTenant
+  fetchDeletePhoneFromGroup
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(DeleteModal);
+export default withRouter(
+  connect(
+    null,
+    mapDispatchToProps
+  )(DeleteModal)
+);

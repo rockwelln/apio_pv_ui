@@ -411,6 +411,11 @@ export const deleteLocalUser = data => ({
   data
 });
 
+export const deletePhoneFromGroup = data => ({
+  type: actionType.DELETE_PHONE_FROM_GROUP,
+  data
+});
+
 export const clearErrorMassage = () => ({
   type: actionType.CLEAR_ERROR_MASSAGE
 });
@@ -2044,6 +2049,27 @@ export function fetchDeleteLocalUser(username) {
       .then(data => {
         dispatch(deleteLocalUser(data));
         return "deleted";
+      })
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-delete-user"
+            defaultMessage="Failed to delete user!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchDeletePhoneFromGroup(tenantId, groupId, data) {
+  return function(dispatch) {
+    return fetch_delete(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/numbers/`,
+      data
+    )
+      .then(data => {
+        dispatch(deletePhoneFromGroup(data));
       })
       .catch(error =>
         NotificationsManager.error(
