@@ -116,22 +116,6 @@ export class Basic extends Component {
           </Row>
           <Row className={"margin-1"}>
             <Col md={12}>
-              <p className={"larger"}>Reseller</p>
-            </Col>
-          </Row>
-          <Row className={"margin-1"}>
-            <Col md={12}>
-              <FormControl componentClass="select">
-                {RESELLEROPTIONS.map((option, i) => (
-                  <option key={i + ""} value={option.value}>
-                    {option.name}
-                  </option>
-                ))}
-              </FormControl>
-            </Col>
-          </Row>
-          <Row className={"margin-1"}>
-            <Col md={12}>
               <p className={"larger"}>Details</p>
             </Col>
           </Row>
@@ -153,7 +137,7 @@ export class Basic extends Component {
           </Row>
           <Row className={"margin-1"}>
             <Col componentClass={ControlLabel} md={3}>
-              Name{"\u002a"}
+              Name
             </Col>
             <Col md={9}>
               <FormControl
@@ -318,12 +302,12 @@ export class Basic extends Component {
   }
 
   nextStep = () => {
-    const { tenantId, name, type } = this.props.createTenant;
-    if (tenantId && name && type) {
+    const { tenantId, type } = this.props.createTenant;
+    if (tenantId && type) {
       this.props.changeStepOfCreateTenant("Template");
     } else {
       this.setState({
-        errorMessage: "Tenant ID, name, type and domain are required"
+        errorMessage: "Tenant ID and type are required"
       });
     }
   };

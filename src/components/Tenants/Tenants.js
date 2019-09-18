@@ -118,9 +118,7 @@ class Tenants extends Component {
             </Col>
             <Col md={1}>
               <Link
-                to={`/provisioning/${
-                  this.props.match.params.gwName
-                }/tenants/add`}
+                to={`/provisioning/${this.props.match.params.gwName}/tenants/add`}
               >
                 <Glyphicon
                   className={"x-large"}
@@ -284,7 +282,16 @@ class Tenants extends Component {
           tennant.type.toLowerCase().includes(searchValue.toLowerCase())
       )
       .map(tenant => tenant);
-    this.setState({ tenants: SearchArray }, () => this.pagination());
+    this.setState({ tenants: SearchArray }, () => {
+      const tenansSorted = this.state.tenants.sort((a, b) => {
+        if (a.tenantId < b.tenantId) return -1;
+        if (a.tenantId > b.tenantId) return 1;
+        return 0;
+      });
+      this.setState({ tenants: tenansSorted, sortedBy: "id" }, () =>
+        this.pagination()
+      );
+    });
   };
 
   sortByID = () => {
