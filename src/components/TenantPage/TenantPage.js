@@ -70,9 +70,9 @@ class TenantPage extends Component {
             <Tab eventKey={1} title="GROUPS">
               <GroupsTab tenantId={this.props.match.params.tenantId} />
             </Tab>
-            <Tab eventKey={2} title="ENTERPRISE TRUNKS">
+            {/* <Tab eventKey={2} title="ENTERPRISE TRUNKS">
               ENTERPRISE TRUNKS Tab
-            </Tab>
+            </Tab> */}
             <Tab eventKey={3} title="PHONE NUMBERS">
               <PhoneNumbersTab tenantId={this.props.match.params.tenantId} />
             </Tab>
