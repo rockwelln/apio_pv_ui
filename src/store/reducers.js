@@ -601,7 +601,7 @@ function mainReducer(state = initialState, action) {
       );
       return {
         ...state,
-        addedNumbersToGroup: {
+        addedNumbersToTenant: {
           warning,
           added,
           rejected

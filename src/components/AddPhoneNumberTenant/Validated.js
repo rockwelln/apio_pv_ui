@@ -12,7 +12,8 @@ import Tab from "react-bootstrap/lib/Tab";
 import {
   changeStepOfAddPhoneTenant,
   refuseAddPhoneToTenant,
-  fetchPostAddPhoneNumbersToTenant
+  fetchPostAddPhoneNumbersToTenant,
+  fetchPostAssignPhoneNumbersToGroup
 } from "../../store/actions";
 
 import OkTab from "./Tabs/OK";
@@ -22,7 +23,7 @@ import { getRange } from "../expandRangeOfPhoneNumber";
 
 export class Basic extends Component {
   state = {
-    buttomNameAdd: this.props.match.params.groupId ? "Add to tenant" : "ADD"
+    buttomNameAdd: "ADD"
   };
   render() {
     return (
@@ -32,9 +33,7 @@ export class Basic extends Component {
           <Row>
             <Col md={12}>
               <div className={"header"}>
-                {this.props.match.params.groupId
-                  ? "Try to add numbers to the tenant"
-                  : "Add phone numbers"}
+                Add phone numbers
                 <Link
                   to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}`}
                 >
@@ -52,7 +51,11 @@ export class Basic extends Component {
           </Row>
           <Row>
             <Col md={12}>
-              <div>Assign phone numbers to this tenants</div>
+              <div>
+                {!this.props.isGroupPage
+                  ? "Assign phone numbers to this tenants"
+                  : "Assign phone numbers to this group"}
+              </div>
             </Col>
           </Row>
         </div>
@@ -88,7 +91,11 @@ export class Basic extends Component {
               )}
               <div className="pull-right">
                 <Button
-                  onClick={this.addPhoneNumbers}
+                  onClick={
+                    this.props.isGroupPage
+                      ? this.addNumbersToGroup
+                      : this.addPhoneNumbers
+                  }
                   className={"btn-primary"}
                   disabled={this.state.buttomNameAdd === "Adding..."}
                 >
@@ -104,6 +111,39 @@ export class Basic extends Component {
 
   toBasic = () => {
     this.props.changeStepOfAddPhoneTenant("Basic");
+  };
+
+  addNumbersToGroup = () => {
+    this.setState({ errorMessage: null, buttomNameAdd: "Adding..." });
+    const data = this.props.validatedNumbersTenant.ok.reduce(
+      (accamulator, phone) => {
+        if (!phone.end) {
+          accamulator.numbers.push({ phoneNumber: phone.start });
+        } else {
+          let range = getRange(phone.start, phone.end);
+          range &&
+            range.map(phone =>
+              accamulator.numbers.push({ phoneNumber: phone })
+            );
+        }
+        return accamulator;
+      },
+      { numbers: [], auto_create: true }
+    );
+    this.props
+      .fetchPostAssignPhoneNumbersToGroup(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        data
+      )
+      .then(res =>
+        res === "success"
+          ? this.props.changeStepOfAddPhoneTenant("Info")
+          : this.setState({
+              errorMessage: "Failed assign numbers",
+              buttomNameAdd: "ADD"
+            })
+      );
   };
 
   addPhoneNumbers = () => {
@@ -135,9 +175,7 @@ export class Basic extends Component {
         })
         .then(() =>
           this.setState({
-            buttomNameAdd: this.props.match.params.groupId
-              ? "Add to tenant"
-              : "ADD"
+            buttomNameAdd: "ADD"
           })
         );
     });
@@ -152,7 +190,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   changeStepOfAddPhoneTenant,
   refuseAddPhoneToTenant,
-  fetchPostAddPhoneNumbersToTenant
+  fetchPostAddPhoneNumbersToTenant,
+  fetchPostAssignPhoneNumbersToGroup
 };
 
 export default withRouter(

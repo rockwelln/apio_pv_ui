@@ -18,9 +18,6 @@ export class Steps extends Component {
       case "Info": {
         return <Info isGroupPage={this.props.isGroupPage} />;
       }
-      case "InfoGroup": {
-        return <InfoGroup isGroupPage={this.props.isGroupPage} />;
-      }
       default:
         return <Basic isGroupPage={this.props.isGroupPage} />;
     }

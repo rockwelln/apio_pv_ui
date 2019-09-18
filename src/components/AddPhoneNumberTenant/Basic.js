@@ -30,9 +30,7 @@ export class Basic extends Component {
           <Row>
             <Col md={12}>
               <div className={"header"}>
-                {this.props.match.params.groupId
-                  ? "Try to add numbers to the tenant"
-                  : "Add phone numbers"}
+                Add phone numbers
                 <Link
                   to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}`}
                 >
@@ -50,7 +48,11 @@ export class Basic extends Component {
           </Row>
           <Row>
             <Col md={12}>
-              <div>Assign phone numbers to this tenants</div>
+              <div>
+                {!this.props.isGroupPage
+                  ? "Assign phone numbers to this tenants"
+                  : "Assign phone numbers to this group"}
+              </div>
             </Col>
           </Row>
         </div>
