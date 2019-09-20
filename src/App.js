@@ -48,6 +48,7 @@ import AddLocalUsers from "./components/AddLocalUser";
 import UpdateLocalUser from "./components/UpdateLocalUser";
 import AddPhoneNumberGroup from "./components/AddPhoneNumberGroup";
 import SearchPage from "./components/SearchPage";
+import AddTrunkGroup from "./components/AddTrunkGroup";
 
 import "./App.css";
 import loading from "./loading.gif";
@@ -278,6 +279,18 @@ class App extends Component {
                 )}
                 exact
               />
+              <Route
+                path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/addtrunk"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <AddTrunkGroup />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              AddTrunkGroup
               <Route
                 path="/provisioning/:gwName/search"
                 component={props =>

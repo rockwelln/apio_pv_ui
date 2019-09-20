@@ -9,6 +9,8 @@ import InputGroup from "react-bootstrap/lib/InputGroup";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import Pagination from "react-bootstrap/lib/Pagination";
+import Modal from "react-bootstrap/lib/Modal";
+import Button from "react-bootstrap/lib/Button";
 
 import { FormattedMessage } from "react-intl";
 
@@ -29,7 +31,8 @@ export class Trunks extends Component {
     page: 0,
     pagination: true,
     countPages: null,
-    searchValue: ""
+    searchValue: "",
+    showErrorCreate: false
   };
   fetchTrunks = () => {
     this.props
@@ -98,8 +101,26 @@ export class Trunks extends Component {
             <Glyphicon
               className={"x-large"}
               glyph="glyphicon glyphicon-plus-sign"
+              onClick={this.addTrunkGroup}
             />
           </Col>
+          <Modal
+            show={this.state.showErrorCreate}
+            onHide={() => this.setState({ showErrorCreate: false })}
+            container={this}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title id="contained-modal-title">
+                Excess of limit
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Text info</Modal.Body>
+            <Modal.Footer>
+              <Button onClick={() => this.setState({ showErrorCreate: false })}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </Row>
         <Row>
           <Col md={11}>
@@ -213,6 +234,20 @@ export class Trunks extends Component {
       </React.Fragment>
     );
   }
+
+  addTrunkGroup = () => {
+    if (
+      this.props.availableTrunkGroups.allocated.unlimited === false &&
+      this.props.availableTrunkGroups.inUse >=
+        this.props.availableTrunkGroups.allocated.maximum
+    ) {
+      this.setState({ showErrorCreate: true });
+      return;
+    }
+    this.props.history.push(
+      `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/addtrunk`
+    );
+  };
 
   changeCoutOnPage = e => {
     this.setState({ countPerPage: Number(e.target.value), page: 0 }, () =>
@@ -357,7 +392,8 @@ export class Trunks extends Component {
 }
 
 const mapStateToProps = state => ({
-  trunks: state.trunksGroups
+  trunks: state.trunksGroups,
+  availableTrunkGroups: state.availableTrunkGroups
 });
 
 const mapDispatchToProps = {

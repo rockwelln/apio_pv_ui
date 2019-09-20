@@ -104,7 +104,9 @@ const initialState = {
   groupsFound: [],
   languages: {},
   tenantLicenses: {},
-  tenantTrunkGroups: {}
+  tenantTrunkGroups: {},
+  availableTrunkGroups: {},
+  createdTrunkGroup: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -190,6 +192,9 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.GET_LICENSES_BY_GROUP_ID: {
+      const availableTrunkGroups = action.data.groupServices.filter(
+        group => group.name === "Trunk Group"
+      );
       const groupServicesShown = action.data.groupServices
         .filter(
           group =>
@@ -229,7 +234,8 @@ function mainReducer(state = initialState, action) {
         groupServices: {
           groups: groupServices,
           countShown: groupServicesShown.length
-        }
+        },
+        availableTrunkGroups: availableTrunkGroups[0] && availableTrunkGroups[0]
       };
     }
     case actionType.GET_DEVICES_BY_GROUP_ID: {
@@ -606,6 +612,12 @@ function mainReducer(state = initialState, action) {
           added,
           rejected
         }
+      };
+    }
+    case actionType.POST_CREATE_TRUNK_GROUP: {
+      return {
+        ...state,
+        createdTrunkGroup: action.data
       };
     }
     case actionType.PUT_UPDATE_USER: {
