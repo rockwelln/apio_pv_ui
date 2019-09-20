@@ -287,7 +287,8 @@ export class Licenses extends Component {
               )}
             </Panel.Heading>
 
-            {this.props.tenantLicenses.groups.length ? (
+            {this.props.tenantLicenses.groups &&
+            this.props.tenantLicenses.groups.length ? (
               <Panel.Body>
                 <Row>
                   <Col

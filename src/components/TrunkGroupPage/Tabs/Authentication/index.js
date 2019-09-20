@@ -10,12 +10,11 @@ import Button from "react-bootstrap/lib/Button";
 
 import { fetchPutUpdateTrunkGroup } from "../../../../store/actions";
 
-export class Details extends Component {
+export class Authentication extends Component {
   state = {
     requireAuthentication: null,
     sipAuthenticationUserName: null,
-    pilotUserId: null,
-    accessDevice: null,
+    sipAuthenticationPassword: null,
     disableButton: false
   };
 
@@ -24,8 +23,7 @@ export class Details extends Component {
       requireAuthentication: this.props.trunkGroup.requireAuthentication,
       sipAuthenticationUserName: this.props.trunkGroup
         .sipAuthenticationUserName,
-      pilotUserId: this.props.trunkGroup.pilotUserId,
-      accessDevice: this.props.trunkGroup.accessDevice.name
+      sipAuthenticationPassword: this.props.trunkGroup.sipAuthenticationPassword
     });
   }
 
@@ -33,34 +31,51 @@ export class Details extends Component {
     return (
       <React.Fragment>
         <Row className={"margin-top-1"}>
+          <Col md={12}>
+            <Checkbox
+              checked={this.state.requireAuthentication}
+              onChange={e => {
+                this.setState({ requireAuthentication: e.target.checked });
+              }}
+            >
+              Authentication required?
+            </Checkbox>
+          </Col>
+        </Row>
+        <Row>
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>
-              Pilot user
+              SIP username for authentication
             </div>
             <div>
               <FormControl
-                componentClass="select"
-                value={this.state.pilotUserId}
-                onChange={e => this.setState({ pilotUserId: e.target.value })}
-              >
-                <option value={this.props.trunkGroup.pilotUserId}>
-                  {this.props.trunkGroup.pilotUserId}
-                </option>
-                {this.props.trunkGroupUsers.map(user => (
-                  <option key={user.userId} value={user.userId}>
-                    {user.userId}
-                  </option>
-                ))}
-              </FormControl>
+                autoComplete={false}
+                type="text"
+                value={this.state.sipAuthenticationUserName}
+                onChange={e => {
+                  this.setState({
+                    sipAuthenticationUserName: e.target.value
+                  });
+                }}
+              />
             </div>
           </Col>
         </Row>
-        <Row className={"margin-top-1"}>
+        <Row>
           <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              Access device
+            <div className={"margin-right-1 flex flex-basis-16"}>Password</div>
+            <div>
+              <FormControl
+                autoComplete="new-password"
+                type="password"
+                value={this.state.sipAuthenticationPassword}
+                onChange={e => {
+                  this.setState({
+                    sipAuthenticationPassword: e.target.value
+                  });
+                }}
+              />
             </div>
-            <div>{this.state.accessDevice}</div>
           </Col>
         </Row>
         <Row className={"margin-top-1"}>
@@ -85,18 +100,15 @@ export class Details extends Component {
     const {
       requireAuthentication,
       sipAuthenticationUserName,
-      pilotUserId,
-      accessDevice
+      sipAuthenticationPassword
     } = this.state;
 
     const data = {
       requireAuthentication: requireAuthentication && requireAuthentication,
       sipAuthenticationUserName:
         sipAuthenticationUserName && sipAuthenticationUserName,
-      pilotUserId: pilotUserId && pilotUserId,
-      accessDevice: accessDevice && {
-        name: accessDevice
-      }
+      sipAuthenticationPassword:
+        sipAuthenticationPassword && sipAuthenticationPassword
     };
 
     this.setState({ disableButton: true }, () =>
@@ -123,5 +135,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(Details)
+  )(Authentication)
 );
