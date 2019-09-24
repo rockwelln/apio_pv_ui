@@ -42,7 +42,9 @@ export class AddEntreprises extends Component {
           <Panel.Body>
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>ID</div>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  Enterprise ID
+                </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl type="text" disabled />
                 </div>
@@ -50,12 +52,14 @@ export class AddEntreprises extends Component {
             </Row>
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>Name</div>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  Customer name
+                </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
                     type="text"
                     value={this.state.entrerpriseName}
-                    placeholder={"Entrerprise Name"}
+                    placeholder={"Customer name"}
                     onChange={e =>
                       this.setState({ entrerpriseName: e.target.value })
                     }
@@ -66,13 +70,13 @@ export class AddEntreprises extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  TINA ID{"\u002a"}
+                  Customer ID{"\u002a"}
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
                     type="text"
                     value={this.state.tinaId}
-                    placeholder={"TINA ID"}
+                    placeholder={"Customer ID"}
                     onChange={e => this.setState({ tinaId: e.target.value })}
                   />
                 </div>
@@ -81,7 +85,7 @@ export class AddEntreprises extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  VLAN UUID{"\u002a"}
+                  VLAN UUID
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
@@ -95,9 +99,7 @@ export class AddEntreprises extends Component {
             </Row>
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>
-                  LLID{"\u002a"}
-                </div>
+                <div className={"margin-right-1 flex flex-basis-16"}>LLID</div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
                     type="text"
@@ -105,14 +107,6 @@ export class AddEntreprises extends Component {
                     placeholder={"LLID"}
                     onChange={e => this.setState({ llid: e.target.value })}
                   />
-                </div>
-              </Col>
-            </Row>
-            <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"} />
-                <div className={"margin-right-1 flex-basis-33"}>
-                  {"\u002a"} At least one needed
                 </div>
               </Col>
             </Row>
@@ -125,9 +119,7 @@ export class AddEntreprises extends Component {
                       type="submit"
                       className="btn-primary"
                       disabled={
-                        (!this.state.tinaId &&
-                          !this.state.vlanUuid &&
-                          !this.state.llid) ||
+                        !this.state.tinaId ||
                         this.state.buttonName === "Creating..."
                       }
                     >

@@ -32,8 +32,6 @@ class Tenant extends Component {
         </td>
         <td>{t.name}</td>
         <td>{t.tina_id}</td>
-        <td>{t.vlan_uuid}</td>
-        <td>{t.ll_id}</td>
         <td>
           <ButtonToolbar>
             <Glyphicon

@@ -85,8 +85,10 @@ class Tenants extends Component {
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
-          <div className={"header"}>
-            Lookup any customer parameter here or start adding a new entreprise
+          <div className={"header"}>Customer overview</div>
+          <div>
+            Lookup any customer by providing one the parameters or add a new
+            entreprise
           </div>
         </div>
         <div className={"panel-body"}>
@@ -159,7 +161,7 @@ class Tenants extends Component {
                         <th>
                           <FormattedMessage
                             id="tenant-id"
-                            defaultMessage="ENTREPRISE ID"
+                            defaultMessage="Entreprise id"
                           />
                           <Glyphicon
                             glyph="glyphicon glyphicon-sort"
@@ -169,7 +171,7 @@ class Tenants extends Component {
                         <th>
                           <FormattedMessage
                             id="tenant-id"
-                            defaultMessage="ENTREPRISE NAME"
+                            defaultMessage="Entreprise name"
                           />
                           <Glyphicon
                             glyph="glyphicon glyphicon-sort"
@@ -179,31 +181,13 @@ class Tenants extends Component {
                         <th>
                           <FormattedMessage
                             id="tina"
-                            defaultMessage="TINA ID"
+                            defaultMessage="Customer ID"
                           />
                           <Glyphicon
                             glyph="glyphicon glyphicon-sort"
                             onClick={this.sortByTinaID}
                           />
                         </th>
-                        <th>
-                          <FormattedMessage
-                            id="uuid"
-                            defaultMessage="VLAN UUID"
-                          />
-                          <Glyphicon
-                            glyph="glyphicon glyphicon-sort"
-                            onClick={this.sortByVlanUUID}
-                          />
-                        </th>
-                        <th>
-                          <FormattedMessage id="llid" defaultMessage="LLID" />
-                          <Glyphicon
-                            glyph="glyphicon glyphicon-sort"
-                            onClick={this.sortByLLID}
-                          />
-                        </th>
-                        <th />
                       </tr>
                     </thead>
                     <tbody>

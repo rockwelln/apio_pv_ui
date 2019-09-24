@@ -24,26 +24,6 @@ export class GroupsTab extends Component {
     isLoading: true,
     sortedBy: "",
     groups: [],
-    fakeGroups: [
-      {
-        groupId: "fake_group_Id",
-        groupName: "fake group name"
-      },
-      {
-        groupId: "fake_group_Id_1",
-        groupName: "fake group name 1"
-      }
-    ],
-    groupsForSearch: [
-      {
-        groupId: "fake_group_Id",
-        groupName: "fake group name"
-      },
-      {
-        groupId: "fake_group_Id_1",
-        groupName: "fake group name 1"
-      }
-    ],
     paginationGroups: [],
     countPerPage: 25,
     page: 0,
@@ -154,8 +134,7 @@ export class GroupsTab extends Component {
             </div>
           </Col>
         </Row>
-        {/*{paginationGroups.length ? (*/}
-        {true ? (
+        {paginationGroups.length ? (
           <React.Fragment>
             <Row>
               <Col mdOffset={1} md={10}>
@@ -165,7 +144,7 @@ export class GroupsTab extends Component {
                       <th>
                         <FormattedMessage
                           id="tenant-id"
-                          defaultMessage="SITE ID"
+                          defaultMessage="Site ID"
                         />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
@@ -175,7 +154,7 @@ export class GroupsTab extends Component {
                       <th>
                         <FormattedMessage
                           id="name"
-                          defaultMessage="SITE NAME"
+                          defaultMessage="Site name"
                         />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
@@ -185,7 +164,17 @@ export class GroupsTab extends Component {
                       <th>
                         <FormattedMessage
                           id="tenant-id"
-                          defaultMessage="PRODUCT/ACCESS TYPE"
+                          defaultMessage="Product"
+                        />
+                        <Glyphicon
+                          glyph="glyphicon glyphicon-sort"
+                          onClick={this.sortByID}
+                        />
+                      </th>
+                      <th>
+                        <FormattedMessage
+                          id="tenant-id"
+                          defaultMessage="Access"
                         />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
@@ -196,9 +185,16 @@ export class GroupsTab extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {this.state.fakeGroups.map(group => (
-                      <Group key={group.groupId} group={group} />
+                    {paginationGroups[page].map(group => (
+                      <Group
+                        key={group.groupId}
+                        group={group}
+                        onReload={() => this.fetchReq()}
+                      />
                     ))}
+                    {/* {this.state.fakeGroups.map(group => (
+                      <Group key={group.groupId} group={group} />
+                    ))} */}
                   </tbody>
                 </Table>
               </Col>
@@ -288,15 +284,15 @@ export class GroupsTab extends Component {
   sortByID = () => {
     const { groups, sortedBy, fakeGroups } = this.state;
     if (sortedBy === "id") {
-      const groupsSorted = fakeGroups.reverse();
-      this.setState({ fakeGroups: groupsSorted }, () => this.pagination());
+      const groupsSorted = groups.reverse();
+      this.setState({ groups: groupsSorted }, () => this.pagination());
     } else {
-      const groupsSorted = fakeGroups.sort((a, b) => {
+      const groupsSorted = groups.sort((a, b) => {
         if (a.groupId < b.groupId) return -1;
         if (a.groupId > b.groupId) return 1;
         return 0;
       });
-      this.setState({ fakeGroups: groupsSorted, sortedBy: "id" }, () =>
+      this.setState({ groups: groupsSorted, sortedBy: "id" }, () =>
         this.pagination()
       );
     }
@@ -305,15 +301,15 @@ export class GroupsTab extends Component {
   sortByName = () => {
     const { groups, sortedBy, fakeGroups } = this.state;
     if (sortedBy === "name") {
-      const groupsSorted = fakeGroups.reverse();
-      this.setState({ fakeGroups: groupsSorted }, () => this.pagination());
+      const groupsSorted = groups.reverse();
+      this.setState({ groups: groupsSorted }, () => this.pagination());
     } else {
-      const groupsSorted = fakeGroups.sort((a, b) => {
+      const groupsSorted = groups.sort((a, b) => {
         if (a.groupName < b.groupName) return -1;
         if (a.groupName > b.groupName) return 1;
         return 0;
       });
-      this.setState({ fakeGroups: groupsSorted, sortedBy: "name" }, () =>
+      this.setState({ groups: groupsSorted, sortedBy: "name" }, () =>
         this.pagination()
       );
     }

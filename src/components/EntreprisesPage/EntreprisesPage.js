@@ -7,6 +7,8 @@ import Col from "react-bootstrap/lib/Col";
 import FormControl from "react-bootstrap/lib/FormControl";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Button from "react-bootstrap/lib/Button";
+import Tabs from "react-bootstrap/lib/Tabs";
+import Tab from "react-bootstrap/lib/Tab";
 
 import Loading from "../../common/Loading";
 import Groups from "./Groups";
@@ -39,34 +41,42 @@ class TenantPage extends Component {
     if (isLoading) {
       return <Loading />;
     }
-    console.log(tenant);
     return (
       <React.Fragment>
-        <div className={"panel-body"}>
+        <div className={"panel-heading"}>
           <Row className={"margin-top-1"}>
             <Col md={12} className={"flex align-items-center"}>
               {this.state.isDisabled ? (
                 <React.Fragment>
                   <div className={"header margin-right-2"}>
-                    {this.props.tenant.name}
+                    Customer: {this.props.tenant.name}
                   </div>
                 </React.Fragment>
               ) : (
-                <FormControl
-                  type="text"
-                  placeholder={"ENTREPRISES NAME"}
-                  value={this.state.tenant.name}
-                  disabled={this.state.isDisabled}
-                  className={"header flex-basis-50 margin-right-2"}
-                  onChange={e =>
-                    this.setState({
-                      tenant: { ...this.state.tenant, name: e.target.value }
-                    })
-                  }
-                />
+                <React.Fragment>
+                  <div className={"margin-right-1 flex flex-basis-16"}>
+                    Customer:
+                  </div>
+                  <div className={"margin-right-1 flex-basis-33"}>
+                    <FormControl
+                      type="text"
+                      placeholder={"ENTREPRISES NAME"}
+                      value={this.state.tenant.name}
+                      disabled={this.state.isDisabled}
+                      className={"header flex-basis-50 margin-right-2"}
+                      onChange={e =>
+                        this.setState({
+                          tenant: { ...this.state.tenant, name: e.target.value }
+                        })
+                      }
+                    />
+                  </div>
+                </React.Fragment>
               )}
             </Col>
           </Row>
+        </div>
+        <div className={"panel-body"}>
           <Row className={"margin-top-1"}>
             <Col md={12} className={"flex align-items-center"}>
               <div className={"margin-right-1 flex font-24 align-items-center"}>
@@ -107,47 +117,6 @@ class TenantPage extends Component {
                     })
                   }
                   placeholder={"TINA ID"}
-                  disabled={this.state.isDisabled}
-                />
-              </div>
-            </Col>
-          </Row>
-          <Row className={"margin-top-1"}>
-            <Col md={12} className={"flex align-items-center"}>
-              <div className={"margin-right-1 flex flex-basis-16"}>
-                VLAN UUID
-              </div>
-              <div className={"margin-right-1 flex-basis-33"}>
-                <FormControl
-                  type="text"
-                  value={this.state.tenant.vlan_uuid}
-                  onChange={e =>
-                    this.setState({
-                      tenant: {
-                        ...this.state.tenant,
-                        vlan_uuid: e.target.value
-                      }
-                    })
-                  }
-                  placeholder={"VLAN UUID"}
-                  disabled={this.state.isDisabled}
-                />
-              </div>
-            </Col>
-          </Row>
-          <Row className={"margin-top-1"}>
-            <Col md={12} className={"flex align-items-center"}>
-              <div className={"margin-right-1 flex flex-basis-16"}>LLID</div>
-              <div className={"margin-right-1 flex-basis-33"}>
-                <FormControl
-                  type="text"
-                  value={this.state.tenant.ll_id}
-                  onChange={e =>
-                    this.setState({
-                      tenant: { ...this.state.tenant, ll_id: e.target.value }
-                    })
-                  }
-                  placeholder={"LLID"}
                   disabled={this.state.isDisabled}
                 />
               </div>
@@ -200,7 +169,14 @@ class TenantPage extends Component {
               </Row>
               <Row className={"margin-top-1"}>
                 <Col md={12}>
-                  <Groups />
+                  <Tabs defaultActiveKey={0} id="enterprice_tabs">
+                    <Tab eventKey={0} title="Groups">
+                      <Groups />
+                    </Tab>
+                    <Tab eventKey={1} title="Number routing">
+                      number routing
+                    </Tab>
+                  </Tabs>
                 </Col>
               </Row>
               {!this.state.isDisabled && <div className={"disabled-area"} />}
@@ -214,9 +190,7 @@ class TenantPage extends Component {
   tenantUpdate = () => {
     const data = {
       name: this.state.tenant.name,
-      tina_id: this.state.tenant.tina_id,
-      vlan_uuid: this.state.tenant.vlan_uuid,
-      ll_id: this.state.tenant.ll_id
+      tina_id: this.state.tenant.tina_id
     };
     const clearData = removeEmpty(data);
     this.props
