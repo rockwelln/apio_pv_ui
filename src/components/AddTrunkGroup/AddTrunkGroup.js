@@ -139,7 +139,7 @@ export class AddTrunkGroup extends Component {
     }
     const data = removeEmpty({
       name: name,
-      accessDevice: {
+      accessDeviceInfo: {
         deviceName,
         deviceType
       }
