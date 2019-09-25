@@ -11,13 +11,12 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import { fetchPostCreateTenant } from "../../store/actions";
 import { removeEmpty } from "../remuveEmptyInObject";
+import { FormattedMessage } from "react-intl";
 
 export class AddEntreprises extends Component {
   state = {
     entrerpriseName: "",
     tinaId: "",
-    vlanUuid: "",
-    llid: "",
     buttonName: "Create"
   };
   render() {
@@ -26,24 +25,34 @@ export class AddEntreprises extends Component {
         <Panel className={"margin-0"}>
           <Panel.Heading>
             <div className={"header"}>
-              ADD ENTREPRISES
+              <FormattedMessage
+                id="addEnterprises"
+                defaultMessage="ADD ENTREPRISES"
+              />
+
               <Button
                 className={"margin-left-1 btn-danger"}
                 onClick={this.cancelClick}
               >
-                Cancel
+                <FormattedMessage id="cancel" defaultMessage="Cancel" />
               </Button>
             </div>
             <div>
-              Enter yout Entrerprises name, your customer IDs and your
-              Entrerprise ID will be auto-generated
+              <FormattedMessage
+                id="addEnterprisesInfo"
+                defaultMessage="Enter yout Entrerprises name, your customer IDs and your
+                      Entrerprise ID will be auto-generated"
+              />
             </div>
           </Panel.Heading>
           <Panel.Body>
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  Enterprise ID
+                  <FormattedMessage
+                    id="enterpriseId"
+                    defaultMessage="Enterprise ID"
+                  />
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl type="text" disabled />
@@ -53,7 +62,10 @@ export class AddEntreprises extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  Customer name
+                  <FormattedMessage
+                    id="customerName"
+                    defaultMessage="Customer name"
+                  />
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
@@ -70,7 +82,11 @@ export class AddEntreprises extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  Customer ID{"\u002a"}
+                  <FormattedMessage
+                    id="customerId"
+                    defaultMessage="Customer ID"
+                  />
+                  {"\u002a"}
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
@@ -78,34 +94,6 @@ export class AddEntreprises extends Component {
                     value={this.state.tinaId}
                     placeholder={"Customer ID"}
                     onChange={e => this.setState({ tinaId: e.target.value })}
-                  />
-                </div>
-              </Col>
-            </Row>
-            <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>
-                  VLAN UUID
-                </div>
-                <div className={"margin-right-1 flex-basis-33"}>
-                  <FormControl
-                    type="text"
-                    value={this.state.vlanUuid}
-                    placeholder={"VLAN UUID"}
-                    onChange={e => this.setState({ vlanUuid: e.target.value })}
-                  />
-                </div>
-              </Col>
-            </Row>
-            <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>LLID</div>
-                <div className={"margin-right-1 flex-basis-33"}>
-                  <FormControl
-                    type="text"
-                    value={this.state.llid}
-                    placeholder={"LLID"}
-                    onChange={e => this.setState({ llid: e.target.value })}
                   />
                 </div>
               </Col>
@@ -143,13 +131,11 @@ export class AddEntreprises extends Component {
   };
 
   AddEntreprise = () => {
-    const { entrerpriseName, tinaId, vlanUuid, llid } = this.state;
+    const { entrerpriseName, tinaId } = this.state;
 
     const data = {
       name: entrerpriseName,
-      tina_id: tinaId,
-      vlan_uuid: vlanUuid,
-      ll_id: llid
+      tina_id: tinaId
     };
     const clearData = removeEmpty(data);
     this.setState({ buttonName: "Creating..." }, () =>

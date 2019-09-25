@@ -14,6 +14,7 @@ import Loading from "../../common/Loading";
 import Groups from "./Groups";
 
 import { removeEmpty } from "../remuveEmptyInObject";
+import { FormattedMessage } from "react-intl";
 
 import {
   fetchGetTenantById,
@@ -49,13 +50,20 @@ class TenantPage extends Component {
               {this.state.isDisabled ? (
                 <React.Fragment>
                   <div className={"header margin-right-2"}>
-                    Customer: {this.props.tenant.name}
+                    <FormattedMessage
+                      id="customer"
+                      defaultMessage="Customer:"
+                    />{" "}
+                    {this.props.tenant.name}
                   </div>
                 </React.Fragment>
               ) : (
                 <React.Fragment>
                   <div className={"margin-right-1 flex flex-basis-16"}>
-                    Customer:
+                    <FormattedMessage
+                      id="customer"
+                      defaultMessage="Customer:"
+                    />
                   </div>
                   <div className={"margin-right-1 flex-basis-33"}>
                     <FormControl
@@ -80,7 +88,9 @@ class TenantPage extends Component {
           <Row className={"margin-top-1"}>
             <Col md={12} className={"flex align-items-center"}>
               <div className={"margin-right-1 flex font-24 align-items-center"}>
-                <div className={"margin-right-1"}>Details</div>
+                <div className={"margin-right-1"}>
+                  <FormattedMessage id="details" defaultMessage="Details" />
+                </div>
                 {this.state.isDisabled && (
                   <Glyphicon
                     className={"font-18"}
@@ -93,7 +103,9 @@ class TenantPage extends Component {
           </Row>
           <Row className={"margin-top-1"}>
             <Col md={12} className={"flex align-items-center"}>
-              <div className={"margin-right-1 flex flex-basis-16"}>ID</div>
+              <div className={"margin-right-1 flex flex-basis-16"}>
+                <FormattedMessage id="id" defaultMessage="ID" />
+              </div>
               <div className={"margin-right-1 flex-basis-33"}>
                 <FormControl
                   type="text"
@@ -106,7 +118,12 @@ class TenantPage extends Component {
           </Row>
           <Row className={"margin-top-1"}>
             <Col md={12} className={"flex align-items-center"}>
-              <div className={"margin-right-1 flex flex-basis-16"}>TINA ID</div>
+              <div className={"margin-right-1 flex flex-basis-16"}>
+                <FormattedMessage
+                  id="customerId"
+                  defaultMessage="Customer ID"
+                />
+              </div>
               <div className={"margin-right-1 flex-basis-33"}>
                 <FormControl
                   type="text"
@@ -125,7 +142,10 @@ class TenantPage extends Component {
           <Row className={"margin-top-1"}>
             <Col md={12} className={"flex align-items-center"}>
               <div className={"margin-right-1 flex flex-basis-16"}>
-                Customer name
+                <FormattedMessage
+                  id="customerName"
+                  defaultMessage="Customer name"
+                />
               </div>
               <div className={"margin-right-1 flex-basis-33"}>
                 <FormControl
@@ -164,16 +184,31 @@ class TenantPage extends Component {
             <div className={"relative"}>
               <Row className={"margin-top-1"}>
                 <Col md={12} className={"flex align-items-center"}>
-                  <div className={"margin-right-1 flex font-24"}>Sites</div>
+                  <div className={"margin-right-1 flex font-24"}>
+                    <FormattedMessage id="sites" defaultMessage="Sites" />
+                  </div>
                 </Col>
               </Row>
               <Row className={"margin-top-1"}>
                 <Col md={12}>
                   <Tabs defaultActiveKey={0} id="enterprice_tabs">
-                    <Tab eventKey={0} title="Groups">
+                    <Tab
+                      eventKey={0}
+                      title={
+                        <FormattedMessage id="groups" defaultMessage="Groups" />
+                      }
+                    >
                       <Groups />
                     </Tab>
-                    <Tab eventKey={1} title="Number routing">
+                    <Tab
+                      eventKey={1}
+                      title={
+                        <FormattedMessage
+                          id="numberRouting"
+                          defaultMessage="Number routing"
+                        />
+                      }
+                    >
                       number routing
                     </Tab>
                   </Tabs>
