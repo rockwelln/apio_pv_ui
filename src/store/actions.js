@@ -627,7 +627,7 @@ export function fetchGetAdminsByTenantId(Id) {
 export function fetchGetGroupById(tenantId, groupId) {
   return function(dispatch) {
     return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}`
     )
       .then(data => dispatch(getGroupById(data)))
       .catch(error =>

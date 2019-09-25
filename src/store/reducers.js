@@ -179,7 +179,7 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.GET_PHONE_NUMBERS_BY_GROUP_ID: {
-      const phoneNumbers = action.data.assigned_numbers.map(phone => ({
+      const phoneNumbers = action.data.numbers.map(phone => ({
         ...phone,
         rangeStart: phone.phoneNumber.includes("-")
           ? phone.phoneNumber.split(" - ").slice(0)[0]

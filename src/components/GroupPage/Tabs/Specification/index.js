@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
@@ -9,6 +10,12 @@ import Button from "react-bootstrap/lib/Button";
 import Checkbox from "react-bootstrap/lib/Checkbox";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import Radio from "react-bootstrap/lib/Radio";
+
+import Loading from "../../../../common/Loading";
+
+import { FormattedMessage } from "react-intl";
+
+import { fetchGetGroupById } from "../../../../store/actions";
 
 import {
   ADVICEOFCHARGE,
@@ -34,55 +41,77 @@ export class index extends Component {
     aoc: false,
     dtmf: "RFC2833",
     direction: "Bi",
-    additionnalRedundancy: true
+    additionnalRedundancy: true,
+    isLoading: true,
+    group: {}
   };
+
+  fetchGroup = () => {
+    this.props
+      .fetchGetGroupById(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId
+      )
+      .then(() => this.setState({ isLoading: false, group: this.props.group }));
+  };
+
+  componentDidMount() {
+    this.fetchGroup();
+  }
   render() {
-    const NCOSarray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+    //const NCOSarray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+    if (this.state.isLoading) {
+      return <Loading />;
+    }
+    console.log(this.state.group);
     return (
       <React.Fragment>
         <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
-            {this.state.isDisabled ? (
-              <React.Fragment>
-                <div className={"header margin-right-2"}>SITE (GROUP ID)</div>
+            <React.Fragment>
+              <div className={"header margin-right-2"}>
+                <FormattedMessage id="details" defaultMessage="Details" />
+              </div>
+              {this.state.isDisabled && (
                 <Glyphicon
                   className={"font-18"}
                   glyph="glyphicon glyphicon-pencil"
                   onClick={() => this.setState({ isDisabled: false })}
                 />
-              </React.Fragment>
-            ) : (
-              <FormControl
-                type="text"
-                placeholder={"GROUP NAME"}
-                disabled={this.state.isDisabled}
-                className={"header flex-basis-50 margin-right-2"}
-              />
-            )}
+              )}
+            </React.Fragment>
           </Col>
         </Row>
         <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>Site ID</div>
+            <div className={"margin-right-1 flex flex-basis-16"}>
+              <FormattedMessage id="siteID" defaultMessage="Site ID" />
+            </div>
             <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl type="text" placeholder={"ID"} disabled />
+              <FormControl
+                type="text"
+                placeholder={"ID"}
+                disabled
+                value={this.props.match.params.groupId}
+              />
             </div>
           </Col>
         </Row>
         <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex font-24"}>Site Infos</div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>Site Name</div>
+            <div className={"margin-right-1 flex flex-basis-16"}>
+              <FormattedMessage id="siteName" defaultMessage="Site Name" />
+            </div>
             <div className={"margin-right-1 flex-basis-33"}>
               <FormControl
                 type="text"
-                value={this.state.siteName}
+                value={this.state.group.groupName}
                 placeholder={"Site Name"}
-                onChange={e => this.setState({ siteName: e.target.value })}
+                onChange={e =>
+                  this.setState({
+                    group: { ...this.state.group, groupName: e.target.value }
+                  })
+                }
                 disabled={this.state.isDisabled}
               />
             </div>
@@ -91,28 +120,18 @@ export class index extends Component {
         <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>
-              Main Number
+              <FormattedMessage id="mainNumber" defaultMessage="Main Number" />
             </div>
             <div className={"margin-right-1 flex-basis-33"}>
               <FormControl
                 type="text"
-                value={this.state.mainNumber}
+                value={this.state.group.cliName}
                 placeholder={"Main Number"}
-                onChange={e => this.setState({ mainNumber: e.target.value })}
-                disabled={this.state.isDisabled}
-              />
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>ZIP code</div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                type="text"
-                value={this.state.zipCode}
-                placeholder={"ZIP code"}
-                onChange={e => this.setState({ zipCode: e.target.value })}
+                onChange={e =>
+                  this.setState({
+                    group: { ...this.state.group, cliName: e.target.value }
+                  })
+                }
                 disabled={this.state.isDisabled}
               />
             </div>
@@ -121,22 +140,50 @@ export class index extends Component {
         <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>
-              Virtual Site
+              <FormattedMessage id="zipCode" defaultMessage="ZIP code" />
+            </div>
+            <div className={"margin-right-1 flex-basis-33"}>
+              <FormControl
+                type="text"
+                value={this.state.group.zipCode}
+                placeholder={"ZIP code"}
+                onChange={e =>
+                  this.setState({
+                    group: { ...this.state.group, zipCode: e.target.value }
+                  })
+                }
+                disabled={this.state.isDisabled}
+              />
+            </div>
+          </Col>
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={12} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-16"}>
+              <FormattedMessage
+                id="virtualSite"
+                defaultMessage="Virtual Site"
+              />
             </div>
             <div className={"margin-right-1 flex"}>
               <FormGroup className={"margin-0 flex"}>
                 <Radio
                   className={"margin-0 flex margin-right-2"}
                   name="isVirtualSite"
-                  checked={this.state.virtualSite}
+                  checked={this.state.group.virtualSite}
                   disabled={this.state.isDisabled}
                   onChange={e =>
                     this.setState({
-                      virtualSite: true
+                      group: {
+                        ...this.state.group,
+                        virtualSite: e.target.checked
+                      }
                     })
                   }
                 >
-                  <div className="font-weight-bold flex">Yes</div>
+                  <div className="font-weight-bold flex">
+                    <FormattedMessage id="yes" defaultMessage="Yes" />
+                  </div>
                 </Radio>
                 <Radio
                   className={"margin-0 flex margin-right-2"}
@@ -149,17 +196,19 @@ export class index extends Component {
                     })
                   }
                 >
-                  <div className="font-weight-bold flex">No</div>
+                  <div className="font-weight-bold flex">
+                    <FormattedMessage id="no" defaultMessage="No" />
+                  </div>
                 </Radio>
               </FormGroup>
             </div>
           </Col>
         </Row>
-        <Row className={"margin-top-1"}>
+        {/* <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex font-24"}>Product Types</div>
           </Col>
-        </Row>
+        </Row> 
         <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>
@@ -517,7 +566,7 @@ export class index extends Component {
               </div>
             </Col>
           </Row>
-        </React.Fragment>
+        </React.Fragment>*/}
         {!this.state.isDisabled && (
           <Row>
             <Col md={12}>
@@ -529,7 +578,7 @@ export class index extends Component {
                     className="btn-primary"
                   >
                     <Glyphicon glyph="glyphicon glyphicon-ok" />
-                    Update
+                    <FormattedMessage id="update" defaultMessage="Update" />
                   </Button>
                 </div>
               </div>
@@ -541,11 +590,13 @@ export class index extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({ group: state.group });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { fetchGetGroupById };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(index);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(index)
+);

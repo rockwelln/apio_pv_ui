@@ -68,7 +68,7 @@ class TenantPage extends Component {
       <React.Fragment>
         <div className={"panel-heading"}>
           <p className={"header"}>
-            {`GROUP: ${group.groupName} (${this.props.match.params.groupId}) of tenant ${tenant.name} (${tenant.tenantId})`}
+            {`Site: ${group.groupName} (${this.props.match.params.groupId}) of customer ${tenant.name} (${tenant.tenantId})`}
             <Glyphicon
               glyph="glyphicon glyphicon-trash"
               onClick={() => this.setState({ showDelete: true })}
@@ -88,6 +88,8 @@ class TenantPage extends Component {
             <Tab eventKey={0} title="Specifications">
               <Specifications />
             </Tab>
+            <Tab eventKey={4} title="Product type"></Tab>
+            <Tab eventKey={5} title="Services"></Tab>
             <Tab eventKey={1} title="IADs">
               <IADs />
             </Tab>
@@ -100,46 +102,6 @@ class TenantPage extends Component {
             <Tab eventKey={3} title="Redundancy">
               <Redundancy />
             </Tab>
-            {/* <Tab eventKey={0} title="LICENSES">
-              <Licenses
-                tenantId={this.props.match.params.tenantId}
-                groupId={this.props.match.params.groupId}
-              />
-            </Tab>
-            <Tab eventKey={1} title="HOSTED PBX USERS">
-              <Users
-                tenantId={this.props.match.params.tenantId}
-                groupId={this.props.match.params.groupId}
-              />
-            </Tab>
-            {this.props.fetchTrunksGroupsFail && (
-              <Tab eventKey={2} title="TRUNKS GROUP">
-                <TrunksGroup />
-              </Tab>
-            )}
-            <Tab eventKey={3} title="PHONE NUMBERS">
-              <PhoneNumbers
-                tenantId={this.props.match.params.tenantId}
-                groupId={this.props.match.params.groupId}
-              />
-            </Tab>
-            <Tab eventKey={4} title="DEVICES">
-              <Devices
-                tenantId={this.props.match.params.tenantId}
-                groupId={this.props.match.params.groupId}
-                notifications={this.props.notifications}
-              />
-            </Tab>
-            <Tab eventKey={5} title="ADMINISTRATORS">
-              <Admins
-                tenantId={this.props.match.params.tenantId}
-                groupId={this.props.match.params.groupId}
-                notifications={this.props.notifications}
-              />
-            </Tab>
-            <Tab eventKey={6} title="DETAILS">
-              <Details group={group} isLoading={isLoadingTenant} />
-            </Tab> */}
           </Tabs>
         </div>
       </React.Fragment>

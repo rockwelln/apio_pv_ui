@@ -20,14 +20,14 @@ import { TYPEOFIAD, TYPEOFACCESS, SERVICETYPE } from "../../constants";
 export class AddGroup extends Component {
   state = {
     siteName: "",
-    mainNumber: undefined,
     zipCode: "",
     virtualSite: false,
     typeOfIad: "",
     typeOfAccess: "",
     numberOfChannels: undefined,
     serviceType: "",
-    buttonName: "Create"
+    buttonName: "Create",
+    cliName: ""
   };
   render() {
     return (
@@ -83,11 +83,9 @@ export class AddGroup extends Component {
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
                     type="text"
-                    value={this.state.mainNumber}
+                    value={this.state.cliName}
                     placeholder={"Main Number"}
-                    onChange={e =>
-                      this.setState({ mainNumber: e.target.value })
-                    }
+                    onChange={e => this.setState({ cliName: e.target.value })}
                   />
                 </div>
               </Col>
@@ -283,18 +281,19 @@ export class AddGroup extends Component {
       numberOfChannels,
       serviceType,
       zipCode,
-      mainNumber
+      cliName,
+      virtualSite
     } = this.state;
 
     const data = {
       groupName: siteName,
-      cliName: siteName,
+      cliName,
       zipCode,
       numberOfChannels: Number(numberOfChannels),
       pbxType: typeOfIad,
       accessType: typeOfAccess,
       serviceType,
-      mainNumber
+      virtualSite
     };
     const clearData = removeEmpty(data);
     this.setState({ buttonName: "Creating..." }, () =>
