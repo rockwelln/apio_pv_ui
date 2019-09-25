@@ -300,7 +300,7 @@ export class AddGroup extends Component {
       this.props
         .fetchPostCreateGroup(this.props.match.params.tenantId, clearData)
         .then(res =>
-          true //res === "created"
+          res === "created"
             ? this.props.history.push(
                 `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}`
               )
