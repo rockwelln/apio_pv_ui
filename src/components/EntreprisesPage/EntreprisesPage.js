@@ -173,7 +173,7 @@ class TenantPage extends Component {
                       className="btn-primary"
                     >
                       <Glyphicon glyph="glyphicon glyphicon-ok" />
-                      Update
+                      <FormattedMessage id="update" defaultMessage="Update" />
                     </Button>
                   </div>
                 </div>
