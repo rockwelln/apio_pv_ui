@@ -11,11 +11,14 @@ import Checkbox from "react-bootstrap/lib/Checkbox";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import Radio from "react-bootstrap/lib/Radio";
 
-import Loading from "../../../../common/Loading";
+import Loading from "../../common/Loading";
 
 import { FormattedMessage } from "react-intl";
 
-import { fetchGetGroupById } from "../../../../store/actions";
+import {
+  fetchGetGroupById,
+  fetchPutUpdateGroupDetails
+} from "../../store/actions";
 
 import {
   ADVICEOFCHARGE,
@@ -28,7 +31,7 @@ import {
   TYPEOFIAD,
   TYPEOFACCESS,
   SERVICETYPE
-} from "../../../../constants";
+} from "../../constants";
 
 export class index extends Component {
   state = {
@@ -58,6 +61,7 @@ export class index extends Component {
   componentDidMount() {
     this.fetchGroup();
   }
+
   render() {
     //const NCOSarray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
     if (this.state.isLoading) {
@@ -66,7 +70,7 @@ export class index extends Component {
     console.log(this.state.group);
     return (
       <React.Fragment>
-        <Row className={"margin-top-1"}>
+        <Row>
           <Col md={12} className={"flex align-items-center"}>
             <React.Fragment>
               <div className={"header margin-right-2"}>
@@ -573,7 +577,7 @@ export class index extends Component {
               <div className="button-row">
                 <div className="pull-right">
                   <Button
-                    onClick={() => this.setState({ isDisabled: true })}
+                    onClick={() => this.updateGroup()}
                     type="submit"
                     className="btn-primary"
                   >
@@ -588,11 +592,27 @@ export class index extends Component {
       </React.Fragment>
     );
   }
+
+  updateGroup = () => {
+    const { groupName, cliName, virtualSite } = this.state.group;
+    const data = {
+      groupName,
+      cliName,
+      virtualSite
+    };
+    this.props
+      .fetchPutUpdateGroupDetails(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        data
+      )
+      .then(() => this.setState({ isDisabled: true }));
+  };
 }
 
 const mapStateToProps = state => ({ group: state.group });
 
-const mapDispatchToProps = { fetchGetGroupById };
+const mapDispatchToProps = { fetchGetGroupById, fetchPutUpdateGroupDetails };
 
 export default withRouter(
   connect(

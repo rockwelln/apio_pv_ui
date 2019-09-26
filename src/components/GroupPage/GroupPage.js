@@ -10,13 +10,13 @@ import Loading from "../../common/Loading";
 import Users from "./Tabs/Users";
 import PhoneNumbers from "./Tabs/PhoneNumbers";
 import Licenses from "./Tabs/Licenses";
-import Details from "./Tabs/Details";
+import Details from "./Details";
 import Devices from "./Tabs/Devices";
 import Admins from "./Tabs/Admins";
 import TrunksGroup from "./Tabs/TrunksGroup";
 
 import IADs from "./Tabs/IADs";
-import Specifications from "./Tabs/Specification";
+import Specifications from "./Details";
 import Redundancy from "./Tabs/Redundancy";
 
 import { fetchGetTenantById, fetchGetGroupById } from "../../store/actions";
@@ -84,23 +84,22 @@ class TenantPage extends Component {
           </p>
         </div>
         <div className={"panel-body"}>
-          <Tabs defaultActiveKey={0} id={`group_tabs${this.tabsIdSuffix}`}>
-            <Tab eventKey={0} title="Specifications">
-              <Specifications />
-            </Tab>
-            <Tab eventKey={4} title="Product type"></Tab>
-            <Tab eventKey={5} title="Services"></Tab>
-            <Tab eventKey={1} title="IADs">
+          <Details />
+          <Tabs
+            className={"margin-top-1"}
+            defaultActiveKey={0}
+            id={`group_tabs${this.tabsIdSuffix}`}
+          >
+            <Tab eventKey={1} title="Product type"></Tab>
+            <Tab eventKey={2} title="Services"></Tab>
+            <Tab eventKey={3} title="IADs">
               <IADs />
             </Tab>
-            <Tab eventKey={2} title="Numbers">
+            <Tab eventKey={4} title="Numbers">
               <PhoneNumbers
                 tenantId={this.props.match.params.tenantId}
                 groupId={this.props.match.params.groupId}
               />
-            </Tab>
-            <Tab eventKey={3} title="Redundancy">
-              <Redundancy />
             </Tab>
           </Tabs>
         </div>

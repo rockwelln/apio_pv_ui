@@ -625,6 +625,7 @@ export function fetchGetAdminsByTenantId(Id) {
 }
 
 export function fetchGetGroupById(tenantId, groupId) {
+  ///////////////////////////////////
   return function(dispatch) {
     return fetch_get(
       `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}`
@@ -1487,9 +1488,10 @@ export function fetchPutUpdateUser(tenantId, groupId, userName, data) {
 }
 
 export function fetchPutUpdateGroupDetails(tenantId, groupId, data) {
+  ///////////////////
   return function(dispatch) {
     return fetch_put(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/`,
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/`,
       data
     )
       .then(res => res.json())
