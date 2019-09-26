@@ -85,10 +85,18 @@ class Tenants extends Component {
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
-          <div className={"header"}>Customer overview</div>
+          <div className={"header"}>
+            <FormattedMessage
+              id="costomerOverview"
+              defaultMessage="Customer overview"
+            />
+          </div>
           <div>
-            Lookup any customer by providing one the parameters or add a new
-            entreprise
+            <FormattedMessage
+              id="costomerDescription"
+              defaultMessage="Lookup any customer by providing one the parameters or add a new
+                entreprise"
+            />
           </div>
         </div>
         <div className={"panel-body"}>
@@ -134,7 +142,13 @@ class Tenants extends Component {
           <Row>
             <Col md={11}>
               <div className="flex flex-row flex-end-center indent-top-bottom-1">
-                <div>Item per page</div>
+                <div>
+                  {" "}
+                  <FormattedMessage
+                    id="itemPerPage"
+                    defaultMessage="Item per page"
+                  />
+                </div>
                 <FormControl
                   componentClass="select"
                   defaultValue={countPerPage}
