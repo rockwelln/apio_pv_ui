@@ -43,20 +43,22 @@ export class IADs extends Component {
     countPages: null
   };
 
-  fetchAdmins = () => {
-    this.props.fetchGetIADs(
-      this.props.match.params.tenantId,
-      this.props.match.params.groupId
-    );
+  fetchIADs = () => {
+    this.props
+      .fetchGetIADs(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId
+      )
+      .then(() => this.setState({ isLoading: false }));
   };
 
   componentDidMount() {
-    this.fetchAdmins();
+    this.fetchIADs();
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.admins.length !== this.props.admins.length) {
-      this.fetchAdmins();
+      this.fetchIADs();
     }
   }
 
@@ -68,12 +70,29 @@ export class IADs extends Component {
       paginationAdmins,
       page
     } = this.state;
-    // if (isLoading && pagination) {
-    //   return <Loading />;
-    // }
+    if (isLoading) {
+      return <Loading />;
+    }
     return (
       <React.Fragment>
-        <Row className={"margin-top-2"}>
+        <Row className={"margin-top-1"}>
+          <Col mdOffset={1} md={10}>
+            {this.props.iads.iads.length < this.props.iads.nbrIadsNeeded ? (
+              <FormattedMessage
+                id="moreIads"
+                defaultMessage={`You still need to create ${this.props.iads
+                  .nbrIadsNeeded - this.props.iads.iads.length} Trunk Groups`}
+              />
+            ) : this.props.iads.iads.length > this.props.iads.nbrIadsNeeded ? (
+              <FormattedMessage
+                id="lessIads"
+                defaultMessage={`You have ${this.props.iads.iads.length -
+                  this.props.iads.nbrIadsNeeded} Trunk Group too much`}
+              />
+            ) : null}
+          </Col>
+        </Row>
+        <Row className={"margin-top-1"}>
           <Col mdOffset={1} md={10}>
             <InputGroup className={"margin-left-negative-4"}>
               <InputGroup.Addon>
@@ -102,21 +121,28 @@ export class IADs extends Component {
               </FormattedMessage>
             </InputGroup>
           </Col>
-          <Col md={1}>
-            <Link
-              to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/addiad`}
-            >
-              <Glyphicon
-                className={"x-large"}
-                glyph="glyphicon glyphicon-plus-sign"
-              />
-            </Link>
-          </Col>
+          {this.props.iads.iads.length < this.props.iads.nbrIadsNeeded && (
+            <Col md={1}>
+              <Link
+                to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/addiad`}
+              >
+                <Glyphicon
+                  className={"x-large"}
+                  glyph="glyphicon glyphicon-plus-sign"
+                />
+              </Link>
+            </Col>
+          )}
         </Row>
         <Row>
           <Col md={11}>
             <div className="flex flex-row flex-end-center indent-top-bottom-1">
-              <div>Item per page</div>
+              <div>
+                <FormattedMessage
+                  id="itemPerPage"
+                  defaultMessage="Item per page"
+                />
+              </div>
               <FormControl
                 componentClass="select"
                 defaultValue={countPerPage}
@@ -346,7 +372,8 @@ export class IADs extends Component {
 }
 
 const mapStateToProps = state => ({
-  admins: state.adminsGroup
+  admins: state.adminsGroup,
+  iads: state.iads
 });
 
 const mapDispatchToProps = {
