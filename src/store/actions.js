@@ -513,6 +513,11 @@ export const getIADs = data => ({
   data
 });
 
+export const getConfig = data => ({
+  type: actionType.GET_CONFIG,
+  data
+});
+
 export function fetchGetTenants(cancelLoad) {
   ////////////////////
   return function(dispatch) {
@@ -563,6 +568,25 @@ export function fetchGetIADs(tenantId, groupId) {
           <FormattedMessage
             id="fetch-IADs-failed"
             defaultMessage="Failed to fetch IADs!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetConfig() {
+  //////////////////////////////
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/configs/applications/praGUI/config/`
+    )
+      .then(data => dispatch(getConfig(JSON.parse(JSON.parse(data.data)))))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-config-failed"
+            defaultMessage="Failed to fetch config!"
           />,
           error.message
         )

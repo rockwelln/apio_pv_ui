@@ -103,7 +103,8 @@ const initialState = {
   usersFound: [],
   groupsFound: [],
   ////////////////////////////
-  iads: { iads: [] }
+  iads: { iads: [] },
+  config: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -436,6 +437,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         groupsFound: action.data.groups
+      };
+    }
+    case actionType.GET_CONFIG: {
+      return {
+        ...state,
+        config: action.data
       };
     }
     case actionType.GET_AVAILABLE_NUMBERS_BY_TENANT_ID: {

@@ -10,9 +10,10 @@ import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Radio from "react-bootstrap/lib/Radio";
 import FormGroup from "react-bootstrap/lib/FormGroup";
-import Checkbox from "react-bootstrap/lib/Checkbox";
 
-import { fetchPostCreateGroup } from "../../store/actions";
+import Loading from "../../common/Loading";
+
+import { fetchPostCreateGroup, fetchGetConfig } from "../../store/actions";
 import { removeEmpty } from "../remuveEmptyInObject";
 
 import { TYPEOFIAD, TYPEOFACCESS, SERVICETYPE } from "../../constants";
@@ -27,9 +28,29 @@ export class AddGroup extends Component {
     numberOfChannels: undefined,
     serviceType: "",
     buttonName: "Create",
-    cliName: ""
+    cliName: "",
+    isLoading: true
+  };
+
+  componentDidMount = () => {
+    this.props.fetchGetConfig().then(() =>
+      this.setState({
+        isLoading: false,
+        typeOfIad: this.props.config.tenant.group.pbxType[0].value,
+        typeOfAccess: this.props.config.tenant.group.accessType[0].value,
+        serviceType: this.props.config.tenant.group.serviceType[0].value
+      })
+    );
   };
   render() {
+    if (this.state.isLoading) {
+      return <Loading />;
+    }
+    console.log(
+      this.state.typeOfIad,
+      this.state.typeOfAccess,
+      this.state.serviceType
+    );
     return (
       <React.Fragment>
         <Panel className={"margin-0"}>
@@ -155,16 +176,12 @@ export class AddGroup extends Component {
                 <div className={"margin-right-1 flex flex-basis-33"}>
                   <FormControl
                     componentClass="select"
-                    value={this.state.typeOfIad}
+                    defaultValue={this.state.typeOfIad}
                     onChange={e => this.setState({ typeOfIad: e.target.value })}
                   >
-                    {TYPEOFIAD.map((type, i) => (
-                      <option
-                        key={i}
-                        value={type.value}
-                        disabled={type.disabled}
-                      >
-                        {type.name}
+                    {this.props.config.tenant.group.pbxType.map((type, i) => (
+                      <option key={i} value={type.value}>
+                        {type.label}
                       </option>
                     ))}
                   </FormControl>
@@ -184,15 +201,13 @@ export class AddGroup extends Component {
                       this.setState({ typeOfAccess: e.target.value })
                     }
                   >
-                    {TYPEOFACCESS.map((type, i) => (
-                      <option
-                        key={i}
-                        value={type.value}
-                        disabled={type.disabled}
-                      >
-                        {type.name}
-                      </option>
-                    ))}
+                    {this.props.config.tenant.group.accessType.map(
+                      (type, i) => (
+                        <option key={i} value={type.value}>
+                          {type.label}
+                        </option>
+                      )
+                    )}
                   </FormControl>
                 </div>
               </Col>
@@ -210,12 +225,13 @@ export class AddGroup extends Component {
                       this.setState({ serviceType: e.target.value })
                     }
                   >
-                    <option value={""}>none</option>
-                    {SERVICETYPE.map((type, i) => (
-                      <option key={i} value={type.value}>
-                        {type.name}
-                      </option>
-                    ))}
+                    {this.props.config.tenant.group.serviceType.map(
+                      (type, i) => (
+                        <option key={i} value={type.value}>
+                          {type.label}
+                        </option>
+                      )
+                    )}
                   </FormControl>
                 </div>
               </Col>
@@ -310,11 +326,15 @@ export class AddGroup extends Component {
   };
 }
 
-const mapDispatchToProps = { fetchPostCreateGroup };
+const mapStateToProps = state => ({
+  config: state.config
+});
+
+const mapDispatchToProps = { fetchPostCreateGroup, fetchGetConfig };
 
 export default withRouter(
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   )(AddGroup)
 );

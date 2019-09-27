@@ -10,7 +10,7 @@ const removeIfEmpty = (obj, key) => {
 export const removeEmpty = obj => {
   for (let key in obj) {
     const val = obj[key];
-    if (!val && typeof val !== "boolean") {
+    if (!val && typeof val !== "boolean" && val !== 0) {
       delete obj[key];
     } else if (typeof val === "object") {
       if (!removeIfEmpty(obj, key)) {
