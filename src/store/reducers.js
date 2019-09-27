@@ -103,7 +103,7 @@ const initialState = {
   usersFound: [],
   groupsFound: [],
   ////////////////////////////
-  iads: {}
+  iads: { iads: [] }
 };
 
 function mainReducer(state = initialState, action) {
