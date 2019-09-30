@@ -1519,7 +1519,16 @@ export function fetchPutUpdateGroupDetails(tenantId, groupId, data) {
       data
     )
       .then(res => res.json())
-      .then(data => dispatch(putUpdateGroupDetails(data)))
+      .then(data => {
+        NotificationsManager.success(
+          <FormattedMessage
+            id="successfulGroupUpdate"
+            defaultMessage="Successful group ipdate"
+          />,
+          "Updated"
+        );
+        dispatch(putUpdateGroupDetails(data));
+      })
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage

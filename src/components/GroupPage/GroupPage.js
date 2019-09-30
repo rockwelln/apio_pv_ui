@@ -14,6 +14,7 @@ import Details from "./Details";
 import Devices from "./Tabs/Devices";
 import Admins from "./Tabs/Admins";
 import TrunksGroup from "./Tabs/TrunksGroup";
+import Channels from "./Tabs/Channels";
 
 import IADs from "./Tabs/IADs";
 import Specifications from "./Details";
@@ -90,7 +91,10 @@ class TenantPage extends Component {
             defaultActiveKey={0}
             id={`group_tabs${this.tabsIdSuffix}`}
           >
-            <Tab eventKey={1} title="Product type"></Tab>
+            <Tab eventKey={0} title="Product type"></Tab>
+            <Tab eventKey={1} title="Channels">
+              <Channels />
+            </Tab>
             <Tab eventKey={2} title="Services"></Tab>
             <Tab eventKey={3} title="IADs">
               <IADs />
