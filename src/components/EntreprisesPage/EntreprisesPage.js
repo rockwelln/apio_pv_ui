@@ -176,6 +176,16 @@ class TenantPage extends Component {
                       <FormattedMessage id="update" defaultMessage="Update" />
                     </Button>
                   </div>
+                  <div className="pull-right margin-right-1">
+                    <Button
+                      onClick={() => this.setState({ isDisabled: true })}
+                      type="submit"
+                      className="btn-primary"
+                    >
+                      <Glyphicon glyph="glyphicon glyphicon-ok" />
+                      <FormattedMessage id="cancel" defaultMessage="Cancel" />
+                    </Button>
+                  </div>
                 </div>
               </Col>
             </Row>

@@ -17,7 +17,6 @@ import {
 } from "../../../../store/actions";
 import { FormattedMessage } from "react-intl";
 import { removeEmpty } from "../../../remuveEmptyInObject";
-import { NotificationsManager } from "../../../../utils";
 
 import Loading from "../../../../common/Loading";
 
@@ -58,7 +57,7 @@ export class Channels extends Component {
     if (this.state.isLoading) {
       return <Loading />;
     }
-    console.log(this.state.group);
+
     return (
       <React.Fragment>
         <Row className={"margin-top-1"}>

@@ -15,6 +15,7 @@ import Devices from "./Tabs/Devices";
 import Admins from "./Tabs/Admins";
 import TrunksGroup from "./Tabs/TrunksGroup";
 import Channels from "./Tabs/Channels";
+import Service from "./Tabs/Service";
 
 import IADs from "./Tabs/IADs";
 import Specifications from "./Details";
@@ -95,7 +96,9 @@ class TenantPage extends Component {
             <Tab eventKey={1} title="Channels">
               <Channels />
             </Tab>
-            <Tab eventKey={2} title="Services"></Tab>
+            <Tab eventKey={2} title="Services">
+              <Service />
+            </Tab>
             <Tab eventKey={3} title="IADs">
               <IADs />
             </Tab>
