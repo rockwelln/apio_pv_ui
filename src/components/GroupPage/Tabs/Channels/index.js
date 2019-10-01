@@ -114,7 +114,7 @@ export class Channels extends Component {
             </div>
           </Col>
         </Row>
-        {this.state.group.direction === "Bi" && (
+        {this.state.group.direction === "Uni" && (
           <React.Fragment>
             <FormGroup
               controlId="channelIn"
@@ -136,6 +136,11 @@ export class Channels extends Component {
                       defaultValue={this.state.group.channelsIn}
                       placeholder={"Channels In"}
                       onChange={this.changeChannelsIn}
+                      min={0}
+                      max={
+                        this.state.group.numberOfChannels -
+                        this.state.group.channelOut
+                      }
                     />
                   </div>
                 </Col>
@@ -176,6 +181,11 @@ export class Channels extends Component {
                       defaultValue={this.state.group.channelOut}
                       placeholder={"Channels Out"}
                       onChange={this.changeChannelsOut}
+                      min={0}
+                      max={
+                        this.state.group.numberOfChannels -
+                        this.state.group.channelsIn
+                      }
                     />
                   </div>
                 </Col>
