@@ -24,6 +24,7 @@ import Redundancy from "./Tabs/Redundancy";
 import { fetchGetTenantById, fetchGetGroupById } from "../../store/actions";
 
 import DeleteModal from "./DeleteModal";
+import Product from "./Tabs/Product";
 
 class TenantPage extends Component {
   tabsIdSuffix = Math.random()
@@ -92,7 +93,9 @@ class TenantPage extends Component {
             defaultActiveKey={0}
             id={`group_tabs${this.tabsIdSuffix}`}
           >
-            <Tab eventKey={0} title="Product type"></Tab>
+            <Tab eventKey={0} title="Product type">
+              <Product />
+            </Tab>
             <Tab eventKey={1} title="Channels">
               <Channels />
             </Tab>

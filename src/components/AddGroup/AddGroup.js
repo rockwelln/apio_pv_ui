@@ -13,6 +13,7 @@ import FormGroup from "react-bootstrap/lib/FormGroup";
 
 import Loading from "../../common/Loading";
 
+import { FormattedMessage } from "react-intl";
 import { fetchPostCreateGroup, fetchGetConfig } from "../../store/actions";
 import { removeEmpty } from "../remuveEmptyInObject";
 
@@ -171,7 +172,7 @@ export class AddGroup extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  Type of IAD
+                  <FormattedMessage id="pbxType" defaultMessage="Type of IAD" />
                 </div>
                 <div className={"margin-right-1 flex flex-basis-33"}>
                   <FormControl
@@ -191,7 +192,10 @@ export class AddGroup extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  Type of access
+                  <FormattedMessage
+                    id="accessType"
+                    defaultMessage="Type of access"
+                  />
                 </div>
                 <div className={"margin-right-1 flex flex-basis-33"}>
                   <FormControl
@@ -215,7 +219,10 @@ export class AddGroup extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  Service Type
+                  <FormattedMessage
+                    id="serviceType"
+                    defaultMessage="Service Type"
+                  />
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl

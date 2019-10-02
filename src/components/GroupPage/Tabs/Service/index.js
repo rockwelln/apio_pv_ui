@@ -5,8 +5,6 @@ import { withRouter } from "react-router";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import FormControl from "react-bootstrap/lib/FormControl";
-import HelpBlock from "react-bootstrap/lib/HelpBlock";
-import FormGroup from "react-bootstrap/lib/FormGroup";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import Button from "react-bootstrap/lib/Button";
 import Radio from "react-bootstrap/lib/Radio";
@@ -68,7 +66,6 @@ export class Service extends Component {
         </div>
       );
     }
-    console.log(this.state.group);
     return (
       <React.Fragment>
         <Row className={"margin-top-1"}>
