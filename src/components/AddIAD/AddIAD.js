@@ -11,6 +11,11 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Radio from "react-bootstrap/lib/Radio";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import Table from "react-bootstrap/lib/Table";
+import ControlLabel from "react-bootstrap/lib/ControlLabel";
+import HelpBlock from "react-bootstrap/lib/HelpBlock";
+
+import { FormattedMessage } from "react-intl";
+import { fetchGetConfig, fetchGetGroupById } from "../../store/actions";
 
 import {
   TRANSPORTMODE,
@@ -22,9 +27,14 @@ import {
   CLOCKING,
   ISDN
 } from "../../constants";
+import Loading from "../../common/Loading";
 
 export class AddIAD extends Component {
   state = {
+    isLoadingConfig: true,
+    errorMacAddress: false,
+    isLoadingGroup: true,
+    secondEDU: false,
     mainNumber: "",
     iadType: "",
     tpid: "",
@@ -55,34 +65,61 @@ export class AddIAD extends Component {
     channelOut: "",
     buttonName: "Create"
   };
+  componentDidMount() {
+    this.props
+      .fetchGetConfig()
+      .then(() => this.setState({ isLoadingConfig: false }));
+    this.props
+      .fetchGetGroupById(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId
+      )
+      .then(() => this.setState({ isLoadingGroup: false }));
+  }
   render() {
+    if (this.state.isLoadingConfig || this.state.isLoadingGroup) {
+      return <Loading />;
+    }
+    const secondEDU =
+      this.props.config.tenant.group.iad["2EDUsForServiceTypes"].indexOf(
+        this.props.group.serviceType
+      ) !== -1;
     return (
       <React.Fragment>
         <Panel className={"margin-0"}>
           <Panel.Heading>
             <div className={"header"}>
-              ADD IAD
+              <FormattedMessage id="addIad" defaultMessage="ADD IAD" />
               <Button
                 className={"margin-left-1 btn-danger"}
                 onClick={this.cancelClick}
               >
-                Cancel
+                <FormattedMessage id="cancel" defaultMessage="Cancel" />
               </Button>
             </div>
             <div>
-              Enter yout IAD specificitys, configurations and optionnals
-              overrides
+              <FormattedMessage
+                id="addIadInfo"
+                defaultMessage="Enter yout IAD specificitys, configurations and optionnals
+              overrides"
+              />
             </div>
           </Panel.Heading>
           <Panel.Body>
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex font-24"}>DETAILS</div>
+                <div className={"margin-right-1 flex font-24"}>
+                  <FormattedMessage id="details" defaultMessage="DETAILS" />
+                </div>
               </Col>
             </Row>
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>ID</div>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  <ControlLabel>
+                    <FormattedMessage id="id" defaultMessage="ID" />
+                  </ControlLabel>
+                </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl type="text" disabled />
                 </div>
@@ -91,39 +128,85 @@ export class AddIAD extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  Type of IAD
+                  <ControlLabel>
+                    <FormattedMessage
+                      id="iadType"
+                      defaultMessage="Type of IAD"
+                    />
+                    {"\u002a"}
+                  </ControlLabel>
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
-                    type="text"
+                    componentClass="select"
                     value={this.state.iadType}
-                    placeholder={"Type of IAD"}
                     onChange={e => this.setState({ iadType: e.target.value })}
-                  />
+                  >
+                    {this.props.config.tenant.group.pbxType.map((el, i) => (
+                      <option key={i} value={el.value}>
+                        {el.label}
+                      </option>
+                    ))}
+                  </FormControl>
                 </div>
               </Col>
             </Row>
+            <FormGroup
+              controlId="channelsOut"
+              validationState={this.state.channelsOutError}
+            >
+              <Row className={"margin-top-1"}>
+                <Col md={12} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex flex-basis-16"}>
+                    <ControlLabel>
+                      <FormattedMessage
+                        id="macAddress"
+                        defaultMessage="MAC Address"
+                      />
+                    </ControlLabel>
+                  </div>
+                  <div className={"margin-right-1 flex-basis-33"}>
+                    <FormControl
+                      type="text"
+                      value={this.state.macAddress}
+                      placeholder={"MAC Address"}
+                      onChange={e =>
+                        this.setState({
+                          macAddress: e.target.value,
+                          errorMacAddress: false
+                        })
+                      }
+                      onBlur={this.validateMacAddress}
+                    />
+                  </div>
+                </Col>
+              </Row>
+              {this.state.errorMacAddress && (
+                <Row className={"margin-top-1"}>
+                  <Col md={12} className={"flex align-items-center"}>
+                    <div className={"margin-right-1 flex flex-basis-16"}></div>
+                    <div className={"margin-right-1 flex-basis-33"}>
+                      <HelpBlock bsClass="color-error">
+                        <FormattedMessage
+                          id="errorMacAddress"
+                          defaultMessage="Invalide MAC address"
+                        />
+                      </HelpBlock>
+                    </div>
+                  </Col>
+                </Row>
+              )}
+            </FormGroup>
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  MAC Address
-                </div>
-                <div className={"margin-right-1 flex-basis-33"}>
-                  <FormControl
-                    type="text"
-                    value={this.state.macAddress}
-                    placeholder={"MAC Address"}
-                    onChange={e =>
-                      this.setState({ macAddress: e.target.value })
-                    }
-                  />
-                </div>
-              </Col>
-            </Row>
-            <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>
-                  Pilot Number
+                  <ControlLabel>
+                    <FormattedMessage
+                      id="pilotNumber"
+                      defaultMessage="Pilot Number"
+                    />
+                    {"\u002a"}
+                  </ControlLabel>
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
@@ -139,32 +222,24 @@ export class AddIAD extends Component {
             </Row>
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>
-                  Main number
-                </div>
-                <div className={"margin-right-1 flex-basis-33"}>
-                  <FormControl
-                    type="text"
-                    value={this.state.mainNumber}
-                    placeholder={"Main number"}
-                    onChange={e =>
-                      this.setState({ mainNumber: e.target.value })
-                    }
-                  />
-                </div>
-              </Col>
-            </Row>
-            <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex font-24"}>
-                  EDU configuration
+                  <FormattedMessage
+                    id="eduConfiguration"
+                    defaultMessage="EDU configuration"
+                  />
+                  {"\u002a"}
                 </div>
               </Col>
             </Row>
             <Row className={"margin-top-1"}>
               <Col md={6} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-33"}>
-                  EDU A Name
+                  <ControlLabel>
+                    <FormattedMessage
+                      id="eduAName"
+                      defaultMessage="EDU A Name"
+                    />
+                  </ControlLabel>
                 </div>
                 <div className={"margin-right-1 flex-basis-66"}>
                   <FormControl
@@ -175,24 +250,35 @@ export class AddIAD extends Component {
                   />
                 </div>
               </Col>
-              <Col md={6} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-33"}>
-                  EDU B Name
-                </div>
-                <div className={"margin-right-1 flex-basis-66"}>
-                  <FormControl
-                    type="text"
-                    value={this.state.nameEDUB}
-                    placeholder={"EDU Name"}
-                    onChange={e => this.setState({ nameEDUB: e.target.value })}
-                  />
-                </div>
-              </Col>
+              {secondEDU && (
+                <Col md={6} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex flex-basis-33"}>
+                    <ControlLabel>
+                      <FormattedMessage
+                        id="eduBName"
+                        defaultMessage="EDU B Name"
+                      />
+                    </ControlLabel>
+                  </div>
+                  <div className={"margin-right-1 flex-basis-66"}>
+                    <FormControl
+                      type="text"
+                      value={this.state.nameEDUB}
+                      placeholder={"EDU Name"}
+                      onChange={e =>
+                        this.setState({ nameEDUB: e.target.value })
+                      }
+                    />
+                  </div>
+                </Col>
+              )}
             </Row>
             <Row className={"margin-top-1"}>
               <Col md={6} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-33"}>
-                  LAN port
+                  <ControlLabel>
+                    <FormattedMessage id="lanPort" defaultMessage="LAN port" />
+                  </ControlLabel>
                 </div>
                 <div className={"margin-right-1 flex-basis-66"}>
                   <FormControl
@@ -203,24 +289,33 @@ export class AddIAD extends Component {
                   />
                 </div>
               </Col>
-              <Col md={6} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-33"}>
-                  LAN port
-                </div>
-                <div className={"margin-right-1 flex-basis-66"}>
-                  <FormControl
-                    type="text"
-                    value={this.state.lanPortB}
-                    placeholder={"LAN port"}
-                    onChange={e => this.setState({ lanPort: e.target.value })}
-                  />
-                </div>
-              </Col>
+              {secondEDU && (
+                <Col md={6} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex flex-basis-33"}>
+                    <ControlLabel>
+                      <FormattedMessage
+                        id="lanPort"
+                        defaultMessage="LAN port"
+                      />
+                    </ControlLabel>
+                  </div>
+                  <div className={"margin-right-1 flex-basis-66"}>
+                    <FormControl
+                      type="text"
+                      value={this.state.lanPortB}
+                      placeholder={"LAN port"}
+                      onChange={e => this.setState({ lanPort: e.target.value })}
+                    />
+                  </div>
+                </Col>
+              )}
             </Row>
             <Row className={"margin-top-1"}>
               <Col md={6} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-33"}>
-                  WAN port
+                  <ControlLabel>
+                    <FormattedMessage id="wanPort" defaultMessage="WAN port" />
+                  </ControlLabel>
                 </div>
                 <div className={"margin-right-1 flex-basis-66"}>
                   <FormControl
@@ -231,24 +326,35 @@ export class AddIAD extends Component {
                   />
                 </div>
               </Col>
-              <Col md={6} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-33"}>
-                  WAN port
-                </div>
-                <div className={"margin-right-1 flex-basis-66"}>
-                  <FormControl
-                    type="text"
-                    value={this.state.wanPortB}
-                    placeholder={"WAN port"}
-                    onChange={e => this.setState({ wanPortB: e.target.value })}
-                  />
-                </div>
-              </Col>
+              {secondEDU && (
+                <Col md={6} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex flex-basis-33"}>
+                    <ControlLabel>
+                      <FormattedMessage
+                        id="wanPort"
+                        defaultMessage="WAN port"
+                      />
+                    </ControlLabel>
+                  </div>
+                  <div className={"margin-right-1 flex-basis-66"}>
+                    <FormControl
+                      type="text"
+                      value={this.state.wanPortB}
+                      placeholder={"WAN port"}
+                      onChange={e =>
+                        this.setState({ wanPortB: e.target.value })
+                      }
+                    />
+                  </div>
+                </Col>
+              )}
             </Row>
             <Row className={"margin-top-1"}>
               <Col md={6} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-33"}>
-                  SR name
+                  <ControlLabel>
+                    <FormattedMessage id="srName" defaultMessage="SR name" />
+                  </ControlLabel>
                 </div>
                 <div className={"margin-right-1 flex-basis-66"}>
                   <FormControl
@@ -259,24 +365,30 @@ export class AddIAD extends Component {
                   />
                 </div>
               </Col>
-              <Col md={6} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-33"}>
-                  SR name
-                </div>
-                <div className={"margin-right-1 flex-basis-66"}>
-                  <FormControl
-                    type="text"
-                    value={this.state.srNameB}
-                    placeholder={"SR name"}
-                    onChange={e => this.setState({ srNameB: e.target.value })}
-                  />
-                </div>
-              </Col>
+              {secondEDU && (
+                <Col md={6} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex flex-basis-33"}>
+                    <ControlLabel>
+                      <FormattedMessage id="srName" defaultMessage="SR name" />
+                    </ControlLabel>
+                  </div>
+                  <div className={"margin-right-1 flex-basis-66"}>
+                    <FormControl
+                      type="text"
+                      value={this.state.srNameB}
+                      placeholder={"SR name"}
+                      onChange={e => this.setState({ srNameB: e.target.value })}
+                    />
+                  </div>
+                </Col>
+              )}
             </Row>
             <Row className={"margin-top-1"}>
               <Col md={6} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-33"}>
-                  SR SAP
+                  <ControlLabel>
+                    <FormattedMessage id="srSap" defaultMessage="SR SAP" />
+                  </ControlLabel>
                 </div>
                 <div className={"margin-right-1 flex-basis-66"}>
                   <FormControl
@@ -287,47 +399,63 @@ export class AddIAD extends Component {
                   />
                 </div>
               </Col>
-              <Col md={6} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-33"}>
-                  SR SAP
-                </div>
-                <div className={"margin-right-1 flex-basis-66"}>
-                  <FormControl
-                    type="text"
-                    value={this.state.srSAPB}
-                    placeholder={"SR SAP"}
-                    onChange={e => this.setState({ srSAPB: e.target.value })}
-                  />
-                </div>
-              </Col>
+              {secondEDU && (
+                <Col md={6} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex flex-basis-33"}>
+                    <ControlLabel>
+                      <FormattedMessage id="srSap" defaultMessage="SR SAP" />
+                    </ControlLabel>
+                  </div>
+                  <div className={"margin-right-1 flex-basis-66"}>
+                    <FormControl
+                      type="text"
+                      value={this.state.srSAPB}
+                      placeholder={"SR SAP"}
+                      onChange={e => this.setState({ srSAPB: e.target.value })}
+                    />
+                  </div>
+                </Col>
+              )}
             </Row>
             <Row className={"margin-top-1"}>
               <Col md={6} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-33"}>
-                  EDU VIF
+                  <ControlLabel>
+                    <FormattedMessage
+                      id="eduVlanId"
+                      defaultMessage="EDU VLAN ID"
+                    />
+                  </ControlLabel>
                 </div>
                 <div className={"margin-right-1 flex-basis-66"}>
                   <FormControl
                     type="text"
                     value={this.state.eduVIFA}
-                    placeholder={"EDU VIF"}
+                    placeholder={"EDU VLAN ID"}
                     onChange={e => this.setState({ eduVIFA: e.target.value })}
                   />
                 </div>
               </Col>
-              <Col md={6} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-33"}>
-                  EDU VIF
-                </div>
-                <div className={"margin-right-1 flex-basis-66"}>
-                  <FormControl
-                    type="text"
-                    value={this.state.eduVIFB}
-                    placeholder={"EDU VIF"}
-                    onChange={e => this.setState({ eduVIFB: e.target.value })}
-                  />
-                </div>
-              </Col>
+              {secondEDU && (
+                <Col md={6} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex flex-basis-33"}>
+                    <ControlLabel>
+                      <FormattedMessage
+                        id="eduVlanId"
+                        defaultMessage="EDU VLAN ID"
+                      />
+                    </ControlLabel>
+                  </div>
+                  <div className={"margin-right-1 flex-basis-66"}>
+                    <FormControl
+                      type="text"
+                      value={this.state.eduVIFB}
+                      placeholder={"EDU VLAN ID"}
+                      onChange={e => this.setState({ eduVIFB: e.target.value })}
+                    />
+                  </div>
+                </Col>
+              )}
             </Row>
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
@@ -798,6 +926,20 @@ export class AddIAD extends Component {
     );
   }
 
+  validateMacAddress = e => {
+    let regDots = /^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$/;
+    let reg = /^([0-9A-Fa-f]{2}){5}([0-9A-Fa-f]{2})$/;
+    if (
+      reg.test(e.target.value) ||
+      regDots.test(e.target.value) ||
+      e.target.value === ""
+    ) {
+      return;
+    } else {
+      this.setState({ errorMacAddress: true });
+    }
+  };
+
   cancelClick = () => {
     this.props.history.push(
       `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}`
@@ -811,9 +953,9 @@ export class AddIAD extends Component {
   };
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({ config: state.config, group: state.group });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { fetchGetConfig, fetchGetGroupById };
 
 export default withRouter(
   connect(

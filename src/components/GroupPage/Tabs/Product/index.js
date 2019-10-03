@@ -8,7 +8,6 @@ import FormControl from "react-bootstrap/lib/FormControl";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import Checkbox from "react-bootstrap/lib/Checkbox";
 import Button from "react-bootstrap/lib/Button";
-import Radio from "react-bootstrap/lib/Radio";
 
 import { FormattedMessage } from "react-intl";
 import Loading from "../../../../common/Loading";
