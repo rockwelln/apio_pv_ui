@@ -518,6 +518,11 @@ export const getConfig = data => ({
   data
 });
 
+export const postCreateIAD = data => ({
+  type: actionType.POST_CREATE_IAD,
+  data
+});
+
 export function fetchGetTenants(cancelLoad) {
   ////////////////////
   return function(dispatch) {
@@ -1361,6 +1366,30 @@ export function fetchPostCreateGroup(tenantId, data) {
           <FormattedMessage
             id="failed-to-create-group"
             defaultMessage="Failed to create group!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchPostCreateIAD(tenantId, groupId, data) {
+  ///////////////////////////////////
+  return function(dispatch) {
+    return fetch_post(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/trunk_groups/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => {
+        dispatch(postCreateIAD(data));
+        return "created";
+      })
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-create-iad"
+            defaultMessage="Failed to create IAD!"
           />,
           error.message
         );

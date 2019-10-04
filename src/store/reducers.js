@@ -104,7 +104,8 @@ const initialState = {
   groupsFound: [],
   ////////////////////////////
   iads: { iads: [] },
-  config: {}
+  config: {},
+  createdIad: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -461,6 +462,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         availableNumbersTenant: phoneNumbers
+      };
+    }
+    case actionType.POST_CREATE_IAD: {
+      return {
+        ...state,
+        createdIad: action.data
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN: {

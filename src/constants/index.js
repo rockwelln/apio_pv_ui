@@ -125,8 +125,8 @@ export const INTERNATIONNUMBERSPRA = [
 ];
 
 export const TRANSPORTMODE = [
-  { name: "UDP", value: "udp" },
-  { name: "TCP", value: "tcp" }
+  { name: "UDP", value: "UDP" },
+  { name: "TCP", value: "TCP" }
 ];
 
 export const IP1MODE = [
