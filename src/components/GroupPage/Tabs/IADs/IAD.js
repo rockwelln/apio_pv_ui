@@ -18,11 +18,11 @@ class Admin extends Component {
           <Link
             to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/iad/${iad.id}`}
           >
-            {iad.id}
+            {iad.iadId}
           </Link>
         </td>
-        <td>{iad.type}</td>
-        <td>{iad.mac}</td>
+        <td>{iad.iadType}</td>
+        <td>{iad.macAddress}</td>
         <td>
           <ButtonToolbar>
             <Glyphicon
@@ -32,7 +32,7 @@ class Admin extends Component {
           </ButtonToolbar>
           <DeleteModal
             notifications={this.props.notifications}
-            adminId={iad.id}
+            adminId={iad.iadId}
             tenantId={this.props.tenantId}
             groupId={this.props.groupId}
             show={showDelete}
