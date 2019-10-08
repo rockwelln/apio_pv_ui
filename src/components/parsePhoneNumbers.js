@@ -35,8 +35,15 @@ export const parseNumbersString = (str, isLocalFormat) => {
         };
       } else {
         range = {
-          start: startNum.charAt(0) === "+" ? startNum : `+${startNum}`,
-          end: endNum ? (endNum.charAt(0) === "+" ? endNum : `+${endNum}`) : "",
+          start:
+            startNum.charAt(0) === "+" || startNum.slice(0, 2) === "00"
+              ? startNum
+              : `+${startNum}`,
+          end: endNum
+            ? endNum.charAt(0) === "+" || endNum.slice(0, 2) === "00"
+              ? endNum
+              : `+${endNum}`
+            : "",
           line: index + 1,
           type: endNum ? "Range" : "Phonenumber"
         };
