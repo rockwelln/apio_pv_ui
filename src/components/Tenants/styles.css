@@ -134,7 +134,7 @@
 }
 
 .font-weight-bold {
-  font-weight: 600;
+  font-weight: 600 !important;
 }
 
 .flex-row {
@@ -281,4 +281,8 @@ textarea {
 
 .gray50-color {
   color: #808080 !important;
+}
+
+.height-20 {
+  height: 20px;
 }

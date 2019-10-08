@@ -694,7 +694,7 @@ export function fetchGetPhoneNumbersByGroupId(tenantId, groupId) {
   //////////////////////
   return function(dispatch) {
     return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/numbers/`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/numbers`
     )
       .then(data => dispatch(getPhoneNumbersByGroupId(data)))
       .catch(error =>

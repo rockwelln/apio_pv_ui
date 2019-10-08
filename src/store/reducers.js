@@ -189,7 +189,9 @@ function mainReducer(state = initialState, action) {
         rangeEnd: phone.phoneNumber.includes("-")
           ? phone.phoneNumber.split(" - ").slice(-1)[0]
           : "",
-        phoneChecked: false
+        phoneChecked: false,
+        preActive: phone.status === "preActive" ? true : false,
+        active: phone.status === "active" ? true : false
       }));
       return {
         ...state,

@@ -11,6 +11,7 @@ import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import Checkbox from "react-bootstrap/lib/Checkbox";
 import Pagination from "react-bootstrap/lib/Pagination";
+import Button from "react-bootstrap/lib/Button";
 
 import { FormattedMessage } from "react-intl";
 
@@ -30,13 +31,16 @@ export class PhoneNumbersTab extends Component {
     sortedBy: "",
     isLoading: true,
     selectAll: false,
+    selectAllPreActive: false,
+    selectAllActive: false,
     numbersForDelete: [],
     showDelete: false,
     paginationPhoneNumbers: [],
     countPerPage: 25,
     page: 0,
     pagination: true,
-    countPages: null
+    countPages: null,
+    showWithStatus: false
   };
 
   componentDidMount() {
@@ -128,13 +132,13 @@ export class PhoneNumbersTab extends Component {
               <Col mdOffset={1} md={8}>
                 <div className={"flex space-between indent-top-bottom-1"}>
                   <div className={"flex align-items-center"}>
-                    <Checkbox
+                    {/* <Checkbox
                       className={"margin-checbox"}
                       checked={this.state.selectAll}
                       onChange={this.handleSelectAllClick}
                     >
                       (Un)select all shown numbers
-                    </Checkbox>
+                    </Checkbox> */}
                     <Glyphicon
                       glyph="glyphicon glyphicon-trash"
                       onClick={this.deleteSlectedNumbers}
@@ -153,7 +157,17 @@ export class PhoneNumbersTab extends Component {
                       }}
                       {...this.props}
                     />
+                    <Button
+                      onClick={this.getNumbersWithStatus}
+                      className={"btn-primary"}
+                    >
+                      <FormattedMessage
+                        id="refreshNumbersStatus"
+                        defaultMessage="Refresh with portability status"
+                      />
+                    </Button>
                   </div>
+
                   <div className={"flex align-items-center"}>
                     <div>Item per page</div>
                     <FormControl
@@ -178,8 +192,46 @@ export class PhoneNumbersTab extends Component {
                 <Table hover>
                   <thead>
                     <tr>
-                      <th style={{ width: "5%" }} />
-                      <th style={{ width: "22%" }}>
+                      <th>
+                        <Checkbox
+                          className={"margin-0 height-20"}
+                          checked={this.state.selectAll}
+                          onChange={this.handleSelectAllClick}
+                        />
+                      </th>
+                      {this.state.showWithStatus && (
+                        <React.Fragment>
+                          <th>
+                            <Checkbox
+                              className={"margin-0"}
+                              checked={this.state.selectAllActive}
+                              onChange={this.handleSelectAllClickActive}
+                            >
+                              <div className={"font-weight-bold"}>
+                                <FormattedMessage
+                                  id="activate"
+                                  defaultMessage="Activate"
+                                />
+                              </div>
+                            </Checkbox>
+                          </th>
+                          <th>
+                            <Checkbox
+                              className={"margin-0"}
+                              checked={this.state.selectAllPreActive}
+                              onChange={this.handleSelectAllClickPreActive}
+                            >
+                              <div className={"font-weight-bold"}>
+                                <FormattedMessage
+                                  id="pre-activate"
+                                  defaultMessage="Pre-activate"
+                                />
+                              </div>
+                            </Checkbox>
+                          </th>
+                        </React.Fragment>
+                      )}
+                      <th>
                         <FormattedMessage
                           id="tenant-id"
                           defaultMessage="Range start"
@@ -189,7 +241,7 @@ export class PhoneNumbersTab extends Component {
                           onClick={this.sortByRangeStart}
                         />
                       </th>
-                      <th style={{ width: "22%" }}>
+                      <th>
                         <FormattedMessage
                           id="name"
                           defaultMessage="Range end"
@@ -199,7 +251,7 @@ export class PhoneNumbersTab extends Component {
                           onClick={this.sortByRangeEnd}
                         />
                       </th>
-                      <th style={{ width: "22%" }}>
+                      <th>
                         <FormattedMessage
                           id="assigned"
                           defaultMessage="Assigned to"
@@ -209,7 +261,7 @@ export class PhoneNumbersTab extends Component {
                           onClick={this.sortByAssignedToGroup}
                         />
                       </th>
-                      <th style={{ width: "22%" }}>
+                      <th>
                         <FormattedMessage
                           id="type"
                           defaultMessage="User type"
@@ -219,7 +271,7 @@ export class PhoneNumbersTab extends Component {
                           onClick={this.sortByAssignedToGroup}
                         />
                       </th>
-                      <th style={{ width: "5%" }} />
+                      <th />
                     </tr>
                   </thead>
                   <tbody>
@@ -228,8 +280,15 @@ export class PhoneNumbersTab extends Component {
                         index={i}
                         key={i}
                         number={number}
+                        showWithStatus={this.state.showWithStatus}
                         handleSingleCheckboxClick={
                           this.handleSingleCheckboxClick
+                        }
+                        handleSingleCheckboxClickActive={
+                          this.handleSingleCheckboxClickActive
+                        }
+                        handleSingleCheckboxClickPreActive={
+                          this.handleSingleCheckboxClickPreActive
                         }
                         onReload={() =>
                           this.props.fetchGetPhoneNumbersByGroupId(
@@ -266,6 +325,10 @@ export class PhoneNumbersTab extends Component {
       </React.Fragment>
     );
   }
+
+  getNumbersWithStatus = () => {
+    this.setState({ showWithStatus: true });
+  };
 
   changeCoutOnPage = e => {
     this.setState({ countPerPage: Number(e.target.value), page: 0 }, () =>
@@ -414,6 +477,33 @@ export class PhoneNumbersTab extends Component {
     );
   };
 
+  handleSelectAllClickPreActive = e => {
+    const isChecked = e.target.checked;
+    const newArr = this.state.phoneNumbers.map(el => ({
+      ...el,
+      preActive: isChecked
+    }));
+    this.setState(
+      {
+        phoneNumbers: newArr,
+        selectAllPreActive: !this.state.selectAllPreActive
+      },
+      () => this.pagination()
+    );
+  };
+
+  handleSelectAllClickActive = e => {
+    const isChecked = e.target.checked;
+    const newArr = this.state.phoneNumbers.map(el => ({
+      ...el,
+      active: isChecked
+    }));
+    this.setState(
+      { phoneNumbers: newArr, selectAllActive: !this.state.selectAllActive },
+      () => this.pagination()
+    );
+  };
+
   handleSelectAllClick = e => {
     const isChecked = e.target.checked;
     const newArr = this.state.phoneNumbers.map(el => ({
@@ -435,13 +525,29 @@ export class PhoneNumbersTab extends Component {
       this.pagination()
     );
   };
+  handleSingleCheckboxClickActive = index => {
+    const newArr = this.state.phoneNumbers.map((el, i) => ({
+      ...el,
+      active: index === i ? !el.active : el.active
+    }));
+    this.setState({ phoneNumbers: newArr, selectAllActive: false }, () =>
+      this.pagination()
+    );
+  };
+
+  handleSingleCheckboxClickPreActive = index => {
+    const newArr = this.state.phoneNumbers.map((el, i) => ({
+      ...el,
+      preActive: index === i ? !el.preActive : el.preActive
+    }));
+    this.setState({ phoneNumbers: newArr, selectAllPreActive: false }, () =>
+      this.pagination()
+    );
+  };
 }
 
-const mapStateToProps = () => ({
-  phoneNumbers: [
-    { rangeStart: "0392392304", rangeEnd: "0392392312" },
-    { rangeStart: "0392392323", rangeEnd: "" }
-  ]
+const mapStateToProps = state => ({
+  phoneNumbers: state.phoneNumbersByGroup
 });
 
 const mapDispatchToProps = {
