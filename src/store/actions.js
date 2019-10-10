@@ -518,10 +518,34 @@ export const getConfig = data => ({
   data
 });
 
+export const getIADById = data => ({
+  type: actionType.GET_IAD_BY_ID,
+  data
+});
+
 export const postCreateIAD = data => ({
   type: actionType.POST_CREATE_IAD,
   data
 });
+
+export function fetchGetIADById(tenantId, groupId, iadId) {
+  ////////////////////
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/trunk_groups/${iadId}`
+    )
+      .then(data => dispatch(getIADById(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-iad-failed"
+            defaultMessage="Failed to fetch iad!"
+          />,
+          error.message
+        )
+      );
+  };
+}
 
 export function fetchGetTenants(cancelLoad) {
   ////////////////////
@@ -1981,9 +2005,10 @@ export function fetchDeleteGroupFromTenant(tenantId, groupId) {
 }
 
 export function fetchDeleteTrunkGroup(tenantId, groupId, trunkName) {
+  ///////////////////////////////////////////
   return function(dispatch) {
     return fetch_delete(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/services/trunk_groups/${trunkName}`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/trunk_groups/${trunkName}`
     )
       .then(data => {
         dispatch(deleteTrunkGroup(data));

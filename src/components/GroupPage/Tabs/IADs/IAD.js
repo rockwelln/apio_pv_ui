@@ -32,9 +32,9 @@ class Admin extends Component {
           </ButtonToolbar>
           <DeleteModal
             notifications={this.props.notifications}
-            adminId={iad.iadId}
-            tenantId={this.props.tenantId}
-            groupId={this.props.groupId}
+            iadId={iad.iadId}
+            tenantId={this.props.match.params.tenantId}
+            groupId={this.props.match.params.groupId}
             show={showDelete}
             onClose={e => {
               onReload && onReload();

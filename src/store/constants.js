@@ -121,5 +121,6 @@ export const REMOVE_SUCCESFUL_VALID_PHONE_TENANT =
 ////////////////////////
 export const GET_IADS = "GET_IADS";
 export const GET_CONFIG = "GET_CONFIG";
+export const GET_IAD_BY_ID = "GET_IAD_BY_ID";
 
 export const POST_CREATE_IAD = "POST_CREATE_IAD";

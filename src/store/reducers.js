@@ -105,7 +105,8 @@ const initialState = {
   ////////////////////////////
   iads: { iads: [] },
   config: {},
-  createdIad: {}
+  createdIad: {},
+  iad: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -464,6 +465,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         availableNumbersTenant: phoneNumbers
+      };
+    }
+    case actionType.GET_IAD_BY_ID: {
+      return {
+        ...state,
+        iad: action.data
       };
     }
     case actionType.POST_CREATE_IAD: {

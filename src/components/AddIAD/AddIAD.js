@@ -28,7 +28,7 @@ import Loading from "../../common/Loading";
 export class AddIAD extends Component {
   state = {
     isLoadingConfig: true,
-    errorMacAddress: false,
+    errorMacAddress: null,
     isLoadingGroup: true,
     secondEDU: false,
     iadType: "",
@@ -174,8 +174,8 @@ export class AddIAD extends Component {
               </Col>
             </Row>
             <FormGroup
-              controlId="channelsOut"
-              validationState={this.state.channelsOutError}
+              controlId="errorMacAddress"
+              validationState={this.state.errorMacAddress}
             >
               <Row className={"margin-top-1"}>
                 <Col md={12} className={"flex align-items-center"}>

@@ -5,7 +5,22 @@ import { withRouter } from "react-router";
 import Tabs from "react-bootstrap/lib/Tabs";
 import Tab from "react-bootstrap/lib/Tab";
 
+import { fetchGetIADById } from "../../store/actions";
+
+import Details from "./Tabs/Details";
+import GroupService from "./Tabs/GroupService";
+
 export class IADPage extends Component {
+  state = {
+    isLoading: true
+  };
+  componentDidMount() {
+    this.props.fetchGetIADById(
+      this.props.match.params.tenantId,
+      this.props.match.params.groupId,
+      this.props.match.params.iadId
+    );
+  }
   render() {
     return (
       <React.Fragment>
@@ -16,10 +31,14 @@ export class IADPage extends Component {
         </div>
         <div className={"panel-body"}>
           <Tabs defaultActiveKey={0} id="iads_tabs">
-            <Tab eventKey={0} title="Details"></Tab>
+            <Tab eventKey={0} title="Details">
+              <Details />
+            </Tab>
             <Tab eventKey={1} title="EDUs"></Tab>
             <Tab eventKey={2} title="IP Addressing"></Tab>
-            <Tab eventKey={3} title="Group service override"></Tab>
+            <Tab eventKey={3} title="Group service override">
+              <GroupService />
+            </Tab>
             <Tab eventKey={4} title="Advanced settings"></Tab>
           </Tabs>
         </div>
@@ -30,7 +49,7 @@ export class IADPage extends Component {
 
 const mapStateToProps = state => ({});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { fetchGetIADById };
 
 export default withRouter(
   connect(

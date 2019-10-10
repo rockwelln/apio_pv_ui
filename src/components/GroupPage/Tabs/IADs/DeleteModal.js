@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { fetchDeleteGroupAdmin } from "../../../../store/actions";
+import { fetchDeleteTrunkGroup } from "../../../../store/actions";
 
 import Modal from "react-bootstrap/lib/Modal";
 import Alert from "react-bootstrap/lib/Alert";
@@ -16,17 +16,17 @@ class DeleteModal extends Component {
     this.onDelete = this.onDelete.bind(this);
   }
 
-  onDelete(tenantId, groupId, adminId) {
+  onDelete(tenantId, groupId, iadId) {
     const { onClose } = this.props;
     this.setState({ deleting: true });
-    this.props.fetchDeleteGroupAdmin(tenantId, groupId, adminId).then(() => {
+    this.props.fetchDeleteTrunkGroup(tenantId, groupId, iadId).then(() => {
       this.setState({ deleting: false });
       onClose && onClose(true);
     });
   }
 
   render() {
-    const { tenantId, groupId, adminId, show, onClose } = this.props;
+    const { tenantId, groupId, iadId, show, onClose } = this.props;
     const { deleting } = this.state;
 
     return (
@@ -52,13 +52,13 @@ class DeleteModal extends Component {
           <p>
             <FormattedMessage
               id="confirm-delete-warning"
-              defaultMessage={`You are about to delete the iad ${adminId}!`}
+              defaultMessage={`You are about to delete the iad ${iadId}!`}
             />
           </p>
         </Modal.Body>
         <Modal.Footer>
           <Button
-            onClick={() => this.onDelete(tenantId, groupId, adminId)}
+            onClick={() => this.onDelete(tenantId, groupId, iadId)}
             bsStyle="danger"
           >
             <FormattedMessage id="delete" defaultMessage="Delete" />
@@ -73,7 +73,7 @@ class DeleteModal extends Component {
 }
 
 const mapDispatchToProps = {
-  fetchDeleteGroupAdmin
+  fetchDeleteTrunkGroup
 };
 
 export default connect(
