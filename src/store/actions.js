@@ -690,11 +690,13 @@ export function fetchGetUsersByGroupId(tenantId, groupId) {
   };
 }
 
-export function fetchGetPhoneNumbersByGroupId(tenantId, groupId) {
+export function fetchGetPhoneNumbersByGroupId(tenantId, groupId, withStatus) {
   //////////////////////
   return function(dispatch) {
     return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/numbers`
+      withStatus
+        ? `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/numbers?status=true`
+        : `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/numbers`
     )
       .then(data => dispatch(getPhoneNumbersByGroupId(data)))
       .catch(error =>

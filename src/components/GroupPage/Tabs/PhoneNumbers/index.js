@@ -327,7 +327,13 @@ export class PhoneNumbersTab extends Component {
   }
 
   getNumbersWithStatus = () => {
-    this.setState({ showWithStatus: true });
+    this.props
+      .fetchGetPhoneNumbersByGroupId(
+        this.props.tenantId,
+        this.props.groupId,
+        true
+      )
+      .then(() => this.setState({ showWithStatus: true }));
   };
 
   changeCoutOnPage = e => {

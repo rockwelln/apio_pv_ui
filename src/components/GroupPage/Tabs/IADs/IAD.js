@@ -16,7 +16,7 @@ class Admin extends Component {
       <tr>
         <td>
           <Link
-            to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/iad/${iad.id}`}
+            to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/iad/${iad.iadId}`}
           >
             {iad.iadId}
           </Link>
