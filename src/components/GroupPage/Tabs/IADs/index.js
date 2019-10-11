@@ -201,9 +201,18 @@ export class IADs extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {paginationIads[page].map(iad => (
-                      <IAD key={iad.iadId} iad={iad} />
-                    ))}
+                    {paginationIads[page].map(
+                      iad =>
+                        this.props.config.tenant && (
+                          <IAD
+                            key={iad.iadId}
+                            iad={iad}
+                            iadTypeArr={
+                              this.props.config.tenant.group.iad.iadType
+                            }
+                          />
+                        )
+                    )}
                   </tbody>
                 </Table>
               </Col>
@@ -344,6 +353,7 @@ export class IADs extends Component {
 }
 
 const mapStateToProps = state => ({
+  config: state.config,
   admins: state.adminsGroup,
   iads: state.iads
 });

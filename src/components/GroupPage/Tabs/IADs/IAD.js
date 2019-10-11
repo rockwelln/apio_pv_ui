@@ -12,6 +12,9 @@ class Admin extends Component {
   render() {
     const { onReload, iad } = this.props;
     const { showDelete } = this.state;
+    const iadType = this.props.iadTypeArr.filter(
+      el => el.value === iad.iadType
+    );
     return (
       <tr>
         <td>
@@ -21,7 +24,7 @@ class Admin extends Component {
             {iad.iadId}
           </Link>
         </td>
-        <td>{iad.iadType}</td>
+        <td>{iadType[0].label}</td>
         <td>{iad.macAddress}</td>
         <td>
           <ButtonToolbar>

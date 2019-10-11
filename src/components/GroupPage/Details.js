@@ -63,11 +63,9 @@ export class index extends Component {
   }
 
   render() {
-    //const NCOSarray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
     if (this.state.isLoading) {
       return <Loading />;
     }
-    console.log(this.state.group);
     return (
       <React.Fragment>
         <Row>

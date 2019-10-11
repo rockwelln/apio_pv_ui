@@ -90,7 +90,11 @@ class TenantPage extends Component {
           <Details />
           <Tabs
             className={"margin-top-1"}
-            defaultActiveKey={0}
+            defaultActiveKey={
+              this.props.location.state && this.props.location.state.defaultTab
+                ? this.props.location.state.defaultTab
+                : 0
+            }
             id={`group_tabs${this.tabsIdSuffix}`}
           >
             <Tab eventKey={0} title="Product type">
