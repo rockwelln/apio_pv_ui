@@ -5,23 +5,33 @@ import { withRouter } from "react-router";
 import Tabs from "react-bootstrap/lib/Tabs";
 import Tab from "react-bootstrap/lib/Tab";
 
-import { fetchGetIADById } from "../../store/actions";
+import { fetchGetIADById, fetchGetConfig } from "../../store/actions";
 
 import Details from "./Tabs/Details";
 import GroupService from "./Tabs/GroupService";
+import Loading from "../../common/Loading";
 
 export class IADPage extends Component {
   state = {
     isLoading: true
   };
   componentDidMount() {
-    this.props.fetchGetIADById(
-      this.props.match.params.tenantId,
-      this.props.match.params.groupId,
-      this.props.match.params.iadId
-    );
+    this.props
+      .fetchGetIADById(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        this.props.match.params.iadId
+      )
+      .then(() =>
+        this.props
+          .fetchGetConfig()
+          .then(() => this.setState({ isLoading: false }))
+      );
   }
   render() {
+    if (this.state.isLoading) {
+      return <Loading />;
+    }
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
@@ -49,7 +59,7 @@ export class IADPage extends Component {
 
 const mapStateToProps = state => ({});
 
-const mapDispatchToProps = { fetchGetIADById };
+const mapDispatchToProps = { fetchGetIADById, fetchGetConfig };
 
 export default withRouter(
   connect(

@@ -21,6 +21,9 @@ export class Details extends Component {
     errorMacAddress: null
   };
   render() {
+    const iadType = this.props.config.tenant.group.iad.iadType.filter(
+      el => el.value === this.props.iad.iadType
+    );
     return (
       <React.Fragment>
         <Row className={"margin-top-1"}>
@@ -31,7 +34,7 @@ export class Details extends Component {
               </ControlLabel>
             </div>
             <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl type="text" disabled />
+              <FormControl type="text" disabled value={this.props.iad.iadId} />
             </div>
           </Col>
         </Row>
@@ -39,26 +42,15 @@ export class Details extends Component {
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>
               <ControlLabel>
-                <FormattedMessage
-                  id="iadType"
-                  defaultMessage="Type of IAD"
-                  disabled
-                />
+                <FormattedMessage id="iadType" defaultMessage="Type of IAD" />
               </ControlLabel>
             </div>
             <div className={"margin-right-1 flex-basis-33"}>
               <FormControl
-                componentClass="select"
-                value={this.state.iadType}
-                onChange={e => this.setState({ iadType: e.target.value })}
+                type="text"
+                value={iadType[0].label}
                 disabled
-              >
-                {/* {this.props.config.tenant.group.iad.iadType.map((el, i) => (
-                  <option key={i} value={el.value}>
-                    {el.label}
-                  </option>
-                ))} */}
-              </FormControl>
+              ></FormControl>
             </div>
           </Col>
         </Row>
@@ -79,7 +71,7 @@ export class Details extends Component {
               <div className={"margin-right-1 flex-basis-33"}>
                 <FormControl
                   type="text"
-                  value={this.state.macAddress}
+                  value={this.props.iad.macAddress}
                   placeholder={"MAC Address"}
                   onChange={e =>
                     this.setState({
@@ -121,7 +113,7 @@ export class Details extends Component {
             <div className={"margin-right-1 flex-basis-33"}>
               <FormControl
                 type="text"
-                value={this.state.pilotNumber}
+                value={this.props.iad.pilotNumber}
                 placeholder={"Pilot Number"}
                 onChange={e => this.setState({ pilotNumber: e.target.value })}
               />
@@ -133,7 +125,7 @@ export class Details extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({ iad: state.iad, config: state.config });
 
 const mapDispatchToProps = {};
 
