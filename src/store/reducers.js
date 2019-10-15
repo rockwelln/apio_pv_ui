@@ -106,7 +106,8 @@ const initialState = {
   iads: { iads: [] },
   config: {},
   createdIad: {},
-  iad: {}
+  iad: {},
+  iadForUpdate: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -582,6 +583,12 @@ function mainReducer(state = initialState, action) {
         }
       };
     }
+    case actionType.PUT_UPDATE_IAD: {
+      return {
+        ...state,
+        iad: action.data
+      };
+    }
     case actionType.PUT_UPDATE_USER: {
       return {
         ...state,
@@ -993,6 +1000,29 @@ function mainReducer(state = initialState, action) {
         }
       };
     }
+    case actionType.CHANGE_IAD_FOR_UPDATE: {
+      return {
+        ...state,
+        iadForUpdate: {
+          ...state.iadForUpdate,
+          [action.field]: action.value
+        }
+      };
+    }
+
+    case actionType.CHANGE_IAD_OBJECT_FOR_UPDATE: {
+      return {
+        ...state,
+        iadForUpdate: {
+          ...state.iadForUpdate,
+          [action.object]: {
+            ...state.iadForUpdate[action.object],
+            [action.field]: action.value
+          }
+        }
+      };
+    }
+
     default:
       return state;
   }

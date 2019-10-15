@@ -7,19 +7,12 @@ import Tab from "react-bootstrap/lib/Tab";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import Loading from "../../common/Loading";
-import Users from "./Tabs/Users";
 import PhoneNumbers from "./Tabs/PhoneNumbers";
-import Licenses from "./Tabs/Licenses";
 import Details from "./Details";
-import Devices from "./Tabs/Devices";
-import Admins from "./Tabs/Admins";
-import TrunksGroup from "./Tabs/TrunksGroup";
 import Channels from "./Tabs/Channels";
 import Service from "./Tabs/Service";
 
 import IADs from "./Tabs/IADs";
-import Specifications from "./Details";
-import Redundancy from "./Tabs/Redundancy";
 
 import { fetchGetTenantById, fetchGetGroupById } from "../../store/actions";
 

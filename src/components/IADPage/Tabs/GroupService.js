@@ -16,6 +16,8 @@ import HelpBlock from "react-bootstrap/lib/HelpBlock";
 
 import { FormattedMessage } from "react-intl";
 
+import { changeObjectIAD } from "../../../store/actions";
+
 export class GroupService extends Component {
   state = { dtmf: "", direction: "", channelsIn: "", channelsOut: "" };
   render() {
@@ -31,20 +33,19 @@ export class GroupService extends Component {
             <div className={"margin-right-1 flex"}>
               <FormControl
                 componentClass="select"
-                value={this.state.dtmf}
-                onChange={e =>
-                  this.setState({
-                    dtmf: e.target.value
-                  })
+                value={
+                  this.state.dtmf ||
+                  (this.props.iad.services && this.props.iad.services.dtmf)
                 }
+                onChange={this.changeDtmf}
               >
-                {/* {this.props.config.tenant.group.iad.dtmfOverride.map(
+                {this.props.config.tenant.group.iad.dtmfOverride.map(
                   (el, i) => (
                     <option key={i} value={el.value}>
                       {el.label}
                     </option>
                   )
-                )} */}
+                )}
               </FormControl>
             </div>
           </Col>
@@ -59,25 +60,23 @@ export class GroupService extends Component {
             <div className={"margin-right-1 flex"}>
               <FormControl
                 componentClass="select"
-                value={this.state.direction}
-                onChange={e =>
-                  this.setState({
-                    direction: e.target.value
-                  })
-                }
+                value={this.state.direction || this.props.iad.direction}
+                onChange={this.changeDirection}
               >
-                {/* {this.props.config.tenant.group.iad.directionOverride.map(
+                {this.props.config.tenant.group.iad.directionOverride.map(
                   (el, i) => (
                     <option key={i} value={el.value}>
                       {el.label}
                     </option>
                   )
-                )} */}
+                )}
               </FormControl>
             </div>
           </Col>
         </Row>
-        {this.state.direction === "Uni" && (
+        {(this.state.direction === "Uni" ||
+          (this.props.iad.services &&
+            this.props.iad.services.direction === "Uni")) && (
           <React.Fragment>
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
@@ -99,11 +98,13 @@ export class GroupService extends Component {
                   <div className={"margin-right-1 flex-basis-11"}>
                     <FormControl
                       type="text"
-                      value={this.state.channelsIn}
-                      placeholder={"In"}
-                      onChange={e =>
-                        this.setState({ channelsIn: e.target.value })
+                      value={
+                        this.state.channelsIn ||
+                        (this.props.iad.services &&
+                          this.props.iad.services.channelsIn)
                       }
+                      placeholder={"In"}
+                      onChange={this.changeChannelsIn}
                     />
                   </div>
                   <div className={"margin-right-1 flex"}>
@@ -114,11 +115,13 @@ export class GroupService extends Component {
                   <div className={"margin-right-1 flex-basis-11"}>
                     <FormControl
                       type="text"
-                      value={this.state.channelsOut}
-                      placeholder={"Out"}
-                      onChange={e =>
-                        this.setState({ channelsOut: e.target.value })
+                      value={
+                        this.state.channelsOut ||
+                        (this.props.iad.services &&
+                          this.props.iad.services.channelsOut)
                       }
+                      placeholder={"Out"}
+                      onChange={this.changeChannelsOut}
                     />
                   </div>
                 </React.Fragment>
@@ -142,11 +145,39 @@ export class GroupService extends Component {
       </React.Fragment>
     );
   }
+
+  changeDtmf = e => {
+    this.props.changeObjectIAD("services", "dtmf", e.target.value);
+    this.setState({
+      dtmf: e.target.value
+    });
+  };
+
+  changeDirection = e => {
+    this.props.changeObjectIAD("services", "direction", e.target.value);
+    this.setState({
+      direction: e.target.value
+    });
+  };
+
+  changeChannelsIn = e => {
+    this.props.changeObjectIAD("services", "channelsIn", e.target.value);
+    this.setState({
+      channelsIn: e.target.value
+    });
+  };
+
+  changeChannelsOut = e => {
+    this.props.changeObjectIAD("services", "channelsOut", e.target.value);
+    this.setState({
+      channelsOut: e.target.value
+    });
+  };
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({ iad: state.iad, config: state.config });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { changeObjectIAD };
 
 export default withRouter(
   connect(

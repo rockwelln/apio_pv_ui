@@ -528,6 +528,24 @@ export const postCreateIAD = data => ({
   data
 });
 
+export const putUpdateIAD = data => ({
+  type: actionType.PUT_UPDATE_IAD,
+  data
+});
+
+export const changeIAD = (field, value) => ({
+  type: actionType.CHANGE_IAD_FOR_UPDATE,
+  field,
+  value
+});
+
+export const changeObjectIAD = (object, field, value) => ({
+  type: actionType.CHANGE_IAD_OBJECT_FOR_UPDATE,
+  object,
+  field,
+  value
+});
+
 export function fetchGetIADById(tenantId, groupId, iadId) {
   ////////////////////
   return function(dispatch) {
@@ -1559,6 +1577,27 @@ export function fetchPutUpdateUser(tenantId, groupId, userName, data) {
           <FormattedMessage
             id="update-user-failed"
             defaultMessage="Failed to update user!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchPutUpdateIAD(tenantId, groupId, iadId, data) {
+  ///////////////////
+  return function(dispatch) {
+    return fetch_put(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/trunk_groups/${iadId}/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => dispatch(putUpdateIAD(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="update-iad-failed"
+            defaultMessage="Failed to update iad!"
           />,
           error.message
         )

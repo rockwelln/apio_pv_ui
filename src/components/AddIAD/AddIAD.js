@@ -986,7 +986,7 @@ export class AddIAD extends Component {
     ) {
       return;
     } else {
-      this.setState({ errorMacAddress: true });
+      this.setState({ errorMacAddress: "error" });
     }
   };
 
