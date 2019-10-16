@@ -9,6 +9,8 @@ import { fetchGetIADById, fetchGetConfig } from "../../store/actions";
 
 import Details from "./Tabs/Details";
 import GroupService from "./Tabs/GroupService";
+import Edu from "./Tabs/Edu";
+import IPAddress from "./Tabs/IpAddress";
 import Loading from "../../common/Loading";
 
 export class IADPage extends Component {
@@ -44,8 +46,12 @@ export class IADPage extends Component {
             <Tab eventKey={0} title="Details">
               <Details />
             </Tab>
-            <Tab eventKey={1} title="EDUs"></Tab>
-            <Tab eventKey={2} title="IP Addressing"></Tab>
+            <Tab eventKey={1} title="EDUs">
+              <Edu />
+            </Tab>
+            <Tab eventKey={2} title="IP Addressing">
+              <IPAddress />
+            </Tab>
             <Tab eventKey={3} title="Group service override">
               <GroupService />
             </Tab>
