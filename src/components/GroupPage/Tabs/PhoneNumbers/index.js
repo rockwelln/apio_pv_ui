@@ -333,7 +333,19 @@ export class PhoneNumbersTab extends Component {
         this.props.groupId,
         true
       )
-      .then(() => this.setState({ showWithStatus: true }));
+      .then(() => this.setState(
+        {
+          phoneNumbers: this.props.phoneNumbers.sort((a, b) => {
+            if (a.rangeStart < b.rangeStart) return -1;
+            if (a.rangeStart > b.rangeStart) return 1;
+            return 0;
+          }),
+          isLoading: false,
+          sortedBy: "rangeStart",
+          showWithStatus: true
+        },
+        () => this.pagination()
+      ));
   };
 
   changeCoutOnPage = e => {
