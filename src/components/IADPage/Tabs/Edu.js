@@ -5,21 +5,21 @@ import { withRouter } from "react-router";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import FormControl from "react-bootstrap/lib/FormControl";
-import FormGroup from "react-bootstrap/lib/FormGroup";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
-import HelpBlock from "react-bootstrap/lib/HelpBlock";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import { FormattedMessage } from "react-intl";
 
-import { changeObjectIAD, fetchPutUpdateIAD } from "../../../store/actions";
+import { changeObjectIAD, fetchPutUpdateIAD, changeIAD } from "../../../store/actions";
 import { removeEmpty } from "../../remuveEmptyInObject";
 
 export class Edu extends Component {
   state = {
-    edu1: {},
-    edu2: {},
+    edu1: {name: "",
+  lanPort: "", wanPort: "", srName: "", srSap: "", vlan: ""},
+    edu2: {name: "",
+    lanPort: "", wanPort: "", srName: "", srSap: "", vlan: ""},
     disabledButton: false
   };
 
@@ -265,7 +265,6 @@ export class Edu extends Component {
     const data = { edu1, edu2 };
     const clearData = removeEmpty(data);
     if (Object.keys(clearData).length) {
-      console.log(Object.keys(clearData).length);
       this.setState({ disabledButton: true }, () =>
         this.props
           .fetchPutUpdateIAD(
@@ -277,7 +276,6 @@ export class Edu extends Component {
           .then(() => this.setState({ disabledButton: false }))
       );
     } else {
-      console.log(Object.keys(clearData).length);
       this.setState({ disabledButton: true }, () =>
         this.setState({ disabledButton: false })
       );
@@ -291,7 +289,7 @@ export class Edu extends Component {
         name: e.target.value
       }
     });
-    this.props.changeObjectIAD("edu1", "name", e.target.value);
+    this.props.changeIAD("edu1", {...this.state.edu1, name: e.target.value})
   };
 
   changeEdu2Name = e => {
@@ -301,7 +299,7 @@ export class Edu extends Component {
         name: e.target.value
       }
     });
-    this.props.changeObjectIAD("edu2", "name", e.target.value);
+    this.props.changeIAD("edu2", {...this.state.edu2, name: e.target.value})
   };
 
   changeEdu1Lan = e => {
@@ -311,7 +309,7 @@ export class Edu extends Component {
         lanPort: e.target.value
       }
     });
-    this.props.changeObjectIAD("edu1", "lanPort", e.target.value);
+    this.props.changeIAD("edu1", {...this.state.edu1, lanPort: e.target.value})
   };
 
   changeEdu2Lan = e => {
@@ -321,7 +319,7 @@ export class Edu extends Component {
         lanPort: e.target.value
       }
     });
-    this.props.changeObjectIAD("edu2", "lanPort", e.target.value);
+    this.props.changeIAD("edu2", {...this.state.edu2, lanPort: e.target.value})
   };
 
   changeEdu1Wan = e => {
@@ -331,7 +329,7 @@ export class Edu extends Component {
         wanPort: e.target.value
       }
     });
-    this.props.changeObjectIAD("edu1", "wanPort", e.target.value);
+    this.props.changeIAD("edu1", {...this.state.edu1, wanPort: e.target.value})
   };
 
   changeEdu2Wan = e => {
@@ -341,7 +339,7 @@ export class Edu extends Component {
         wanPort: e.target.value
       }
     });
-    this.props.changeObjectIAD("edu2", "wanPort", e.target.value);
+    this.props.changeIAD("edu2", {...this.state.edu2, wanPort: e.target.value})
   };
 
   changeEdu1SrName = e => {
@@ -351,7 +349,7 @@ export class Edu extends Component {
         srName: e.target.value
       }
     });
-    this.props.changeObjectIAD("edu1", "srName", e.target.value);
+    this.props.changeIAD("edu1", {...this.state.edu1, srName: e.target.value})
   };
 
   changeEdu2SrName = e => {
@@ -361,7 +359,7 @@ export class Edu extends Component {
         srName: e.target.value
       }
     });
-    this.props.changeObjectIAD("edu2", "srName", e.target.value);
+    this.props.changeIAD("edu2", {...this.state.edu2, srName: e.target.value})
   };
 
   changeEdu1SrSap = e => {
@@ -371,7 +369,7 @@ export class Edu extends Component {
         srSap: e.target.value
       }
     });
-    this.props.changeObjectIAD("edu1", "srSap", e.target.value);
+    this.props.changeIAD("edu1", {...this.state.edu1, srSap: e.target.value})
   };
 
   changeEdu2SrSap = e => {
@@ -381,7 +379,7 @@ export class Edu extends Component {
         srSap: e.target.value
       }
     });
-    this.props.changeObjectIAD("edu2", "srSap", e.target.value);
+    this.props.changeIAD("edu2", {...this.state.edu2, srSap: e.target.value})
   };
 
   changeEdu1Vlan = e => {
@@ -391,7 +389,7 @@ export class Edu extends Component {
         vlan: e.target.value
       }
     });
-    this.props.changeObjectIAD("edu1", "vlan", e.target.value);
+    this.props.changeIAD("edu1", {...this.state.edu1, vlan: e.target.value})
   };
 
   changeEdu2Vlan = e => {
@@ -401,13 +399,13 @@ export class Edu extends Component {
         vlan: e.target.value
       }
     });
-    this.props.changeObjectIAD("edu2", "vlan", e.target.value);
+    this.props.changeIAD("edu2", {...this.state.edu2, vlan: e.target.value})
   };
 }
 
 const mapStateToProps = state => ({ iad: state.iad, config: state.config });
 
-const mapDispatchToProps = { changeObjectIAD, fetchPutUpdateIAD };
+const mapDispatchToProps = { changeIAD, changeObjectIAD, fetchPutUpdateIAD };
 
 export default withRouter(
   connect(

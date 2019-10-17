@@ -102,6 +102,9 @@
   border-left: 2px solid #dddddd;
 }
 
+.padding-top-0 {
+  padding-top: 0;
+}
 .padding-left-3 {
   padding-left: 30px;
 }

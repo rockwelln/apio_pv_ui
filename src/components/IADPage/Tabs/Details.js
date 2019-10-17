@@ -146,7 +146,6 @@ export class Details extends Component {
     const data = { macAddress, pilotNumber };
     const clearData = removeEmpty(data);
     if (Object.keys(clearData).length) {
-      console.log(Object.keys(clearData).length);
       this.setState({ disabledButton: true }, () =>
         this.props
           .fetchPutUpdateIAD(
@@ -158,7 +157,6 @@ export class Details extends Component {
           .then(() => this.setState({ disabledButton: false }))
       );
     } else {
-      console.log(Object.keys(clearData).length);
       this.setState({ disabledButton: true }, () =>
         this.setState({ disabledButton: false })
       );

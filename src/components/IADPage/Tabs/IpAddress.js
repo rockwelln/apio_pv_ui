@@ -14,7 +14,11 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import { FormattedMessage } from "react-intl";
 
-import { changeIAD, fetchPutUpdateIAD } from "../../../store/actions";
+import {
+  changeIAD,
+  fetchPutUpdateIAD,
+  changeObjectIAD
+} from "../../../store/actions";
 import { removeEmpty } from "../../remuveEmptyInObject";
 
 import { TRANSPORTMODE, IP1MODE } from "../../../constants";
@@ -56,11 +60,7 @@ export class IPAddress extends Component {
                     name="transportMode"
                     value={type.value}
                     checked={type.value === this.state.transportMode}
-                    onChange={e =>
-                      this.setState({
-                        transportMode: e.target.value
-                      })
-                    }
+                    onChange={this.changeTransportMode}
                   >
                     <div className="font-weight-bold flex">{type.name}</div>
                   </Radio>
@@ -88,11 +88,7 @@ export class IPAddress extends Component {
                     name="ip1mode"
                     value={type.value}
                     checked={type.value === this.state.ip1.mode}
-                    onChange={e =>
-                      this.setState({
-                        ip1mode: e.target.value
-                      })
-                    }
+                    onChange={this.changeIPMode}
                   >
                     <div className="font-weight-bold flex">{type.name}</div>
                   </Radio>
@@ -116,9 +112,9 @@ export class IPAddress extends Component {
               <div className={"margin-right-1 flex-basis-16"}>
                 <FormControl
                   type="text"
-                  value={this.state.ipv4Address}
+                  value={this.state.ip1.ipv4Address}
                   placeholder={"IPv4 address"}
-                  onChange={e => this.setState({ ipv4Address: e.target.value })}
+                  onChange={this.changeIPv4Address}
                 />
               </div>
               <div className={"margin-right-1 flex flex-basis-16"}>
@@ -132,9 +128,9 @@ export class IPAddress extends Component {
               <div className={"margin-right-1 flex-basis-16"}>
                 <FormControl
                   type="text"
-                  value={this.state.ipv4Netmask}
+                  value={this.state.ip1.ipv4Netmask}
                   placeholder={"IPv4 netmask"}
-                  onChange={e => this.setState({ ipv4Netmask: e.target.value })}
+                  onChange={this.changeIPv4Netmask}
                 />
               </div>
             </Col>
@@ -155,9 +151,9 @@ export class IPAddress extends Component {
               <div className={"margin-right-1 flex-basis-16"}>
                 <FormControl
                   type="text"
-                  value={this.state.ipv6Address}
+                  value={this.state.ip1.ipv6Address}
                   placeholder={"IPv6 address"}
-                  onChange={e => this.setState({ ipv6Address: e.target.value })}
+                  onChange={this.changeIPv6Address}
                 />
               </div>
               <div className={"margin-right-1 flex flex-basis-16"}>
@@ -171,9 +167,9 @@ export class IPAddress extends Component {
               <div className={"margin-right-1 flex-basis-16"}>
                 <FormControl
                   type="text"
-                  value={this.state.ipv6Netmask}
+                  value={this.state.ip1.ipv6Netmask}
                   placeholder={"IPv6 netmask"}
-                  onChange={e => this.setState({ ipv6Netmask: e.target.value })}
+                  onChange={this.changeIPv6Netmask}
                 />
               </div>
             </Col>
@@ -197,9 +193,9 @@ export class IPAddress extends Component {
               </ControlLabel>
               <FormControl
                 type="text"
-                value={this.state.IPAddress}
+                value={this.state.pbx.ipAddress}
                 placeholder={"IP Address"}
-                onChange={e => this.setState({ IPAddress: e.target.value })}
+                onChange={this.changePbxAddress}
               />
             </div>
             <div
@@ -210,10 +206,27 @@ export class IPAddress extends Component {
               </ControlLabel>
               <FormControl
                 type="text"
-                value={this.state.port}
+                value={this.state.pbx.port}
                 placeholder={"Port"}
-                onChange={e => this.setState({ port: e.target.value })}
+                onChange={this.changePbxPort}
               />
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={12}>
+            <div className="button-row">
+              <div className="pull-right">
+                <Button
+                  onClick={this.updateIAD}
+                  type="submit"
+                  className="btn-primary"
+                  disabled={this.state.disabledButton}
+                >
+                  <Glyphicon glyph="glyphicon glyphicon-ok" />
+                  <FormattedMessage id="update" defaultMessage="Update" />
+                </Button>
+              </div>
             </div>
           </Col>
         </Row>
@@ -222,11 +235,26 @@ export class IPAddress extends Component {
   }
 
   updateIAD = () => {
-    const { macAddress, pilotNumber } = this.state;
-    const data = { macAddress, pilotNumber };
+    const { transportMode, ip1, pbx } = this.state;
+    const checkedIp =
+      ip1.mode === "disabled"
+        ? { mode: ip1.mode }
+        : ip1.mode === "IPv4"
+        ? {
+            mode: ip1.mode,
+            ipv4Address: ip1.ipv4Address,
+            ipv4Netmask: ip1.ipv4Netmask
+          }
+        : ip1.mode === "IPv6"
+        ? {
+            mode: ip1.mode,
+            ipv6Address: ip1.ipv6Address,
+            ipv4Netmask: ip1.ipv6Netmask
+          }
+        : null;
+    const data = { transportMode, pbx, ip1: checkedIp };
     const clearData = removeEmpty(data);
     if (Object.keys(clearData).length) {
-      console.log(Object.keys(clearData).length);
       this.setState({ disabledButton: true }, () =>
         this.props
           .fetchPutUpdateIAD(
@@ -238,44 +266,94 @@ export class IPAddress extends Component {
           .then(() => this.setState({ disabledButton: false }))
       );
     } else {
-      console.log(Object.keys(clearData).length);
       this.setState({ disabledButton: true }, () =>
         this.setState({ disabledButton: false })
       );
     }
   };
 
-  upadateMacAddres = e => {
+  changePbxPort = e => {
     this.setState({
-      macAddress: e.target.value,
-      errorMacAddress: null
+      pbx: {
+        ...this.state.pbx,
+        port: e.target.value
+      }
     });
-    this.props.changeIAD("macAddress", e.target.value);
+    this.props.changeObjectIAD("pbx", "port", e.target.value);
   };
 
-  upadatePilotNumber = e => {
-    this.props.changeIAD("pilotNumber", e.target.value);
-    this.setState({ pilotNumber: e.target.value });
+  changePbxAddress = e => {
+    this.setState({
+      pbx: {
+        ...this.state.pbx,
+        ipAddress: e.target.value
+      }
+    });
+    this.props.changeObjectIAD("pbx", "ipAddress", e.target.value);
   };
 
-  validateMacAddress = e => {
-    let regDots = /^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$/;
-    let reg = /^([0-9A-Fa-f]{2}){5}([0-9A-Fa-f]{2})$/;
-    if (
-      reg.test(e.target.value) ||
-      regDots.test(e.target.value) ||
-      e.target.value === ""
-    ) {
-      return;
-    } else {
-      this.setState({ errorMacAddress: "error" });
-    }
+  changeIPv4Netmask = e => {
+    this.setState({
+      ip1: {
+        ...this.state.ip1,
+        ipv4Netmask: e.target.value
+      }
+    });
+    this.props.changeObjectIAD("ip1", "ipv4Netmask", e.target.value);
+  };
+
+  changeIPv6Netmask = e => {
+    this.setState({
+      ip1: {
+        ...this.state.ip1,
+        ipv6Netmask: e.target.value
+      }
+    });
+    this.props.changeObjectIAD("ip1", "ipv6Netmask", e.target.value);
+  };
+
+  changeIPv4Address = e => {
+    this.setState({
+      ip1: {
+        ...this.state.ip1,
+        ipv4Address: e.target.value
+      }
+    });
+    this.props.changeObjectIAD("ip1", "ipv4Address", e.target.value);
+  };
+
+  changeIPv6Address = e => {
+    this.setState({
+      ip1: {
+        ...this.state.ip1,
+        ipv6Address: e.target.value
+      }
+    });
+    this.props.changeObjectIAD("ip1", "ipv6Address", e.target.value);
+  };
+
+  changeIPMode = e => {
+    this.setState({
+      ip1: {
+        ...this.state.ip1,
+        mode: e.target.value
+      }
+    });
+    this.props.changeObjectIAD("ip1", "mode", e.target.value);
+  };
+
+  changeTransportMode = e => {
+    this.setState({
+      transportMode: e.target.value
+    });
+
+    this.props.changeIAD("changeObjectIAD", e.target.value);
   };
 }
 
 const mapStateToProps = state => ({ iad: state.iad, config: state.config });
 
-const mapDispatchToProps = { changeIAD, fetchPutUpdateIAD };
+const mapDispatchToProps = { changeIAD, fetchPutUpdateIAD, changeObjectIAD };
 
 export default withRouter(
   connect(

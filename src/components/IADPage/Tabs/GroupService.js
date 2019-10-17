@@ -18,8 +18,13 @@ import { FormattedMessage } from "react-intl";
 
 import { changeObjectIAD } from "../../../store/actions";
 
+import { removeEmpty } from "../../remuveEmptyInObject";
+
 export class GroupService extends Component {
-  state = { dtmf: "", direction: "", channelsIn: "", channelsOut: "" };
+  state = { services: {dtmf: "", direction: "", channelsIn: "", channelsOut: ""}, disabledButton: false };
+  componentDidMount() {
+    this.setState({ services: this.props.iad.services ? this.props.iad.services : this.state.services  });
+  }
   render() {
     return (
       <React.Fragment>
@@ -34,8 +39,7 @@ export class GroupService extends Component {
               <FormControl
                 componentClass="select"
                 value={
-                  this.state.dtmf ||
-                  (this.props.iad.services && this.props.iad.services.dtmf)
+                this.state.services.dtmf
                 }
                 onChange={this.changeDtmf}
               >
@@ -60,7 +64,7 @@ export class GroupService extends Component {
             <div className={"margin-right-1 flex"}>
               <FormControl
                 componentClass="select"
-                value={this.state.direction || this.props.iad.direction}
+                value={this.state.services.direction}
                 onChange={this.changeDirection}
               >
                 {this.props.config.tenant.group.iad.directionOverride.map(
@@ -99,9 +103,7 @@ export class GroupService extends Component {
                     <FormControl
                       type="text"
                       value={
-                        this.state.channelsIn ||
-                        (this.props.iad.services &&
-                          this.props.iad.services.channelsIn)
+                        this.state.services.channelsIn
                       }
                       placeholder={"In"}
                       onChange={this.changeChannelsIn}
@@ -116,9 +118,7 @@ export class GroupService extends Component {
                     <FormControl
                       type="text"
                       value={
-                        this.state.channelsOut ||
-                        (this.props.iad.services &&
-                          this.props.iad.services.channelsOut)
+                        this.state.services.channelsOut
                       }
                       placeholder={"Out"}
                       onChange={this.changeChannelsOut}
@@ -142,9 +142,48 @@ export class GroupService extends Component {
             </Row>
           </React.Fragment>
         )}
+        <Row>
+          <Col md={12}>
+            <div className="button-row">
+              <div className="pull-right">
+                <Button
+                  onClick={this.updateIAD}
+                  type="submit"
+                  className="btn-primary"
+                  disabled={this.state.disabledButton}
+                >
+                  <Glyphicon glyph="glyphicon glyphicon-ok" />
+                  <FormattedMessage id="update" defaultMessage="Update" />
+                </Button>
+              </div>
+            </div>
+          </Col>
+        </Row>
       </React.Fragment>
     );
   }
+
+  updateIAD = () => {
+    const { services } = this.state;
+    const data = { services };
+    const clearData = removeEmpty(data);
+    if (Object.keys(clearData).length) {
+      this.setState({ disabledButton: true }, () =>
+        this.props
+          .fetchPutUpdateIAD(
+            this.props.match.params.tenantId,
+            this.props.match.params.groupId,
+            this.props.match.params.iadId,
+            clearData
+          )
+          .then(() => this.setState({ disabledButton: false }))
+      );
+    } else {
+      this.setState({ disabledButton: true }, () =>
+        this.setState({ disabledButton: false })
+      );
+    }
+  };
 
   changeDtmf = e => {
     this.props.changeObjectIAD("services", "dtmf", e.target.value);
