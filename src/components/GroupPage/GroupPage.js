@@ -11,6 +11,7 @@ import PhoneNumbers from "./Tabs/PhoneNumbers";
 import Details from "./Details";
 import Channels from "./Tabs/Channels";
 import Service from "./Tabs/Service";
+import NumberFormatting from "./Tabs/NumberFormatting"
 
 import IADs from "./Tabs/IADs";
 
@@ -107,6 +108,9 @@ class TenantPage extends Component {
                 tenantId={this.props.match.params.tenantId}
                 groupId={this.props.match.params.groupId}
               />
+            </Tab>
+            <Tab eventKey={5} title="Number Formatting">
+              <NumberFormatting />
             </Tab>
           </Tabs>
         </div>

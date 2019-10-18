@@ -36,19 +36,6 @@ export const TYPEOFACCESS = [
   { name: "FIBER", value: "FIBER", disabled: false }
 ];
 
-export const SERVICETYPE = [
-  { name: "Service redundant type 1", value: "1" },
-  { name: "Service redundant type 2", value: "2" },
-  { name: "Service redundant type 3", value: "3" },
-  { name: "Service redundant type 4", value: "4" },
-  { name: "Service redundant dual type 2 (2 EDU)", value: "D2" },
-  { name: "Service redundant dual type 2 bis (2 EDU)", value: "D2b" },
-  { name: "Service redundant type 5 (2 EDU)", value: "5" },
-  { name: "Service redundant type 5 bis (2 EDU)", value: "5b" },
-  { name: "Service redundant type 6 (2 EDU)", value: "6" },
-  { name: "Service redundant type 7", value: "7" }
-];
-
 export const ADVICEOFCHARGE = [
   { name: "none", value: false },
   { name: "AOC-D", value: "AOC-D" },
@@ -136,7 +123,7 @@ export const IP1MODE = [
 ];
 
 export const STATENUMBERS = [
-  { name: "Active", value: "Active" },
+  { name: "Active", value: "active" },
   { name: "pre-Active", value: "preActive" }
 ];
 

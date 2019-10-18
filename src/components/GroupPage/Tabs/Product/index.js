@@ -19,7 +19,7 @@ import {
   fetchPutUpdateGroupDetails
 } from "../../../../store/actions";
 
-export class index extends Component {
+export class Product extends Component {
   state = {
     isLoading: true,
     group: {},
@@ -246,5 +246,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(index)
+  )(Product)
 );

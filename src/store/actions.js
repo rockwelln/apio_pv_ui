@@ -1542,9 +1542,10 @@ export function fetchPostCreateLocalUser(data) {
 }
 
 export function fetchPostAssignPhoneNumbersToGroup(tenantId, groupId, data) {
+  //////////////////////////////////////////////////
   return function(dispatch) {
     return fetch_post(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/numbers/`,
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/numbers/`,
       data
     )
       .then(res => res.json())
@@ -1555,8 +1556,8 @@ export function fetchPostAssignPhoneNumbersToGroup(tenantId, groupId, data) {
       .catch(error => {
         NotificationsManager.error(
           <FormattedMessage
-            id="failed-to-assign-phonenumbers"
-            defaultMessage="Failed to assign phonenumbers!"
+            id="failed-to-add-phonenumbers"
+            defaultMessage="Failed to add phonenumbers!"
           />,
           error.message
         );

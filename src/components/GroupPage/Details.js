@@ -20,19 +20,6 @@ import {
   fetchPutUpdateGroupDetails
 } from "../../store/actions";
 
-import {
-  ADVICEOFCHARGE,
-  DTMF,
-  CHANNELHUNTING,
-  DIRECTION,
-  DESTINATIONNUMBERSPRA,
-  NATIONNUMBERSPRA,
-  INTERNATIONNUMBERSPRA,
-  TYPEOFIAD,
-  TYPEOFACCESS,
-  SERVICETYPE
-} from "../../constants";
-
 export class index extends Component {
   state = {
     typeOfIad: "PRA",
@@ -206,369 +193,6 @@ export class index extends Component {
             </div>
           </Col>
         </Row>
-        {/* <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex font-24"}>Product Types</div>
-          </Col>
-        </Row> 
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              Type of IAD
-            </div>
-            <div className={"margin-right-1 flex flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.typeOfIad}
-                onChange={e => this.setState({ typeOfIad: e.target.value })}
-                disabled={this.state.isDisabled}
-              >
-                {TYPEOFIAD.map((type, i) => (
-                  <option key={i} value={type.value} disabled={type.disabled}>
-                    {type.name}
-                  </option>
-                ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              Type of access
-            </div>
-            <div className={"margin-right-1 flex flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.typeOfAccess}
-                onChange={e => this.setState({ typeOfAccess: e.target.value })}
-                disabled={this.state.isDisabled}
-              >
-                {TYPEOFACCESS.map((type, i) => (
-                  <option key={i} value={type.value} disabled={type.disabled}>
-                    {type.name}
-                  </option>
-                ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              Service Type
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.serviceType}
-                onChange={e => this.setState({ serviceType: e.target.value })}
-                disabled={this.state.isDisabled}
-              >
-                <option value={""}>none</option>
-                {SERVICETYPE.map((type, i) => (
-                  <option key={i} value={type.value}>
-                    {type.name}
-                  </option>
-                ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              Numbers of Channels{"\u002a"}
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                type="number"
-                value={this.state.numberOfChannels}
-                placeholder={"Numbers of Channels"}
-                onChange={e =>
-                  this.setState({ numberOfChannels: e.target.value })
-                }
-                disabled={this.state.isDisabled}
-              />
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"} />
-            <div className={"margin-right-1 flex-basis-33"}>
-              {"\u002a"} Don't exceed your IADs capacity (avalible: xxxxx)
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex font-24"}>
-              Services configuration
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              NCOS value
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.ncos}
-                onChange={e => this.setState({ ncos: e.target.value })}
-                disabled={this.state.isDisabled}
-              >
-                {NCOSarray.map((el, i) => (
-                  <option key={i} value={i}>
-                    {el}
-                  </option>
-                ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>CLIP</div>
-            <div className={"margin-right-1 flex-basis-11"}>
-              <Radio
-                className={"margin-0 flex margin-right-2"}
-                name="clipcolp"
-                checked={this.state.clip}
-                disabled={this.state.isDisabled}
-                onChange={e =>
-                  this.setState({
-                    clip: true,
-                    colp: false
-                  })
-                }
-              >
-                <div className="font-weight-bold flex">Active</div>
-              </Radio>
-            </div>
-            <div className={"margin-right-1 flex flex-basis-11"}>COLP</div>
-            <div className={"margin-right-1 flex-basis-11"}>
-              <Radio
-                className={"margin-0 flex margin-right-2"}
-                name="clipcolp"
-                checked={this.state.colp}
-                disabled={this.state.isDisabled}
-                onChange={e =>
-                  this.setState({
-                    clip: false,
-                    colp: true
-                  })
-                }
-              >
-                <div className="font-weight-bold flex">Active</div>
-              </Radio>
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>CLIR</div>
-            <div className={"margin-right-1 flex-basis-11"}>
-              <Radio
-                className={"margin-0 flex margin-right-2"}
-                name="clircolr"
-                checked={this.state.clir}
-                disabled={this.state.isDisabled}
-                onChange={e =>
-                  this.setState({
-                    clir: true,
-                    colr: false
-                  })
-                }
-              >
-                <div className="font-weight-bold flex">Active</div>
-              </Radio>
-            </div>
-            <div className={"margin-right-1 flex flex-basis-11"}>COLR</div>
-            <div className={"margin-right-1 flex-basis-11"}>
-              <Radio
-                className={"margin-0 flex margin-right-2"}
-                name="clircolr"
-                checked={this.state.colr}
-                disabled={this.state.isDisabled}
-                onChange={e =>
-                  this.setState({
-                    clir: false,
-                    colr: true
-                  })
-                }
-              >
-                <div className="font-weight-bold flex">Active</div>
-              </Radio>
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              Advice of Charge
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              {this.state.isDisabled ? (
-                <FormControl
-                  type="text"
-                  value={
-                    this.state.aoc === false || this.state.aoc === "false"
-                      ? "None"
-                      : this.state.aoc
-                  }
-                  disabled={this.state.isDisabled}
-                />
-              ) : (
-                <FormGroup className={"margin-0 flex"}>
-                  {ADVICEOFCHARGE.map((type, i) => (
-                    <Radio
-                      className={"margin-0 flex margin-right-2"}
-                      key={i + ""}
-                      name="adviceOfCharge"
-                      value={type.value}
-                      defaultChecked={type.value === this.state.aoc}
-                      onChange={e =>
-                        this.setState({
-                          aoc: e.target.value
-                        })
-                      }
-                    >
-                      <div className="font-weight-bold flex">{type.name}</div>
-                    </Radio>
-                  ))}
-                </FormGroup>
-              )}
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>DTMF</div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              {this.state.isDisabled ? (
-                <FormControl
-                  type="text"
-                  value={
-                    this.state.dtmf === false || this.state.dtmf === "false"
-                      ? "None"
-                      : this.state.dtmf
-                  }
-                  disabled={this.state.isDisabled}
-                />
-              ) : (
-                <FormGroup className={"margin-0 flex"}>
-                  {DTMF.map((type, i) => (
-                    <Radio
-                      className={"margin-0 flex margin-right-2"}
-                      key={i + ""}
-                      name="dtmf"
-                      value={type.value}
-                      defaultChecked={type.value === this.state.dtmf}
-                      disabled={this.state !== "SIP"}
-                      onChange={e =>
-                        this.setState({
-                          dtmf: e.target.value
-                        })
-                      }
-                    >
-                      <div className="font-weight-bold flex">{type.name}</div>
-                    </Radio>
-                  ))}
-                </FormGroup>
-              )}
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              Total Number of PRA/BRA/SIP channels
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                type="text"
-                value={this.state.totalNumber}
-                placeholder={"Total Number"}
-                onChange={e => this.setState({ totalNumber: e.target.value })}
-                disabled={this.state.isDisabled}
-              />
-            </div>
-          </Col>
-        </Row>
-        <React.Fragment>
-          <Row className={"margin-top-1"}>
-            <Col md={12} className={"flex align-items-center"}>
-              <div className={"margin-right-1 flex flex-basis-16"}>
-                Destination Number Format for PRA
-              </div>
-              <div className={"margin-right-1 flex-basis-33"}>
-                <FormControl
-                  componentClass="select"
-                  value={this.state.dstNumberPra}
-                  onChange={e =>
-                    this.setState({ dstNumberPra: e.target.value })
-                  }
-                  disabled={this.state.isDisabled}
-                >
-                  {DESTINATIONNUMBERSPRA.map((type, i) => (
-                    <option key={i} value={type.value}>
-                      {type.name}
-                    </option>
-                  ))}
-                </FormControl>
-              </div>
-            </Col>
-          </Row>
-          <Row className={"margin-top-1"}>
-            <Col md={12} className={"flex align-items-center"}>
-              <div className={"margin-right-1 flex flex-basis-16"}>
-                Nation Source Number Format for PRA
-              </div>
-              <div className={"margin-right-1 flex-basis-33"}>
-                <FormControl
-                  componentClass="select"
-                  value={this.state.ntlNumberPra}
-                  onChange={e =>
-                    this.setState({ ntlNumberPra: e.target.value })
-                  }
-                  disabled={this.state.isDisabled}
-                >
-                  {NATIONNUMBERSPRA.map((type, i) => (
-                    <option key={i} value={type.value}>
-                      {type.name}
-                    </option>
-                  ))}
-                </FormControl>
-              </div>
-            </Col>
-          </Row>
-          <Row className={"margin-top-1"}>
-            <Col md={12} className={"flex align-items-center"}>
-              <div className={"margin-right-1 flex flex-basis-16"}>
-                Internation Source Number Format for PRA
-              </div>
-              <div className={"margin-right-1 flex-basis-33"}>
-                <FormControl
-                  componentClass="select"
-                  value={this.state.intlNumberPra}
-                  onChange={e =>
-                    this.setState({ intlNumberPra: e.target.value })
-                  }
-                  disabled={this.state.isDisabled}
-                >
-                  {INTERNATIONNUMBERSPRA.map((type, i) => (
-                    <option key={i} value={type.value}>
-                      {type.name}
-                    </option>
-                  ))}
-                </FormControl>
-              </div>
-            </Col>
-          </Row>
-        </React.Fragment>*/}
         {!this.state.isDisabled && (
           <Row>
             <Col md={12}>
@@ -583,6 +207,15 @@ export class index extends Component {
                     <FormattedMessage id="update" defaultMessage="Update" />
                   </Button>
                 </div>
+                <div className="pull-right margin-right-1">
+                  <Button
+                    onClick={() => this.setState({ isDisabled: true })}
+                    type="submit"
+                    className="btn-danger"
+                  >
+                    <FormattedMessage id="cancel" defaultMessage="Cancel" />
+                  </Button>
+                </div>
               </div>
             </Col>
           </Row>
@@ -592,11 +225,12 @@ export class index extends Component {
   }
 
   updateGroup = () => {
-    const { groupName, cliName, virtualSite } = this.state.group;
+    const { groupName, cliName, zipCode, virtualSite } = this.state.group;
     const data = {
       groupName,
       cliName,
-      virtualSite
+      virtualSite,
+      zipCode
     };
     this.props
       .fetchPutUpdateGroupDetails(

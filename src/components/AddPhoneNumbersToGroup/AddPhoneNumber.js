@@ -14,13 +14,17 @@ import Checkbox from "react-bootstrap/lib/Checkbox";
 
 import { STATENUMBERS } from "../../constants";
 
+import {fetchPostAssignPhoneNumbersToGroup} from "../../store/actions"
+
+import { removeEmpty } from "../remuveEmptyInObject";
+
 export class AddPhoneNumber extends Component {
   state = {
     arrayFrom: "",
     arrayTo: "",
-    arrayState: "",
     buttonName: "Add",
-    numbers: [{ number: "", state: "" }]
+    status: "",
+    numbers: [{ phoneNumber: "" }]
   };
   render() {
     return (
@@ -46,35 +50,7 @@ export class AddPhoneNumber extends Component {
           <Panel.Body>
             <Row className={"margin-top-1"}>
               <Col md={6} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-33"}>
-                  Array of numbers
-                </div>
-                <div className={"margin-right-1"}>From</div>
-                <div className={"margin-right-1 flex flex-basis-66"}>
-                  <FormControl
-                    type="number"
-                    value={this.state.arrayFrom}
-                    placeholder={"From"}
-                    onChange={e => this.setState({ ccli: e.target.value })}
-                  />
-                </div>
-              </Col>
-              <Col md={6} className={"flex align-items-center"}>
-                <div className={"margin-right-1"}>To</div>
-                <div className={"margin-right-1 flex flex-basis-66"}>
-                  <FormControl
-                    type="number"
-                    value={this.state.arrayTo}
-                    placeholder={"To"}
-                    onChange={e => this.setState({ ccli: e.target.value })}
-                  />
-                </div>
-              </Col>
-            </Row>
-            <Row className={"margin-top-1"}>
-              <Col md={6} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-33"}></div>
-                <div className={"margin-right-1"}>State</div>
+                <div className={"flex flex-basis-33"}>Status</div>
                 <div className={"margin-right-1 flex flex-basis-66"}>
                   <FormGroup className={"margin-0 flex"}>
                     {STATENUMBERS.map((state, i) => (
@@ -83,10 +59,10 @@ export class AddPhoneNumber extends Component {
                         key={i + ""}
                         name="transportMode"
                         value={state.value}
-                        checked={state.value === this.state.arrayState}
+                        checked={state.value === this.state.status}
                         onChange={e =>
                           this.setState({
-                            arrayState: e.target.value
+                            status: e.target.value
                           })
                         }
                       >
@@ -100,6 +76,33 @@ export class AddPhoneNumber extends Component {
               </Col>
             </Row>
             <Row className={"margin-top-1"}>
+              <Col md={6} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-33"}>
+                  Array of numbers
+                </div>
+                <div className={"margin-right-1"}>From</div>
+                <div className={"margin-right-1 flex flex-basis-66"}>
+                  <FormControl
+                    type="text"
+                    value={this.state.arrayFrom}
+                    placeholder={"From"}
+                    onChange={e => this.setState({ arrayFrom: e.target.value })}
+                  />
+                </div>
+              </Col>
+              <Col md={6} className={"flex align-items-center"}>
+                <div className={"margin-right-1"}>To</div>
+                <div className={"margin-right-1 flex flex-basis-66"}>
+                  <FormControl
+                    type="text"
+                    value={this.state.arrayTo}
+                    placeholder={"To"}
+                    onChange={e => this.setState({ arrayTo: e.target.value })}
+                  />
+                </div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
               <Col md={12} className={"flex"}>
                 <div className={"flex flex-basis-16"}>Individual number(s)</div>
                 <div className={"margin-right-1 flex-column flex-basis-66 "}>
@@ -109,8 +112,8 @@ export class AddPhoneNumber extends Component {
                       className={"flex align-items-center margin-bottom-1"}
                     >
                       <FormControl
-                        type="number"
-                        value={number.number}
+                        type="text"
+                        value={number.phoneNumber}
                         placeholder={"Phonenumber"}
                         onChange={e => {
                           const val = e.target.value;
@@ -118,39 +121,13 @@ export class AddPhoneNumber extends Component {
                             const numbers = [...curState.numbers];
                             numbers[i] = {
                               ...numbers[i],
-                              number: val
+                              phoneNumber: val
                             };
                             return { numbers };
                           });
                         }}
                         className={"flex flex-basis-33 margin-right-1"}
                       />
-                      <div className={"margin-right-2"}>State</div>
-                      <FormGroup className={"margin-0 flex"}>
-                        {STATENUMBERS.map((state, index) => (
-                          <Radio
-                            className={"margin-0 margin-right-2"}
-                            key={index + ""}
-                            name={i + "stateNumbers"}
-                            value={state.value}
-                            onChange={e => {
-                              const val = e.target.value;
-                              this.setState(curState => {
-                                const numbers = [...curState.numbers];
-                                numbers[i] = {
-                                  ...numbers[i],
-                                  state: val
-                                };
-                                return { numbers };
-                              });
-                            }}
-                          >
-                            <div className="font-weight-bold flex">
-                              {state.name}
-                            </div>
-                          </Radio>
-                        ))}
-                      </FormGroup>
                       {this.state.numbers.length > 1 && (
                         <Glyphicon
                           className={"margin-0 margin-right-1 font-18"}
@@ -202,7 +179,7 @@ export class AddPhoneNumber extends Component {
 
   addPhoneToArray = () => {
     const numbers = this.state.numbers;
-    numbers.push({ number: "", state: "" });
+    numbers.push({ phoneNumber: "" });
     this.setState({ numbers });
   };
 
@@ -219,19 +196,22 @@ export class AddPhoneNumber extends Component {
   };
 
   addAID = () => {
-    this.props.history.push(
+    const {numbers,arrayFrom, arrayTo, status} = this.state
+    const data = {numbers, status, range: {minPhoneNumber: arrayFrom, maxPhoneNumber: arrayTo}}
+    const clearData = removeEmpty(data);
+    console.log(clearData)
+    this.props.fetchPostAssignPhoneNumbersToGroup(this.props.match.params.tenantId, this.props.match.params.groupId, clearData).then(res=>res==="success" &&     this.props.history.push(
       `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}`
-    );
+    ))
+
   };
 }
 
-const mapStateToProps = state => ({});
-
-const mapDispatchToProps = {};
+const mapDispatchToProps = {fetchPostAssignPhoneNumbersToGroup};
 
 export default withRouter(
   connect(
-    mapStateToProps,
+    null,
     mapDispatchToProps
   )(AddPhoneNumber)
 );
