@@ -11,7 +11,8 @@ import PhoneNumbers from "./Tabs/PhoneNumbers";
 import Details from "./Details";
 import Channels from "./Tabs/Channels";
 import Service from "./Tabs/Service";
-import NumberFormatting from "./Tabs/NumberFormatting"
+import NumberFormatting from "./Tabs/NumberFormatting";
+import RoutingNumber from "./Tabs/RoutingNumber";
 
 import IADs from "./Tabs/IADs";
 
@@ -111,6 +112,9 @@ class TenantPage extends Component {
             </Tab>
             <Tab eventKey={5} title="Number Formatting">
               <NumberFormatting />
+            </Tab>
+            <Tab eventKey={6} title="Routing Number">
+              <RoutingNumber />
             </Tab>
           </Tabs>
         </div>

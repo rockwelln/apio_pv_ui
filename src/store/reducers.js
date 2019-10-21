@@ -107,7 +107,8 @@ const initialState = {
   config: {},
   createdIad: {},
   iad: {},
-  iadForUpdate: {}
+  iadForUpdate: {},
+  enterpriseTrunks: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -472,6 +473,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         iad: action.data
+      };
+    }
+    case actionType.GET_ENTERPRISE_TRUNKS_BY_GROUP: {
+      return {
+        ...state,
+        enterpriseTrunks: action.data.enterpriseTrunks
       };
     }
     case actionType.POST_CREATE_IAD: {

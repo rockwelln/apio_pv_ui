@@ -9,6 +9,7 @@ import {
 import * as actionType from "./constants";
 import { FormattedMessage } from "react-intl";
 import React from "react";
+import { func } from "prop-types";
 
 export const getTenants = data => ({
   type: actionType.GET_TENANTS,
@@ -523,6 +524,11 @@ export const getIADById = data => ({
   data
 });
 
+export const getEnterpriseTrunksByGroup = data => ({
+  type: actionType.GET_ENTERPRISE_TRUNKS_BY_GROUP,
+  data
+});
+
 export const postCreateIAD = data => ({
   type: actionType.POST_CREATE_IAD,
   data
@@ -545,6 +551,25 @@ export const changeObjectIAD = (object, field, value) => ({
   field,
   value
 });
+
+export function fetchGetEnterpriseTrunksByGroup(tenantId, groupId) {
+  ////////////////////
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/enterprise_trunks/`
+    )
+      .then(data => dispatch(getEnterpriseTrunksByGroup(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-enterprise-trunks-failed"
+            defaultMessage="Failed to fetch enterprise trunks!"
+          />,
+          error.message
+        )
+      );
+  };
+}
 
 export function fetchGetIADById(tenantId, groupId, iadId) {
   ////////////////////
