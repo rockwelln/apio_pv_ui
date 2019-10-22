@@ -123,6 +123,7 @@ export const GET_IADS = "GET_IADS";
 export const GET_CONFIG = "GET_CONFIG";
 export const GET_IAD_BY_ID = "GET_IAD_BY_ID";
 export const GET_ENTERPRISE_TRUNKS_BY_GROUP = "GET_ENTERPRISE_TRUNKS_BY_GROUP";
+export const GET_IADS_BY_TRUNK = "GET_IADS_BY_TRUNK";
 
 export const POST_CREATE_IAD = "POST_CREATE_IAD";
 

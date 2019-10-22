@@ -36,6 +36,7 @@ import EntreprisesPage from "./components/EntreprisesPage";
 import AddIAD from "./components/AddIAD";
 import AddPhoneToGroup from "./components/AddPhoneNumbersToGroup";
 import IADPage from "./components/IADPage";
+import EnterpriseTrunkPage from "./components/EnterpriseTrunkPage";
 
 import TenantPage from "./components/TenantPage";
 import GroupPage from "./components/GroupPage";
@@ -367,6 +368,17 @@ class App extends Component {
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <IADPage />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/enterprisetrunk/:entTrunkId"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <EnterpriseTrunkPage />
                   ) : (
                     <NotAllowed />
                   )

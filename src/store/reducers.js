@@ -108,7 +108,8 @@ const initialState = {
   createdIad: {},
   iad: {},
   iadForUpdate: {},
-  enterpriseTrunks: []
+  enterpriseTrunks: [],
+  iadsByTrunk: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -479,6 +480,32 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         enterpriseTrunks: action.data.enterpriseTrunks
+      };
+    }
+    case actionType.GET_IADS_BY_TRUNK: {
+      const iadFromSite = [
+        ...action.data.iads_from_main_site.map(el => ({
+          ...el,
+          checked: true
+        })),
+        ...action.data.iads_from_other_sites.map(el => ({
+          ...el,
+          checked: false
+        }))
+      ];
+      const iadNotFromSite = [
+        ...action.data.iads_from_other_sites.map(el => ({
+          ...el,
+          checked: true
+        })),
+        ...action.data.iads_available.map(el => ({
+          ...el,
+          checked: false
+        }))
+      ];
+      return {
+        ...state,
+        iadsByTrunk: { ...action.data, iadFromSite, iadNotFromSite }
       };
     }
     case actionType.POST_CREATE_IAD: {

@@ -529,6 +529,11 @@ export const getEnterpriseTrunksByGroup = data => ({
   data
 });
 
+export const getIADsByTrunk = data => ({
+  type: actionType.GET_IADS_BY_TRUNK,
+  data
+});
+
 export const postCreateIAD = data => ({
   type: actionType.POST_CREATE_IAD,
   data
@@ -551,6 +556,25 @@ export const changeObjectIAD = (object, field, value) => ({
   field,
   value
 });
+
+export function fetchGetIADsByTrunk(tenantId, groupId, trunkId) {
+  ////////////////////
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/enterprise_trunks/${trunkId}`
+    )
+      .then(data => dispatch(getIADsByTrunk(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-iad-by-trunks-failed"
+            defaultMessage="Failed to fetch iad by trunks!"
+          />,
+          error.message
+        )
+      );
+  };
+}
 
 export function fetchGetEnterpriseTrunksByGroup(tenantId, groupId) {
   ////////////////////

@@ -75,7 +75,8 @@ const BreadcrumbComponent = ({ location, match }) => {
     path[indexForGroupLevel] === "users" ||
     path[indexForGroupLevel] === "admins" ||
     path[indexForGroupLevel] === "trunkgroup" ||
-    path[indexForGroupLevel] === "iad"
+    path[indexForGroupLevel] === "iad" ||
+    path[indexForGroupLevel] === "enterprisetrunk"
   ) {
     path.splice(indexForGroupLevel, 1);
   }
