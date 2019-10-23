@@ -561,7 +561,7 @@ export function fetchGetIADsByTrunk(tenantId, groupId, trunkId) {
   ////////////////////
   return function(dispatch) {
     return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/enterprise_trunks/${trunkId}`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/enterprise_trunks/${trunkId}/`
     )
       .then(data => dispatch(getIADsByTrunk(data)))
       .catch(error =>
@@ -599,7 +599,7 @@ export function fetchGetIADById(tenantId, groupId, iadId) {
   ////////////////////
   return function(dispatch) {
     return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/trunk_groups/${iadId}`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/trunk_groups/${iadId}/`
     )
       .then(data => dispatch(getIADById(data)))
       .catch(error =>
@@ -637,7 +637,7 @@ export function fetchGetTenantById(Id) {
   //////////////////////////////
   return function(dispatch) {
     return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${Id}`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${Id}/`
     )
       .then(data => dispatch(getTenantById(data)))
       .catch(error =>
@@ -693,7 +693,7 @@ export function fetchGetConfig() {
 export function fetchGetGroupsByTenantId(Id) {
   return function(dispatch) {
     return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${Id}/groups`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${Id}/groups/`
     )
       .then(data => dispatch(getGroupsByTenantId(data)))
       .catch(error =>
@@ -748,7 +748,7 @@ export function fetchGetGroupById(tenantId, groupId) {
   ///////////////////////////////////
   return function(dispatch) {
     return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/`
     )
       .then(data => dispatch(getGroupById(data)))
       .catch(error =>
@@ -1310,7 +1310,7 @@ export function fetchGetAvailableNumbersByTenantID(tenantId) {
 export function fetchGetLocalUser(username) {
   return function(dispatch) {
     return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/local/apio_users/${username}`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/local/apio_users/${username}/`
     )
       .then(data => dispatch(getLocalUser(data)))
       .catch(error =>
@@ -1837,7 +1837,7 @@ export function fetchPutUpdateBackupByTrunkGtoup(
 ) {
   return function(dispatch) {
     return fetch_put(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/services/trunk_groups/${trunkGroupName}/backup`,
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/services/trunk_groups/${trunkGroupName}/backup/`,
       data
     )
       .then(res => res.json())
@@ -1903,7 +1903,7 @@ export function fetchDeleteTenant(ID) {
   ////////////////////////////////////
   return function(dispatch) {
     return fetch_delete(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${ID}`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${ID}/`
     )
       .then(data => {
         dispatch(deleteTenant(data));
@@ -1924,7 +1924,7 @@ export function fetchDeleteTenant(ID) {
 export function fetchDeleteTenantAdmin(tenantId, adminId) {
   return function(dispatch) {
     return fetch_delete(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/admins/${adminId}`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/admins/${adminId}/`
     )
       .then(data => {
         dispatch(deleteTenantAdmin());
@@ -1944,7 +1944,7 @@ export function fetchDeleteTenantAdmin(tenantId, adminId) {
 export function fetchDeleteGroupDevice(tenantId, groupId, deviceName) {
   return function(dispatch) {
     return fetch_delete(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/access_devices/${deviceName}`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/access_devices/${deviceName}/`
     )
       .then(data => dispatch(deleteGroupDevice()))
       .catch(error =>
@@ -1962,7 +1962,7 @@ export function fetchDeleteGroupDevice(tenantId, groupId, deviceName) {
 export function fetchDeleteGroupAdmin(tenantId, groupId, adminId) {
   return function(dispatch) {
     return fetch_delete(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/admins/${adminId}`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/admins/${adminId}/`
     )
       .then(data => {
         dispatch(deleteGroupAdmin());
@@ -2097,7 +2097,7 @@ export function fetchDeleteTrunkGroup(tenantId, groupId, trunkName) {
   ///////////////////////////////////////////
   return function(dispatch) {
     return fetch_delete(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/trunk_groups/${trunkName}`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/trunk_groups/${trunkName}/`
     )
       .then(data => {
         dispatch(deleteTrunkGroup(data));
