@@ -106,7 +106,7 @@ export class AddGroup extends Component {
                   <FormControl
                     type="text"
                     value={this.state.cliName}
-                    placeholder={"Main Number"}
+                    placeholder={"CLI Name"}
                     onChange={e => this.setState({ cliName: e.target.value })}
                   />
                 </div>

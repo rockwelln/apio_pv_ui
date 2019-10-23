@@ -115,7 +115,7 @@ export class index extends Component {
               <FormControl
                 type="text"
                 value={this.state.group.cliName}
-                placeholder={"Main Number"}
+                placeholder={"CLI Name"}
                 onChange={e =>
                   this.setState({
                     group: { ...this.state.group, cliName: e.target.value }
