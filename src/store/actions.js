@@ -2097,7 +2097,7 @@ export function fetchDeleteTrunkGroup(tenantId, groupId, trunkName) {
   ///////////////////////////////////////////
   return function(dispatch) {
     return fetch_delete(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/trunk_groups/${trunkName}/`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/trunk_groups/${trunkName}/`
     )
       .then(data => {
         dispatch(deleteTrunkGroup(data));
