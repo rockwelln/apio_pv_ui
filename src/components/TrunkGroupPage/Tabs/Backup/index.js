@@ -19,6 +19,7 @@ import {
 } from "../../../../store/actions";
 import Loading from "../../../../common/Loading";
 import EditFrom from "./EditFrom";
+import { removeEmpty } from "../../../remuveEmptyInObject";
 
 export class Backup extends Component {
   state = {
@@ -104,15 +105,9 @@ export class Backup extends Component {
                 {this.state.trunk && (
                   <Well className={"margin-0 disabled-input-well"}>
                     <Link
-                      to={`/provisioning/${
-                        this.props.match.params.gwName
-                      }/tenants/${this.state.trunk.tenantId}/groups/${
-                        this.state.trunk.groupId
-                      }/trunkgroup/${this.state.trunk.name}`}
+                      to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.state.trunk.tenantId}/groups/${this.state.trunk.groupId}/trunkgroup/${this.state.trunk.name}`}
                     >
-                      <div>{`${this.state.trunk.tenantId}/${
-                        this.state.trunk.groupId
-                      }/${this.state.trunk.name}`}</div>
+                      <div>{`${this.state.trunk.tenantId}/${this.state.trunk.groupId}/${this.state.trunk.name}`}</div>
                     </Link>
                   </Well>
                 )}
@@ -185,8 +180,11 @@ export class Backup extends Component {
     };
 
     const trunkData = {
-      invitationTimeout
+      invitationTimeout: Number(invitationTimeout)
     };
+
+    const clearBackupData = removeEmpty(backupData);
+    const clearTrunkData = removeEmpty(trunkData);
 
     this.setState({ disableButton: true }, () =>
       this.props
@@ -194,16 +192,17 @@ export class Backup extends Component {
           this.props.match.params.tenantId,
           this.props.match.params.groupId,
           this.props.match.params.trunkGroupName,
-          trunkData
+          clearTrunkData
         )
-        .then(() =>
-          this.props.fetchPutUpdateBackupByTrunkGtoup(
-            this.props.match.params.tenantId,
-            this.props.match.params.groupId,
-            this.props.match.params.trunkGroupName,
-            backupData
-          )
-        )
+        .then(() => {
+          Object.keys(clearBackupData).length &&
+            this.props.fetchPutUpdateBackupByTrunkGtoup(
+              this.props.match.params.tenantId,
+              this.props.match.params.groupId,
+              this.props.match.params.trunkGroupName,
+              clearBackupData
+            );
+        })
         .then(() => this.setState({ disableButton: false }))
     );
   };
