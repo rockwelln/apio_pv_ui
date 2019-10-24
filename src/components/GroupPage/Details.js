@@ -17,7 +17,8 @@ import { FormattedMessage } from "react-intl";
 
 import {
   fetchGetGroupById,
-  fetchPutUpdateGroupDetails
+  fetchPutUpdateGroupDetails,
+  fetchGetPhoneNumbersByGroupNotTP
 } from "../../store/actions";
 
 export class index extends Component {
@@ -33,6 +34,7 @@ export class index extends Component {
     direction: "Bi",
     additionnalRedundancy: true,
     isLoading: true,
+    isLoadingPN: true,
     group: {}
   };
 
@@ -43,6 +45,12 @@ export class index extends Component {
         this.props.match.params.groupId
       )
       .then(() => this.setState({ isLoading: false, group: this.props.group }));
+    this.props
+      .fetchGetPhoneNumbersByGroupNotTP(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId
+      )
+      .then(() => this.setState({ isLoadingPN: false }));
   };
 
   componentDidMount() {
@@ -50,7 +58,7 @@ export class index extends Component {
   }
 
   render() {
-    if (this.state.isLoading) {
+    if (this.state.isLoading || this.state.isLoadingPN) {
       return <Loading />;
     }
     return (
@@ -123,6 +131,37 @@ export class index extends Component {
                 }
                 disabled={this.state.isDisabled}
               />
+            </div>
+          </Col>
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={12} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-16"}>
+              <FormattedMessage
+                id="cliNumber"
+                defaultMessage="CLI phone number"
+              />
+            </div>
+            <div className={"margin-right-1 flex-basis-33"}>
+              <FormControl
+                componentClass="select"
+                value={this.state.group.cliPhoneNumber}
+                onChange={e =>
+                  this.setState({
+                    group: {
+                      ...this.state.group,
+                      cliPhoneNumber: e.target.value
+                    }
+                  })
+                }
+                disabled={this.state.isDisabled}
+              >
+                {this.props.phoneNumbersByGroupNotTP.map((el, i) => (
+                  <option key={i} value={el}>
+                    {el}
+                  </option>
+                ))}
+              </FormControl>
             </div>
           </Col>
         </Row>
@@ -242,9 +281,16 @@ export class index extends Component {
   };
 }
 
-const mapStateToProps = state => ({ group: state.group });
+const mapStateToProps = state => ({
+  group: state.group,
+  phoneNumbersByGroupNotTP: state.phoneNumbersByGroupNotTP
+});
 
-const mapDispatchToProps = { fetchGetGroupById, fetchPutUpdateGroupDetails };
+const mapDispatchToProps = {
+  fetchGetGroupById,
+  fetchPutUpdateGroupDetails,
+  fetchGetPhoneNumbersByGroupNotTP
+};
 
 export default withRouter(
   connect(

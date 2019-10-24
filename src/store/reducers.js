@@ -109,7 +109,8 @@ const initialState = {
   iad: {},
   iadForUpdate: {},
   enterpriseTrunks: [],
-  iadsByTrunk: {}
+  iadsByTrunk: {},
+  phoneNumbersByGroupNotTP: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -506,6 +507,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         iadsByTrunk: { ...action.data, iadFromSite, iadNotFromSite }
+      };
+    }
+    case actionType.GET_PHONE_NUMBERS_BY_GROUP_ID_NOT_TP: {
+      return {
+        ...state,
+        phoneNumbersByGroupNotTP: action.data.numbers
       };
     }
     case actionType.POST_CREATE_IAD: {

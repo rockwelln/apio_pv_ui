@@ -30,7 +30,8 @@ export class AddGroup extends Component {
     serviceType: "",
     buttonName: "Create",
     cliName: "",
-    isLoading: true
+    isLoading: true,
+    channelHunting: ""
   };
 
   componentDidMount = () => {
@@ -39,7 +40,8 @@ export class AddGroup extends Component {
         isLoading: false,
         typeOfIad: this.props.config.tenant.group.pbxType[0].value,
         typeOfAccess: this.props.config.tenant.group.accessType[0].value,
-        serviceType: this.props.config.tenant.group.serviceType[0].value
+        serviceType: this.props.config.tenant.group.serviceType[0].value,
+        channelHunting: this.props.config.tenant.group.channelHunting[0].value
       })
     );
   };
@@ -246,6 +248,33 @@ export class AddGroup extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
+                  <FormattedMessage
+                    id="channelHunting"
+                    defaultMessage="Channel Hunting"
+                  />
+                </div>
+                <div className={"margin-right-1 flex-basis-33"}>
+                  <FormControl
+                    componentClass="select"
+                    value={this.state.channelHunting}
+                    onChange={e =>
+                      this.setState({ channelHunting: e.target.value })
+                    }
+                  >
+                    {this.props.config.tenant.group.channelHunting.map(
+                      (type, i) => (
+                        <option key={i} value={type.value}>
+                          {type.label}
+                        </option>
+                      )
+                    )}
+                  </FormControl>
+                </div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
                   Numbers of Channels{"\u002a"}
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
@@ -305,7 +334,8 @@ export class AddGroup extends Component {
       serviceType,
       zipCode,
       cliName,
-      virtual
+      virtual,
+      channelHunting
     } = this.state;
 
     const data = {
@@ -316,7 +346,8 @@ export class AddGroup extends Component {
       pbxType: typeOfIad,
       accessType: typeOfAccess,
       serviceType,
-      virtual
+      virtual,
+      channelHunting
     };
     const clearData = removeEmpty(data);
     this.setState({ buttonName: "Creating..." }, () =>

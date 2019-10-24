@@ -533,6 +533,11 @@ export const getIADsByTrunk = data => ({
   data
 });
 
+export const getPhoneNumbersByGroupNotTP = data => ({
+  type: actionType.GET_PHONE_NUMBERS_BY_GROUP_ID_NOT_TP,
+  data
+});
+
 export const postCreateIAD = data => ({
   type: actionType.POST_CREATE_IAD,
   data
@@ -755,6 +760,25 @@ export function fetchGetGroupById(tenantId, groupId) {
           <FormattedMessage
             id="fetch-group-failed"
             defaultMessage="Failed to fetch group details!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetPhoneNumbersByGroupNotTP(tenantId, groupId) {
+  ///////////////////////////////////
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/numbers/`
+    )
+      .then(data => dispatch(getPhoneNumbersByGroupNotTP(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-phone-numbers-failed"
+            defaultMessage="Failed to fetch phone numbers!"
           />,
           error.message
         )
