@@ -156,6 +156,9 @@ export class index extends Component {
                 }
                 disabled={this.state.isDisabled}
               >
+                {!this.state.group.cliPhoneNumber && (
+                  <option key={"empty"} value={""}></option>
+                )}
                 {this.props.phoneNumbersByGroupNotTP.map((el, i) => (
                   <option key={i} value={el}>
                     {el}
