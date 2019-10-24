@@ -9,7 +9,6 @@ import {
 import * as actionType from "./constants";
 import { FormattedMessage } from "react-intl";
 import React from "react";
-import { func } from "prop-types";
 
 export const getTenants = data => ({
   type: actionType.GET_TENANTS,

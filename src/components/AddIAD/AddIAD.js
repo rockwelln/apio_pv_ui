@@ -152,6 +152,42 @@ export class AddIAD extends Component {
                 <div className={"margin-right-1 flex flex-basis-16"}>
                   <ControlLabel>
                     <FormattedMessage
+                      id="virtualIAD"
+                      defaultMessage="Virtual IAD"
+                    />
+                  </ControlLabel>
+                </div>
+                <div className={"margin-right-1 flex"}>
+                  <FormGroup className={"margin-0 flex"}>
+                    <Radio
+                      className={"margin-0 flex margin-right-2"}
+                      name="isVirtualIAD"
+                      checked={this.props.group.virtual}
+                      disabled
+                    >
+                      <div className="font-weight-bold flex">
+                        <FormattedMessage id="yes" defaultMessage="Yes" />
+                      </div>
+                    </Radio>
+                    <Radio
+                      className={"margin-0 flex margin-right-2"}
+                      name="isVirtualIAD"
+                      checked={!this.props.group.virtual}
+                      disabled
+                    >
+                      <div className="font-weight-bold flex">
+                        <FormattedMessage id="no" defaultMessage="No" />
+                      </div>
+                    </Radio>
+                  </FormGroup>
+                </div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  <ControlLabel>
+                    <FormattedMessage
                       id="iadType"
                       defaultMessage="Type of IAD"
                     />
@@ -198,6 +234,7 @@ export class AddIAD extends Component {
                           errorMacAddress: false
                         })
                       }
+                      disabled={this.props.group.virtual}
                       onBlur={this.validateMacAddress}
                     />
                   </div>
@@ -269,6 +306,7 @@ export class AddIAD extends Component {
                     value={this.state.nameEDUA}
                     placeholder={"EDU Name"}
                     onChange={e => this.setState({ nameEDUA: e.target.value })}
+                    disabled={this.props.group.virtual}
                   />
                 </div>
               </Col>
@@ -290,6 +328,7 @@ export class AddIAD extends Component {
                       onChange={e =>
                         this.setState({ nameEDUB: e.target.value })
                       }
+                      disabled={this.props.group.virtual}
                     />
                   </div>
                 </Col>
@@ -308,6 +347,7 @@ export class AddIAD extends Component {
                     value={this.state.lanPortA}
                     placeholder={"LAN port"}
                     onChange={e => this.setState({ lanPortA: e.target.value })}
+                    disabled={this.props.group.virtual}
                   />
                 </div>
               </Col>
@@ -329,6 +369,7 @@ export class AddIAD extends Component {
                       onChange={e =>
                         this.setState({ lanPortB: e.target.value })
                       }
+                      disabled={this.props.group.virtual}
                     />
                   </div>
                 </Col>
@@ -347,6 +388,7 @@ export class AddIAD extends Component {
                     value={this.state.wanPortA}
                     placeholder={"WAN port"}
                     onChange={e => this.setState({ wanPortA: e.target.value })}
+                    disabled={this.props.group.virtual}
                   />
                 </div>
               </Col>
@@ -368,6 +410,7 @@ export class AddIAD extends Component {
                       onChange={e =>
                         this.setState({ wanPortB: e.target.value })
                       }
+                      disabled={this.props.group.virtual}
                     />
                   </div>
                 </Col>
@@ -386,6 +429,7 @@ export class AddIAD extends Component {
                     value={this.state.srNameA}
                     placeholder={"SR name"}
                     onChange={e => this.setState({ srNameA: e.target.value })}
+                    disabled={this.props.group.virtual}
                   />
                 </div>
               </Col>
@@ -402,6 +446,7 @@ export class AddIAD extends Component {
                       value={this.state.srNameB}
                       placeholder={"SR name"}
                       onChange={e => this.setState({ srNameB: e.target.value })}
+                      disabled={this.props.group.virtual}
                     />
                   </div>
                 </Col>
@@ -420,6 +465,7 @@ export class AddIAD extends Component {
                     value={this.state.srSAPA}
                     placeholder={"SR SAP"}
                     onChange={e => this.setState({ srSAPA: e.target.value })}
+                    disabled={this.props.group.virtual}
                   />
                 </div>
               </Col>
@@ -436,6 +482,7 @@ export class AddIAD extends Component {
                       value={this.state.srSAPB}
                       placeholder={"SR SAP"}
                       onChange={e => this.setState({ srSAPB: e.target.value })}
+                      disabled={this.props.group.virtual}
                     />
                   </div>
                 </Col>
@@ -459,6 +506,7 @@ export class AddIAD extends Component {
                     onChange={e =>
                       this.setState({ eduVLANIDA: e.target.value })
                     }
+                    disabled={this.props.group.virtual}
                   />
                 </div>
               </Col>
@@ -480,6 +528,7 @@ export class AddIAD extends Component {
                       onChange={e =>
                         this.setState({ eduVLANIDB: e.target.value })
                       }
+                      disabled={this.props.group.virtual}
                     />
                   </div>
                 </Col>
@@ -821,121 +870,6 @@ export class AddIAD extends Component {
                 </Row>
               </React.Fragment>
             )}
-            {/* <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex font-24"}>PRA Info</div>
-              </Col>
-            </Row>
-            <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
-                <Table hover bordered>
-                  <thead>
-                    <tr>
-                      <th>PRA TPID</th>
-                      <th>PRA CID</th>
-                      <th>PRA PORT</th>
-                      <th>PRA MAINT nr</th>
-                      <th>MODE</th>
-                      <th>
-                        ACTIVE
-                        <Glyphicon
-                          glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByRangeEnd}
-                        />
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody></tbody>
-                </Table>
-              </Col>
-            </Row>
-            <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>
-                  Clocking
-                </div>
-                <div className={"margin-right-1 flex"}>
-                  <FormGroup className={"margin-0 flex"}>
-                    {CLOCKING.map((type, i) => (
-                      <Radio
-                        className={"margin-0 flex margin-right-2"}
-                        key={i + ""}
-                        name="clocking"
-                        value={type.value}
-                        checked={type.value === this.state.clocking}
-                        onChange={e =>
-                          this.setState({
-                            clocking: e.target.value
-                          })
-                        }
-                      >
-                        <div className="font-weight-bold flex">{type.name}</div>
-                      </Radio>
-                    ))}
-                  </FormGroup>
-                </div>
-              </Col>
-            </Row>
-            <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>ISDN</div>
-                <div className={"margin-right-1 flex"}>
-                  <FormGroup className={"margin-0 flex"}>
-                    {ISDN.map((type, i) => (
-                      <Radio
-                        className={"margin-0 flex margin-right-2"}
-                        key={i + ""}
-                        name="isdn"
-                        value={type.value}
-                        checked={type.value === this.state.isdn}
-                        onChange={e =>
-                          this.setState({
-                            isdn: e.target.value
-                          })
-                        }
-                      >
-                        <div className="font-weight-bold flex">{type.name}</div>
-                      </Radio>
-                    ))}
-                  </FormGroup>
-                </div>
-              </Col>
-            </Row>
-            <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>
-                  Dual Power
-                </div>
-                <div className={"margin-right-1 flex"}>
-                  <FormGroup className={"margin-0 flex"}>
-                    <Radio
-                      className={"margin-0 flex margin-right-2"}
-                      name="dualPower"
-                      checked={this.state.dualPower}
-                      onChange={e =>
-                        this.setState({
-                          virtualSite: true
-                        })
-                      }
-                    >
-                      <div className="font-weight-bold flex">Yes</div>
-                    </Radio>
-                    <Radio
-                      className={"margin-0 flex margin-right-2"}
-                      name="dualPower"
-                      checked={!this.state.dualPower}
-                      onChange={e =>
-                        this.setState({
-                          virtualSite: false
-                        })
-                      }
-                    >
-                      <div className="font-weight-bold flex">No</div>
-                    </Radio>
-                  </FormGroup>
-                </div>
-              </Col>
-            </Row> */}
             <Row>
               <Col md={12}>
                 <div className="button-row">
@@ -1073,7 +1007,8 @@ export class AddIAD extends Component {
         direction: direction === "useGroupSettings" ? null : direction,
         channelsIn,
         channelsOut
-      }
+      },
+      virtual: this.props.group.virtual
     };
     const clearData = removeEmpty(data);
     console.log(clearData);

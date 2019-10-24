@@ -159,13 +159,13 @@ export class index extends Component {
                 <Radio
                   className={"margin-0 flex margin-right-2"}
                   name="isVirtualSite"
-                  checked={this.state.group.virtualSite}
-                  disabled={this.state.isDisabled}
+                  checked={this.state.group.virtual}
+                  disabled
                   onChange={e =>
                     this.setState({
                       group: {
                         ...this.state.group,
-                        virtualSite: e.target.checked
+                        virtual: e.target.checked
                       }
                     })
                   }
@@ -177,11 +177,11 @@ export class index extends Component {
                 <Radio
                   className={"margin-0 flex margin-right-2"}
                   name="isVirtualSite"
-                  checked={!this.state.virtualSite}
-                  disabled={this.state.isDisabled}
+                  checked={!this.state.group.virtual}
+                  disabled
                   onChange={e =>
                     this.setState({
-                      virtualSite: false
+                      virtual: false
                     })
                   }
                 >
@@ -229,7 +229,7 @@ export class index extends Component {
     const data = {
       groupName,
       cliName,
-      virtualSite,
+      //virtualSite,
       zipCode
     };
     this.props

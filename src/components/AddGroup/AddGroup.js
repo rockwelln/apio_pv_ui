@@ -23,7 +23,7 @@ export class AddGroup extends Component {
   state = {
     siteName: "",
     zipCode: "",
-    virtualSite: false,
+    virtual: false,
     typeOfIad: "",
     typeOfAccess: "",
     numberOfChannels: undefined,
@@ -137,10 +137,10 @@ export class AddGroup extends Component {
                     <Radio
                       className={"margin-0 flex margin-right-2"}
                       name="isVirtualSite"
-                      checked={this.state.virtualSite}
+                      checked={this.state.virtual}
                       onChange={e =>
                         this.setState({
-                          virtualSite: true
+                          virtual: true
                         })
                       }
                     >
@@ -149,10 +149,10 @@ export class AddGroup extends Component {
                     <Radio
                       className={"margin-0 flex margin-right-2"}
                       name="isVirtualSite"
-                      checked={!this.state.virtualSite}
+                      checked={!this.state.virtual}
                       onChange={e =>
                         this.setState({
-                          virtualSite: false
+                          virtual: false
                         })
                       }
                     >
@@ -305,7 +305,7 @@ export class AddGroup extends Component {
       serviceType,
       zipCode,
       cliName,
-      virtualSite
+      virtual
     } = this.state;
 
     const data = {
@@ -316,7 +316,7 @@ export class AddGroup extends Component {
       pbxType: typeOfIad,
       accessType: typeOfAccess,
       serviceType,
-      virtualSite
+      virtual
     };
     const clearData = removeEmpty(data);
     this.setState({ buttonName: "Creating..." }, () =>
