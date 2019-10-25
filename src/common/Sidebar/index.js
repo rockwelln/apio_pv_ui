@@ -25,7 +25,9 @@ export class Sidebar extends Component {
           <LinkContainer
             to={`/provisioning/${this.props.match.params.gwName}/tenants`}
           >
-            <NavItem eventKey={0}>ENTREPRISES</NavItem>
+            <NavItem eventKey={0} className={"text-align-center"}>
+              ENTREPRISES
+            </NavItem>
           </LinkContainer>
           {/* <LinkContainer
             to={`/provisioning/${this.props.match.params.gwName}/search`}

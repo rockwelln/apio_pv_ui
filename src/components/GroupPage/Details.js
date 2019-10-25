@@ -267,11 +267,18 @@ export class index extends Component {
   }
 
   updateGroup = () => {
-    const { groupName, cliName, zipCode, virtualSite } = this.state.group;
+    const {
+      groupName,
+      cliName,
+      zipCode,
+      virtualSite,
+      cliPhoneNumber
+    } = this.state.group;
     const data = {
       groupName,
       cliName,
       //virtualSite,
+      cliPhoneNumber,
       zipCode
     };
     this.props

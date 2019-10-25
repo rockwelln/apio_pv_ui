@@ -210,6 +210,7 @@ export class IADs extends Component {
                             iadTypeArr={
                               this.props.config.tenant.group.iad.iadType
                             }
+                            onReload={() => this.fetchIADs()}
                           />
                         )
                     )}

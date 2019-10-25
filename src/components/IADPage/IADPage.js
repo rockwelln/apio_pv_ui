@@ -23,6 +23,7 @@ import Details from "./Tabs/Details";
 import GroupService from "./Tabs/GroupService";
 import Edu from "./Tabs/Edu";
 import IPAddress from "./Tabs/IpAddress";
+import Advanced from "./Tabs/Advanced";
 import Loading from "../../common/Loading";
 
 export class IADPage extends Component {
@@ -83,7 +84,9 @@ export class IADPage extends Component {
             <Tab eventKey={3} title="Group service override">
               <GroupService />
             </Tab>
-            <Tab eventKey={4} title="Advanced settings"></Tab>
+            <Tab eventKey={4} title="Advanced settings">
+              <Advanced />
+            </Tab>
           </Tabs>
         </div>
       </React.Fragment>

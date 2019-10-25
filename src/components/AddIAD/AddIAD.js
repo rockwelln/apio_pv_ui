@@ -879,22 +879,24 @@ export class AddIAD extends Component {
                       type="submit"
                       className="btn-primary"
                       disabled={
-                        errorMacAddress ||
-                        !iadType ||
-                        !pilotNumber ||
-                        !nameEDUA ||
-                        !lanPortA ||
-                        !wanPortA ||
-                        !srNameA ||
-                        !srSAPA ||
-                        !eduVLANIDA ||
-                        (secondEDU &&
-                          (!nameEDUB ||
-                            !lanPortB ||
-                            !wanPortB ||
-                            !srNameB ||
-                            !srSAPB ||
-                            !eduVLANIDB))
+                        this.props.group.virtual
+                          ? !iadType || !pilotNumber
+                          : errorMacAddress ||
+                            !iadType ||
+                            !pilotNumber ||
+                            !nameEDUA ||
+                            !lanPortA ||
+                            !wanPortA ||
+                            !srNameA ||
+                            !srSAPA ||
+                            !eduVLANIDA ||
+                            (secondEDU &&
+                              (!nameEDUB ||
+                                !lanPortB ||
+                                !wanPortB ||
+                                !srNameB ||
+                                !srSAPB ||
+                                !eduVLANIDB))
                       }
                     >
                       <Glyphicon glyph="glyphicon glyphicon-ok" />{" "}

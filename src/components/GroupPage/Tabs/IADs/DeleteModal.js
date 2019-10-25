@@ -17,11 +17,11 @@ class DeleteModal extends Component {
   }
 
   onDelete(tenantId, groupId, iadId) {
-    const { onClose } = this.props;
+    const { onReload } = this.props;
     this.setState({ deleting: true });
     this.props.fetchDeleteTrunkGroup(tenantId, groupId, iadId).then(() => {
       this.setState({ deleting: false });
-      onClose && onClose(true);
+      onReload && onReload(true);
     });
   }
 
