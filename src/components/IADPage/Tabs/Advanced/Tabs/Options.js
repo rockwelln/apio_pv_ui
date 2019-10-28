@@ -24,7 +24,7 @@ export class Options extends Component {
               </ControlLabel>
             </div>
             <div className={"margin-right-1 flex-basis-33"}>
-              <Checkbox checked={this.props.iad.advanced.clock_master} />
+              <Checkbox defaultChecked={this.props.iad.advanced.clock_master} />
             </div>
           </Col>
         </Row>
@@ -39,7 +39,7 @@ export class Options extends Component {
               </ControlLabel>
             </div>
             <div className={"margin-right-1 flex-basis-33"}>
-              <Checkbox checked={this.props.iad.advanced.dual_power} />
+              <Checkbox defaultChecked={this.props.iad.advanced.dual_power} />
             </div>
           </Col>
         </Row>
@@ -56,8 +56,7 @@ export class Options extends Component {
             <div className={"margin-right-1 flex-basis-33"}>
               <FormControl
                 componentClass="select"
-                value={this.props.iad.advanced.isdnTerminationSide}
-                onChange={this.changeDtmf}
+                defaultValue={this.props.iad.advanced.isdnTerminationSide}
               >
                 {this.props.config.tenant.group.iad.isdnTerminationSide.map(
                   (el, i) => (

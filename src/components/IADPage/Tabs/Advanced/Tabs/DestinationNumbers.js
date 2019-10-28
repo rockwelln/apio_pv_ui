@@ -26,8 +26,7 @@ export class TrunkId extends Component {
             <div className={"margin-right-1 flex-basis-33"}>
               <FormControl
                 componentClass="select"
-                value={this.props.iad.advanced.destnr1}
-                onChange={this.changeDtmf}
+                defaultValue={this.props.iad.advanced.destnr1}
               >
                 {this.props.config.tenant.group.iad.destnr1.map((el, i) => (
                   <option key={i} value={el.value}>
@@ -51,8 +50,7 @@ export class TrunkId extends Component {
             <div className={"margin-right-1 flex-basis-33"}>
               <FormControl
                 componentClass="select"
-                value={this.props.iad.advanced.destnr2}
-                onChange={this.changeDtmf}
+                defaultValue={this.props.iad.advanced.destnr2}
               >
                 {this.props.config.tenant.group.iad.destnr.map((el, i) => (
                   <option key={i} value={el.value}>
@@ -76,8 +74,7 @@ export class TrunkId extends Component {
             <div className={"margin-right-1 flex-basis-33"}>
               <FormControl
                 componentClass="select"
-                value={this.props.iad.advanced.destnr3}
-                onChange={this.changeDtmf}
+                defaultValue={this.props.iad.advanced.destnr3}
               >
                 {this.props.config.tenant.group.iad.destnr.map((el, i) => (
                   <option key={i} value={el.value}>
@@ -101,8 +98,7 @@ export class TrunkId extends Component {
             <div className={"margin-right-1 flex-basis-33"}>
               <FormControl
                 componentClass="select"
-                value={this.props.iad.advanced.destnr4}
-                onChange={this.changeDtmf}
+                defaultValue={this.props.iad.advanced.destnr4}
               >
                 {this.props.config.tenant.group.iad.destnr.map((el, i) => (
                   <option key={i} value={el.value}>
@@ -126,8 +122,7 @@ export class TrunkId extends Component {
             <div className={"margin-right-1 flex-basis-33"}>
               <FormControl
                 componentClass="select"
-                value={this.props.iad.advanced.destnr5}
-                onChange={this.changeDtmf}
+                defaultValue={this.props.iad.advanced.destnr5}
               >
                 {this.props.config.tenant.group.iad.destnr.map((el, i) => (
                   <option key={i} value={el.value}>
@@ -151,8 +146,7 @@ export class TrunkId extends Component {
             <div className={"margin-right-1 flex-basis-33"}>
               <FormControl
                 componentClass="select"
-                value={this.props.iad.advanced.destnr6}
-                onChange={this.changeDtmf}
+                defaultValue={this.props.iad.advanced.destnr6}
               >
                 {this.props.config.tenant.group.iad.destnr.map((el, i) => (
                   <option key={i} value={el.value}>
@@ -176,8 +170,7 @@ export class TrunkId extends Component {
             <div className={"margin-right-1 flex-basis-33"}>
               <FormControl
                 componentClass="select"
-                value={this.props.iad.advanced.destnr7}
-                onChange={this.changeDtmf}
+                defaultValue={this.props.iad.advanced.destnr7}
               >
                 {this.props.config.tenant.group.iad.destnr.map((el, i) => (
                   <option key={i} value={el.value}>
@@ -201,8 +194,7 @@ export class TrunkId extends Component {
             <div className={"margin-right-1 flex-basis-33"}>
               <FormControl
                 componentClass="select"
-                value={this.props.iad.advanced.destnr8}
-                onChange={this.changeDtmf}
+                defaultValue={this.props.iad.advanced.destnr8}
               >
                 {this.props.config.tenant.group.iad.destnr.map((el, i) => (
                   <option key={i} value={el.value}>
@@ -226,8 +218,7 @@ export class TrunkId extends Component {
             <div className={"margin-right-1 flex-basis-33"}>
               <FormControl
                 componentClass="select"
-                value={this.props.iad.advanced.destnr9}
-                onChange={this.changeDtmf}
+                defaultValue={this.props.iad.advanced.destnr9}
               >
                 {this.props.config.tenant.group.iad.destnr.map((el, i) => (
                   <option key={i} value={el.value}>
@@ -251,8 +242,7 @@ export class TrunkId extends Component {
             <div className={"margin-right-1 flex-basis-33"}>
               <FormControl
                 componentClass="select"
-                value={this.props.iad.advanced.destnr10}
-                onChange={this.changeDtmf}
+                defaultValue={this.props.iad.advanced.destnr10}
               >
                 {this.props.config.tenant.group.iad.destnr.map((el, i) => (
                   <option key={i} value={el.value}>
