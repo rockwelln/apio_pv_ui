@@ -166,7 +166,7 @@ export class Product extends Component {
               <ControlLabel>
                 <FormattedMessage
                   id="np1Redundancy"
-                  defaultMessage="np1Redundancy"
+                  defaultMessage="N+1 Redundancy"
                 />
               </ControlLabel>
             </div>
