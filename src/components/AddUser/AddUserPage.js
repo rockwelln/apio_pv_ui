@@ -493,12 +493,12 @@ export class AddUserPage extends Component {
       templateName,
       password,
       language,
-      trunkEndpoint: phoneNumber && {
+      trunkEndpoint: this.props.match.params.trunkGroupName && {
         trunkGroupDeviceEndpoint: {
           name:
             this.props.match.params.trunkGroupName &&
             this.props.match.params.trunkGroupName,
-          linePort: `${phoneNumber}@${this.props.group.defaultDomain}`,
+          linePort: `${userId}@${this.props.group.defaultDomain}`,
           isPilotUser: false
         }
       }
@@ -514,13 +514,14 @@ export class AddUserPage extends Component {
           clearData
         )
         .then(res =>
-          this.setState(
-            { buttonName: "Create" },
-            () =>
-              res &&
-              this.props.history.push(
-                `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/users/${this.props.createdUserInGroup.userId}`
-              )
+          this.setState({ buttonName: "Create" }, () =>
+            res && this.props.match.params.trunkGroupName
+              ? this.props.history.push(
+                  `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/trunkgroup/${this.props.match.params.trunkGroupName}/users/${this.props.createdUserInGroup.userId}`
+                )
+              : this.props.history.push(
+                  `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/users/${this.props.createdUserInGroup.userId}`
+                )
           )
         )
     );
