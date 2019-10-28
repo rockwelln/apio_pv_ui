@@ -57,9 +57,9 @@ export class CategoryPage extends Component {
 
   componentDidUpdate(prevProps) {
     if (
-      prevProps.match.params.templateName &&
-      prevProps.match.params.templateName !==
-        this.props.match.params.templateName
+      prevProps.match.params.categoryName &&
+      prevProps.match.params.categoryName !==
+        this.props.match.params.categoryName
     ) {
       this.setState(
         {
