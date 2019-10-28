@@ -17,9 +17,9 @@ import { removeEmpty } from "../../remuveEmptyInObject";
 export class Edu extends Component {
   state = {
     edu1: {name: "",
-  lanPort: "", wanPort: "", srName: "", srSap: "", vlan: ""},
+  lanPort: "", wanPort: "", vlan: "", srName: "", srSap: "", tpid: "", circuit_id: "", norm_status_edu: "", norm_error_edu: "", norm_status_sr: "", norm_error_sr: ""},
     edu2: {name: "",
-    lanPort: "", wanPort: "", srName: "", srSap: "", vlan: ""},
+    lanPort: "", wanPort: "", vlan: "", srName: "", srSap: "", tpid: "", circuit_id: "", norm_status_edu: "", norm_error_edu: "", norm_status_sr: "", norm_error_sr: ""},
     disabledButton: false
   };
 
@@ -234,6 +234,198 @@ export class Edu extends Component {
                   value={this.state.edu2.srSap}
                   placeholder={"SR SAP"}
                   onChange={this.changeEdu2SrSap}
+                />
+              </div>
+            </Col>
+          )}
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={6} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-33"}>
+              <ControlLabel>
+                <FormattedMessage id="tpid" defaultMessage="Tina Product ID" />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-66"}>
+              <FormControl
+                type="text"
+                value={this.state.edu1.tpid}
+                disabled
+              />
+            </div>
+          </Col>
+          {this.props.iad.edu2 && (
+            <Col md={6} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-33"}>
+                <ControlLabel>
+                  <FormattedMessage id="tpid" defaultMessage="Tina Product ID" />
+                </ControlLabel>
+              </div>
+              <div className={"margin-right-1 flex-basis-66"}>
+                <FormControl
+                  type="text"
+                  value={this.state.edu2.tpid}
+                  disabled
+                />
+              </div>
+            </Col>
+          )}
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={6} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-33"}>
+              <ControlLabel>
+                <FormattedMessage id="circuit_id" defaultMessage="Circuit ID" />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-66"}>
+              <FormControl
+                type="text"
+                value={this.state.edu1.circuit_id}
+                disabled
+              />
+            </div>
+          </Col>
+          {this.props.iad.edu2 && (
+            <Col md={6} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-33"}>
+                <ControlLabel>
+                  <FormattedMessage id="circuit_id" defaultMessage="Circuit ID" />
+                </ControlLabel>
+              </div>
+              <div className={"margin-right-1 flex-basis-66"}>
+                <FormControl
+                  type="text"
+                  value={this.state.edu2.circuit_id}
+                  disabled
+                />
+              </div>
+            </Col>
+          )}
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={6} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-33"}>
+              <ControlLabel>
+                <FormattedMessage id="norm_status_edu" defaultMessage="NORM Status EDU" />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-66"}>
+              <FormControl
+                type="text"
+                value={this.state.edu1.norm_status_edu}
+                disabled
+              />
+            </div>
+          </Col>
+          {this.props.iad.edu2 && (
+            <Col md={6} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-33"}>
+                <ControlLabel>
+                  <FormattedMessage id="norm_status_edu" defaultMessage="NORM Status EDU" />
+                </ControlLabel>
+              </div>
+              <div className={"margin-right-1 flex-basis-66"}>
+                <FormControl
+                  type="text"
+                  value={this.state.edu2.norm_status_edu}
+                  disabled
+                />
+              </div>
+            </Col>
+          )}
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={6} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-33"}>
+              <ControlLabel>
+                <FormattedMessage id="norm_error_edu" defaultMessage="NORM Error EDU" />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-66"}>
+              <FormControl
+                type="text"
+                value={this.state.edu1.norm_error_edu}
+                disabled
+              />
+            </div>
+          </Col>
+          {this.props.iad.edu2 && (
+            <Col md={6} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-33"}>
+                <ControlLabel>
+                  <FormattedMessage id="norm_error_edu" defaultMessage="NORM Error EDU" />
+                </ControlLabel>
+              </div>
+              <div className={"margin-right-1 flex-basis-66"}>
+                <FormControl
+                  type="text"
+                  value={this.state.edu2.norm_error_edu}
+                  disabled
+                />
+              </div>
+            </Col>
+          )}
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={6} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-33"}>
+              <ControlLabel>
+                <FormattedMessage id="norm_status_sr" defaultMessage="NORM status SR" />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-66"}>
+              <FormControl
+                type="text"
+                value={this.state.edu1.norm_status_sr}
+                disabled
+              />
+            </div>
+          </Col>
+          {this.props.iad.edu2 && (
+            <Col md={6} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-33"}>
+                <ControlLabel>
+                  <FormattedMessage id="norm_status_sr" defaultMessage="NORM status SR" />
+                </ControlLabel>
+              </div>
+              <div className={"margin-right-1 flex-basis-66"}>
+                <FormControl
+                  type="text"
+                  value={this.state.edu2.norm_status_sr}
+                  disabled
+                />
+              </div>
+            </Col>
+          )}
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={6} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-33"}>
+              <ControlLabel>
+                <FormattedMessage id="norm_error_sr" defaultMessage="Norm Error SR" />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-66"}>
+              <FormControl
+                type="text"
+                value={this.state.edu1.norm_error_sr}
+                disabled
+              />
+            </div>
+          </Col>
+          {this.props.iad.edu2 && (
+            <Col md={6} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-33"}>
+                <ControlLabel>
+                  <FormattedMessage id="norm_error_sr" defaultMessage="Norm Error SR" />
+                </ControlLabel>
+              </div>
+              <div className={"margin-right-1 flex-basis-66"}>
+                <FormControl
+                  type="text"
+                  value={this.state.edu2.norm_error_sr}
+                  disabled
                 />
               </div>
             </Col>
