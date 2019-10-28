@@ -113,6 +113,7 @@ export class Details extends Component {
                 type="text"
                 value={this.state.pilotNumber || this.props.iad.pilotNumber}
                 placeholder={"Pilot Number"}
+                disabled
                 onChange={this.upadatePilotNumber}
               />
             </div>

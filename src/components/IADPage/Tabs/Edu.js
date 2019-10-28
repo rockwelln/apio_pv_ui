@@ -138,6 +138,43 @@ export class Edu extends Component {
           <Col md={6} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-33"}>
               <ControlLabel>
+                <FormattedMessage id="eduVlanId" defaultMessage="EDU VLAN ID" />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-66"}>
+              <FormControl
+                type="text"
+                value={this.state.edu1.vlan}
+                placeholder={"EDU VLAN ID"}
+                onChange={this.changeEdu1Vlan}
+              />
+            </div>
+          </Col>
+          {this.props.iad.edu2 && (
+            <Col md={6} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-33"}>
+                <ControlLabel>
+                  <FormattedMessage
+                    id="eduVlanId"
+                    defaultMessage="EDU VLAN ID"
+                  />
+                </ControlLabel>
+              </div>
+              <div className={"margin-right-1 flex-basis-66"}>
+                <FormControl
+                  type="text"
+                  value={this.state.edu2.vlan}
+                  placeholder={"EDU VLAN ID"}
+                  onChange={this.changeEdu2Vlan}
+                />
+              </div>
+            </Col>
+          )}
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={6} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-33"}>
+              <ControlLabel>
                 <FormattedMessage id="srName" defaultMessage="SR name" />
               </ControlLabel>
             </div>
@@ -197,43 +234,6 @@ export class Edu extends Component {
                   value={this.state.edu2.srSap}
                   placeholder={"SR SAP"}
                   onChange={this.changeEdu2SrSap}
-                />
-              </div>
-            </Col>
-          )}
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={6} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-33"}>
-              <ControlLabel>
-                <FormattedMessage id="eduVlanId" defaultMessage="EDU VLAN ID" />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-66"}>
-              <FormControl
-                type="text"
-                value={this.state.edu1.vlan}
-                placeholder={"EDU VLAN ID"}
-                onChange={this.changeEdu1Vlan}
-              />
-            </div>
-          </Col>
-          {this.props.iad.edu2 && (
-            <Col md={6} className={"flex align-items-center"}>
-              <div className={"margin-right-1 flex flex-basis-33"}>
-                <ControlLabel>
-                  <FormattedMessage
-                    id="eduVlanId"
-                    defaultMessage="EDU VLAN ID"
-                  />
-                </ControlLabel>
-              </div>
-              <div className={"margin-right-1 flex-basis-66"}>
-                <FormControl
-                  type="text"
-                  value={this.state.edu2.vlan}
-                  placeholder={"EDU VLAN ID"}
-                  onChange={this.changeEdu2Vlan}
                 />
               </div>
             </Col>

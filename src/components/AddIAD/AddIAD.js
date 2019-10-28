@@ -89,16 +89,16 @@ export class AddIAD extends Component {
       nameEDUA,
       lanPortA,
       wanPortA,
+      eduVLANIDA,
       srNameA,
       srSAPA,
-      eduVLANIDA,
       secondEDU,
       nameEDUB,
       lanPortB,
       wanPortB,
+      eduVLANIDB,
       srNameB,
       srSAPB,
-      eduVLANIDB,
       iadType,
       pilotNumber,
       errorMacAddress
@@ -420,6 +420,52 @@ export class AddIAD extends Component {
               <Col md={6} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-33"}>
                   <ControlLabel>
+                    <FormattedMessage
+                      id="eduVlanId"
+                      defaultMessage="EDU VLAN ID"
+                    />
+                  </ControlLabel>
+                </div>
+                <div className={"margin-right-1 flex-basis-66"}>
+                  <FormControl
+                    type="text"
+                    value={this.state.eduVLANIDA}
+                    placeholder={"EDU VLAN ID"}
+                    onChange={e =>
+                      this.setState({ eduVLANIDA: e.target.value })
+                    }
+                    disabled={this.props.group.virtual}
+                  />
+                </div>
+              </Col>
+              {this.state.secondEDU && (
+                <Col md={6} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex flex-basis-33"}>
+                    <ControlLabel>
+                      <FormattedMessage
+                        id="eduVlanId"
+                        defaultMessage="EDU VLAN ID"
+                      />
+                    </ControlLabel>
+                  </div>
+                  <div className={"margin-right-1 flex-basis-66"}>
+                    <FormControl
+                      type="text"
+                      value={this.state.eduVLANIDB}
+                      placeholder={"EDU VLAN ID"}
+                      onChange={e =>
+                        this.setState({ eduVLANIDB: e.target.value })
+                      }
+                      disabled={this.props.group.virtual}
+                    />
+                  </div>
+                </Col>
+              )}
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={6} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-33"}>
+                  <ControlLabel>
                     <FormattedMessage id="srName" defaultMessage="SR name" />
                   </ControlLabel>
                 </div>
@@ -482,52 +528,6 @@ export class AddIAD extends Component {
                       value={this.state.srSAPB}
                       placeholder={"SR SAP"}
                       onChange={e => this.setState({ srSAPB: e.target.value })}
-                      disabled={this.props.group.virtual}
-                    />
-                  </div>
-                </Col>
-              )}
-            </Row>
-            <Row className={"margin-top-1"}>
-              <Col md={6} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-33"}>
-                  <ControlLabel>
-                    <FormattedMessage
-                      id="eduVlanId"
-                      defaultMessage="EDU VLAN ID"
-                    />
-                  </ControlLabel>
-                </div>
-                <div className={"margin-right-1 flex-basis-66"}>
-                  <FormControl
-                    type="text"
-                    value={this.state.eduVLANIDA}
-                    placeholder={"EDU VLAN ID"}
-                    onChange={e =>
-                      this.setState({ eduVLANIDA: e.target.value })
-                    }
-                    disabled={this.props.group.virtual}
-                  />
-                </div>
-              </Col>
-              {this.state.secondEDU && (
-                <Col md={6} className={"flex align-items-center"}>
-                  <div className={"margin-right-1 flex flex-basis-33"}>
-                    <ControlLabel>
-                      <FormattedMessage
-                        id="eduVlanId"
-                        defaultMessage="EDU VLAN ID"
-                      />
-                    </ControlLabel>
-                  </div>
-                  <div className={"margin-right-1 flex-basis-66"}>
-                    <FormControl
-                      type="text"
-                      value={this.state.eduVLANIDB}
-                      placeholder={"EDU VLAN ID"}
-                      onChange={e =>
-                        this.setState({ eduVLANIDB: e.target.value })
-                      }
                       disabled={this.props.group.virtual}
                     />
                   </div>
