@@ -28,7 +28,9 @@ export class Options extends Component {
       advanced: {
         clock_master: this.props.iad.advanced.clock_master,
         dual_power: this.props.iad.advanced.dual_power,
-        isdnTerminationSide: this.props.iad.advanced.isdnTerminationSide
+        isdnTerminationSide: this.props.iad.advanced.isdnTerminationSide,
+        sysLogEnabled: this.props.iad.advanced.sysLogEnabled,
+        sysLogIp: this.props.iad.advanced.sysLogIp
       }
     });
   }
@@ -92,6 +94,38 @@ export class Options extends Component {
                   )
                 )}
               </FormControl>
+            </div>
+          </Col>
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={12} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-16"}>
+              <ControlLabel>
+                <FormattedMessage id="sysLogEnabled" defaultMessage="Syslog enabled" />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-33"}>
+              <Checkbox
+                checked={this.state.advanced.sysLogEnabled}
+                onChange={this.changeSysLogEnabled}
+              />
+            </div>
+          </Col>
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={12} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-16"}>
+              <ControlLabel>
+                <FormattedMessage id="sysLogIp" defaultMessage="Syslog IP Address" />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-16"}>
+              <FormControl
+                type="text"
+                value={this.state.advanced.sysLogIp}
+                placeholder={"IPv4 address"}
+                onChange={this.changeSysLogIp}
+              />
             </div>
           </Col>
         </Row>
@@ -160,6 +194,26 @@ export class Options extends Component {
       }
     });
     this.props.changeObjectIAD("advanced", "dual_power", e.target.checked);
+  };
+
+  changeSysLogEnabled = e => {
+    this.setState({
+      advanced: {
+        ...this.state.advanced,
+        sysLogEnabled: e.target.checked
+      }
+    });
+    this.props.changeObjectIAD("advanced", "sysLogEnabled", e.target.checked);
+  };
+
+  changeSysLogIp = e => {
+    this.setState({
+      advanced: {
+        ...this.state.advanced,
+        sysLogIp: e.target.value
+      }
+    });
+    this.props.changeObjectIAD("advanced", "sysLogIp", e.target.value);
   };
 
   changeClockMaster = e => {
