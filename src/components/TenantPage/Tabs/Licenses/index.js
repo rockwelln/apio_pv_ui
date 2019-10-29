@@ -150,7 +150,10 @@ export class Licenses extends Component {
                             this.setState(prevState => ({
                               trunkGroups: {
                                 ...prevState.trunkGroups,
-                                maxActiveCalls: parseInt(target.value, 10)
+                                maxActiveCalls: {
+                                  ...prevState.trunkGroups.maxActiveCalls,
+                                  maximum: Number(target.value)
+                                }
                               }
                             }));
                           }}
@@ -213,7 +216,7 @@ export class Licenses extends Component {
                                   burstingMaxActiveCalls: {
                                     ...prevState.trunkGroups
                                       .burstingMaxActiveCalls,
-                                    maximum: parseInt(target.value, 10)
+                                    maximum: Number(target.value)
                                   }
                                 }
                               }));
@@ -561,7 +564,6 @@ export class Licenses extends Component {
       maxActiveCalls: this.state.trunkGroups.maxActiveCalls,
       burstingMaxActiveCalls: this.state.trunkGroups.burstingMaxActiveCalls
     };
-
     this.props
       .fetchPutUpdateTrunkByTenantId(this.props.match.params.tenantId, data)
       .then(this.setState({ editTrunkCapacity: false }));
