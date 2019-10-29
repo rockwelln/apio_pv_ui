@@ -16,7 +16,8 @@ export class Details extends Component {
     sipAuthenticationUserName: null,
     pilotUserId: null,
     accessDevice: null,
-    disableButton: false
+    disableButton: false,
+    sipAuthenticationPassword: ""
   };
 
   componentDidMount() {
@@ -64,6 +65,25 @@ export class Details extends Component {
           </Col>
         </Row>
         <Row className={"margin-top-1"}>
+          <Col md={12} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-16"}>
+              SIP password
+            </div>
+            <div>
+              <FormControl
+                autoComplete={false}
+                type="password"
+                value={this.state.sipAuthenticationPassword}
+                onChange={e => {
+                  this.setState({
+                    sipAuthenticationPassword: e.target.value
+                  });
+                }}
+              />
+            </div>
+          </Col>
+        </Row>
+        <Row className={"margin-top-1"}>
           <Col md={12}>
             <div className="button-row">
               <div className="pull-right">
@@ -86,11 +106,13 @@ export class Details extends Component {
       requireAuthentication,
       sipAuthenticationUserName,
       pilotUserId,
-      accessDevice
+      accessDevice,
+      sipAuthenticationPassword
     } = this.state;
 
     const data = {
       requireAuthentication: requireAuthentication && requireAuthentication,
+      sipAuthenticationPassword,
       sipAuthenticationUserName:
         sipAuthenticationUserName && sipAuthenticationUserName,
       pilotUserId: pilotUserId && pilotUserId,

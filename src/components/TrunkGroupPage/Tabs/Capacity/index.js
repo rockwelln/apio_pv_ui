@@ -42,7 +42,7 @@ export class Capacity extends Component {
                 value={this.state.maxActiveCalls}
                 onChange={e => {
                   this.setState({
-                    maxActiveCalls: e.target.value
+                    maxActiveCalls: Number(e.target.value)
                   });
                 }}
               />
@@ -60,7 +60,7 @@ export class Capacity extends Component {
                 value={this.state.maxIncomingCalls}
                 onChange={e => {
                   this.setState({
-                    maxIncomingCalls: e.target.value
+                    maxIncomingCalls: Number(e.target.value)
                   });
                 }}
               />
@@ -78,7 +78,7 @@ export class Capacity extends Component {
                 value={this.state.maxOutgoingCalls}
                 onChange={e => {
                   this.setState({
-                    maxOutgoingCalls: e.target.value
+                    maxOutgoingCalls: Number(e.target.value)
                   });
                 }}
               />
