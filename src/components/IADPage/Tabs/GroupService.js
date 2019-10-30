@@ -21,9 +21,16 @@ import { changeObjectIAD } from "../../../store/actions";
 import { removeEmpty } from "../../remuveEmptyInObject";
 
 export class GroupService extends Component {
-  state = { services: {dtmf: "", direction: "", channelsIn: "", channelsOut: ""}, disabledButton: false };
+  state = {
+    services: { dtmf: "", direction: "", channelsIn: "", channelsOut: "" },
+    disabledButton: false
+  };
   componentDidMount() {
-    this.setState({ services: this.props.iad.services ? this.props.iad.services : this.state.services  });
+    this.setState({
+      services: this.props.iad.services
+        ? this.props.iad.services
+        : this.state.services
+    });
   }
   render() {
     return (
@@ -38,9 +45,7 @@ export class GroupService extends Component {
             <div className={"margin-right-1 flex"}>
               <FormControl
                 componentClass="select"
-                value={
-                this.state.services.dtmf
-                }
+                value={this.state.services.dtmf}
                 onChange={this.changeDtmf}
               >
                 {this.props.config.tenant.group.iad.dtmfOverride.map(
@@ -102,9 +107,7 @@ export class GroupService extends Component {
                   <div className={"margin-right-1 flex-basis-11"}>
                     <FormControl
                       type="text"
-                      value={
-                        this.state.services.channelsIn
-                      }
+                      value={this.state.services.channelsIn}
                       placeholder={"In"}
                       onChange={this.changeChannelsIn}
                     />
@@ -117,9 +120,7 @@ export class GroupService extends Component {
                   <div className={"margin-right-1 flex-basis-11"}>
                     <FormControl
                       type="text"
-                      value={
-                        this.state.services.channelsOut
-                      }
+                      value={this.state.services.channelsOut}
                       placeholder={"Out"}
                       onChange={this.changeChannelsOut}
                     />
@@ -188,28 +189,40 @@ export class GroupService extends Component {
   changeDtmf = e => {
     this.props.changeObjectIAD("services", "dtmf", e.target.value);
     this.setState({
-      dtmf: e.target.value
+      services: {
+        ...this.state.services,
+        dtmf: e.target.value
+      }
     });
   };
 
   changeDirection = e => {
     this.props.changeObjectIAD("services", "direction", e.target.value);
     this.setState({
-      direction: e.target.value
+      services: {
+        ...this.state.services,
+        direction: e.target.value
+      }
     });
   };
 
   changeChannelsIn = e => {
     this.props.changeObjectIAD("services", "channelsIn", e.target.value);
     this.setState({
-      channelsIn: e.target.value
+      services: {
+        ...this.state.services,
+        channelsIn: e.target.value
+      }
     });
   };
 
   changeChannelsOut = e => {
     this.props.changeObjectIAD("services", "channelsOut", e.target.value);
     this.setState({
-      channelsOut: e.target.value
+      services: {
+        ...this.state.services,
+        channelsOut: e.target.value
+      }
     });
   };
 }
