@@ -72,18 +72,55 @@ export class Channels extends Component {
             </div>
             <div className={"margin-right-1 flex-basis-33"}>
               <FormControl
-                type="number"
+                componentClass="select"
                 value={this.state.group.numberOfChannels}
-                placeholder={"Number of channels"}
                 onChange={e =>
                   this.setState({
                     group: {
                       ...this.state.group,
-                      numberOfChannels: Number(e.target.value)
+                      numberOfChannels: e.target.value
                     }
                   })
                 }
-              />
+              >
+                {this.state.group.pbxType === "PRA"
+                  ? ~this.props.config.tenant.group.iad[
+                      "2EDUsForServiceTypes"
+                    ].indexOf(this.state.group.serviceType)
+                    ? this.props.config.tenant.group.capacity.PRA.redundant.map(
+                        (type, i) => (
+                          <option key={i} value={type.value}>
+                            {type.label}
+                          </option>
+                        )
+                      )
+                    : this.props.config.tenant.group.capacity.PRA.nonRedundant.map(
+                        (type, i) => (
+                          <option key={i} value={type.value}>
+                            {type.label}
+                          </option>
+                        )
+                      )
+                  : this.state.group.pbxType === "SIP"
+                  ? ~this.props.config.tenant.group.iad[
+                      "2EDUsForServiceTypes"
+                    ].indexOf(this.state.group.serviceType)
+                    ? this.props.config.tenant.group.capacity.SIP.redundant.map(
+                        (type, i) => (
+                          <option key={i} value={type.value}>
+                            {type.label}
+                          </option>
+                        )
+                      )
+                    : this.props.config.tenant.group.capacity.SIP.nonRedundant.map(
+                        (type, i) => (
+                          <option key={i} value={type.value}>
+                            {type.label}
+                          </option>
+                        )
+                      )
+                  : null}
+              </FormControl>
             </div>
           </Col>
         </Row>

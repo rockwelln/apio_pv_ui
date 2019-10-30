@@ -44,7 +44,9 @@ export class AddGroup extends Component {
         typeOfIad: this.props.config.tenant.group.pbxType[0].value,
         typeOfAccess: this.props.config.tenant.group.accessType[0].value,
         serviceType: this.props.config.tenant.group.serviceType[0].value,
-        channelHunting: this.props.config.tenant.group.channelHunting[0].value
+        channelHunting: this.props.config.tenant.group.channelHunting[0].value,
+        numberOfChannels: this.props.config.tenant.group.capacity.PRA
+          .nonRedundant[0]
       })
     );
   };
@@ -302,13 +304,50 @@ export class AddGroup extends Component {
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
-                    type="number"
+                    componentClass="select"
                     value={this.state.numberOfChannels}
-                    placeholder={"Numbers of Channels"}
                     onChange={e =>
                       this.setState({ numberOfChannels: e.target.value })
                     }
-                  />
+                  >
+                    {this.state.typeOfIad === "PRA"
+                      ? ~this.props.config.tenant.group.iad[
+                          "2EDUsForServiceTypes"
+                        ].indexOf(this.state.serviceType)
+                        ? this.props.config.tenant.group.capacity.PRA.redundant.map(
+                            (type, i) => (
+                              <option key={i} value={type.value}>
+                                {type.label}
+                              </option>
+                            )
+                          )
+                        : this.props.config.tenant.group.capacity.PRA.nonRedundant.map(
+                            (type, i) => (
+                              <option key={i} value={type.value}>
+                                {type.label}
+                              </option>
+                            )
+                          )
+                      : this.state.typeOfIad === "SIP"
+                      ? ~this.props.config.tenant.group.iad[
+                          "2EDUsForServiceTypes"
+                        ].indexOf(this.state.serviceType)
+                        ? this.props.config.tenant.group.capacity.SIP.redundant.map(
+                            (type, i) => (
+                              <option key={i} value={type.value}>
+                                {type.label}
+                              </option>
+                            )
+                          )
+                        : this.props.config.tenant.group.capacity.SIP.nonRedundant.map(
+                            (type, i) => (
+                              <option key={i} value={type.value}>
+                                {type.label}
+                              </option>
+                            )
+                          )
+                      : null}
+                  </FormControl>
                 </div>
               </Col>
             </Row>
