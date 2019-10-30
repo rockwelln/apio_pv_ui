@@ -13,6 +13,7 @@ import Services from "./Tabs/Services";
 import ServicesPacks from "./Tabs/ServicePacks";
 
 import deepEqual from "../deepEqual";
+import DeleteModal from "./DeleteModal";
 
 import {
   fetchGetTenantById,
@@ -24,7 +25,8 @@ class TenantPage extends Component {
   state = {
     isLoadingTenant: true,
     isLoadingGroup: true,
-    isLoadingUser: true
+    isLoadingUser: true,
+    showDelete: false
   };
 
   fetchRequsts = () => {
@@ -60,7 +62,12 @@ class TenantPage extends Component {
 
   render() {
     const { user } = this.props;
-    const { isLoadingTenant, isLoadingGroup, isLoadingUser } = this.state;
+    const {
+      isLoadingTenant,
+      isLoadingGroup,
+      isLoadingUser,
+      showDelete
+    } = this.state;
 
     if (isLoadingTenant && isLoadingGroup && isLoadingUser) {
       return <Loading />;
@@ -73,7 +80,18 @@ class TenantPage extends Component {
               ${user.firstName ? user.firstName : ""} 
               ${user.lastName ? user.lastName : ""}
               (${this.props.match.params.userName})`}
-            <Glyphicon glyph="glyphicon glyphicon-trash" />
+            <Glyphicon
+              glyph="glyphicon glyphicon-trash"
+              onClick={() => this.setState({ showDelete: true })}
+            />
+            <DeleteModal
+              userId={this.props.match.params.userName}
+              show={showDelete}
+              notifications={this.props.notifications}
+              onClose={() => {
+                this.setState({ showDelete: false });
+              }}
+            />
           </div>
         </div>
         <div className={"panel-body"}>

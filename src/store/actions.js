@@ -2011,6 +2011,7 @@ export function fetchDeleteUserFromGroup(tenantId, groupId, userName) {
     )
       .then(data => {
         dispatch(deleteUserFromGroup());
+        return "deleted";
       })
       .catch(error =>
         NotificationsManager.error(
