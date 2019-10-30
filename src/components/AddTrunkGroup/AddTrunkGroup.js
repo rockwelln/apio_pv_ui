@@ -43,7 +43,7 @@ export class AddTrunkGroup extends Component {
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
-          <div className={"header"}>{`Add a new local user`}</div>
+          <div className={"header"}>{`Add a new trunk group`}</div>
         </div>
         <div className={"panel-body"}>
           <FormGroup controlId="name" validationState={this.state.nameError}>
