@@ -48,9 +48,7 @@ export class Template extends Component {
               <div className={"header"}>
                 Add group: select template
                 <Link
-                  to={`/provisioning/${
-                    this.props.match.params.gwName
-                  }/tenants/${this.props.match.params.tenantId}`}
+                  to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}`}
                 >
                   <Button
                     disabled={this.state.creating}
@@ -69,10 +67,9 @@ export class Template extends Component {
           <Row>
             <Col md={12}>
               <p>
-                Please select a Group template. This template will influence
-                they way your tenant will be configured. (service pack
-                definition, service (pack) authorisation, feature access code
-                definition.
+                Please select a Group template. This template will influence the
+                way your tenant will be configured. (service pack definition,
+                service (pack) authorisation, feature access code definition.
               </p>
             </Col>
           </Row>
@@ -93,9 +90,7 @@ export class Template extends Component {
                     onClick={() => this.selectTemplate(template.name)}
                   >
                     <div className={"flex-row"}>
-                      <div className="font-weight-bold">{`${
-                        template.name
-                      }`}</div>
+                      <div className="font-weight-bold">{`${template.name}`}</div>
                       <div>
                         {template.description
                           ? `: ${template.description}`

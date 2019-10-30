@@ -225,8 +225,8 @@ export class Devices extends Component {
         ) : (
           <Col mdOffset={1} md={10}>
             <FormattedMessage
-              id="notFound"
-              defaultMessage="No groups were found"
+              id="notDevicesFound"
+              defaultMessage="No devices were found"
             />
           </Col>
         )}
