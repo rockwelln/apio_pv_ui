@@ -83,7 +83,7 @@ export class GroupService extends Component {
             </div>
           </Col>
         </Row>
-        {(this.state.direction === "Uni" ||
+        {(this.state.services.direction === "Uni" ||
           (this.props.iad.services &&
             this.props.iad.services.direction === "Uni")) && (
           <React.Fragment>
