@@ -136,10 +136,10 @@ export class Services extends Component {
             </InputGroup>
           </Col>
           <Col md={1}>
-            <Glyphicon
+            {/* <Glyphicon
               className={"x-large"}
               glyph="glyphicon glyphicon-plus-sign"
-            />
+            /> */}
           </Col>
         </Row>
         {paginationServices.length ? (
