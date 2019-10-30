@@ -16,6 +16,9 @@ import {
 } from "../../../../store/actions";
 import Loading from "../../../../common/Loading";
 
+import { removeEmpty } from "../../../remuveEmptyInObject";
+import deepEqual from "../../../deepEqual";
+
 export class TrunkIndenty extends Component {
   state = {
     disableButton: false,
@@ -27,33 +30,47 @@ export class TrunkIndenty extends Component {
     includeTrunkGroupIdentity: null,
     includeDtgIdentity: null,
     includeTrunkGroupIdentityForNetworkCalls: null,
-    includeOtgIdentityForNetworkCalls: null
+    includeOtgIdentityForNetworkCalls: null,
+    clearTrunkGroupIdentity: ""
   };
 
-  componentDidMount() {
+  fetchReq() {
     this.props
       .fetchGetGroupById(
         this.props.match.params.tenantId,
         this.props.match.params.groupId
       )
       .then(() =>
-        this.setState({
-          isLoading: false,
-          trunkGroupIdentity: this.props.trunkGroup.trunkGroupIdentity,
-          otgDtgIdentity: this.props.trunkGroup.otgDtgIdentity,
-          allowTerminationToTrunkGroupIdentity: this.props.trunkGroup
-            .allowTerminationToTrunkGroupIdentity,
-          allowTerminationToDtgIdentity: this.props.trunkGroup
-            .allowTerminationToDtgIdentity,
-          includeTrunkGroupIdentity: this.props.trunkGroup
-            .includeTrunkGroupIdentity,
-          includeDtgIdentity: this.props.trunkGroup.includeDtgIdentity,
-          includeTrunkGroupIdentityForNetworkCalls: this.props.trunkGroup
-            .includeTrunkGroupIdentityForNetworkCalls,
-          includeOtgIdentityForNetworkCalls: this.props.trunkGroup
-            .includeOtgIdentityForNetworkCalls
-        })
+        this.setState(
+          {
+            isLoading: false,
+            trunkGroupIdentity: this.props.trunkGroup.trunkGroupIdentity,
+            otgDtgIdentity: this.props.trunkGroup.otgDtgIdentity,
+            allowTerminationToTrunkGroupIdentity: this.props.trunkGroup
+              .allowTerminationToTrunkGroupIdentity,
+            allowTerminationToDtgIdentity: this.props.trunkGroup
+              .allowTerminationToDtgIdentity,
+            includeTrunkGroupIdentity: this.props.trunkGroup
+              .includeTrunkGroupIdentity,
+            includeDtgIdentity: this.props.trunkGroup.includeDtgIdentity,
+            includeTrunkGroupIdentityForNetworkCalls: this.props.trunkGroup
+              .includeTrunkGroupIdentityForNetworkCalls,
+            includeOtgIdentityForNetworkCalls: this.props.trunkGroup
+              .includeOtgIdentityForNetworkCalls
+          },
+          () => this.getTrunkGroupIdentity()
+        )
       );
+  }
+
+  componentDidMount() {
+    this.fetchReq();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!deepEqual(this.props.trunkGroup, prevProps.trunkGroup)) {
+      this.fetchReq();
+    }
   }
 
   render() {
@@ -77,14 +94,14 @@ export class TrunkIndenty extends Component {
                   <InputGroup>
                     <FormControl
                       type="text"
-                      value={this.state.trunkGroupIdentity}
+                      value={this.state.clearTrunkGroupIdentity}
                       onChange={e =>
-                        this.setState({ trunkGroupIdentity: e.target.value })
+                        this.setState({
+                          clearTrunkGroupIdentity: e.target.value
+                        })
                       }
                     />
-                    <InputGroup.Addon>{`@${
-                      this.props.group.defaultDomain
-                    }`}</InputGroup.Addon>
+                    <InputGroup.Addon>{`@${this.props.group.defaultDomain}`}</InputGroup.Addon>
                   </InputGroup>
                 </div>
                 <div>
@@ -96,9 +113,7 @@ export class TrunkIndenty extends Component {
                       });
                     }}
                   >
-                    {`Allow calls directly to tgrp@${
-                      this.props.group.defaultDomain
-                    }`}
+                    {`Allow calls directly to tgrp@${this.props.group.defaultDomain}`}
                   </Checkbox>
                 </div>
                 <div>
@@ -110,9 +125,7 @@ export class TrunkIndenty extends Component {
                       });
                     }}
                   >
-                    {`Include tgrp@${
-                      this.props.group.defaultDomain
-                    } in R-URI to PBX`}
+                    {`Include tgrp@${this.props.group.defaultDomain} in R-URI to PBX`}
                   </Checkbox>
                 </div>
                 <div>
@@ -127,9 +140,7 @@ export class TrunkIndenty extends Component {
                       });
                     }}
                   >
-                    {`Include tgrp@${
-                      this.props.group.defaultDomain
-                    } in R-URI for external calls`}
+                    {`Include tgrp@${this.props.group.defaultDomain} in R-URI for external calls`}
                   </Checkbox>
                 </div>
               </Panel.Body>
@@ -220,7 +231,7 @@ export class TrunkIndenty extends Component {
   }
   update = () => {
     const {
-      trunkGroupIdentity,
+      clearTrunkGroupIdentity,
       otgDtgIdentity,
       allowTerminationToTrunkGroupIdentity,
       allowTerminationToDtgIdentity,
@@ -231,7 +242,9 @@ export class TrunkIndenty extends Component {
     } = this.state;
 
     const data = {
-      trunkGroupIdentity: trunkGroupIdentity && trunkGroupIdentity,
+      trunkGroupIdentity:
+        clearTrunkGroupIdentity &&
+        `${clearTrunkGroupIdentity}@${this.props.group.defaultDomain}`,
       otgDtgIdentity: otgDtgIdentity && otgDtgIdentity,
       allowTerminationToTrunkGroupIdentity:
         allowTerminationToTrunkGroupIdentity &&
@@ -248,6 +261,7 @@ export class TrunkIndenty extends Component {
         includeOtgIdentityForNetworkCalls && includeOtgIdentityForNetworkCalls
     };
 
+    const clearData = removeEmpty(clearData);
     this.setState({ disableButton: true }, () =>
       this.props
         .fetchPutUpdateTrunkGroup(
@@ -258,6 +272,14 @@ export class TrunkIndenty extends Component {
         )
         .then(() => this.setState({ disableButton: false }))
     );
+  };
+
+  getTrunkGroupIdentity = () => {
+    const trunkGroupIdentity = this.state.trunkGroupIdentity;
+    const index = trunkGroupIdentity.indexOf("@");
+    this.setState({
+      clearTrunkGroupIdentity: trunkGroupIdentity.slice(0, index)
+    });
   };
 }
 
