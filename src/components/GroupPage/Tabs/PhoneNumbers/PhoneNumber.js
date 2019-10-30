@@ -16,15 +16,19 @@ export default class PhoneNumber extends Component {
     const { showDelete } = this.state;
     return (
       <tr key={number.groupId}>
-        <td>
-          <Checkbox
-            checked={number.phoneChecked}
-            className={"table-checkbox"}
-            onChange={() => {
-              this.props.handleSingleCheckboxClick(index);
-            }}
-          />
-        </td>
+        {number.userId ? (
+          <td />
+        ) : (
+          <td>
+            <Checkbox
+              checked={number.phoneChecked}
+              className={"table-checkbox"}
+              onChange={() => {
+                this.props.handleSingleCheckboxClick(index);
+              }}
+            />
+          </td>
+        )}
         <td>{number.rangeStart}</td>
         <td>{number.rangeEnd}</td>
         <td>{number.userId}</td>
