@@ -19,20 +19,23 @@ import {
 
 class Details extends Component {
   state = {
-    tenant: [],
+    tenant: {},
     tenantName: "",
     defaultDomain: "",
     useTenantLanguages: "",
     useCustomRoutingProfile: "",
-    isLoading: true
+    isLoading: true,
+    addressInformation: {}
   };
 
   componentDidMount() {
-    this.props
-      .fetchGetTenantById(this.props.tenantId)
-      .then(() =>
-        this.setState({ tenant: this.props.tenant, isLoading: false })
-      );
+    this.props.fetchGetTenantById(this.props.tenantId).then(() =>
+      this.setState({
+        tenant: this.props.tenant,
+        addressInformation: this.props.tenant.addressInformation,
+        isLoading: false
+      })
+    );
   }
 
   render() {
@@ -123,15 +126,51 @@ class Details extends Component {
                 Addess
               </Col>
               <Col md={9}>
-                <FormControl type="text" placeholder="Street" />
+                <FormControl
+                  type="text"
+                  placeholder="Street"
+                  value={this.state.addressInformation.addressLine1}
+                  onChange={e =>
+                    this.setState({
+                      addressInformation: {
+                        ...this.state.addressInformation,
+                        addressLine1: e.target.value
+                      }
+                    })
+                  }
+                />
               </Col>
             </FormGroup>
             <FormGroup controlId="tentantZipCity">
               <Col mdOffset={3} md={3}>
-                <FormControl type="text" placeholder="ZIP" />
+                <FormControl
+                  type="text"
+                  placeholder="ZIP"
+                  value={this.state.addressInformation.postalCode}
+                  onChange={e =>
+                    this.setState({
+                      addressInformation: {
+                        ...this.state.addressInformation,
+                        postalCode: e.target.value
+                      }
+                    })
+                  }
+                />
               </Col>
               <Col md={6}>
-                <FormControl type="text" placeholder="City" />
+                <FormControl
+                  type="text"
+                  placeholder="City"
+                  value={this.state.addressInformation.city}
+                  onChange={e =>
+                    this.setState({
+                      addressInformation: {
+                        ...this.state.addressInformation,
+                        city: e.target.value
+                      }
+                    })
+                  }
+                />
               </Col>
             </FormGroup>
           </FormGroup>

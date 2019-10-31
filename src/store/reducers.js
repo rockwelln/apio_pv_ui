@@ -820,8 +820,8 @@ function mainReducer(state = initialState, action) {
         ...state,
         createTenant: {
           ...state.createTenant,
-          address: {
-            ...state.createTenant.address,
+          addressInformation: {
+            ...state.createTenant.addressInformation,
             addressLine1: action.data
           }
         }
@@ -832,8 +832,8 @@ function mainReducer(state = initialState, action) {
         ...state,
         createTenant: {
           ...state.createTenant,
-          address: {
-            ...state.createTenant.address,
+          addressInformation: {
+            ...state.createTenant.addressInformation,
             postalCode: action.data
           }
         }
@@ -844,8 +844,8 @@ function mainReducer(state = initialState, action) {
         ...state,
         createTenant: {
           ...state.createTenant,
-          address: {
-            ...state.createTenant.address,
+          addressInformation: {
+            ...state.createTenant.addressInformation,
             city: action.data
           }
         }
