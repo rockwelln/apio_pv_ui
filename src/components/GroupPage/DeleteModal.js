@@ -28,11 +28,9 @@ class DeleteModal extends Component {
       )
       .then(res =>
         res
-          ? (this.setState({ deleting: false }),
-            onClose && onClose(true),
-            this.props.history.push(
+          ? this.props.history.push(
               `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}`
-            ))
+            )
           : this.setState({ deleting: false })
       );
   }
