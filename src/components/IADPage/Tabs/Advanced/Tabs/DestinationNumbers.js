@@ -24,18 +24,20 @@ export class TrunkId extends Component {
   };
   componentDidMount() {
     this.setState({
-      advanced: {
-        destnr1: this.props.iad.advanced.destnr1,
-        destnr2: this.props.iad.advanced.destnr2,
-        destnr3: this.props.iad.advanced.destnr3,
-        destnr4: this.props.iad.advanced.destnr4,
-        destnr5: this.props.iad.advanced.destnr5,
-        destnr6: this.props.iad.advanced.destnr6,
-        destnr7: this.props.iad.advanced.destnr7,
-        destnr8: this.props.iad.advanced.destnr8,
-        destnr9: this.props.iad.advanced.destnr9,
-        destnr10: this.props.iad.advanced.destnr10
-      }
+      advanced: this.props.iad.advanced
+        ? {
+            destnr1: this.props.iad.advanced.destnr1,
+            destnr2: this.props.iad.advanced.destnr2,
+            destnr3: this.props.iad.advanced.destnr3,
+            destnr4: this.props.iad.advanced.destnr4,
+            destnr5: this.props.iad.advanced.destnr5,
+            destnr6: this.props.iad.advanced.destnr6,
+            destnr7: this.props.iad.advanced.destnr7,
+            destnr8: this.props.iad.advanced.destnr8,
+            destnr9: this.props.iad.advanced.destnr9,
+            destnr10: this.props.iad.advanced.destnr10
+          }
+        : {}
     });
   }
   render() {

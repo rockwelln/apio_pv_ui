@@ -25,13 +25,15 @@ export class Options extends Component {
   };
   componentDidMount() {
     this.setState({
-      advanced: {
-        clock_master: this.props.iad.advanced.clock_master,
-        dual_power: this.props.iad.advanced.dual_power,
-        isdnTerminationSide: this.props.iad.advanced.isdnTerminationSide,
-        sysLogEnabled: this.props.iad.advanced.sysLogEnabled,
-        sysLogIp: this.props.iad.advanced.sysLogIp
-      }
+      advanced: this.props.iad.advanced
+        ? {
+            clock_master: this.props.iad.advanced.clock_master,
+            dual_power: this.props.iad.advanced.dual_power,
+            isdnTerminationSide: this.props.iad.advanced.isdnTerminationSide,
+            sysLogEnabled: this.props.iad.advanced.sysLogEnabled,
+            sysLogIp: this.props.iad.advanced.sysLogIp
+          }
+        : {}
     });
   }
   render() {
@@ -101,7 +103,10 @@ export class Options extends Component {
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>
               <ControlLabel>
-                <FormattedMessage id="sysLogEnabled" defaultMessage="Syslog enabled" />
+                <FormattedMessage
+                  id="sysLogEnabled"
+                  defaultMessage="Syslog enabled"
+                />
               </ControlLabel>
             </div>
             <div className={"margin-right-1 flex-basis-33"}>
@@ -116,7 +121,10 @@ export class Options extends Component {
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>
               <ControlLabel>
-                <FormattedMessage id="sysLogIp" defaultMessage="Syslog IP Address" />
+                <FormattedMessage
+                  id="sysLogIp"
+                  defaultMessage="Syslog IP Address"
+                />
               </ControlLabel>
             </div>
             <div className={"margin-right-1 flex-basis-16"}>

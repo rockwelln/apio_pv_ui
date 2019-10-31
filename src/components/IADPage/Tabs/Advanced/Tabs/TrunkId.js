@@ -24,18 +24,20 @@ export class TrunkId extends Component {
   };
   componentDidMount() {
     this.setState({
-      advanced: {
-        trunkId1: this.props.iad.advanced.trunkId1,
-        trunkId2: this.props.iad.advanced.trunkId2,
-        trunkId3: this.props.iad.advanced.trunkId3,
-        trunkId4: this.props.iad.advanced.trunkId4,
-        trunkId5: this.props.iad.advanced.trunkId5,
-        trunkId6: this.props.iad.advanced.trunkId6,
-        trunkId7: this.props.iad.advanced.trunkId7,
-        trunkId8: this.props.iad.advanced.trunkId8,
-        trunkId9: this.props.iad.advanced.trunkId9,
-        trunkId10: this.props.iad.advanced.trunkId10
-      }
+      advanced: this.props.iad.advanced
+        ? {
+            trunkId1: this.props.iad.advanced.trunkId1,
+            trunkId2: this.props.iad.advanced.trunkId2,
+            trunkId3: this.props.iad.advanced.trunkId3,
+            trunkId4: this.props.iad.advanced.trunkId4,
+            trunkId5: this.props.iad.advanced.trunkId5,
+            trunkId6: this.props.iad.advanced.trunkId6,
+            trunkId7: this.props.iad.advanced.trunkId7,
+            trunkId8: this.props.iad.advanced.trunkId8,
+            trunkId9: this.props.iad.advanced.trunkId9,
+            trunkId10: this.props.iad.advanced.trunkId10
+          }
+        : {}
     });
   }
   render() {

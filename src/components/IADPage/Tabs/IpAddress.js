@@ -33,9 +33,11 @@ export class IPAddress extends Component {
 
   componentDidMount() {
     this.setState({
-      ip1: this.props.iad.ip1,
-      pbx: this.props.iad.pbx,
+      ip1: this.props.iad.ip1 ? this.props.iad.ip1 : {},
+      pbx: this.props.iad.pbx ? this.props.iad.pbx : {},
       transportMode: this.props.iad.transportMode
+        ? this.props.iad.transportMode
+        : ""
     });
   }
   render() {
