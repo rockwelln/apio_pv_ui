@@ -64,7 +64,7 @@ export class Details extends Component {
             <div>{this.state.accessDevice}</div>
           </Col>
         </Row>
-        <Row className={"margin-top-1"}>
+        {/* <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>
               SIP password
@@ -82,7 +82,7 @@ export class Details extends Component {
               />
             </div>
           </Col>
-        </Row>
+        </Row> */}
         <Row className={"margin-top-1"}>
           <Col md={12}>
             <div className="button-row">
@@ -111,14 +111,14 @@ export class Details extends Component {
     } = this.state;
 
     const data = {
-      requireAuthentication: requireAuthentication && requireAuthentication,
-      sipAuthenticationPassword,
-      sipAuthenticationUserName:
-        sipAuthenticationUserName && sipAuthenticationUserName,
-      pilotUserId: pilotUserId && pilotUserId,
-      accessDevice: accessDevice && {
-        name: accessDevice
-      }
+      //requireAuthentication: requireAuthentication && requireAuthentication,
+      //sipAuthenticationPassword,
+      //sipAuthenticationUserName:
+      //  sipAuthenticationUserName && sipAuthenticationUserName,
+      pilotUserId: pilotUserId && pilotUserId
+      //accessDevice: accessDevice && {
+      //name: accessDevice
+      //}
     };
 
     this.setState({ disableButton: true }, () =>
