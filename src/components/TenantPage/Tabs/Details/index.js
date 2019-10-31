@@ -32,7 +32,9 @@ class Details extends Component {
     this.props.fetchGetTenantById(this.props.tenantId).then(() =>
       this.setState({
         tenant: this.props.tenant,
-        addressInformation: this.props.tenant.addressInformation,
+        addressInformation: this.props.tenant.addressInformation
+          ? this.props.tenant.addressInformation
+          : {},
         isLoading: false
       })
     );
