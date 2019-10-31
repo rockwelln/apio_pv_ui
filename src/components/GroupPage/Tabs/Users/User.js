@@ -16,7 +16,7 @@ class Group extends Component {
     const { showDelete } = this.state;
     return (
       <tr key={user.userId}>
-        <td>
+        {/* <td>
           <Checkbox
             checked={user.userChecked}
             className={"table-checkbox"}
@@ -24,12 +24,10 @@ class Group extends Component {
               this.props.handleSingleCheckboxClick(user.userId);
             }}
           />
-        </td>
+        </td> */}
         <td>
           <Link
-            to={`/provisioning/${
-              this.props.match.params.gwName
-            }/tenants/${tenantId}/groups/${groupId}/users/${user.userId}`}
+            to={`/provisioning/${this.props.match.params.gwName}/tenants/${tenantId}/groups/${groupId}/users/${user.userId}`}
           >
             {user.userId}
           </Link>

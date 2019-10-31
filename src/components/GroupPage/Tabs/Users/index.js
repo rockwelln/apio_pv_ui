@@ -110,9 +110,7 @@ export class Users extends Component {
           </Col>
           <Col className={"text-right"} md={1}>
             <Link
-              to={`/provisioning/${this.props.match.params.gwName}/tenants/${
-                this.props.match.params.tenantId
-              }/groups/${this.props.match.params.groupId}/adduser`}
+              to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/adduser`}
             >
               <Glyphicon
                 className={"x-large"}
@@ -125,8 +123,9 @@ export class Users extends Component {
           <React.Fragment>
             <Row>
               <Col mdOffset={1} md={11}>
-                <div className={"flex space-between indent-top-bottom-1"}>
-                  <div className={"flex align-items-center"}>
+                {/* <div className={"flex space-between indent-top-bottom-1"}> */}
+                <div className={"flex flex-end-center indent-top-bottom-1"}>
+                  {/* <div className={"flex align-items-center"}>
                     <Checkbox
                       className={"margin-checbox"}
                       checked={this.state.selectAll}
@@ -153,7 +152,7 @@ export class Users extends Component {
                       }}
                       {...this.props}
                     />
-                  </div>
+                  </div> */}
                   <div className={"flex align-items-center"}>
                     <div>Item per page</div>
                     <FormControl
@@ -181,15 +180,15 @@ export class Users extends Component {
                 <Table hover>
                   <thead>
                     <tr>
-                      <th style={{ width: "5%" }} />
-                      <th style={{ width: "15%" }}>
+                      {/* <th style={{ width: "5%" }} /> */}
+                      <th>
                         <FormattedMessage id="user-id" defaultMessage="ID" />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
                           onClick={this.sortByID}
                         />
                       </th>
-                      <th style={{ width: "15%" }}>
+                      <th>
                         <FormattedMessage
                           id="name"
                           defaultMessage="First name"
@@ -199,7 +198,7 @@ export class Users extends Component {
                           onClick={this.sortByFirstName}
                         />
                       </th>
-                      <th style={{ width: "15%" }}>
+                      <th>
                         <FormattedMessage
                           id="type"
                           defaultMessage="Last name"
@@ -209,7 +208,7 @@ export class Users extends Component {
                           onClick={this.sortByLastName}
                         />
                       </th>
-                      <th style={{ width: "15%" }}>
+                      <th>
                         <FormattedMessage
                           id="type"
                           defaultMessage="Extension"
@@ -219,7 +218,7 @@ export class Users extends Component {
                           onClick={this.sortByExtension}
                         />
                       </th>
-                      <th style={{ width: "15%" }}>
+                      <th>
                         <FormattedMessage
                           id="type"
                           defaultMessage="Phone number"
@@ -229,14 +228,14 @@ export class Users extends Component {
                           onClick={this.sortByPhoneNumber}
                         />
                       </th>
-                      <th style={{ width: "15%" }}>
+                      <th>
                         <FormattedMessage id="type" defaultMessage="Type" />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
                           onClick={this.sortByType}
                         />
                       </th>
-                      <th style={{ width: "5%" }} />
+                      <th />
                     </tr>
                   </thead>
                   <tbody>
