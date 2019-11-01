@@ -14,7 +14,7 @@ import Checkbox from "react-bootstrap/lib/Checkbox";
 
 import { STATENUMBERS } from "../../constants";
 
-import {fetchPostAssignPhoneNumbersToGroup} from "../../store/actions"
+import { fetchPostAssignPhoneNumbersToGroup } from "../../store/actions";
 
 import { removeEmpty } from "../remuveEmptyInObject";
 
@@ -196,18 +196,30 @@ export class AddPhoneNumber extends Component {
   };
 
   addAID = () => {
-    const {numbers,arrayFrom, arrayTo, status} = this.state
-    const data = {numbers, status, range: {minPhoneNumber: arrayFrom, maxPhoneNumber: arrayTo}}
+    const { numbers, arrayFrom, arrayTo, status } = this.state;
+    const data = {
+      numbers,
+      status,
+      range: { minPhoneNumber: arrayFrom, maxPhoneNumber: arrayTo }
+    };
     const clearData = removeEmpty(data);
-    console.log(clearData)
-    this.props.fetchPostAssignPhoneNumbersToGroup(this.props.match.params.tenantId, this.props.match.params.groupId, clearData).then(res=>res==="success" &&     this.props.history.push(
-      `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}`
-    ))
-
+    this.props
+      .fetchPostAssignPhoneNumbersToGroup(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        clearData
+      )
+      .then(
+        res =>
+          res === "success" &&
+          this.props.history.push(
+            `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}`
+          )
+      );
   };
 }
 
-const mapDispatchToProps = {fetchPostAssignPhoneNumbersToGroup};
+const mapDispatchToProps = { fetchPostAssignPhoneNumbersToGroup };
 
 export default withRouter(
   connect(

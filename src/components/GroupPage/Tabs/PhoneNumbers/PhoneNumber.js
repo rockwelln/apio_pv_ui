@@ -13,7 +13,6 @@ export default class PhoneNumber extends Component {
 
   render() {
     const { number, onReload, index } = this.props;
-    console.log(number);
     const { showDelete } = this.state;
     return (
       <tr key={number.groupId}>

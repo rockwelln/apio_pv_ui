@@ -268,6 +268,11 @@ export const postAssignPhoneNumbersToGroup = data => ({
   data
 });
 
+export const putUpdateEnterpriseTrunk = data => ({
+  type: actionType.PUT_UPDATE_ENTERPRISE_TRNUK,
+  data
+});
+
 export const putUpdateUser = data => ({
   type: actionType.PUT_UPDATE_USER,
   data
@@ -1634,6 +1639,31 @@ export function fetchPostAssignPhoneNumbersToGroup(tenantId, groupId, data) {
           error.message
         );
       });
+  };
+}
+
+export function fetchPutUpdateEnterpriseTrunk(
+  tenantId,
+  groupId,
+  enterpriseTrunk,
+  data
+) {
+  return function(dispatch) {
+    return fetch_put(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/enterprise_trunks/${enterpriseTrunk}/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => dispatch(putUpdateEnterpriseTrunk(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="update-enterprise-trunk-failed"
+            defaultMessage="Failed to update enterprise trunk!"
+          />,
+          error.message
+        )
+      );
   };
 }
 

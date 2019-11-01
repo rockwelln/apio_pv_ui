@@ -1013,7 +1013,6 @@ export class AddIAD extends Component {
       virtual: this.props.group.virtual
     };
     const clearData = removeEmpty(data);
-    console.log(clearData);
     this.props
       .fetchPostCreateIAD(
         this.props.match.params.tenantId,
