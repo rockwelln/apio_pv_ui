@@ -276,9 +276,12 @@ export class TrunkIndenty extends Component {
 
   getTrunkGroupIdentity = () => {
     const trunkGroupIdentity = this.state.trunkGroupIdentity;
-    const index = trunkGroupIdentity.indexOf("@");
+    const index = trunkGroupIdentity && trunkGroupIdentity.indexOf("@");
     this.setState({
-      clearTrunkGroupIdentity: trunkGroupIdentity.slice(0, index)
+      clearTrunkGroupIdentity: trunkGroupIdentity.slice(
+        0,
+        index ? index : Infinity
+      )
     });
   };
 }
