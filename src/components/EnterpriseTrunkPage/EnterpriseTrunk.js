@@ -202,10 +202,7 @@ export class EnterpriseTrunk extends Component {
     console.log(checkedIadNotFromSite);
     const data = {
       iads_from_other_sites: checkedIadNotFromSite,
-      routeExhaustionAction:
-        this.props.iadsByTrunk.routeExhaustionAction === "Forward"
-          ? this.props.iadsByTrunk.routeExhaustionAction
-          : null,
+      routeExhaustionAction: this.props.iadsByTrunk.routeExhaustionAction,
       routeExhaustionDestination:
         this.props.iadsByTrunk.routeExhaustionAction === "Forward"
           ? this.props.iadsByTrunk.routeExhaustionDestination
