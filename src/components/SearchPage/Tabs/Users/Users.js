@@ -131,7 +131,7 @@ export class Users extends Component {
                   </div>
                   <div className={"margin-right-1 flex-basis-33"}>
                     <FormControl
-                      type="number"
+                      type="text"
                       value={this.state.insensitiveEmailAddressContains}
                       onChange={e => {
                         this.setState({
