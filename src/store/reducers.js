@@ -65,7 +65,7 @@ const initialState = {
       phoneNumber: "",
       emailAddress: ""
     },
-    address: {
+    addressInformation: {
       addressLine1: "",
       addressLine2: "",
       city: "",
@@ -969,8 +969,8 @@ function mainReducer(state = initialState, action) {
         ...state,
         createGroup: {
           ...state.createGroup,
-          address: {
-            ...state.createGroup.address,
+          addressInformation: {
+            ...state.createGroup.addressInformation,
             addressLine1: action.data
           }
         }
@@ -981,8 +981,8 @@ function mainReducer(state = initialState, action) {
         ...state,
         createGroup: {
           ...state.createGroup,
-          address: {
-            ...state.createGroup.address,
+          addressInformation: {
+            ...state.createGroup.addressInformation,
             postalCode: action.data
           }
         }
@@ -993,8 +993,8 @@ function mainReducer(state = initialState, action) {
         ...state,
         createGroup: {
           ...state.createGroup,
-          address: {
-            ...state.createGroup.address,
+          addressInformation: {
+            ...state.createGroup.addressInformation,
             city: action.data
           }
         }
