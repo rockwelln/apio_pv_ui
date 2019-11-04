@@ -433,7 +433,7 @@ class App extends Component {
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <GroupPage
-                      notifications={this._notificationSystem.current}
+                    //notifications={this._notificationSystem.current}
                     />
                   ) : (
                     <NotAllowed />

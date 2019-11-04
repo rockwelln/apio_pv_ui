@@ -99,7 +99,7 @@ export function parseJSON(response) {
   return response.json();
 }
 
-export function fetch_get(url, token) {
+export function fetch_get(url) {
   const full_url = url.href
     ? url
     : url.startsWith("http")
@@ -157,7 +157,7 @@ export function fetch_post_raw(url, raw_body, content_type) {
   }).then(checkStatus);
 }
 
-export function fetch_delete(url, body, token) {
+export function fetch_delete(url, body) {
   const full_url = url.href
     ? url
     : url.startsWith("http")
