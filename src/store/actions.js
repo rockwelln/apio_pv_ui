@@ -1648,9 +1648,10 @@ export function fetchPutUpdateEnterpriseTrunk(
   enterpriseTrunk,
   data
 ) {
+  /////////////////////////////
   return function(dispatch) {
     return fetch_put(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/enterprise_trunks/${enterpriseTrunk}/`,
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/enterprise_trunks/${enterpriseTrunk}/`,
       data
     )
       .then(res => res.json())
