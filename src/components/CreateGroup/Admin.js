@@ -55,7 +55,7 @@ export class Admin extends Component {
           {/* EXPLANATION */}
           <Row>
             <Col md={12}>
-              <p>Add an administrator who can manage this tenant</p>
+              <p>Add an administrator who can manage this group</p>
             </Col>
           </Row>
 
@@ -86,9 +86,7 @@ export class Admin extends Component {
                       });
                     }}
                   />
-                  <InputGroup.Addon>{`@${
-                    this.props.createdGroup.defaultDomain
-                  }`}</InputGroup.Addon>
+                  <InputGroup.Addon>{`@${this.props.createdGroup.defaultDomain}`}</InputGroup.Addon>
                 </InputGroup>
                 {this.state.userIdError && (
                   <HelpBlock>
@@ -271,9 +269,7 @@ export class Admin extends Component {
               <div class="button-row">
                 <div class="pull-right">
                   <Link
-                    to={`/provisioning/${
-                      this.props.match.params.gwName
-                    }/tenants/${this.props.createdTenant.tenantId}`}
+                    to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.createdTenant.tenantId}`}
                   >
                     {/* SKIP & FINISH */}
                     <Button
@@ -330,9 +326,7 @@ export class Admin extends Component {
         )
         .then(() => {
           this.props.history.push(
-            `/provisioning/${this.props.match.params.gwName}/tenants/${
-              this.props.match.params.tenantId
-            }`
+            `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}`
           );
           this.props.refuseCreateGroup();
         })
