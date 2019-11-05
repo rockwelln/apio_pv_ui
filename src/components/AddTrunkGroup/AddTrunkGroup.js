@@ -154,7 +154,7 @@ export class AddTrunkGroup extends Component {
         .then(res => {
           res === "success"
             ? this.props.history.push(
-                `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/trunkgroup/${this.props.createdTrunkGroup.name}`
+                `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/trunkgroup/${name}`
               )
             : this.setState({ isDisabled: false });
         })
