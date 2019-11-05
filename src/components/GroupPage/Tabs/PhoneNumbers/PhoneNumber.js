@@ -33,26 +33,30 @@ export default class PhoneNumber extends Component {
         <td>{number.rangeEnd}</td>
         <td>{number.userId}</td>
         <td>{number.userType}</td>
-        <td>
-          <React.Fragment>
-            <ButtonToolbar>
-              <Glyphicon
-                glyph="glyphicon glyphicon-remove"
-                onClick={() => this.setState({ showDelete: true })}
+        {number.userId ? (
+          <td />
+        ) : (
+          <td>
+            <React.Fragment>
+              <ButtonToolbar>
+                <Glyphicon
+                  glyph="glyphicon glyphicon-remove"
+                  onClick={() => this.setState({ showDelete: true })}
+                />
+              </ButtonToolbar>
+              <DeleteModal
+                number={number}
+                rangeStart={number.rangeStart}
+                show={showDelete}
+                onClose={e => {
+                  onReload && onReload(number.rangeStart);
+                  this.setState({ showDelete: false });
+                }}
+                {...this.props}
               />
-            </ButtonToolbar>
-            <DeleteModal
-              number={number}
-              rangeStart={number.rangeStart}
-              show={showDelete}
-              onClose={e => {
-                onReload && onReload(number.rangeStart);
-                this.setState({ showDelete: false });
-              }}
-              {...this.props}
-            />
-          </React.Fragment>
-        </td>
+            </React.Fragment>
+          </td>
+        )}
       </tr>
     );
   }
