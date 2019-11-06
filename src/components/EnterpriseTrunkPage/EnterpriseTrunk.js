@@ -26,7 +26,9 @@ export class EnterpriseTrunk extends Component {
   state = {
     isLoading: false,
     iadFromSite: [],
-    iadNotFromSite: []
+    iadNotFromSite: [],
+    routeExhaustionAction: "",
+    routeExhaustionDestination: ""
   };
   componentDidMount() {
     this.props
@@ -43,7 +45,10 @@ export class EnterpriseTrunk extends Component {
             : [],
           iadNotFromSite: this.props.iadsByTrunk
             ? this.props.iadsByTrunk.iadNotFromSite
-            : []
+            : [],
+          routeExhaustionAction: this.props.iadsByTrunk
+            ? this.props.iadsByTrunk.routeExhaustionAction
+            : ""
         })
       );
   }
@@ -86,6 +91,55 @@ export class EnterpriseTrunk extends Component {
                 placeholder={"Name"}
                 disabled
                 value={this.props.iadsByTrunk.routingMode}
+              />
+            </div>
+          </Col>
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={12} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-16"}>
+              <ControlLabel>
+                <FormattedMessage
+                  id="routeExhaustionAction"
+                  defaultMessage="Route Exhaustion Action"
+                />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-33"}>
+              <FormControl
+                componentClass="select"
+                value={this.state.routeExhaustionAction}
+                onChange={e =>
+                  this.setState({ routeExhaustionAction: e.target.value })
+                }
+              >
+                <option value={"Forward"}>Forward</option>
+                <option value={"None"}>None</option>
+              </FormControl>
+            </div>
+          </Col>
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={12} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-16"}>
+              <ControlLabel>
+                <FormattedMessage
+                  id="routeExhaustionDestination"
+                  defaultMessage="Route Exhaustion Destination"
+                />
+                {this.state.routeExhaustionAction === "Forward" && "\u002a"}
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-33"}>
+              <FormControl
+                type="text"
+                placeholder={"Phone Number"}
+                value={this.state.routeExhaustionDestination}
+                onChange={e =>
+                  this.setState({
+                    routeExhaustionDestination: e.target.value
+                  })
+                }
               />
             </div>
           </Col>
@@ -184,6 +238,10 @@ export class EnterpriseTrunk extends Component {
                   onClick={this.updateEnterpriseTrunkGroup}
                   type="submit"
                   className="btn-primary"
+                  disabled={
+                    this.state.routeExhaustionAction === "Forward" &&
+                    !this.state.routeExhaustionDestination
+                  }
                 >
                   <Glyphicon glyph="glyphicon glyphicon-ok" />
                   <FormattedMessage id="update" defaultMessage="Update" />
@@ -197,16 +255,16 @@ export class EnterpriseTrunk extends Component {
   }
 
   updateEnterpriseTrunkGroup = () => {
-    const { iadNotFromSite } = this.state;
+    const {
+      iadNotFromSite,
+      routeExhaustionAction,
+      routeExhaustionDestination
+    } = this.state;
     const checkedIadNotFromSite = iadNotFromSite.filter(el => el.checked);
-    console.log(checkedIadNotFromSite);
     const data = {
       iads_from_other_sites: checkedIadNotFromSite,
-      routeExhaustionAction: this.props.iadsByTrunk.routeExhaustionAction,
-      routeExhaustionDestination:
-        this.props.iadsByTrunk.routeExhaustionAction === "Forward"
-          ? this.props.iadsByTrunk.routeExhaustionDestination
-          : null
+      routeExhaustionAction,
+      routeExhaustionDestination
     };
     const clearData = removeEmpty(data);
     this.props.fetchPutUpdateEnterpriseTrunk(
