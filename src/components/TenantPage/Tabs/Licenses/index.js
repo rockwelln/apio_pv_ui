@@ -144,6 +144,7 @@ export class Licenses extends Component {
                           defaultValue={
                             this.props.tenantTrunkGroups.maxActiveCalls.maximum
                           }
+                          min={0}
                           onChange={e => {
                             this.props.clearErrorMassage();
                             let target = e.currentTarget;
@@ -203,6 +204,7 @@ export class Licenses extends Component {
                         {!trunkGroups.burstingMaxActiveCalls.unlimited && (
                           <FormControl
                             type="number"
+                            min={0}
                             defaultValue={
                               this.props.tenantTrunkGroups
                                 .burstingMaxActiveCalls.maximum

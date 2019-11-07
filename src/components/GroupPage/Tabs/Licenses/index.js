@@ -151,6 +151,7 @@ export class Licenses extends Component {
                         <FormControl
                           type="number"
                           defaultValue={this.props.trunkGroups.maxActiveCalls}
+                          min={0}
                           onChange={e => {
                             this.props.clearErrorMassage();
                             let target = e.currentTarget;
@@ -210,6 +211,7 @@ export class Licenses extends Component {
                               this.props.trunkGroups.burstingMaxActiveCalls
                                 .maximum
                             }
+                            min={0}
                             onChange={e => {
                               this.props.clearErrorMassage();
                               let target = e.currentTarget;
@@ -321,6 +323,7 @@ export class Licenses extends Component {
                     <Col md={4} className={"text-center"}>
                       <FormControl
                         type="number"
+                        min={0}
                         defaultValue={group.userLimit}
                         onChange={e => {
                           this.setState({ newUserLimit: e.target.value });
@@ -552,34 +555,68 @@ export class Licenses extends Component {
                     limited to
                   </Col>
                 </Row>
-                {this.state.servicePacks.map((pack, i) => (
-                  <Row key={i}>
-                    <Col md={5} className={"text-left"}>
-                      <FormattedMessage
-                        id="service_packs"
-                        defaultMessage={`${pack.name}:`}
-                      />
-                    </Col>
-                    {!pack.allocated.unlimited && pack.allocated.maximum === 0 && (
-                      <Col md={6} className={"text-center"}>
-                        not authorised
+                {this.state.servicePacks.map((pack, i) =>
+                  !editServicePacks ? (
+                    <Row key={i}>
+                      <Col md={5} className={"text-left"}>
+                        <FormattedMessage
+                          id="service_packs"
+                          defaultMessage={`${pack.name}:`}
+                        />
                       </Col>
-                    )}
-
-                    {pack.allocated.maximum !== 0 && (
+                      {!pack.allocated.unlimited &&
+                      pack.allocated.maximum === 0 ? (
+                        <Col md={6}>not authorised</Col>
+                      ) : (
+                        <React.Fragment>
+                          <Col md={3} className={"text-center"}>{`${
+                            pack.inUse ? pack.inUse : 0
+                          }`}</Col>
+                          <Col md={3} className={"text-center"}>{`${
+                            pack.allocated.unlimited
+                              ? String.fromCharCode(INFINITY)
+                              : pack.allocated.maximum
+                          }`}</Col>
+                        </React.Fragment>
+                      )}
+                    </Row>
+                  ) : !editServicePacks ? (
+                    <Row key={i}>
+                      <Col md={5} className={"text-left"}>
+                        <FormattedMessage
+                          id="service_packs"
+                          defaultMessage={`${pack.name}:`}
+                        />
+                      </Col>
+                      {!pack.allocated.unlimited &&
+                      pack.allocated.maximum === 0 ? (
+                        <Col md={6} className={"text-center"}>
+                          not authorised
+                        </Col>
+                      ) : (
+                        <React.Fragment>
+                          <Col md={3} className={"text-center"}>{`${
+                            pack.inUse ? pack.inUse : 0
+                          }`}</Col>
+                          <Col md={3} className={"text-center"}>{`${
+                            pack.allocated.unlimited
+                              ? String.fromCharCode(INFINITY)
+                              : pack.allocated.maximum
+                          }`}</Col>
+                        </React.Fragment>
+                      )}
+                    </Row>
+                  ) : (
+                    <Row key={i}>
+                      <Col md={5} className={"text-left"}>
+                        <FormattedMessage
+                          id="service_packs"
+                          defaultMessage={`${pack.name}:`}
+                        />
+                      </Col>
                       <Col md={3} className={"text-center"}>{`${
                         pack.inUse ? pack.inUse : 0
                       }`}</Col>
-                    )}
-                    {!editServicePacks ? (
-                      pack.allocated.maximum !== 0 ? (
-                        <Col md={3} className={"text-center"}>{`${
-                          pack.allocated.unlimited
-                            ? String.fromCharCode(INFINITY)
-                            : pack.allocated.maximum
-                        }`}</Col>
-                      ) : null
-                    ) : (
                       <Col md={3} className={"text-center"}>
                         <EditLicenses
                           defaultChecked={pack.allocated.unlimited}
@@ -591,9 +628,9 @@ export class Licenses extends Component {
                           changePacksMaximum={this.changeServicePacksMaximum}
                         />
                       </Col>
-                    )}
-                  </Row>
-                ))}
+                    </Row>
+                  )
+                )}
               </Panel.Body>
             ) : (
               <Panel.Body>
