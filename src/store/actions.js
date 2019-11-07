@@ -763,14 +763,15 @@ export function fetchGetTrunkByGroupID(tenantId, groupId) {
     )
       .then(data => dispatch(getTrunkByGroupID(data)))
       .catch(error => {
-        dispatch(getTrunksGroupsByGroupFail());
-        NotificationsManager.error(
-          <FormattedMessage
-            id="fetch-trunk-failed"
-            defaultMessage="Failed to fetch trunk!"
-          />,
-          error.message
-        );
+        error.response.status === 404
+          ? dispatch(getTrunksGroupsByGroupFail())
+          : NotificationsManager.error(
+              <FormattedMessage
+                id="fetch-trunk-failed"
+                defaultMessage="Failed to fetch trunk!"
+              />,
+              error.message
+            );
       });
   };
 }
