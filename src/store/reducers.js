@@ -620,6 +620,11 @@ function mainReducer(state = initialState, action) {
         createdTrunkGroup: action.data
       };
     }
+    case actionType.POST_CREATE_DEVICE_IN_GROUP: {
+      return {
+        ...state
+      };
+    }
     case actionType.PUT_UPDATE_USER: {
       return {
         ...state,

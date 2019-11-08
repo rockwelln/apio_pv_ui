@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { withRouter } from "react-router";
 
 import { fetchGetDevicesByGroupId } from "../../../../store/actions";
 
@@ -74,7 +76,7 @@ export class Devices extends Component {
     return (
       <React.Fragment>
         <Row className={"margin-top-2"}>
-          <Col mdOffset={1} md={11}>
+          <Col mdOffset={1} md={10}>
             <InputGroup className={"margin-left-negative-4"}>
               <InputGroup.Addon>
                 <Glyphicon glyph="lyphicon glyphicon-search" />
@@ -100,6 +102,16 @@ export class Devices extends Component {
                 )}
               </FormattedMessage>
             </InputGroup>
+          </Col>
+          <Col md={1}>
+            <Link
+              to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/adddevice`}
+            >
+              <Glyphicon
+                className={"x-large"}
+                glyph="glyphicon glyphicon-plus-sign"
+              />
+            </Link>
           </Col>
         </Row>
         <Row>
@@ -388,7 +400,9 @@ const mapDispatchToProps = {
   fetchGetDevicesByGroupId
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Devices);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Devices)
+);

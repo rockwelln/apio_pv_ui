@@ -49,6 +49,7 @@ import UpdateLocalUser from "./components/UpdateLocalUser";
 import AddPhoneNumberGroup from "./components/AddPhoneNumberGroup";
 import SearchPage from "./components/SearchPage";
 import AddTrunkGroup from "./components/AddTrunkGroup";
+import AddDevicePage from "./components/AddDevicePage";
 
 import "./App.css";
 import loading from "./loading.gif";
@@ -446,6 +447,17 @@ class App extends Component {
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <UserPage />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/adddevice"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <AddDevicePage />
                   ) : (
                     <NotAllowed />
                   )

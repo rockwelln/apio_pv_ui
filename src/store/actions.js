@@ -288,6 +288,10 @@ export const postCreateTrunkGroup = data => ({
   data
 });
 
+export const postCreateDeviceInGroup = () => ({
+  type: actionType.POST_CREATE_DEVICE_IN_GROUP
+});
+
 export const putUpdateUser = data => ({
   type: actionType.PUT_UPDATE_USER,
   data
@@ -1527,6 +1531,29 @@ export function fetchPostCreateTrunkGroup(tenantId, groupId, data) {
       .then(res => res.json())
       .then(data => {
         dispatch(postCreateTrunkGroup(data));
+        return "success";
+      })
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-create-trunk-group"
+            defaultMessage="Failed to create trunk group!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchPostDeviceInGroup(tenantId, groupId, data) {
+  return function(dispatch) {
+    return fetch_post(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/access_devices/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => {
+        dispatch(postCreateDeviceInGroup());
         return "success";
       })
       .catch(error => {

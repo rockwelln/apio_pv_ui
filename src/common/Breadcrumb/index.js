@@ -49,6 +49,9 @@ const linkByCrumb = (item, lastItem, i, path, match) => {
       </Link>
     );
   }
+  if (crumb === "adddevice") {
+    return "Add device";
+  }
   if (crumb === "addadmin") {
     return "Add admin";
   }

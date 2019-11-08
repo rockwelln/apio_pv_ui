@@ -64,9 +64,7 @@ class TenantPage extends Component {
       <React.Fragment>
         <div className={"panel-heading"}>
           <p className={"header"}>
-            {`GROUP: ${group.groupName} (${
-              this.props.match.params.groupId
-            }) of tenant ${tenant.name} (${tenant.tenantId})`}
+            {`GROUP: ${group.groupName} (${this.props.match.params.groupId}) of tenant ${tenant.name} (${tenant.tenantId})`}
             <Glyphicon
               glyph="glyphicon glyphicon-trash"
               onClick={() => this.setState({ showDelete: true })}
@@ -82,7 +80,14 @@ class TenantPage extends Component {
           </p>
         </div>
         <div className={"panel-body"}>
-          <Tabs defaultActiveKey={0} id={`group_tabs${this.tabsIdSuffix}`}>
+          <Tabs
+            defaultActiveKey={
+              this.props.location.state && this.props.location.state.defaultTab
+                ? this.props.location.state.defaultTab
+                : 0
+            }
+            id={`group_tabs${this.tabsIdSuffix}`}
+          >
             <Tab eventKey={0} title="LICENSES">
               <Licenses
                 tenantId={this.props.match.params.tenantId}
