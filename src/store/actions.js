@@ -215,6 +215,11 @@ export const getTrunkByTenantID = data => ({
   data
 });
 
+export const getDevice = data => ({
+  type: actionType.GET_DEVICE,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -1259,6 +1264,24 @@ export function fetchGetTrunkByTenantID(tenantId) {
           <FormattedMessage
             id="fetch-trunk-failed"
             defaultMessage="Failed to fetch trunks!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetDevice(tenantId, groupId, deviceName) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/access_devices/${deviceName}`
+    )
+      .then(data => dispatch(getDevice(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-device-failed"
+            defaultMessage="Failed to fetch device!"
           />,
           error.message
         )

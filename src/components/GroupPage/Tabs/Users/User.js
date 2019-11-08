@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 import DeleteModal from "./DeleteModal";
 
-class Group extends Component {
+class User extends Component {
   state = { showDelete: false };
   render() {
     const { user, onReload, tenantId, groupId } = this.props;
@@ -59,4 +59,4 @@ class Group extends Component {
   }
 }
 
-export default withRouter(Group);
+export default withRouter(User);

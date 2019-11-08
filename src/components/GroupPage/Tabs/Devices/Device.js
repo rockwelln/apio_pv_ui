@@ -1,18 +1,34 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router";
 
 import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import DeleteModal from "./DeleteModal";
+import DevicePage from "../../../DevicePage";
 
-export default class Device extends Component {
-  state = { showDelete: false };
+class Device extends Component {
+  state = { showDelete: false, showDevice: false };
   render() {
     const { device, onReload } = this.props;
     const { showDelete } = this.state;
     return (
       <tr key={device.deviceName}>
-        <td>{device.deviceName}</td>
+        <td>
+          <a
+            className={"cursor-pointer"}
+            onClick={() => this.setState({ showDevice: true })}
+          >
+            {device.deviceName}
+          </a>
+          {this.state.showDevice && (
+            <DevicePage
+              isOpen={this.state.showDevice}
+              deviceName={device.deviceName}
+              handleHide={() => this.setState({ showDevice: false })}
+            />
+          )}
+        </td>
         <td>{device.deviceType}</td>
         <td>{device.macAddress}</td>
         <td>{device.freePorts}</td>
@@ -41,3 +57,5 @@ export default class Device extends Component {
     );
   }
 }
+
+export default withRouter(Device);

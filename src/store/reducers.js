@@ -106,7 +106,8 @@ const initialState = {
   tenantLicenses: {},
   tenantTrunkGroups: {},
   availableTrunkGroups: {},
-  createdTrunkGroup: {}
+  createdTrunkGroup: {},
+  device: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -509,6 +510,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         tenantTrunkGroups: action.data
+      };
+    }
+    case actionType.GET_DEVICE: {
+      return {
+        ...state,
+        device: action.data
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN: {
