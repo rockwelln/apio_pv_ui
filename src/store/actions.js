@@ -372,6 +372,11 @@ export const putUpdateGroupServicesByTenantId = data => ({
   data
 });
 
+export const putUpdateDevice = data => ({
+  type: actionType.PUT_UPDATE_DEVICE,
+  data
+});
+
 export const deleteTenant = data => ({
   type: actionType.DELETE_TENANT,
   data
@@ -1896,6 +1901,35 @@ export function fetchPutUpdateGroupServicesByTenantId(tenantId, data) {
           <FormattedMessage
             id="update-trunk-failed"
             defaultMessage="Failed to update trunk!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchPutUpdateDevice(tenantId, groupId, deviceName, data) {
+  return function(dispatch) {
+    return fetch_put(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/access_devices/${deviceName}/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => {
+        dispatch(putUpdateDevice(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="update-device-success"
+            defaultMessage="Device is updated successfully!"
+          />,
+          "Updated"
+        );
+      })
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="update-device-failed"
+            defaultMessage="Failed to update device!"
           />,
           error.message
         )

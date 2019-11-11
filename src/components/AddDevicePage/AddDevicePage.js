@@ -230,8 +230,9 @@ export class AddDevicePage extends Component {
                           max={65535}
                           onChange={e => {
                             if (
-                              e.target.value < 1025 ||
-                              e.target.value > 65535
+                              (e.target.value < 1025 ||
+                                e.target.value > 65535) &&
+                              e.target.value !== ""
                             ) {
                               this.setState({
                                 errorTPCIP: "error"
@@ -239,7 +240,7 @@ export class AddDevicePage extends Component {
                               return;
                             }
                             this.setState({
-                              netPort: e.target.value,
+                              netPort: Number(e.target.value),
                               errorTPCIP: null
                             });
                           }}

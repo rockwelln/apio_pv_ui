@@ -720,6 +720,12 @@ function mainReducer(state = initialState, action) {
         ...state
       };
     }
+    case actionType.PUT_UPDATE_DEVICE: {
+      return {
+        ...state,
+        device: action.data
+      };
+    }
     case actionType.DELETE_TENANT: {
       return {
         ...state
