@@ -87,7 +87,6 @@ class TenantPage extends Component {
             <DeleteModal
               userId={this.props.match.params.userName}
               show={showDelete}
-              notifications={this.props.notifications}
               onClose={() => {
                 this.setState({ showDelete: false });
               }}

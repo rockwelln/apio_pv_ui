@@ -189,7 +189,6 @@ export class Admins extends Component {
                         tenantId={this.props.tenantId}
                         groupId={this.props.groupId}
                         admin={admin}
-                        notifications={this.props.notifications}
                         onReload={() =>
                           this.props.fetchGetAdminsByGroupId(
                             this.props.tenantId,

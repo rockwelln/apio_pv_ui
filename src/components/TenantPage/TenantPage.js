@@ -55,7 +55,6 @@ class TenantPage extends Component {
             <DeleteModal
               tenantId={tenant.tenantId}
               show={showDelete}
-              notifications={this.props.notifications}
               onClose={() => {
                 this.setState({ showDelete: false });
               }}
@@ -79,7 +78,6 @@ class TenantPage extends Component {
             <Tab eventKey={4} title="ADMINISTRATORS">
               <Admins
                 tenantId={this.props.match.params.tenantId}
-                notifications={this.props.notifications}
               />
             </Tab>
             <Tab eventKey={5} title="DETAILS">

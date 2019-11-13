@@ -8,7 +8,7 @@ import Sidebar from "../../common/Sidebar";
 import Title from "../../common/Title";
 import GroupPage from "./GroupPage";
 
-const GroupComponent = notifications => {
+const GroupComponent = props => {
   return (
     <React.Fragment>
       <Row className={"margin-bottom-4"}>
@@ -23,7 +23,7 @@ const GroupComponent = notifications => {
             <Breadcrumb />
           </Row>
           <Row  className={"panel panel-default"}>
-            <GroupPage notifications={notifications} />
+            <GroupPage {...props} />
           </Row>
         </Col>
       </Row>

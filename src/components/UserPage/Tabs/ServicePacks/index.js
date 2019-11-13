@@ -206,7 +206,6 @@ export class Services extends Component {
                         index={i}
                         tenantId={this.props.tenantId}
                         service={service}
-                        notifications={this.props.notifications}
                         handleSingleCheckboxClick={
                           this.handleSingleCheckboxClick
                         }

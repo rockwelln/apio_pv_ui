@@ -209,7 +209,6 @@ export class Devices extends Component {
                         device={device}
                         tenantId={this.props.tenantId}
                         groupId={this.props.groupId}
-                        notifications={this.props.notifications}
                         onReload={() =>
                           this.props.fetchGetDevicesByGroupId(
                             this.props.tenantId,

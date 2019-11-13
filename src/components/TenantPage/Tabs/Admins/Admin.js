@@ -34,7 +34,6 @@ class Admin extends Component {
             />
           </ButtonToolbar>
           <DeleteModal
-            notifications={this.props.notifications}
             adminId={admin.userId}
             tenantId={this.props.tenantId}
             show={showDelete}

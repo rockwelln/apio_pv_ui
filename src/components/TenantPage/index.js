@@ -10,7 +10,7 @@ import Title from "../../common/Title";
 
 import "./styles.css";
 
-const TenantComponent = notifications => {
+const TenantComponent = props => {
   return (
     <React.Fragment>
       <Row className={"margin-bottom-4"}>
@@ -25,7 +25,7 @@ const TenantComponent = notifications => {
             <Breadcrumb />
           </Row>
           <Row className={"panel panel-default"}>
-            <TenantPage notifications={notifications} />
+            <TenantPage {...props} />
           </Row>
         </Col>
       </Row>
