@@ -14,6 +14,7 @@ import Button from "react-bootstrap/lib/Button";
 import { FormattedMessage } from "react-intl";
 import Loading from "../../../../common/Loading";
 import EditLicenses from "../../../../common/EditLicenses";
+import ServicePackAuthorisation from "../../../ServicePackAuthorisation";
 
 import {
   fetchGetLicensesByGroupId,
@@ -39,7 +40,8 @@ export class Licenses extends Component {
     newUserLimit: null,
     editTrunkCapacity: false,
     editServicePacks: false,
-    editGroupServices: false
+    editGroupServices: false,
+    showModal: false
   };
 
   fetchData = () => {
@@ -641,10 +643,29 @@ export class Licenses extends Component {
               </Panel.Body>
             )}
           </Panel>
+          <Row className={"flex justify-center"}>
+            <Col>
+              <Button
+                bsStyle="link"
+                onClick={() => this.setState({ showModal: true })}
+              >
+                Edit service pack authorisation
+              </Button>
+            </Col>
+            <ServicePackAuthorisation
+              isOpen={this.state.showModal}
+              handleHide={this.handleHide}
+              userServices={this.props.userServices}
+            />
+          </Row>
         </Col>
       </Row>
     );
   }
+
+  handleHide = () => {
+    this.setState({ showModal: false });
+  };
 
   updateServicePacks = () => {
     const data = {
@@ -800,7 +821,8 @@ const mapStateToProps = state => ({
   servicePacks: state.servicePacks,
   groupServices: state.groupServices,
   trunkGroups: state.trunkGroups,
-  groupTrunkErrorMassage: state.groupTrunkErrorMassage
+  groupTrunkErrorMassage: state.groupTrunkErrorMassage,
+  userServices: state.userServices
 });
 
 const mapDispatchToProps = {

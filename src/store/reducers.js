@@ -107,7 +107,8 @@ const initialState = {
   tenantTrunkGroups: {},
   availableTrunkGroups: {},
   createdTrunkGroup: {},
-  device: {}
+  device: {},
+  userServices: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -236,7 +237,9 @@ function mainReducer(state = initialState, action) {
           groups: groupServices,
           countShown: groupServicesShown.length
         },
-        availableTrunkGroups: availableTrunkGroups[0] && availableTrunkGroups[0]
+        availableTrunkGroups:
+          availableTrunkGroups[0] && availableTrunkGroups[0],
+        userServices: action.data.userServices
       };
     }
     case actionType.GET_DEVICES_BY_GROUP_ID: {

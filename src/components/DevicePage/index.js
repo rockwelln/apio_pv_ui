@@ -6,7 +6,6 @@ import Modal from "react-bootstrap/lib/Modal";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import FormControl from "react-bootstrap/lib/FormControl";
-import Panel from "react-bootstrap/lib/Panel";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
