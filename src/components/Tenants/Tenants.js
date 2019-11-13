@@ -293,9 +293,16 @@ class Tenants extends Component {
     const SearchArray = this.props.tenants
       .filter(
         tennant =>
-          tennant.tenantId.toLowerCase().includes(searchValue.toLowerCase()) ||
-          tennant.tina_id.toLowerCase().includes(searchValue.toLowerCase()) ||
-          tennant.name.toLowerCase().includes(searchValue.toLowerCase())
+          (tennant.tenantId &&
+            tennant.tenantId
+              .toLowerCase()
+              .includes(searchValue.toLowerCase())) ||
+          (tennant.tina_id &&
+            tennant.tina_id
+              .toLowerCase()
+              .includes(searchValue.toLowerCase())) ||
+          (tennant.name &&
+            tennant.name.toLowerCase().includes(searchValue.toLowerCase()))
       )
       .map(tenant => tenant);
     this.setState({ tenants: SearchArray }, () => this.pagination());
