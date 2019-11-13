@@ -1942,6 +1942,7 @@ export function fetchDeleteTenant(ID) {
     return fetch_delete(
       `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${ID}`
     )
+      .then(res => res.json())
       .then(data => {
         dispatch(deleteTenant(data));
         return "deleted";
@@ -1963,6 +1964,7 @@ export function fetchDeleteTenantAdmin(tenantId, adminId) {
     return fetch_delete(
       `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/admins/${adminId}`
     )
+      .then(res => res.json())
       .then(data => {
         dispatch(deleteTenantAdmin());
       })
@@ -1983,6 +1985,7 @@ export function fetchDeleteGroupDevice(tenantId, groupId, deviceName) {
     return fetch_delete(
       `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/access_devices/${deviceName}`
     )
+      .then(res => res.json())
       .then(data => dispatch(deleteGroupDevice()))
       .catch(error =>
         NotificationsManager.error(
@@ -2001,6 +2004,7 @@ export function fetchDeleteGroupAdmin(tenantId, groupId, adminId) {
     return fetch_delete(
       `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/admins/${adminId}`
     )
+      .then(res => res.json())
       .then(data => {
         dispatch(deleteGroupAdmin());
       })
@@ -2027,6 +2031,7 @@ export function fetchDeleteAssignUserServices(
       `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/users/${userName}/services/`,
       data
     )
+      .then(res => res.json())
       .then(data => {
         dispatch(deleteAssignUserServices());
       })
@@ -2053,6 +2058,7 @@ export function fetchDeleteAssignUserServicePacks(
       `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/users/${userName}/services/`,
       data
     )
+      .then(res => res.json())
       .then(data => {
         dispatch(deleteAssignUserServicePacks());
       })
@@ -2074,6 +2080,7 @@ export function fetchDeletePhoneFromTenant(tenantId, data) {
       `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/numbers/`,
       data
     )
+      .then(res => res.json())
       .then(data => {
         dispatch(deletePhoneFromTenant());
       })
@@ -2094,6 +2101,7 @@ export function fetchDeleteUserFromGroup(tenantId, groupId, userName) {
     return fetch_delete(
       `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/users/${userName}/`
     )
+      .then(res => res.json())
       .then(data => {
         dispatch(deleteUserFromGroup());
         return "deleted";
@@ -2115,6 +2123,7 @@ export function fetchDeleteGroupFromTenant(tenantId, groupId) {
     return fetch_delete(
       `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/`
     )
+      .then(res => res.json())
       .then(data => {
         dispatch(deleteGroupFromTenant(data));
         return "deleted";
@@ -2136,6 +2145,7 @@ export function fetchDeleteTrunkGroup(tenantId, groupId, trunkName) {
     return fetch_delete(
       `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/services/trunk_groups/${trunkName}`
     )
+      .then(res => res.json())
       .then(data => {
         dispatch(deleteTrunkGroup(data));
         return "deleted";
@@ -2157,6 +2167,7 @@ export function fetchDeleteKey(appName, keyName) {
     return fetch_delete(
       `${ProvProxiesManager.getCurrentUrlPrefix()}/configs/applications/${appName}/${keyName}`
     )
+      .then(res => res.json())
       .then(data => {
         dispatch(deleteKey(data));
         return "deleted";
@@ -2178,6 +2189,7 @@ export function fetchDeleteLocalUser(username) {
     return fetch_delete(
       `${ProvProxiesManager.getCurrentUrlPrefix()}/local/apio_users/${username}`
     )
+      .then(res => res.json())
       .then(data => {
         dispatch(deleteLocalUser(data));
         return "deleted";
@@ -2200,6 +2212,7 @@ export function fetchDeletePhoneFromGroup(tenantId, groupId, data) {
       `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/numbers/`,
       data
     )
+      .then(res => res.json())
       .then(data => {
         dispatch(deletePhoneFromGroup(data));
       })
