@@ -25,14 +25,11 @@ class SericePack extends Component {
             defaultChecked={
               this.props.userService.allocated.unlimited === false
             }
-            onChange={e => this.setState({ checkedMaximum: e.target.checked })}
           >
             <div className="font-weight-bold flex">
               <FormControl
                 type="number"
-                disabled={
-                  !(this.props.userService.allocated.unlimited === false)
-                }
+                disabled
                 defaultValue={this.props.userService.allocated.maximum}
                 min={0}
               />
