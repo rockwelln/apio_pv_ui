@@ -117,7 +117,7 @@ export class index extends Component {
         <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>
-              <FormattedMessage id="mainNumber" defaultMessage="Main Number" />
+              <FormattedMessage id="mainNumber" defaultMessage="CLI Name" />
             </div>
             <div className={"margin-right-1 flex-basis-33"}>
               <FormControl
