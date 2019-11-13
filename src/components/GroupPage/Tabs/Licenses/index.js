@@ -822,7 +822,7 @@ const mapStateToProps = state => ({
   groupServices: state.groupServices,
   trunkGroups: state.trunkGroups,
   groupTrunkErrorMassage: state.groupTrunkErrorMassage,
-  userServices: state.userServices
+  userServices: state.userServicesGroup
 });
 
 const mapDispatchToProps = {

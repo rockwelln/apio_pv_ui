@@ -108,7 +108,8 @@ const initialState = {
   availableTrunkGroups: {},
   createdTrunkGroup: {},
   device: {},
-  userServices: []
+  userServicesGroup: [],
+  userServicesTenant: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -239,7 +240,7 @@ function mainReducer(state = initialState, action) {
         },
         availableTrunkGroups:
           availableTrunkGroups[0] && availableTrunkGroups[0],
-        userServices: action.data.userServices
+        userServicesGroup: action.data.userServices
       };
     }
     case actionType.GET_DEVICES_BY_GROUP_ID: {
@@ -506,7 +507,8 @@ function mainReducer(state = initialState, action) {
         tenantLicenses: {
           groups: groupServices,
           countShown: groupServicesShown.length
-        }
+        },
+        userServicesTenant: action.data.userServices
       };
     }
     case actionType.GET_TRUNK_BY_TENANT_ID: {

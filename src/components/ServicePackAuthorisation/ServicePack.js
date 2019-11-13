@@ -22,7 +22,9 @@ class SericePack extends Component {
           </Radio>
           <Radio
             name={`allocated${userService.name}`}
-            checked={this.props.userService.allocated.unlimited === false}
+            defaultChecked={
+              this.props.userService.allocated.unlimited === false
+            }
             onChange={e => this.setState({ checkedMaximum: e.target.checked })}
           >
             <div className="font-weight-bold flex">
