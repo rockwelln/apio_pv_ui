@@ -126,7 +126,7 @@ export class AddGroup extends Component {
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
-                    type="text"
+                    type="number"
                     value={this.state.zipCode}
                     placeholder={"ZIP code"}
                     onChange={e => this.setState({ zipCode: e.target.value })}

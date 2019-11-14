@@ -175,7 +175,7 @@ export class index extends Component {
             </div>
             <div className={"margin-right-1 flex-basis-33"}>
               <FormControl
-                type="text"
+                type="number"
                 value={this.state.group.zipCode}
                 placeholder={"ZIP code"}
                 onChange={e =>
