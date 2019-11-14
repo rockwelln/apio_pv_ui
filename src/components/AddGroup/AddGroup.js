@@ -17,7 +17,6 @@ import { FormattedMessage } from "react-intl";
 import { fetchPostCreateGroup, fetchGetConfig } from "../../store/actions";
 import { removeEmpty } from "../remuveEmptyInObject";
 
-import { TYPEOFIAD, TYPEOFACCESS, SERVICETYPE } from "../../constants";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import Checkbox from "react-bootstrap/lib/Checkbox";
 
@@ -54,22 +53,17 @@ export class AddGroup extends Component {
     if (this.state.isLoading) {
       return <Loading />;
     }
-    console.log(
-      this.state.typeOfIad,
-      this.state.typeOfAccess,
-      this.state.serviceType
-    );
     return (
       <React.Fragment>
         <Panel className={"margin-0"}>
           <Panel.Heading>
             <div className={"header"}>
-              ADD SITE
+              <FormattedMessage id="addSite" defaultMessage="ADD SITE" />
               <Button
                 className={"margin-left-1 btn-danger"}
                 onClick={this.cancelClick}
               >
-                Cancel
+                <FormattedMessage id="cancel" defaultMessage="Cancel" />
               </Button>
             </div>
           </Panel.Heading>
@@ -77,7 +71,7 @@ export class AddGroup extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  Site ID
+                  <FormattedMessage id="siteId" defaultMessage="Site ID" />
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl type="text" placeholder={"ID"} disabled />
@@ -86,13 +80,19 @@ export class AddGroup extends Component {
             </Row>
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex font-24"}>Site Infos</div>
+                <div className={"margin-right-1 flex font-24"}>
+                  {" "}
+                  <FormattedMessage
+                    id="siteDetails"
+                    defaultMessage="Site details"
+                  />
+                </div>
               </Col>
             </Row>
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  Site Name
+                  <FormattedMessage id="siteName" defaultMessage="Site Name" />
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
@@ -107,7 +107,7 @@ export class AddGroup extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  CLI Name
+                  <FormattedMessage id="cliName" defaultMessage="CLI Name" />
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
@@ -122,7 +122,7 @@ export class AddGroup extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  ZIP code
+                  <FormattedMessage id="zipCode" defaultMessage="ZIP code" />
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
@@ -137,7 +137,10 @@ export class AddGroup extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  Virtual Site
+                  <FormattedMessage
+                    id="virtualSite"
+                    defaultMessage="Virtual Site"
+                  />
                 </div>
                 <div className={"margin-right-1 flex"}>
                   <FormGroup className={"margin-0 flex"}>
@@ -151,7 +154,9 @@ export class AddGroup extends Component {
                         })
                       }
                     >
-                      <div className="font-weight-bold flex">Yes</div>
+                      <div className="font-weight-bold flex">
+                        <FormattedMessage id="yes" defaultMessage="Yes" />
+                      </div>
                     </Radio>
                     <Radio
                       className={"margin-0 flex margin-right-2"}
@@ -163,7 +168,9 @@ export class AddGroup extends Component {
                         })
                       }
                     >
-                      <div className="font-weight-bold flex">No</div>
+                      <div className="font-weight-bold flex">
+                        <FormattedMessage id="no" defaultMessage="No" />
+                      </div>
                     </Radio>
                   </FormGroup>
                 </div>
@@ -172,7 +179,10 @@ export class AddGroup extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex font-24"}>
-                  Product Type
+                  <FormattedMessage
+                    id="productType"
+                    defaultMessage="Product Type"
+                  />
                 </div>
               </Col>
             </Row>
@@ -300,7 +310,11 @@ export class AddGroup extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  Numbers of Channels{"\u002a"}
+                  <FormattedMessage
+                    id="numbersOfChannels"
+                    defaultMessage="Numbers of Channels"
+                  />
+                  {"\u002a"}
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
