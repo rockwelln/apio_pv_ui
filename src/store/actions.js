@@ -553,6 +553,11 @@ export const putUpdateIAD = data => ({
   data
 });
 
+export const deletePhoneFromGroup = data => ({
+  type: actionType.DELETE_PHONE_FROM_GROUP,
+  data
+});
+
 export const changeIAD = (field, value) => ({
   type: actionType.CHANGE_IAD_FOR_UPDATE,
   field,
@@ -2204,6 +2209,28 @@ export function fetchDeleteLocalUser(username) {
           <FormattedMessage
             id="failed-to-delete-user"
             defaultMessage="Failed to delete user!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchDeletePhoneFromGroup(tenantId, groupId, data) {
+  return function(dispatch) {
+    return fetch_delete(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/numbers/`,
+      data
+    )
+      .then(data => {
+        dispatch(deleteLocalUser(data));
+        return "deleted";
+      })
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-delete-phone-number"
+            defaultMessage="Failed to delete phone number!"
           />,
           error.message
         )

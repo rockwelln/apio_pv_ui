@@ -19,7 +19,7 @@ import { fetchGetPhoneNumbersByGroupId } from "../../../../store/actions";
 
 import Loading from "../../../../common/Loading";
 import PhoneNumber from "./PhoneNumber";
-import DeleteModal from "./DeleteModal";
+import DeleteModal from "./DeleteMultipleNumbers";
 import { countsPerPages } from "../../../../constants";
 
 import "./styles.css";
@@ -43,7 +43,7 @@ export class PhoneNumbersTab extends Component {
     showWithStatus: false
   };
 
-  componentDidMount() {
+  fetchGetNumbers() {
     this.props
       .fetchGetPhoneNumbersByGroupId(this.props.tenantId, this.props.groupId)
       .then(() =>
@@ -62,11 +62,15 @@ export class PhoneNumbersTab extends Component {
       );
   }
 
+  componentDidMount() {
+    this.fetchGetNumbers();
+  }
+
   render() {
     const {
       isLoading,
-      showDelete,
       numbersForDelete,
+      showDelete,
       countPerPage,
       pagination,
       paginationPhoneNumbers,
@@ -74,6 +78,7 @@ export class PhoneNumbersTab extends Component {
     } = this.state;
 
     const { onReload } = this.props;
+    console.log("showDelete", showDelete);
 
     if (isLoading && pagination) {
       return <Loading />;
@@ -139,12 +144,18 @@ export class PhoneNumbersTab extends Component {
                     >
                       (Un)select all shown numbers
                     </Checkbox> */}
-                    <Glyphicon
-                      glyph="glyphicon glyphicon-trash"
+                    <div
                       onClick={this.deleteSlectedNumbers}
-                    />
-                    <div className={"margin-checbox"}>
-                      Delete selected numbers
+                      className={
+                        "cursor-pointer padding-left-05 flex text-align-center align-items-center"
+                      }
+                    >
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-trash"
+                        className={"margin-right-1"}
+                        onClick={this.deleteSlectedNumbers}
+                      />
+                      <div>Delete selected numbers</div>
                     </div>
                     <DeleteModal
                       rangeStart={numbersForDelete.map(
@@ -152,7 +163,7 @@ export class PhoneNumbersTab extends Component {
                       )}
                       show={showDelete}
                       onClose={e => {
-                        onReload && onReload(numbersForDelete);
+                        this.fetchGetNumbers();
                         this.setState({ showDelete: false });
                       }}
                       {...this.props}
@@ -290,12 +301,7 @@ export class PhoneNumbersTab extends Component {
                         handleSingleCheckboxClickPreActive={
                           this.handleSingleCheckboxClickPreActive
                         }
-                        onReload={() =>
-                          this.props.fetchGetPhoneNumbersByGroupId(
-                            this.props.tenantId,
-                            this.props.groupId
-                          )
-                        }
+                        onReload={() => this.fetchGetNumbers()}
                       />
                     ))}
                   </tbody>
@@ -333,19 +339,21 @@ export class PhoneNumbersTab extends Component {
         this.props.groupId,
         true
       )
-      .then(() => this.setState(
-        {
-          phoneNumbers: this.props.phoneNumbers.sort((a, b) => {
-            if (a.rangeStart < b.rangeStart) return -1;
-            if (a.rangeStart > b.rangeStart) return 1;
-            return 0;
-          }),
-          isLoading: false,
-          sortedBy: "rangeStart",
-          showWithStatus: true
-        },
-        () => this.pagination()
-      ));
+      .then(() =>
+        this.setState(
+          {
+            phoneNumbers: this.props.phoneNumbers.sort((a, b) => {
+              if (a.rangeStart < b.rangeStart) return -1;
+              if (a.rangeStart > b.rangeStart) return 1;
+              return 0;
+            }),
+            isLoading: false,
+            sortedBy: "rangeStart",
+            showWithStatus: true
+          },
+          () => this.pagination()
+        )
+      );
   };
 
   changeCoutOnPage = e => {
@@ -486,13 +494,12 @@ export class PhoneNumbersTab extends Component {
   };
 
   deleteSlectedNumbers = () => {
+    console.log("delete");
     const { phoneNumbers } = this.state;
     const numbersForDelete = phoneNumbers.filter(phone => {
       return !!phone.phoneChecked;
     });
-    this.setState({ numbersForDelete, showDelete: true }, () =>
-      this.pagination()
-    );
+    this.setState({ numbersForDelete, showDelete: true });
   };
 
   handleSelectAllClickPreActive = e => {

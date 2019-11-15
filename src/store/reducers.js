@@ -768,6 +768,11 @@ function mainReducer(state = initialState, action) {
         ...state
       };
     }
+    case actionType.DELETE_PHONE_FROM_GROUP: {
+      return {
+        ...state
+      };
+    }
     case actionType.CLEAR_ERROR_MASSAGE: {
       return {
         ...state,

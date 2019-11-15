@@ -289,3 +289,8 @@ textarea {
 .height-20 {
   height: 20px;
 }
+
+.header {
+  font-size: 24px;
+  font-weight: 700;
+}
