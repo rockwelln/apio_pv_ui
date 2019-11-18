@@ -77,8 +77,6 @@ export class PhoneNumbersTab extends Component {
       page
     } = this.state;
 
-    console.log(this.props.phoneNumbers);
-
     if (isLoading && pagination) {
       return <Loading />;
     }
