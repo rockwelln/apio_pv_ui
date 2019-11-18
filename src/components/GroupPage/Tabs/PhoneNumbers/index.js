@@ -86,7 +86,7 @@ export class PhoneNumbersTab extends Component {
     return (
       <React.Fragment>
         <Row className={"margin-top-2 flex align-items-center"}>
-          <Col mdOffset={1} md={8}>
+          <Col mdOffset={1} md={10}>
             <InputGroup className={"margin-left-negative-4"}>
               <InputGroup.Addon>
                 <Glyphicon glyph="lyphicon glyphicon-search" />
@@ -123,18 +123,11 @@ export class PhoneNumbersTab extends Component {
               />
             </Link>
           </Col>
-          <Col md={2}>
-            <Link
-              to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.tenantId}/groups/${this.props.groupId}/modifyphone`}
-            >
-              modify portability states
-            </Link>
-          </Col>
         </Row>
         {paginationPhoneNumbers.length ? (
           <React.Fragment>
             <Row>
-              <Col mdOffset={1} md={8}>
+              <Col mdOffset={1} md={10}>
                 <div className={"flex space-between indent-top-bottom-1"}>
                   <div className={"flex align-items-center"}>
                     {/* <Checkbox
@@ -147,7 +140,7 @@ export class PhoneNumbersTab extends Component {
                     <div
                       onClick={this.deleteSlectedNumbers}
                       className={
-                        "cursor-pointer padding-left-05 flex text-align-center align-items-center"
+                        "cursor-pointer padding-left-05 flex text-align-center align-items-center margin-right-1"
                       }
                     >
                       <Glyphicon
@@ -170,13 +163,24 @@ export class PhoneNumbersTab extends Component {
                     />
                     <Button
                       onClick={this.getNumbersWithStatus}
-                      className={"btn-primary"}
+                      className={"btn-primary margin-right-1"}
                     >
                       <FormattedMessage
                         id="refreshNumbersStatus"
                         defaultMessage="Refresh with portability status"
                       />
                     </Button>
+                    {this.state.showWithStatus && (
+                      <Button
+                        onClick={this.updateStatus}
+                        className={"btn-primary"}
+                      >
+                        <FormattedMessage
+                          id="updateStatus"
+                          defaultMessage="Update Status"
+                        />
+                      </Button>
+                    )}
                   </div>
 
                   <div className={"flex align-items-center"}>

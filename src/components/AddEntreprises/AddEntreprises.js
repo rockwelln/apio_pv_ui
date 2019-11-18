@@ -40,7 +40,7 @@ export class AddEntreprises extends Component {
             <div>
               <FormattedMessage
                 id="addEnterprisesInfo"
-                defaultMessage="Enter your enterprise name customer ID. Your enterprise ID will be auto-generated"
+                defaultMessage="Enter your enterprise name and customer ID. Your enterprise ID will be auto-generated"
               />
             </div>
           </Panel.Heading>
