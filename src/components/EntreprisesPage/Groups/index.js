@@ -271,18 +271,18 @@ export class GroupsTab extends Component {
 
   filterBySearchValue = () => {
     const { searchValue } = this.state;
-    const SearchArray = this.state.groupsForSearch
+    const SearchArray = this.props.groups
       .filter(
         group =>
           group.groupId.toLowerCase().includes(searchValue.toLowerCase()) ||
           group.groupName.toLowerCase().includes(searchValue.toLowerCase())
       )
       .map(group => group);
-    this.setState({ fakeGroups: SearchArray }, () => this.pagination());
+    this.setState({ groups: SearchArray }, () => this.pagination());
   };
 
   sortByID = () => {
-    const { groups, sortedBy, fakeGroups } = this.state;
+    const { groups, sortedBy } = this.state;
     if (sortedBy === "id") {
       const groupsSorted = groups.reverse();
       this.setState({ groups: groupsSorted }, () => this.pagination());
@@ -299,7 +299,7 @@ export class GroupsTab extends Component {
   };
 
   sortByName = () => {
-    const { groups, sortedBy, fakeGroups } = this.state;
+    const { groups, sortedBy } = this.state;
     if (sortedBy === "name") {
       const groupsSorted = groups.reverse();
       this.setState({ groups: groupsSorted }, () => this.pagination());

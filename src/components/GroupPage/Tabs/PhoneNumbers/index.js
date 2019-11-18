@@ -77,8 +77,7 @@ export class PhoneNumbersTab extends Component {
       page
     } = this.state;
 
-    const { onReload } = this.props;
-    console.log("showDelete", showDelete);
+    console.log(this.props.phoneNumbers);
 
     if (isLoading && pagination) {
       return <Loading />;
@@ -413,8 +412,10 @@ export class PhoneNumbersTab extends Component {
         phone =>
           phone.rangeStart.toLowerCase().includes(searchValue.toLowerCase()) ||
           phone.rangeEnd.toLowerCase().includes(searchValue.toLowerCase()) ||
-          phone.userId.toLowerCase().includes(searchValue.toLowerCase()) ||
-          phone.userType.toLowerCase().includes(searchValue.toLowerCase())
+          (phone.userId &&
+            phone.userId.toLowerCase().includes(searchValue.toLowerCase())) ||
+          (phone.userType &&
+            phone.userType.toLowerCase().includes(searchValue.toLowerCase()))
       )
       .map(phone => phone);
     this.setState({ phoneNumbers: SearchArray }, () => this.pagination());
@@ -498,7 +499,6 @@ export class PhoneNumbersTab extends Component {
   };
 
   deleteSlectedNumbers = () => {
-    console.log("delete");
     const { phoneNumbers } = this.state;
     const numbersForDelete = phoneNumbers.filter(phone => {
       return !!phone.phoneChecked;
