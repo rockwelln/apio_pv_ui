@@ -175,14 +175,19 @@ export class index extends Component {
             </div>
             <div className={"margin-right-1 flex-basis-33"}>
               <FormControl
+                className={"hide-arrows"}
                 type="number"
                 value={this.state.group.zipCode}
+                min={0}
                 placeholder={"ZIP code"}
-                onChange={e =>
+                onChange={e => {
+                  if (e.target.value < 0) {
+                    return;
+                  }
                   this.setState({
                     group: { ...this.state.group, zipCode: e.target.value }
-                  })
-                }
+                  });
+                }}
                 disabled={this.state.isDisabled}
               />
             </div>

@@ -126,10 +126,16 @@ export class AddGroup extends Component {
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
+                    className={"hide-arrows"}
                     type="number"
                     value={this.state.zipCode}
                     placeholder={"ZIP code"}
-                    onChange={e => this.setState({ zipCode: e.target.value })}
+                    onChange={e => {
+                      if (e.target.value < 0) {
+                        return;
+                      }
+                      this.setState({ zipCode: e.target.value });
+                    }}
                   />
                 </div>
               </Col>
