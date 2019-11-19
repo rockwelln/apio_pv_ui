@@ -94,8 +94,7 @@ class Tenants extends Component {
           <div>
             <FormattedMessage
               id="costomerDescription"
-              defaultMessage="Lookup any customer by providing one the parameters or add a new
-                entreprise"
+              defaultMessage="Lookup any customer by providing one of the parameters or add a new enterprise"
             />
           </div>
         </div>

@@ -122,8 +122,7 @@ export class AddIAD extends Component {
             <div>
               <FormattedMessage
                 id="addIadInfo"
-                defaultMessage="Enter yout IAD specificitys, configurations and optionnals
-              overrides"
+                defaultMessage="Enter your IAD specificities, configurations and optional overrides"
               />
             </div>
           </Panel.Heading>

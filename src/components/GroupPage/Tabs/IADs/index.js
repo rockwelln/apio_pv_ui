@@ -103,7 +103,7 @@ export class IADs extends Component {
               </InputGroup.Addon>
               <FormattedMessage
                 id="search_placeholder"
-                defaultMessage="placeholder"
+                defaultMessage="IAD ID or IAD Type or MAC Address"
               >
                 {placeholder => (
                   <FormControl

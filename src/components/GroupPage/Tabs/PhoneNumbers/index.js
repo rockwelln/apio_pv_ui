@@ -92,8 +92,8 @@ export class PhoneNumbersTab extends Component {
                 <Glyphicon glyph="lyphicon glyphicon-search" />
               </InputGroup.Addon>
               <FormattedMessage
-                id="search_placeholder"
-                defaultMessage="placeholder"
+                id="search_placeholder_numbers"
+                defaultMessage="Numbers or Assigned to or User type"
               >
                 {placeholder => (
                   <FormControl

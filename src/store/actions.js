@@ -1731,7 +1731,7 @@ export function fetchPutUpdateGroupDetails(tenantId, groupId, data) {
         NotificationsManager.success(
           <FormattedMessage
             id="successfulGroupUpdate"
-            defaultMessage="Successful group ipdate"
+            defaultMessage="Successful group update"
           />,
           "Updated"
         );
