@@ -15,7 +15,10 @@ import Button from "react-bootstrap/lib/Button";
 
 import { FormattedMessage } from "react-intl";
 
-import { fetchGetPhoneNumbersByGroupId } from "../../../../store/actions";
+import {
+  fetchGetPhoneNumbersByGroupId,
+  fetchPutUpdateNumbersStatus
+} from "../../../../store/actions";
 
 import Loading from "../../../../common/Loading";
 import PhoneNumber from "./PhoneNumber";
@@ -333,6 +336,39 @@ export class PhoneNumbersTab extends Component {
     );
   }
 
+  updateStatus = () => {
+    const activeNumbers = this.state.phoneNumbers.filter(el => el.active);
+    const preActiveNumbers = this.state.phoneNumbers.filter(el => el.preActive);
+    const allActiveNumbers = [];
+    const allPreActiveNumbers = [];
+    activeNumbers.map(el => {
+      allActiveNumbers.push(el.phoneNumber);
+    });
+    preActiveNumbers.map(el => {
+      allPreActiveNumbers.push(el.phoneNumber);
+    });
+    const activeData = {
+      numbers: allActiveNumbers.map(number => ({ phoneNumber: number })),
+      status: "active"
+    };
+    const preActiveData = {
+      numbers: allPreActiveNumbers.map(number => ({ phoneNumber: number })),
+      status: "preActive"
+    };
+    allActiveNumbers.length &&
+      this.props.fetchPutUpdateNumbersStatus(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        activeData
+      );
+    allPreActiveNumbers.length &&
+      this.props.fetchPutUpdateNumbersStatus(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        preActiveData
+      );
+  };
+
   getNumbersWithStatus = () => {
     this.props
       .fetchGetPhoneNumbersByGroupId(
@@ -508,12 +544,14 @@ export class PhoneNumbersTab extends Component {
     const isChecked = e.target.checked;
     const newArr = this.state.phoneNumbers.map(el => ({
       ...el,
-      preActive: isChecked
+      preActive: isChecked,
+      active: !isChecked
     }));
     this.setState(
       {
         phoneNumbers: newArr,
-        selectAllPreActive: !this.state.selectAllPreActive
+        selectAllPreActive: !this.state.selectAllPreActive,
+        selectAllActive: this.state.selectAllPreActive
       },
       () => this.pagination()
     );
@@ -523,10 +561,15 @@ export class PhoneNumbersTab extends Component {
     const isChecked = e.target.checked;
     const newArr = this.state.phoneNumbers.map(el => ({
       ...el,
-      active: isChecked
+      active: isChecked,
+      preActive: !isChecked
     }));
     this.setState(
-      { phoneNumbers: newArr, selectAllActive: !this.state.selectAllActive },
+      {
+        phoneNumbers: newArr,
+        selectAllActive: !this.state.selectAllActive,
+        selectAllPreActive: this.state.selectAllActive
+      },
       () => this.pagination()
     );
   };
@@ -555,7 +598,8 @@ export class PhoneNumbersTab extends Component {
   handleSingleCheckboxClickActive = index => {
     const newArr = this.state.phoneNumbers.map((el, i) => ({
       ...el,
-      active: index === i ? !el.active : el.active
+      active: index === i ? !el.active : el.active,
+      preActive: index === i ? !el.preActive : el.preActive
     }));
     this.setState({ phoneNumbers: newArr, selectAllActive: false }, () =>
       this.pagination()
@@ -565,7 +609,8 @@ export class PhoneNumbersTab extends Component {
   handleSingleCheckboxClickPreActive = index => {
     const newArr = this.state.phoneNumbers.map((el, i) => ({
       ...el,
-      preActive: index === i ? !el.preActive : el.preActive
+      preActive: index === i ? !el.preActive : el.preActive,
+      active: index === i ? !el.active : el.active
     }));
     this.setState({ phoneNumbers: newArr, selectAllPreActive: false }, () =>
       this.pagination()
@@ -578,7 +623,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  fetchGetPhoneNumbersByGroupId
+  fetchGetPhoneNumbersByGroupId,
+  fetchPutUpdateNumbersStatus
 };
 
 export default withRouter(

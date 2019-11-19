@@ -548,6 +548,11 @@ export const postCreateIAD = data => ({
   data
 });
 
+export const putUpdateNumbersStatus = data => ({
+  type: actionType.PUT_UPDATE_NUMBERS_STATUS,
+  data
+});
+
 export const putUpdateIAD = data => ({
   type: actionType.PUT_UPDATE_IAD,
   data
@@ -1951,6 +1956,36 @@ export function fetchPutUpdateTrunkGroup(
           <FormattedMessage
             id="update-trunk-group-failed"
             defaultMessage="Failed to update trunk group!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchPutUpdateNumbersStatus(tenantId, groupId, data) {
+  /////////////////////////////
+  return function(dispatch) {
+    return fetch_put(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/numbers/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => {
+        dispatch(putUpdateNumbersStatus(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="update-numbers-success"
+            defaultMessage="Successfully updated numbers!"
+          />,
+          "Successfully updated numbers!"
+        );
+      })
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="update-numbers-failed"
+            defaultMessage="Failed to update numbers!"
           />,
           error.message
         )

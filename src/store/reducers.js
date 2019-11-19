@@ -707,6 +707,24 @@ function mainReducer(state = initialState, action) {
         localUser: action.data
       };
     }
+    case actionType.PUT_UPDATE_NUMBERS_STATUS: {
+      const phoneNumbers = action.data.numbers.map(phone => ({
+        ...phone,
+        rangeStart: phone.phoneNumber.includes("-")
+          ? phone.phoneNumber.split(" - ").slice(0)[0]
+          : phone.phoneNumber,
+        rangeEnd: phone.phoneNumber.includes("-")
+          ? phone.phoneNumber.split(" - ").slice(-1)[0]
+          : "",
+        phoneChecked: false,
+        preActive: phone.status === "preActive" ? true : false,
+        active: phone.status === "active" ? true : false
+      }));
+      return {
+        ...state,
+        phoneNumbersByGroup: phoneNumbers
+      };
+    }
     case actionType.DELETE_TENANT: {
       return {
         ...state
