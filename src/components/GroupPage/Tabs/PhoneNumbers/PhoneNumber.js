@@ -51,6 +51,8 @@ export default class PhoneNumber extends Component {
         <td>{number.rangeEnd}</td>
         <td>{number.userId}</td>
         <td>{number.userType}</td>
+        <td>{number.main_number ? "Yes" : "No"}</td>
+        <td>{number.maintenance_number ? "Yes" : "No"}</td>
         <td>
           <React.Fragment>
             <ButtonToolbar>

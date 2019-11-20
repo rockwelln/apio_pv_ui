@@ -18,7 +18,8 @@ import { FormattedMessage } from "react-intl";
 import {
   fetchGetGroupById,
   fetchPutUpdateGroupDetails,
-  fetchGetPhoneNumbersByGroupNotTP
+  fetchGetPhoneNumbersByGroupNotTP,
+  fetchGetPhoneNumbersByGroupId
 } from "../../store/actions";
 
 export class index extends Component {
@@ -292,7 +293,13 @@ export class index extends Component {
         this.props.match.params.groupId,
         data
       )
-      .then(() => this.setState({ isDisabled: true }));
+      .then(() => {
+        this.props.fetchGetPhoneNumbersByGroupId(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId
+        );
+        this.setState({ isDisabled: true });
+      });
   };
 }
 
@@ -304,7 +311,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   fetchGetGroupById,
   fetchPutUpdateGroupDetails,
-  fetchGetPhoneNumbersByGroupNotTP
+  fetchGetPhoneNumbersByGroupNotTP,
+  fetchGetPhoneNumbersByGroupId
 };
 
 export default withRouter(

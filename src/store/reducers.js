@@ -203,6 +203,24 @@ function mainReducer(state = initialState, action) {
         phoneNumbersByGroup: phoneNumbers
       };
     }
+    case actionType.GET_PHONE_NUMBERS_WITH_REFRESH_DB: {
+      const phoneNumbers = action.data.numbers.map(phone => ({
+        ...phone,
+        rangeStart: phone.phoneNumber.includes("-")
+          ? phone.phoneNumber.split(" - ").slice(0)[0]
+          : phone.phoneNumber,
+        rangeEnd: phone.phoneNumber.includes("-")
+          ? phone.phoneNumber.split(" - ").slice(-1)[0]
+          : "",
+        phoneChecked: false,
+        preActive: phone.status === "preActive" ? true : false,
+        active: phone.status === "active" ? true : false
+      }));
+      return {
+        ...state,
+        phoneNumbersByGroup: phoneNumbers
+      };
+    }
     case actionType.GET_LICENSES_BY_GROUP_ID: {
       const groupServicesShown = action.data.groupServices
         .filter(

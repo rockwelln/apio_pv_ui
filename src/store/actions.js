@@ -543,6 +543,11 @@ export const getPhoneNumbersByGroupNotTP = data => ({
   data
 });
 
+export const getPhoneNumbersWithRefreshDB = data => ({
+  type: actionType.GET_PHONE_NUMBERS_WITH_REFRESH_DB,
+  data
+});
+
 export const postCreateIAD = data => ({
   type: actionType.POST_CREATE_IAD,
   data
@@ -789,6 +794,25 @@ export function fetchGetPhoneNumbersByGroupNotTP(tenantId, groupId) {
       `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/numbers/`
     )
       .then(data => dispatch(getPhoneNumbersByGroupNotTP(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-phone-numbers-failed"
+            defaultMessage="Failed to fetch phone numbers!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetPhoneNumbersWithRefreshDB(tenantId, groupId, data) {
+  ///////////////////////////////////
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/numbers?${data}`
+    )
+      .then(data => dispatch(getPhoneNumbersWithRefreshDB(data)))
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage
