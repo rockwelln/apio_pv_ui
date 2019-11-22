@@ -18,7 +18,8 @@ import { FormattedMessage } from "react-intl";
 import {
   fetchGetConfig,
   fetchGetGroupById,
-  fetchPostCreateIAD
+  fetchPostCreateIAD,
+  fetchGetIADs
 } from "../../store/actions";
 import { removeEmpty } from "../remuveEmptyInObject";
 
@@ -30,6 +31,7 @@ export class AddIAD extends Component {
     isLoadingConfig: true,
     errorMacAddress: null,
     isLoadingGroup: true,
+    isloadingIADs: true,
     secondEDU: false,
     iadType: "",
     macAddress: "",
@@ -58,7 +60,9 @@ export class AddIAD extends Component {
     direction: "",
     channelsIn: "",
     channelsOut: "",
-    buttonName: "Create"
+    buttonName: "Create",
+    tpid: "",
+    circuitID: ""
   };
   componentDidMount() {
     this.props
@@ -83,6 +87,12 @@ export class AddIAD extends Component {
           )
         )
       );
+    this.props
+      .fetchGetIADs(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId
+      )
+      .then(() => this.setState({ isloadingIADs: false }));
   }
   render() {
     const {
@@ -101,9 +111,14 @@ export class AddIAD extends Component {
       srSAPB,
       iadType,
       pilotNumber,
-      errorMacAddress
+      errorMacAddress,
+      tpid
     } = this.state;
-    if (this.state.isLoadingConfig || this.state.isLoadingGroup) {
+    if (
+      this.state.isLoadingConfig ||
+      this.state.isLoadingGroup ||
+      this.state.isloadingIADs
+    ) {
       return <Loading />;
     }
     return (
@@ -278,6 +293,52 @@ export class AddIAD extends Component {
                 </div>
               </Col>
             </Row>
+            {this.props.group.pbxType === "PRA" && (
+              <React.Fragment>
+                <Row className={"margin-top-1"}>
+                  <Col md={12} className={"flex align-items-center"}>
+                    <div className={"margin-right-1 flex flex-basis-16"}>
+                      <ControlLabel>
+                        <FormattedMessage
+                          id="tpid"
+                          defaultMessage="Tina Product ID"
+                        />
+                      </ControlLabel>
+                    </div>
+                    <div className={"margin-right-1 flex-basis-33"}>
+                      <FormControl
+                        type="text"
+                        value={this.state.tpid}
+                        placeholder={"Tina Product ID"}
+                        onChange={e => this.setState({ tpid: e.target.value })}
+                      />
+                    </div>
+                  </Col>
+                </Row>
+                <Row className={"margin-top-1"}>
+                  <Col md={12} className={"flex align-items-center"}>
+                    <div className={"margin-right-1 flex flex-basis-16"}>
+                      <ControlLabel>
+                        <FormattedMessage
+                          id="circuitID"
+                          defaultMessage="Circuit ID"
+                        />
+                      </ControlLabel>
+                    </div>
+                    <div className={"margin-right-1 flex-basis-33"}>
+                      <FormControl
+                        type="text"
+                        value={this.state.circuitID}
+                        placeholder={"Phone number"}
+                        onChange={e =>
+                          this.setState({ circuitID: e.target.value })
+                        }
+                      />
+                    </div>
+                  </Col>
+                </Row>
+              </React.Fragment>
+            )}
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex font-24"}>
@@ -960,8 +1021,19 @@ export class AddIAD extends Component {
       dtmf,
       direction,
       channelsIn,
-      channelsOut
+      channelsOut,
+      tpid,
+      circuitID
     } = this.state;
+    const { praByIad } = this.props.iads;
+    let iadID;
+    const sortedArr = Object.values(praByIad).sort();
+    for (let i = 0; i <= sortedArr.length + 1; i++) {
+      if (i + 1 !== sortedArr[i]) {
+        iadID = i + 1;
+        break;
+      }
+    }
     const data = {
       iadType,
       pilotNumber,
@@ -1009,7 +1081,16 @@ export class AddIAD extends Component {
         channelsIn,
         channelsOut
       },
-      virtual: this.props.group.virtual
+      virtual: this.props.group.virtual,
+      pra_info:
+        this.props.group.pbxType === "PRA"
+          ? {
+              [iadID]: {
+                tpid,
+                circuit_id: circuitID
+              }
+            }
+          : null
     };
     const clearData = removeEmpty(data);
     this.props
@@ -1029,12 +1110,17 @@ export class AddIAD extends Component {
   };
 }
 
-const mapStateToProps = state => ({ config: state.config, group: state.group });
+const mapStateToProps = state => ({
+  config: state.config,
+  group: state.group,
+  iads: state.iads
+});
 
 const mapDispatchToProps = {
   fetchGetConfig,
   fetchGetGroupById,
-  fetchPostCreateIAD
+  fetchPostCreateIAD,
+  fetchGetIADs
 };
 
 export default withRouter(

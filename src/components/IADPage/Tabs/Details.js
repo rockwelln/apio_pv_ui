@@ -51,7 +51,7 @@ export class Details extends Component {
             <div className={"margin-right-1 flex-basis-33"}>
               <FormControl
                 type="text"
-                value={iadType[0].label}
+                value={iadType.length && iadType[0].label}
                 disabled
               ></FormControl>
             </div>

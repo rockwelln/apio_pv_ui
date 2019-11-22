@@ -45,7 +45,7 @@ export class AddGroup extends Component {
         serviceType: this.props.config.tenant.group.serviceType[0].value,
         channelHunting: this.props.config.tenant.group.channelHunting[0].value,
         numberOfChannels: this.props.config.tenant.group.capacity.PRA
-          .nonRedundant[0]
+          .nonRedundant[0].value
       })
     );
   };
