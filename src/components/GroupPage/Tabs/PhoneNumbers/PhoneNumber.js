@@ -25,32 +25,28 @@ export default class PhoneNumber extends Component {
             }}
           />
         </td>
-        {this.props.showWithStatus && (
-          <React.Fragment>
-            <td>
-              <Checkbox
-                checked={number.active}
-                className={"table-checkbox"}
-                onChange={() => {
-                  this.props.handleSingleCheckboxClickActive(index);
-                }}
-              />
-            </td>
-            <td>
-              <Checkbox
-                checked={number.preActive}
-                className={"table-checkbox"}
-                onChange={() => {
-                  this.props.handleSingleCheckboxClickPreActive(index);
-                }}
-              />
-            </td>
-          </React.Fragment>
-        )}
+        <React.Fragment>
+          <td>
+            <Checkbox
+              checked={number.active}
+              className={"table-checkbox"}
+              onChange={() => {
+                this.props.handleSingleCheckboxClickActive(index);
+              }}
+            />
+          </td>
+          <td>
+            <Checkbox
+              checked={number.preActive}
+              className={"table-checkbox"}
+              onChange={() => {
+                this.props.handleSingleCheckboxClickPreActive(index);
+              }}
+            />
+          </td>
+        </React.Fragment>
         <td>{number.rangeStart}</td>
         <td>{number.rangeEnd}</td>
-        <td>{number.userId}</td>
-        <td>{number.userType}</td>
         <td>{number.main_number ? "Yes" : "No"}</td>
         <td>{number.maintenance_number ? "Yes" : "No"}</td>
         <td>

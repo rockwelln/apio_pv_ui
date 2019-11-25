@@ -189,29 +189,18 @@ export class PhoneNumbersTab extends Component {
                       {...this.props}
                     />
                     <Button
-                      onClick={this.getNumbersWithStatus}
+                      onClick={this.updateStatus}
                       className={"btn-primary margin-right-1"}
+                      disabled={
+                        this.state.disabledUpdateStatusActive ||
+                        this.state.disabledUpdateStatusPreActive
+                      }
                     >
                       <FormattedMessage
-                        id="refreshNumbersStatus"
-                        defaultMessage="Refresh with portability status"
+                        id="updateStatus"
+                        defaultMessage="Update Status"
                       />
                     </Button>
-                    {this.state.showWithStatus && (
-                      <Button
-                        onClick={this.updateStatus}
-                        className={"btn-primary margin-right-1"}
-                        disabled={
-                          this.state.disabledUpdateStatusActive ||
-                          this.state.disabledUpdateStatusPreActive
-                        }
-                      >
-                        <FormattedMessage
-                          id="updateStatus"
-                          defaultMessage="Update Status"
-                        />
-                      </Button>
-                    )}
                     <Button
                       onClick={this.refreshInformation}
                       className={"btn-primary margin-right-1"}
@@ -292,38 +281,36 @@ export class PhoneNumbersTab extends Component {
                           onChange={this.handleSelectAllClick}
                         />
                       </th>
-                      {this.state.showWithStatus && (
-                        <React.Fragment>
-                          <th>
-                            <Checkbox
-                              className={"margin-0"}
-                              checked={this.state.selectAllActive}
-                              onChange={this.handleSelectAllClickActive}
-                            >
-                              <div className={"font-weight-bold"}>
-                                <FormattedMessage
-                                  id="activate"
-                                  defaultMessage="Activate"
-                                />
-                              </div>
-                            </Checkbox>
-                          </th>
-                          <th>
-                            <Checkbox
-                              className={"margin-0"}
-                              checked={this.state.selectAllPreActive}
-                              onChange={this.handleSelectAllClickPreActive}
-                            >
-                              <div className={"font-weight-bold"}>
-                                <FormattedMessage
-                                  id="pre-activate"
-                                  defaultMessage="Pre-activate"
-                                />
-                              </div>
-                            </Checkbox>
-                          </th>
-                        </React.Fragment>
-                      )}
+                      <React.Fragment>
+                        <th>
+                          <Checkbox
+                            className={"margin-0"}
+                            checked={this.state.selectAllActive}
+                            onChange={this.handleSelectAllClickActive}
+                          >
+                            <div className={"font-weight-bold"}>
+                              <FormattedMessage
+                                id="activate"
+                                defaultMessage="Activate"
+                              />
+                            </div>
+                          </Checkbox>
+                        </th>
+                        <th>
+                          <Checkbox
+                            className={"margin-0"}
+                            checked={this.state.selectAllPreActive}
+                            onChange={this.handleSelectAllClickPreActive}
+                          >
+                            <div className={"font-weight-bold"}>
+                              <FormattedMessage
+                                id="pre-activate"
+                                defaultMessage="Pre-activate"
+                              />
+                            </div>
+                          </Checkbox>
+                        </th>
+                      </React.Fragment>
                       <th>
                         <FormattedMessage
                           id="tenant-id"
@@ -342,26 +329,6 @@ export class PhoneNumbersTab extends Component {
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
                           onClick={this.sortByRangeEnd}
-                        />
-                      </th>
-                      <th>
-                        <FormattedMessage
-                          id="assigned"
-                          defaultMessage="Assigned to"
-                        />
-                        <Glyphicon
-                          glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByAssignedToGroup}
-                        />
-                      </th>
-                      <th>
-                        <FormattedMessage
-                          id="type"
-                          defaultMessage="User type"
-                        />
-                        <Glyphicon
-                          glyph="glyphicon glyphicon-sort"
-                          //onClick={this.sortByAssignedToGroup}
                         />
                       </th>
                       <th>
