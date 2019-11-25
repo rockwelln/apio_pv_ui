@@ -4,7 +4,6 @@ const initialState = {
   tenants: [],
   tenant: {},
   groups: [],
-  phoneNumbers: [],
   adminsTenant: [],
   group: {},
   users: [],
@@ -104,7 +103,11 @@ const initialState = {
   groupsFound: [],
   ////////////////////////////
   iads: { iads: [] },
-  config: {},
+  config: {
+    tenant: {
+      group: { iad: { iadType: [] } }
+    }
+  },
   createdIad: {},
   iad: {},
   iadForUpdate: {},
@@ -116,9 +119,15 @@ const initialState = {
 function mainReducer(state = initialState, action) {
   switch (action.type) {
     case actionType.GET_IADS: {
+      const iadWithType = action.data.iads.map(el => {
+        const iadType = state.config.tenant.group.iad.iadType.filter(
+          type => type.value === el.iadType
+        );
+        return { ...el, type: iadType[0].label };
+      });
       return {
         ...state,
-        iads: action.data
+        iads: { ...action.data, iads: iadWithType }
       };
     }
     case actionType.GET_TENANTS: {
@@ -139,24 +148,6 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         groups: action.data.groups
-      };
-    }
-    case actionType.GET_PHONE_NUMBERS: {
-      const phoneNumbers = action.data.assignement_phoneNumbers.map(phone => ({
-        ...phone,
-        rangeStart:
-          (phone.phoneNumbers && phone.phoneNumbers.split(" - ").slice(0)[0]) ||
-          phone.phoneNumber ||
-          "",
-        rangeEnd:
-          (phone.phoneNumbers &&
-            phone.phoneNumbers.split(" - ").slice(-1)[0]) ||
-          "",
-        phoneChecked: false
-      }));
-      return {
-        ...state,
-        phoneNumbers
       };
     }
     case actionType.GET_ADMINS_TENANT: {

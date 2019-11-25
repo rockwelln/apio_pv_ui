@@ -17,7 +17,7 @@ import { FormattedMessage } from "react-intl";
 import Loading from "../../../../common/Loading";
 import IAD from "./IAD";
 
-import { fetchGetIADs } from "../../../../store/actions";
+import { fetchGetIADs, fetchGetConfig } from "../../../../store/actions";
 import { countsPerPages } from "../../../../constants";
 
 export class IADs extends Component {
@@ -28,30 +28,33 @@ export class IADs extends Component {
     countPerPage: 25,
     page: 0,
     pagination: true,
-    countPages: null
+    countPages: null,
+    searchValue: ""
   };
 
   fetchIADs = () => {
-    this.props
-      .fetchGetIADs(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId
-      )
-      .then(() =>
-        this.setState(
-          {
-            isLoading: false,
-            iads: this.props.iads.iads.sort((a, b) => {
-              if (a.iadId < b.iadId) return -1;
-              if (a.iadId > b.iadId) return 1;
-              return 0;
-            }),
-            isLoading: false,
-            sortedBy: "iadId"
-          },
-          () => this.pagination()
+    this.props.fetchGetConfig().then(() =>
+      this.props
+        .fetchGetIADs(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId
         )
-      );
+        .then(() =>
+          this.setState(
+            {
+              isLoading: false,
+              iads: this.props.iads.iads.sort((a, b) => {
+                if (a.iadId < b.iadId) return -1;
+                if (a.iadId > b.iadId) return 1;
+                return 0;
+              }),
+              isLoading: false,
+              sortedBy: "iadId"
+            },
+            () => this.pagination()
+          )
+        )
+    );
   };
 
   componentDidMount() {
@@ -108,7 +111,6 @@ export class IADs extends Component {
                 {placeholder => (
                   <FormControl
                     type="text"
-                    defaultValue={this.state.searchValue}
                     value={this.state.searchValue}
                     placeholder={placeholder}
                     onChange={e =>
@@ -207,9 +209,6 @@ export class IADs extends Component {
                           <IAD
                             key={iad.iadId}
                             iad={iad}
-                            iadTypeArr={
-                              this.props.config.tenant.group.iad.iadType
-                            }
                             onReload={() => this.fetchIADs()}
                           />
                         )
@@ -294,7 +293,7 @@ export class IADs extends Component {
       .filter(
         iad =>
           iad.iadId.toLowerCase().includes(searchValue.toLowerCase()) ||
-          iad.iadType.toLowerCase().includes(searchValue.toLowerCase()) ||
+          iad.type.toLowerCase().includes(searchValue.toLowerCase()) ||
           iad.macAddress.toLowerCase().includes(searchValue.toLowerCase())
       )
       .map(iad => iad);
@@ -360,7 +359,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  fetchGetIADs
+  fetchGetIADs,
+  fetchGetConfig
 };
 
 export default withRouter(
