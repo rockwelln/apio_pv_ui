@@ -62,7 +62,8 @@ export class AddIAD extends Component {
     channelsOut: "",
     buttonName: "Create",
     tpid: "",
-    circuitID: ""
+    circuitID: "",
+    praByIad: {}
   };
   componentDidMount() {
     this.props
@@ -94,6 +95,24 @@ export class AddIAD extends Component {
       )
       .then(() => this.setState({ isloadingIADs: false }));
   }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.isloadingIADs !== prevState.isloadingIADs) {
+      let praByIad = {};
+      const createdIADs = this.props.iads.iads.map(el =>
+        Number(el.iadId.slice(-2))
+      );
+      const unic = Object.keys(this.props.iads.praByIad).filter(
+        el => createdIADs.indexOf(Number(el)) === -1
+      );
+      for (let i = 0; i < this.props.iads.praByIad[unic[0]]; i++) {
+        praByIad = {
+          ...praByIad,
+          [i + 1]: { tpid: "", circuit_id: "" }
+        };
+      }
+      this.setState({ praByIad });
+    }
+  }
   render() {
     const {
       nameEDUA,
@@ -111,8 +130,7 @@ export class AddIAD extends Component {
       srSAPB,
       iadType,
       pilotNumber,
-      errorMacAddress,
-      tpid
+      errorMacAddress
     } = this.state;
     if (
       this.state.isLoadingConfig ||
@@ -121,6 +139,7 @@ export class AddIAD extends Component {
     ) {
       return <Loading />;
     }
+    console.log(this.state.praByIad);
     return (
       <React.Fragment>
         <Panel className={"margin-0"}>
@@ -294,51 +313,79 @@ export class AddIAD extends Component {
               </Col>
             </Row>
             {this.props.group.pbxType === "PRA" && (
-              <React.Fragment>
-                <Row className={"margin-top-1"}>
-                  <Col md={12} className={"flex align-items-center"}>
-                    <div className={"margin-right-1 flex flex-basis-16"}>
-                      <ControlLabel>
-                        <FormattedMessage
-                          id="tpid"
-                          defaultMessage="Tina Product ID"
-                        />
-                      </ControlLabel>
-                    </div>
-                    <div className={"margin-right-1 flex-basis-33"}>
-                      <FormControl
-                        type="text"
-                        value={this.state.tpid}
-                        placeholder={"Tina Product ID"}
-                        onChange={e => this.setState({ tpid: e.target.value })}
-                      />
-                    </div>
-                  </Col>
-                </Row>
-                <Row className={"margin-top-1"}>
-                  <Col md={12} className={"flex align-items-center"}>
-                    <div className={"margin-right-1 flex flex-basis-16"}>
-                      <ControlLabel>
-                        <FormattedMessage
-                          id="circuitID"
-                          defaultMessage="Circuit ID"
-                        />
-                      </ControlLabel>
-                    </div>
-                    <div className={"margin-right-1 flex-basis-33"}>
-                      <FormControl
-                        type="text"
-                        value={this.state.circuitID}
-                        placeholder={"Phone number"}
-                        onChange={e =>
-                          this.setState({ circuitID: e.target.value })
-                        }
-                      />
-                    </div>
-                  </Col>
-                </Row>
-              </React.Fragment>
+              <Row className={"margin-top-1"}>
+                <Col md={12} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex font-24"}>
+                    <FormattedMessage id="praByIad" defaultMessage="PRA info" />
+                  </div>
+                </Col>
+              </Row>
             )}
+            {this.props.group.pbxType === "PRA" &&
+              Object.keys(this.state.praByIad).map((el, i) => (
+                <React.Fragment key={i + ""}>
+                  <Row className={"margin-top-1"}>
+                    <Col md={12} className={"flex align-items-center"}>
+                      <div className={"margin-right-1 flex flex-basis-16"}>
+                        <ControlLabel>
+                          <FormattedMessage
+                            id="tpid"
+                            defaultMessage="Tina Product ID"
+                          />
+                        </ControlLabel>
+                      </div>
+                      <div className={"margin-right-1 flex-basis-33"}>
+                        <FormControl
+                          type="text"
+                          value={el.tpid}
+                          placeholder={"Tina Product ID"}
+                          onChange={e =>
+                            this.setState({
+                              praByIad: {
+                                ...this.state.praByIad,
+                                [el]: {
+                                  ...this.state.praByIad[el],
+                                  tpid: e.target.value
+                                }
+                              }
+                            })
+                          }
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row className={"margin-top-1"}>
+                    <Col md={12} className={"flex align-items-center"}>
+                      <div className={"margin-right-1 flex flex-basis-16"}>
+                        <ControlLabel>
+                          <FormattedMessage
+                            id="circuitID"
+                            defaultMessage="Circuit ID"
+                          />
+                        </ControlLabel>
+                      </div>
+                      <div className={"margin-right-1 flex-basis-33"}>
+                        <FormControl
+                          type="text"
+                          value={el.circuit_id}
+                          placeholder={"Phone number"}
+                          onChange={e =>
+                            this.setState({
+                              praByIad: {
+                                ...this.state.praByIad,
+                                [el]: {
+                                  ...this.state.praByIad[el],
+                                  circuit_id: e.target.value
+                                }
+                              }
+                            })
+                          }
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+                </React.Fragment>
+              ))}
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex font-24"}>
@@ -1025,15 +1072,6 @@ export class AddIAD extends Component {
       tpid,
       circuitID
     } = this.state;
-    const { praByIad } = this.props.iads;
-    let iadID;
-    const sortedArr = Object.values(praByIad).sort();
-    for (let i = 0; i <= sortedArr.length + 1; i++) {
-      if (i + 1 !== sortedArr[i]) {
-        iadID = i + 1;
-        break;
-      }
-    }
     const data = {
       iadType,
       pilotNumber,
@@ -1082,15 +1120,7 @@ export class AddIAD extends Component {
         channelsOut
       },
       virtual: this.props.group.virtual,
-      pra_info:
-        this.props.group.pbxType === "PRA"
-          ? {
-              [iadID]: {
-                tpid,
-                circuit_id: circuitID
-              }
-            }
-          : null
+      pra_info: this.state.praByIad
     };
     const clearData = removeEmpty(data);
     this.props
