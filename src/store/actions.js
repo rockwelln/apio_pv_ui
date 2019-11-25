@@ -25,11 +25,6 @@ export const getGroupsByTenantId = data => ({
   data
 });
 
-export const getPhoneNumbersByTenantId = data => ({
-  type: actionType.GET_PHONE_NUMBERS,
-  data
-});
-
 export const getAdminsByTenantId = data => ({
   type: actionType.GET_ADMINS_TENANT,
   data
@@ -715,6 +710,7 @@ export function fetchGetConfig() {
 }
 
 export function fetchGetGroupsByTenantId(Id) {
+  ///////////////////////////////////
   return function(dispatch) {
     return fetch_get(
       `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${Id}/groups/`
@@ -725,24 +721,6 @@ export function fetchGetGroupsByTenantId(Id) {
           <FormattedMessage
             id="fetch-groups-failed"
             defaultMessage="Failed to fetch groups!"
-          />,
-          error.message
-        )
-      );
-  };
-}
-
-export function fetchGetPhoneNumbersByTenantId(Id) {
-  return function(dispatch) {
-    return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${Id}/numbers`
-    )
-      .then(data => dispatch(getPhoneNumbersByTenantId(data)))
-      .catch(error =>
-        NotificationsManager.error(
-          <FormattedMessage
-            id="fetch-numbers-failed"
-            defaultMessage="Failed to fetch phone numbers!"
           />,
           error.message
         )
