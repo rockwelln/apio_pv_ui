@@ -278,7 +278,11 @@ export class Edu extends Component {
               </ControlLabel>
             </div>
             <div className={"margin-right-1 flex-basis-66"}>
-              <FormControl type="text" value={this.state.edu1.tpid} disabled />
+              <FormControl
+                type="text"
+                defaultValue={this.state.edu1.tpid}
+                disabled
+              />
             </div>
           </Col>
           {this.props.iad.edu2 && (
@@ -294,7 +298,7 @@ export class Edu extends Component {
               <div className={"margin-right-1 flex-basis-66"}>
                 <FormControl
                   type="text"
-                  value={this.state.edu2.tpid}
+                  defaultValue={this.state.edu2.tpid}
                   disabled
                 />
               </div>
@@ -311,7 +315,7 @@ export class Edu extends Component {
             <div className={"margin-right-1 flex-basis-66"}>
               <FormControl
                 type="text"
-                value={this.state.edu1.circuit_id}
+                defaultValue={this.state.edu1.circuit_id}
                 disabled
               />
             </div>
@@ -329,7 +333,7 @@ export class Edu extends Component {
               <div className={"margin-right-1 flex-basis-66"}>
                 <FormControl
                   type="text"
-                  value={this.state.edu2.circuit_id}
+                  defaultValue={this.state.edu2.circuit_id}
                   disabled
                 />
               </div>
@@ -349,7 +353,7 @@ export class Edu extends Component {
             <div className={"margin-right-1 flex-basis-66"}>
               <FormControl
                 type="text"
-                value={this.state.edu1.norm_status_edu}
+                defaultValue={this.state.edu1.norm_status_edu}
                 disabled
               />
             </div>
@@ -367,7 +371,7 @@ export class Edu extends Component {
               <div className={"margin-right-1 flex-basis-66"}>
                 <FormControl
                   type="text"
-                  value={this.state.edu2.norm_status_edu}
+                  defaultValue={this.state.edu2.norm_status_edu}
                   disabled
                 />
               </div>
@@ -387,7 +391,7 @@ export class Edu extends Component {
             <div className={"margin-right-1 flex-basis-66"}>
               <FormControl
                 type="text"
-                value={this.state.edu1.norm_error_edu}
+                defaultValue={this.state.edu1.norm_error_edu}
                 disabled
               />
             </div>
@@ -405,7 +409,7 @@ export class Edu extends Component {
               <div className={"margin-right-1 flex-basis-66"}>
                 <FormControl
                   type="text"
-                  value={this.state.edu2.norm_error_edu}
+                  defaultValue={this.state.edu2.norm_error_edu}
                   disabled
                 />
               </div>
@@ -425,7 +429,7 @@ export class Edu extends Component {
             <div className={"margin-right-1 flex-basis-66"}>
               <FormControl
                 type="text"
-                value={this.state.edu1.norm_status_sr}
+                defaultValue={this.state.edu1.norm_status_sr}
                 disabled
               />
             </div>
@@ -443,7 +447,7 @@ export class Edu extends Component {
               <div className={"margin-right-1 flex-basis-66"}>
                 <FormControl
                   type="text"
-                  value={this.state.edu2.norm_status_sr}
+                  defaultValue={this.state.edu2.norm_status_sr}
                   disabled
                 />
               </div>
@@ -463,7 +467,7 @@ export class Edu extends Component {
             <div className={"margin-right-1 flex-basis-66"}>
               <FormControl
                 type="text"
-                value={this.state.edu1.norm_error_sr}
+                defaultValue={this.state.edu1.norm_error_sr}
                 disabled
               />
             </div>
@@ -481,7 +485,7 @@ export class Edu extends Component {
               <div className={"margin-right-1 flex-basis-66"}>
                 <FormControl
                   type="text"
-                  value={this.state.edu2.norm_error_sr}
+                  defaultValue={this.state.edu2.norm_error_sr}
                   disabled
                 />
               </div>

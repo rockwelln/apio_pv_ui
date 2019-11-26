@@ -195,7 +195,7 @@ export class IPAddress extends Component {
               </ControlLabel>
               <FormControl
                 type="text"
-                value={this.state.pbx.ipAddress}
+                defaultValue={this.state.pbx.ipAddress}
                 placeholder={"IP Address"}
                 onChange={this.changePbxAddress}
               />
@@ -208,7 +208,7 @@ export class IPAddress extends Component {
               </ControlLabel>
               <FormControl
                 type="text"
-                value={this.state.pbx.port}
+                defaultValue={this.state.pbx.port}
                 placeholder={"Port"}
                 onChange={this.changePbxPort}
               />

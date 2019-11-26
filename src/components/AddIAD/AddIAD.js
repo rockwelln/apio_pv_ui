@@ -337,7 +337,6 @@ export class AddIAD extends Component {
                       <div className={"margin-right-1 flex-basis-33"}>
                         <FormControl
                           type="text"
-                          value={el.tpid}
                           placeholder={"Tina Product ID"}
                           onChange={e =>
                             this.setState({
@@ -367,7 +366,6 @@ export class AddIAD extends Component {
                       <div className={"margin-right-1 flex-basis-33"}>
                         <FormControl
                           type="text"
-                          value={el.circuit_id}
                           placeholder={"Phone number"}
                           onChange={e =>
                             this.setState({

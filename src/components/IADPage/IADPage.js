@@ -14,7 +14,8 @@ import { FormattedMessage } from "react-intl";
 import {
   fetchGetIADById,
   fetchGetConfig,
-  fetchPutUpdateIAD
+  fetchPutUpdateIAD,
+  fetchGetGroupById
 } from "../../store/actions";
 
 import { removeEmpty } from "../remuveEmptyInObject";
@@ -24,6 +25,7 @@ import GroupService from "./Tabs/GroupService";
 import Edu from "./Tabs/Edu";
 import IPAddress from "./Tabs/IpAddress";
 import Advanced from "./Tabs/Advanced";
+import PraInfo from "./Tabs/PraInfo";
 import Loading from "../../common/Loading";
 
 export class IADPage extends Component {
@@ -32,6 +34,10 @@ export class IADPage extends Component {
     disabledButton: false
   };
   componentDidMount() {
+    this.props.fetchGetGroupById(
+      this.props.match.params.tenantId,
+      this.props.match.params.groupId
+    );
     this.props
       .fetchGetIADById(
         this.props.match.params.tenantId,
@@ -87,6 +93,11 @@ export class IADPage extends Component {
             <Tab eventKey={4} title="Advanced settings">
               <Advanced />
             </Tab>
+            {this.props.group.pbxType === "PRA" && (
+              <Tab eventKey={5} title="PRA Info">
+                <PraInfo isLoading={this.state.isLoading} />
+              </Tab>
+            )}
           </Tabs>
         </div>
       </React.Fragment>
@@ -133,12 +144,16 @@ export class IADPage extends Component {
   };
 }
 
-const mapStateToProps = state => ({ iadForUpdate: state.iadForUpdate });
+const mapStateToProps = state => ({
+  iadForUpdate: state.iadForUpdate,
+  group: state.group
+});
 
 const mapDispatchToProps = {
   fetchGetIADById,
   fetchGetConfig,
-  fetchPutUpdateIAD
+  fetchPutUpdateIAD,
+  fetchGetGroupById
 };
 
 export default withRouter(
