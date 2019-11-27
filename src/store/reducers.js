@@ -113,7 +113,8 @@ const initialState = {
   iadForUpdate: {},
   enterpriseTrunks: [],
   iadsByTrunk: {},
-  phoneNumbersByGroupNotTP: []
+  phoneNumbersByGroupNotTP: [],
+  tenantEnterpriseTrunks: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -524,6 +525,26 @@ function mainReducer(state = initialState, action) {
         phoneNumbersByGroupNotTP: action.data.numbers
       };
     }
+    case actionType.GET_ENTERPRISE_TRUNKS_BY_TENANT: {
+      const colors = ["#fcece0", "#fff8e4", "#f0f7ed", "e6e3da"];
+      let tenantEnterpriseTrunks = [];
+      Object.keys(action.data.enterpriseTrunks).map((trunk, index) => {
+        if (Array.isArray(action.data.enterpriseTrunks[trunk])) {
+          action.data.enterpriseTrunks[trunk].map(el =>
+            tenantEnterpriseTrunks.push({
+              ...el,
+              color: colors[index],
+              entTrunk: trunk
+            })
+          );
+        }
+      });
+      return {
+        ...state,
+        tenantEnterpriseTrunks
+      };
+    }
+
     case actionType.POST_CREATE_IAD: {
       return {
         ...state,

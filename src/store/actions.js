@@ -543,6 +543,11 @@ export const getPhoneNumbersWithRefreshDB = data => ({
   data
 });
 
+export const getEnterpriseTrunksByTenant = data => ({
+  type: actionType.GET_ENTERPRISE_TRUNKS_BY_TENANT,
+  data
+});
+
 export const postCreateIAD = data => ({
   type: actionType.POST_CREATE_IAD,
   data
@@ -588,6 +593,25 @@ export function fetchGetIADsByTrunk(tenantId, groupId, trunkId) {
           <FormattedMessage
             id="fetch-iad-by-trunks-failed"
             defaultMessage="Failed to fetch iad by trunks!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetEnterpriseTrunksByTenant(tenantId) {
+  ////////////////////
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/enterprise_trunks/`
+    )
+      .then(data => dispatch(getEnterpriseTrunksByTenant(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-enterprise-trunks-failed"
+            defaultMessage="Failed to fetch enterprise trunks!"
           />,
           error.message
         )

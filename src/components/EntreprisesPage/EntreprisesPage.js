@@ -20,6 +20,7 @@ import {
   fetchGetTenantById,
   fetchPutUpdateTenantDetails
 } from "../../store/actions";
+import RoutingNumbers from "./RoutingNumbers";
 
 class TenantPage extends Component {
   state = {
@@ -214,12 +215,12 @@ class TenantPage extends Component {
                       eventKey={1}
                       title={
                         <FormattedMessage
-                          id="numberRouting"
-                          defaultMessage="Number routing"
+                          id="routingNumbers"
+                          defaultMessage="Routing numbers"
                         />
                       }
                     >
-                      number routing
+                      <RoutingNumbers />
                     </Tab>
                   </Tabs>
                 </Col>
