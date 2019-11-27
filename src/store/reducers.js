@@ -509,7 +509,7 @@ function mainReducer(state = initialState, action) {
           ...el,
           checked: true
         })),
-        ...action.data.iads_available.map(el => ({
+        ...action.data.other_iads_available.map(el => ({
           ...el,
           checked: false
         }))
