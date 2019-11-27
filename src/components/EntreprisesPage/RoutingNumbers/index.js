@@ -70,7 +70,7 @@ export class RoutingNumbers extends Component {
               </InputGroup.Addon>
               <FormattedMessage
                 id="search_placeholder"
-                defaultMessage="Group ID or Name"
+                defaultMessage="Enterprise trunk or site id or site name or iad"
               >
                 {placeholder => (
                   <FormControl
