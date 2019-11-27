@@ -38,6 +38,16 @@ export class PraInfo extends Component {
           <React.Fragment key={i + ""}>
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex font-18"}>
+                  <FormattedMessage
+                    id="praNumber"
+                    defaultMessage={`PRA ${i + 1}`}
+                  />
+                </div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
                   <ControlLabel>
                     <FormattedMessage
