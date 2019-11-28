@@ -73,7 +73,7 @@ const AsyncApioNavBar = ({
               <MenuItem>
                 <FormattedMessage
                   id="broadsoft_xsp1_as1"
-                  defaultMessage="PRAoSIP Provisioning"
+                  defaultMessage="PRAoSIP"
                 />
               </MenuItem>
             </LinkContainer>

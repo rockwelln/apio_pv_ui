@@ -5,7 +5,7 @@ import "./styles.css";
 
 const convert = crumb => {
   if (crumb === "broadsoft_xsp1_as1") {
-    return "PRAoSIP Provisioning";
+    return "PRAoSIP";
   }
   return crumb + " ";
 };

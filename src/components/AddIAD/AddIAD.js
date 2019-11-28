@@ -376,7 +376,7 @@ export class AddIAD extends Component {
                       <div className={"margin-right-1 flex-basis-33"}>
                         <FormControl
                           type="text"
-                          placeholder={"Phone number"}
+                          placeholder={"Prefix followed by national phone number"}
                           onChange={e =>
                             this.setState({
                               praByIad: {
