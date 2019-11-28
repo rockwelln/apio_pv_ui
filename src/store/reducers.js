@@ -114,7 +114,8 @@ const initialState = {
   enterpriseTrunks: [],
   iadsByTrunk: {},
   phoneNumbersByGroupNotTP: [],
-  tenantEnterpriseTrunks: []
+  tenantEnterpriseTrunks: [],
+  listOfIads: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -545,6 +546,13 @@ function mainReducer(state = initialState, action) {
       };
     }
 
+    case actionType.GET_LIST_OF_IADS: {
+      return {
+        ...state,
+        listOfIads: action.data
+      };
+    }
+
     case actionType.POST_CREATE_IAD: {
       return {
         ...state,
@@ -817,6 +825,11 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.DELETE_PHONE_FROM_GROUP: {
+      return {
+        ...state
+      };
+    }
+    case actionType.DELETE_ENTERPRISE_TRUNK: {
       return {
         ...state
       };

@@ -548,6 +548,11 @@ export const getEnterpriseTrunksByTenant = data => ({
   data
 });
 
+export const getListOfIads = data => ({
+  type: actionType.GET_LIST_OF_IADS,
+  data
+});
+
 export const postCreateIAD = data => ({
   type: actionType.POST_CREATE_IAD,
   data
@@ -565,6 +570,11 @@ export const putUpdateIAD = data => ({
 
 export const deletePhoneFromGroup = data => ({
   type: actionType.DELETE_PHONE_FROM_GROUP,
+  data
+});
+
+export const deleteEnterpriseTrunk = data => ({
+  type: actionType.DELETE_ENTERPRISE_TRUNK,
   data
 });
 
@@ -1382,6 +1392,24 @@ export function fetchGetLocalUser(username) {
           <FormattedMessage
             id="fetch-local-user-failed"
             defaultMessage="Failed to fetch local user!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetListOfIads(tenantId, groupId) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/enterprise_trunks/list_of_iads/`
+    )
+      .then(data => dispatch(getListOfIads(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-iads-failed"
+            defaultMessage="Failed to fetch iads!"
           />,
           error.message
         )
@@ -2292,6 +2320,27 @@ export function fetchDeletePhoneFromGroup(tenantId, groupId, data) {
           <FormattedMessage
             id="failed-to-delete-phone-number"
             defaultMessage="Failed to delete phone number!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchDeleteEnterpriseTrunk(tenantId, groupId, entTrunk) {
+  return function(dispatch) {
+    return fetch_delete(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/enterprise_trunks/${entTrunk}`
+    )
+      .then(data => {
+        dispatch(deleteEnterpriseTrunk(data));
+        return "deleted";
+      })
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-delete-enterprise-trunk"
+            defaultMessage="Failed to delete enterprise trunk!"
           />,
           error.message
         )

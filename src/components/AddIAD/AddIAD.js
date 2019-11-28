@@ -93,26 +93,11 @@ export class AddIAD extends Component {
         this.props.match.params.tenantId,
         this.props.match.params.groupId
       )
-      .then(() => this.setState({ isloadingIADs: false }));
-  }
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.isloadingIADs !== prevState.isloadingIADs) {
-      let praByIad = {};
-      const createdIADs = this.props.iads.iads.map(el =>
-        Number(el.iadId.slice(-2))
+      .then(() =>
+        this.setState({ isloadingIADs: false }, () => this.setPraByIad())
       );
-      const unic = Object.keys(this.props.iads.praByIad).filter(
-        el => createdIADs.indexOf(Number(el)) === -1
-      );
-      for (let i = 0; i < this.props.iads.praByIad[unic[0]]; i++) {
-        praByIad = {
-          ...praByIad,
-          [i + 1]: { tpid: "", circuit_id: "" }
-        };
-      }
-      this.setState({ praByIad });
-    }
   }
+
   render() {
     const {
       nameEDUA,
@@ -139,7 +124,6 @@ export class AddIAD extends Component {
     ) {
       return <Loading />;
     }
-    console.log(this.state.praByIad);
     return (
       <React.Fragment>
         <Panel className={"margin-0"}>
@@ -1026,6 +1010,23 @@ export class AddIAD extends Component {
       </React.Fragment>
     );
   }
+
+  setPraByIad = () => {
+    let praByIad = {};
+    const createdIADs = this.props.iads.iads.map(el =>
+      Number(el.iadId.slice(-2))
+    );
+    const unic = Object.keys(this.props.iads.praByIad).filter(
+      el => createdIADs.indexOf(Number(el)) === -1
+    );
+    for (let i = 0; i < this.props.iads.praByIad[unic[0]]; i++) {
+      praByIad = {
+        ...praByIad,
+        [i + 1]: { tpid: "", circuit_id: "" }
+      };
+    }
+    this.setState({ praByIad });
+  };
 
   validateMacAddress = e => {
     let regDots = /^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$/;
