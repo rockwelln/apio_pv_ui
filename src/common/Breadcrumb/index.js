@@ -9,7 +9,7 @@ import "./styles.css";
 
 const convertCrumb = crumb => {
   if (crumb === "broadsoft_xsp1_as1") {
-    return "broadsoft XSP 1 / AS 1";
+    return "PRAoSIP Provisioning";
   }
   return crumb;
 };
