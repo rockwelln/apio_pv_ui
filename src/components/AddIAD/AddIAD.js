@@ -977,8 +977,7 @@ export class AddIAD extends Component {
                       {"\u002a"}
                       <FormattedMessage
                         id="nocInfo"
-                        defaultMessage=" Don't exceed your IADs capacity (avalible:
-                        xxxxx)"
+                        defaultMessage=""
                       />
                     </div>
                   </Col>

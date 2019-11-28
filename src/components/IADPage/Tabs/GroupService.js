@@ -135,8 +135,7 @@ export class GroupService extends Component {
                   {"\u002a"}
                   <FormattedMessage
                     id="nocInfo"
-                    defaultMessage=" Don't exceed your IADs capacity (avalible:
-                        xxxxx)"
+                    defaultMessage=""
                   />
                 </div>
               </Col>
