@@ -24,6 +24,8 @@ to be completed with Code of Conduct...
 ## Authors
 
 * **Norman Denayer** - *Initial work* - https://github.com/rockwelln
+* Viktor Smaakthin
+* Olivier Rousseau
 
 ## License
 

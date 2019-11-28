@@ -133,7 +133,7 @@ export class EnterpriseTrunk extends Component {
             <div className={"margin-right-1 flex-basis-33"}>
               <FormControl
                 type="text"
-                placeholder={"Phone Number"}
+                placeholder={"Phone number"}
                 value={this.state.routeExhaustionDestination}
                 onChange={e =>
                   this.setState({

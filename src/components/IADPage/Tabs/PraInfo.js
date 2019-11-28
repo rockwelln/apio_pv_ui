@@ -94,7 +94,7 @@ export class PraInfo extends Component {
                   <FormControl
                     type="text"
                     value={this.state.praByIad[el].circuit_id}
-                    placeholder={"Phone number"}
+                    placeholder={"Prefix followed by national phone number"}
                     onChange={e =>
                       this.setState(
                         {
