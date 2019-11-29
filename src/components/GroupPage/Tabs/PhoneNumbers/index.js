@@ -120,7 +120,7 @@ export class PhoneNumbersTab extends Component {
               </InputGroup.Addon>
               <FormattedMessage
                 id="search_placeholder_numbers"
-                defaultMessage="Numbers or Assigned to or User type"
+                defaultMessage="Numbers"
               >
                 {placeholder => (
                   <FormControl
