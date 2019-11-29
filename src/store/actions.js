@@ -1760,7 +1760,16 @@ export function fetchPutUpdateIAD(tenantId, groupId, iadId, data) {
       data
     )
       .then(res => res.json())
-      .then(data => dispatch(putUpdateIAD(data)))
+      .then(data => {
+        dispatch(putUpdateIAD(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="successfulIADUpdate"
+            defaultMessage="Successful IAD update"
+          />,
+          "Updated"
+        );
+      })
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage

@@ -360,7 +360,9 @@ export class AddIAD extends Component {
                       <div className={"margin-right-1 flex-basis-33"}>
                         <FormControl
                           type="text"
-                          placeholder={"Prefix followed by national phone number"}
+                          placeholder={
+                            "Prefix followed by national phone number"
+                          }
                           onChange={e =>
                             this.setState({
                               praByIad: {
@@ -932,7 +934,9 @@ export class AddIAD extends Component {
                           value={this.state.channelsIn}
                           placeholder={"In"}
                           onChange={e =>
-                            this.setState({ channelsIn: e.target.value })
+                            this.setState({
+                              channelsIn: Number(e.target.value)
+                            })
                           }
                         />
                       </div>
@@ -947,7 +951,9 @@ export class AddIAD extends Component {
                           value={this.state.channelsOut}
                           placeholder={"Out"}
                           onChange={e =>
-                            this.setState({ channelsOut: e.target.value })
+                            this.setState({
+                              channelsOut: Number(e.target.value)
+                            })
                           }
                         />
                       </div>
@@ -958,11 +964,8 @@ export class AddIAD extends Component {
                   <Col md={12} className={"flex align-items-center"}>
                     <div className={"margin-right-1 flex flex-basis-16"} />
                     <div className={"margin-right-1 flex-basis-33"}>
-                      {"\u002a"}
-                      <FormattedMessage
-                        id="nocInfo"
-                        defaultMessage=""
-                      />
+                      {/* {"\u002a"}
+                      <FormattedMessage id="nocInfo" defaultMessage="" /> */}
                     </div>
                   </Col>
                 </Row>
@@ -1137,13 +1140,13 @@ export class AddIAD extends Component {
         this.props.match.params.groupId,
         clearData
       )
-      .then(
-        res =>
-          res === "created" &&
-          this.props.history.push(
-            `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}`,
-            { defaultTab: 3 }
-          )
+      .then(res =>
+        res === "created"
+          ? this.props.history.push(
+              `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}`,
+              { defaultTab: 3 }
+            )
+          : this.setPraByIad()
       );
   };
 }

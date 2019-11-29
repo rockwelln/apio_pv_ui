@@ -184,7 +184,7 @@ export class PhoneNumbersTab extends Component {
                       show={showDelete}
                       onClose={e => {
                         this.fetchGetNumbers();
-                        this.setState({ showDelete: false });
+                        this.setState({ showDelete: false, selectAll: false });
                       }}
                       {...this.props}
                     />
