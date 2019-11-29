@@ -2,11 +2,17 @@ import React, { Component } from "react";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
 
+import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
+import Glyphicon from "react-bootstrap/lib/Glyphicon";
+
+import DeleteModal from "./DeleteModal";
+
 class Trunk extends Component {
   state = { showDelete: false };
 
   render() {
     const { trunk } = this.props;
+    const { showDelete } = this.state;
     return (
       <tr>
         <td>
@@ -16,8 +22,27 @@ class Trunk extends Component {
             {trunk.name}
           </Link>
         </td>
-
         <td>{trunk.routingMode}</td>
+        {trunk.name.slice(-2) !== "01" ? (
+          <td>
+            <ButtonToolbar>
+              <Glyphicon
+                glyph="glyphicon glyphicon-remove"
+                onClick={() => this.setState({ showDelete: true })}
+              />
+            </ButtonToolbar>
+            <DeleteModal
+              trunk={trunk}
+              show={showDelete}
+              onClose={e => {
+                //onReload && onReload();
+                this.setState({ showDelete: false });
+              }}
+            />
+          </td>
+        ) : (
+          <td />
+        )}
       </tr>
     );
   }

@@ -154,36 +154,37 @@ export class EnterpriseTrunk extends Component {
             </ControlLabel>
             <Table striped hover className={"text-center"}>
               <tbody>
-                {this.state.iadFromSite.map((iad, i) => (
-                  <tr key={i}>
-                    <td>
-                      <Checkbox
-                        className={"table-checkbox margin-left-08"}
-                        checked={iad.checked}
-                        disabled
-                      />
-                    </td>
-                    <td className={"flex space-between align-items-center"}>
-                      {iad.name}
-                      <div className={"flex flex-direction-column"}>
-                        {i !== 0 && (
-                          <Glyphicon
-                            glyph={`glyphicon glyphicon-menu-up`}
-                            className={"font-size-10"}
-                            onClick={() => this.raisePriorityFromSite(i)}
-                          />
-                        )}
-                        {this.state.iadFromSite.length !== i + 1 && (
-                          <Glyphicon
-                            glyph={`glyphicon glyphicon-menu-down`}
-                            className={"font-size-10"}
-                            onClick={() => this.lowerPriorityFromSite(i)}
-                          />
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                {this.state.iadFromSite &&
+                  this.state.iadFromSite.map((iad, i) => (
+                    <tr key={i}>
+                      <td>
+                        <Checkbox
+                          className={"table-checkbox margin-left-08"}
+                          checked={iad.checked}
+                          disabled
+                        />
+                      </td>
+                      <td className={"flex space-between align-items-center"}>
+                        {iad.name}
+                        <div className={"flex flex-direction-column"}>
+                          {i !== 0 && (
+                            <Glyphicon
+                              glyph={`glyphicon glyphicon-menu-up`}
+                              className={"font-size-10"}
+                              onClick={() => this.raisePriorityFromSite(i)}
+                            />
+                          )}
+                          {this.state.iadFromSite.length !== i + 1 && (
+                            <Glyphicon
+                              glyph={`glyphicon glyphicon-menu-down`}
+                              className={"font-size-10"}
+                              onClick={() => this.lowerPriorityFromSite(i)}
+                            />
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </Table>
           </Col>
@@ -196,36 +197,39 @@ export class EnterpriseTrunk extends Component {
             </ControlLabel>
             <Table striped hover className={"text-center"}>
               <tbody>
-                {this.state.iadNotFromSite.map((iad, i) => (
-                  <tr key={i}>
-                    <td>
-                      <Checkbox
-                        className={"table-checkbox margin-left-08"}
-                        checked={iad.checked}
-                        onChange={e => this.changeStatusOfIadNotFromSite(e, i)}
-                      />
-                    </td>
-                    <td className={"flex space-between align-items-center"}>
-                      {iad.name}
-                      <div className={"flex flex-direction-column"}>
-                        {i !== 0 && (
-                          <Glyphicon
-                            glyph={`glyphicon glyphicon-menu-up`}
-                            className={"font-size-10"}
-                            onClick={() => this.raisePriorityNotFromSite(i)}
-                          />
-                        )}
-                        {this.state.iadNotFromSite.length !== i + 1 && (
-                          <Glyphicon
-                            glyph={`glyphicon glyphicon-menu-down`}
-                            className={"font-size-10"}
-                            onClick={() => this.lowerPriorityNotFromSite(i)}
-                          />
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                {this.state.iadNotFromSite &&
+                  this.state.iadNotFromSite.map((iad, i) => (
+                    <tr key={i}>
+                      <td>
+                        <Checkbox
+                          className={"table-checkbox margin-left-08"}
+                          checked={iad.checked}
+                          onChange={e =>
+                            this.changeStatusOfIadNotFromSite(e, i)
+                          }
+                        />
+                      </td>
+                      <td className={"flex space-between align-items-center"}>
+                        {iad.name}
+                        <div className={"flex flex-direction-column"}>
+                          {i !== 0 && (
+                            <Glyphicon
+                              glyph={`glyphicon glyphicon-menu-up`}
+                              className={"font-size-10"}
+                              onClick={() => this.raisePriorityNotFromSite(i)}
+                            />
+                          )}
+                          {this.state.iadNotFromSite.length !== i + 1 && (
+                            <Glyphicon
+                              glyph={`glyphicon glyphicon-menu-down`}
+                              className={"font-size-10"}
+                              onClick={() => this.lowerPriorityNotFromSite(i)}
+                            />
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </Table>
           </Col>

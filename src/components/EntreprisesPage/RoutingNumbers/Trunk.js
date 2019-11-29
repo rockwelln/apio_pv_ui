@@ -7,15 +7,14 @@ class Trunk extends Component {
   render() {
     const { trunk } = this.props;
     const style = { backgroundColor: trunk.color };
-    console.log("style", style);
     return (
       <tr style={style}>
         <td>
-          {/* <Link
-            to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${group.groupId}`}
-          > */}
-          {trunk.entTrunk}
-          {/* </Link> */}
+          <Link
+            to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${trunk.groupId}/enterprisetrunk/${trunk.entTrunk}`}
+          >
+            {trunk.entTrunk}
+          </Link>
         </td>
         <td>{trunk.groupId}</td>
         <td>{trunk.groupName}</td>
