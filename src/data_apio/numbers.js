@@ -123,7 +123,7 @@ class Numbers extends Component {
               <th style={{ width: "20%" }}>
                 <FormattedMessage
                   id="phonenumber"
-                  defaultMessage="Phonenumber"
+                  defaultMessage="Phone number"
                 />
               </th>
               <th style={{ width: "18%" }} />

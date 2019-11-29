@@ -1698,7 +1698,7 @@ export function fetchPostAssignPhoneNumbersToGroup(tenantId, groupId, data) {
         NotificationsManager.error(
           <FormattedMessage
             id="failed-to-add-phonenumbers"
-            defaultMessage="Failed to add phonenumbers!"
+            defaultMessage="Failed to add phone numbers!"
           />,
           error.message
         );
