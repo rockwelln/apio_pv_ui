@@ -114,7 +114,7 @@ export class AddPhoneNumber extends Component {
                       <FormControl
                         type="text"
                         value={number.phoneNumber}
-                        placeholder={"Phonenumber"}
+                        placeholder={"Phone number"}
                         onChange={e => {
                           const val = e.target.value;
                           this.setState(curState => {
