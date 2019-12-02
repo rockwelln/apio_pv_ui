@@ -115,7 +115,8 @@ const initialState = {
   iadsByTrunk: {},
   phoneNumbersByGroupNotTP: [],
   tenantEnterpriseTrunks: [],
-  listOfIads: { main_iads_available: [], other_iads_available: [] }
+  listOfIads: { main_iads_available: [], other_iads_available: [] },
+  numbersByEnterpriseTrunk: { enterprise_trunk_numbers: [], group_numbers: [] }
 };
 
 function mainReducer(state = initialState, action) {
@@ -545,7 +546,12 @@ function mainReducer(state = initialState, action) {
         tenantEnterpriseTrunks
       };
     }
-
+    case actionType.GET_NUMBERS_BY_ENTERPRISE_TRUNK: {
+      return {
+        ...state,
+        numbersByEnterpriseTrunk: action.data
+      };
+    }
     case actionType.GET_LIST_OF_IADS: {
       return {
         ...state,

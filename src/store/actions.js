@@ -508,6 +508,11 @@ export const removeSuccesfulValidPhoneTenant = data => ({
 });
 
 //////////////////////
+export const getNumbersByEnterpriseTrunk = data => ({
+  type: actionType.GET_NUMBERS_BY_ENTERPRISE_TRUNK,
+  data
+});
+
 export const getIADs = data => ({
   type: actionType.GET_IADS,
   data
@@ -573,6 +578,11 @@ export const putUpdateIAD = data => ({
   data
 });
 
+export const putUpdateNumbersByEnterpriseTrunk = data => ({
+  type: actionType.PUT_UPDATE_NUMBERS_BY_ENTERPRISE_TRUNK,
+  data
+});
+
 export const deletePhoneFromGroup = data => ({
   type: actionType.DELETE_PHONE_FROM_GROUP,
   data
@@ -595,6 +605,25 @@ export const changeObjectIAD = (object, field, value) => ({
   field,
   value
 });
+
+export function fetchGetNumbersByEnterpriseTrunk(tenantId, groupId, trunkId) {
+  ////////////////////
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/enterprise_trunks/${trunkId}/users/`
+    )
+      .then(data => dispatch(getNumbersByEnterpriseTrunk(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-numbers-by-ent-trunk"
+            defaultMessage="Failed to fetch numbers by Enterprise trunks!"
+          />,
+          error.message
+        )
+      );
+  };
+}
 
 export function fetchGetIADsByTrunk(tenantId, groupId, trunkId) {
   ////////////////////
@@ -1778,6 +1807,41 @@ export function fetchPostCreateEnterpriseTrunk(tenantId, groupId, data) {
           error.message
         );
       });
+  };
+}
+
+export function fetchPutUpdateNumbersByEnterpriseTrunk(
+  tenantId,
+  groupId,
+  entTrunk,
+  data
+) {
+  ///////////////////
+  return function(dispatch) {
+    return fetch_put(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/trunk_groups/${entTrunk}/users/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => {
+        dispatch(putUpdateNumbersByEnterpriseTrunk(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="successfulNumbersUpdate"
+            defaultMessage="Successful Numbers update"
+          />,
+          "Updated"
+        );
+      })
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="update-numbers-failed"
+            defaultMessage="Failed to update numbers!"
+          />,
+          error.message
+        )
+      );
   };
 }
 
