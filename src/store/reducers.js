@@ -115,7 +115,7 @@ const initialState = {
   iadsByTrunk: {},
   phoneNumbersByGroupNotTP: [],
   tenantEnterpriseTrunks: [],
-  listOfIads: {}
+  listOfIads: { main_iads_available: [], other_iads_available: [] }
 };
 
 function mainReducer(state = initialState, action) {
@@ -660,6 +660,11 @@ function mainReducer(state = initialState, action) {
           added,
           rejected
         }
+      };
+    }
+    case actionType.POST_CREATE_ENTERPRISE_TRUNK: {
+      return {
+        ...state
       };
     }
     case actionType.PUT_UPDATE_IAD: {

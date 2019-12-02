@@ -558,6 +558,11 @@ export const postCreateIAD = data => ({
   data
 });
 
+export const postCreateEnterpriseTrunk = data => ({
+  type: actionType.POST_CREATE_ENTERPRISE_TRUNK,
+  data
+});
+
 export const putUpdateNumbersStatus = data => ({
   type: actionType.PUT_UPDATE_NUMBERS_STATUS,
   data
@@ -1749,6 +1754,30 @@ export function fetchPutUpdateUser(tenantId, groupId, userName, data) {
           error.message
         )
       );
+  };
+}
+
+export function fetchPostCreateEnterpriseTrunk(tenantId, groupId, data) {
+  //////////////////////////////////////////////////
+  return function(dispatch) {
+    return fetch_post(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/enterprise_trunks/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => {
+        dispatch(postCreateEnterpriseTrunk(data));
+        return "created";
+      })
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-create-enterprise-trunk"
+            defaultMessage="Failed to create enterprise trunk!"
+          />,
+          error.message
+        );
+      });
   };
 }
 

@@ -8,7 +8,6 @@ import FormControl from "react-bootstrap/lib/FormControl";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Table from "react-bootstrap/lib/Table";
 import Checkbox from "react-bootstrap/lib/Checkbox";
-import FormGroup from "react-bootstrap/lib/FormGroup";
 import Button from "react-bootstrap/lib/Button";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 
