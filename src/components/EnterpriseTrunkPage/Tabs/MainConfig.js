@@ -47,6 +47,9 @@ export class MainConfig extends Component {
             : [],
           routeExhaustionAction: this.props.iadsByTrunk
             ? this.props.iadsByTrunk.routeExhaustionAction
+            : "",
+          routeExhaustionDestination: this.props.iadsByTrunk
+            ? this.props.iadsByTrunk.routeExhaustionDestination
             : ""
         })
       );
