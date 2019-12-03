@@ -224,7 +224,8 @@ export class Numbers extends Component {
 
   filterBySearchGroupValue = () => {
     const { searchValueGroupNumbers } = this.state;
-    const SearchArray = this.state.searchablePhoneNumber
+    const searchablePhoneNumber = [...this.state.searchablePhoneNumber];
+    const SearchArray = searchablePhoneNumber
       .filter(number =>
         number.phoneNumber
           .toLowerCase()
