@@ -68,7 +68,7 @@ export class RoutingNumber extends Component {
               </InputGroup.Addon>
               <FormattedMessage
                 id="search_placeholder"
-                defaultMessage="IAD ID or IAD Type or MAC Address"
+                defaultMessage="Name or Routing Mode"
               >
                 {placeholder => (
                   <FormControl
@@ -142,7 +142,7 @@ export class RoutingNumber extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.props.enterpriseTrunks.map((trunk, i) => (
+                {this.state.trunks.map((trunk, i) => (
                   <Trunk key={i} trunk={trunk} />
                 ))}
               </tbody>
@@ -163,6 +163,18 @@ export class RoutingNumber extends Component {
       </React.Fragment>
     );
   }
+
+  filterBySearchValue = () => {
+    const { searchValue } = this.state;
+    const SearchArray = this.props.enterpriseTrunks
+      .filter(
+        trunk =>
+          trunk.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+          trunk.routingMode.toLowerCase().includes(searchValue.toLowerCase())
+      )
+      .map(trunk => trunk);
+    this.setState({ trunks: SearchArray }, () => this.pagination());
+  };
 
   changeCoutOnPage = e => {
     this.setState({ countPerPage: Number(e.target.value), page: 0 }, () =>
