@@ -110,7 +110,7 @@ export class Numbers extends Component {
             <ControlLabel>
               <FormattedMessage
                 id="groupNumbers"
-                defaultMessage="Group Numbers"
+                defaultMessage="Numbers from other enterprise trunks"
               />
             </ControlLabel>
             <InputGroup>
