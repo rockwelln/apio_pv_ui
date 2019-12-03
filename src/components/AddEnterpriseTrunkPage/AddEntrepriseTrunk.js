@@ -18,8 +18,10 @@ import { removeEmpty } from "../remuveEmptyInObject";
 
 import {
   fetchGetListOfIads,
-  fetchPostCreateEnterpriseTrunk
+  fetchPostCreateEnterpriseTrunk,
+  fetchGetConfig
 } from "../../store/actions";
+import Loading from "../../common/Loading";
 
 export class AddEntrepriseTrunk extends Component {
   state = {
@@ -28,10 +30,12 @@ export class AddEntrepriseTrunk extends Component {
     routingMode: "ordered",
     mainIadsAvalible: [],
     otherIadsAvalible: [],
-    disabledButton: false
+    disabledButton: false,
+    isLoading: true
   };
 
   componentDidMount() {
+    this.props.fetchGetConfig().then(() => this.setState({ isLoading: false }));
     this.props
       .fetchGetListOfIads(
         this.props.match.params.tenantId,
@@ -57,7 +61,9 @@ export class AddEntrepriseTrunk extends Component {
       });
   }
   render() {
-    console.log(this.state);
+    if (this.state.isLoading) {
+      return <Loading />;
+    }
     return (
       <React.Fragment>
         <Panel className={"margin-0"}>
@@ -310,7 +316,7 @@ export class AddEntrepriseTrunk extends Component {
       main_iads_available: checkedMainIadsAvalible,
       routeExhaustionAction,
       routeExhaustionDestination,
-      routingMode
+      channelHunting: routingMode === "weighted" ? "Loadbalanced" : ""
     };
     const clearData = removeEmpty(data);
     this.setState({ disabledButton: true }, () =>
@@ -382,11 +388,15 @@ export class AddEntrepriseTrunk extends Component {
   };
 }
 
-const mapStateToProps = state => ({ listOfIads: state.listOfIads });
+const mapStateToProps = state => ({
+  listOfIads: state.listOfIads,
+  config: state.config
+});
 
 const mapDispatchToProps = {
   fetchGetListOfIads,
-  fetchPostCreateEnterpriseTrunk
+  fetchPostCreateEnterpriseTrunk,
+  fetchGetConfig
 };
 
 export default withRouter(
