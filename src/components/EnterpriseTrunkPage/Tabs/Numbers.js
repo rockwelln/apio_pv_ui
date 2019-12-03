@@ -26,7 +26,8 @@ export class Numbers extends Component {
     numbersFromEnterpriseTrunk: [],
     groupNumbers: [],
     searchValueEntNumbers: "",
-    searchValueGroupNumbers: ""
+    searchValueGroupNumbers: "",
+    searchablePhoneNumber: []
   };
 
   fetchNumbers = () => {
@@ -46,7 +47,8 @@ export class Numbers extends Component {
         this.setState({
           numbersFromEnterpriseTrunk: this.props.numbersByEnterpriseTrunk
             .enterprise_trunk_numbers,
-          groupNumbers
+          groupNumbers,
+          searchablePhoneNumber: groupNumbers
         });
       });
   };
@@ -146,7 +148,11 @@ export class Numbers extends Component {
                             className={"table-checkbox margin-left-08"}
                             checked={num.checked}
                             onChange={e =>
-                              this.changeStatusOfGroupNumbers(e, i)
+                              this.changeStatusOfGroupNumbers(
+                                e,
+                                i,
+                                num.phoneNumber
+                              )
                             }
                           />
                         </td>
@@ -190,7 +196,6 @@ export class Numbers extends Component {
     groupNumbers
       .filter(el => el.checked)
       .map(el => checkedPhoneNumbers.push(el.phoneNumber));
-    console.log(checkedPhoneNumbers);
     const data = {
       added_numbers: checkedPhoneNumbers
     };
@@ -219,7 +224,7 @@ export class Numbers extends Component {
 
   filterBySearchGroupValue = () => {
     const { searchValueGroupNumbers } = this.state;
-    const SearchArray = this.props.numbersByEnterpriseTrunk.group_numbers
+    const SearchArray = this.state.searchablePhoneNumber
       .filter(number =>
         number.phoneNumber
           .toLowerCase()
@@ -229,12 +234,25 @@ export class Numbers extends Component {
     this.setState({ groupNumbers: SearchArray });
   };
 
-  changeStatusOfGroupNumbers = (e, i) => {
+  changeStatusOfGroupNumbers = (e, i, phoneNumber) => {
     const groupNumbers = [...this.state.groupNumbers];
+    const searchablePhoneNumber = [...this.state.searchablePhoneNumber];
+    console.log(phoneNumber);
+    let index;
+    searchablePhoneNumber.map((num, i) => {
+      if (num.phoneNumber === phoneNumber) {
+        index = i;
+      }
+    });
+    console.log(index);
+    const elSearchArr = searchablePhoneNumber.splice(index, 1);
+    const updatedSearchElArr = { ...elSearchArr[0], checked: e.target.checked };
+    searchablePhoneNumber.splice(i, 0, updatedSearchElArr);
+
     const elArr = groupNumbers.splice(i, 1);
     const updatedElArr = { ...elArr[0], checked: e.target.checked };
     groupNumbers.splice(i, 0, updatedElArr);
-    this.setState({ groupNumbers });
+    this.setState({ groupNumbers, searchablePhoneNumber });
   };
 }
 
