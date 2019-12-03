@@ -29,7 +29,7 @@ export class Numbers extends Component {
     searchValueGroupNumbers: ""
   };
 
-  componentDidMount() {
+  fetchNumbers = () => {
     this.props
       .fetchGetNumbersByEnterpriseTrunk(
         this.props.match.params.tenantId,
@@ -49,6 +49,10 @@ export class Numbers extends Component {
           groupNumbers
         });
       });
+  };
+
+  componentDidMount() {
+    this.fetchNumbers();
   }
   render() {
     return (
@@ -191,12 +195,14 @@ export class Numbers extends Component {
       added_numbers: checkedPhoneNumbers
     };
     const clearData = removeEmpty(data);
-    this.props.fetchPutUpdateNumbersByEnterpriseTrunk(
-      this.props.match.params.tenantId,
-      this.props.match.params.groupId,
-      this.props.match.params.entTrunkId,
-      clearData
-    );
+    this.props
+      .fetchPutUpdateNumbersByEnterpriseTrunk(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        this.props.match.params.entTrunkId,
+        clearData
+      )
+      .then(() => this.fetchNumbers());
   };
 
   filterBySearchEntValue = () => {

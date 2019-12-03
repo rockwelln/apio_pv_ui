@@ -123,6 +123,7 @@ export class AddGroup extends Component {
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
                   <FormattedMessage id="zipCode" defaultMessage="ZIP code" />
+                  {"\u002a"}
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
@@ -379,6 +380,7 @@ export class AddGroup extends Component {
                       onClick={this.AddGroup}
                       type="submit"
                       className="btn-primary"
+                      disabled={!this.state.zipCode}
                     >
                       <Glyphicon glyph="glyphicon glyphicon-ok" />{" "}
                       {this.state.buttonName}

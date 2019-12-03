@@ -1819,7 +1819,7 @@ export function fetchPutUpdateNumbersByEnterpriseTrunk(
   ///////////////////
   return function(dispatch) {
     return fetch_put(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/trunk_groups/${entTrunk}/users/`,
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/enterprise_trunks/${entTrunk}/users/`,
       data
     )
       .then(res => res.json())
