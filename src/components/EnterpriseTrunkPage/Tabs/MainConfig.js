@@ -148,7 +148,7 @@ export class MainConfig extends Component {
             <ControlLabel>
               <FormattedMessage
                 id="iadsFromSite"
-                defaultMessage="IADs from Site"
+                defaultMessage="IAD's from main site"
               />
             </ControlLabel>
             <Table striped hover className={"text-center"}>
@@ -191,7 +191,7 @@ export class MainConfig extends Component {
             <ControlLabel>
               <FormattedMessage
                 id="iadsFromOtherSite"
-                defaultMessage="IADs from other Sites"
+                defaultMessage="IADs from other sites"
               />
             </ControlLabel>
             <Table striped hover className={"text-center"}>
