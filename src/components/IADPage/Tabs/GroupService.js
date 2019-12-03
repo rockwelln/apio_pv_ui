@@ -16,7 +16,7 @@ import HelpBlock from "react-bootstrap/lib/HelpBlock";
 
 import { FormattedMessage } from "react-intl";
 
-import { changeObjectIAD } from "../../../store/actions";
+import { changeObjectIAD, fetchPutUpdateIAD } from "../../../store/actions";
 
 import { removeEmpty } from "../../remuveEmptyInObject";
 
@@ -133,10 +133,7 @@ export class GroupService extends Component {
                 <div className={"margin-right-1 flex flex-basis-16"} />
                 <div className={"margin-right-1 flex-basis-33"}>
                   {"\u002a"}
-                  <FormattedMessage
-                    id="nocInfo"
-                    defaultMessage=""
-                  />
+                  <FormattedMessage id="nocInfo" defaultMessage="" />
                 </div>
               </Col>
             </Row>
@@ -206,21 +203,29 @@ export class GroupService extends Component {
   };
 
   changeChannelsIn = e => {
-    this.props.changeObjectIAD("services", "channelsIn", e.target.value);
+    this.props.changeObjectIAD(
+      "services",
+      "channelsIn",
+      Number(e.target.value)
+    );
     this.setState({
       services: {
         ...this.state.services,
-        channelsIn: e.target.value
+        channelsIn: Number(e.target.value)
       }
     });
   };
 
   changeChannelsOut = e => {
-    this.props.changeObjectIAD("services", "channelsOut", e.target.value);
+    this.props.changeObjectIAD(
+      "services",
+      "channelsOut",
+      Number(e.target.value)
+    );
     this.setState({
       services: {
         ...this.state.services,
-        channelsOut: e.target.value
+        channelsOut: Number(e.target.value)
       }
     });
   };
@@ -228,7 +233,7 @@ export class GroupService extends Component {
 
 const mapStateToProps = state => ({ iad: state.iad, config: state.config });
 
-const mapDispatchToProps = { changeObjectIAD };
+const mapDispatchToProps = { changeObjectIAD, fetchPutUpdateIAD };
 
 export default withRouter(
   connect(

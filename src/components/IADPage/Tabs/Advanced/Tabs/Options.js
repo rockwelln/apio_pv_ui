@@ -51,7 +51,7 @@ export class Options extends Component {
             </div>
             <div className={"margin-right-1 flex-basis-33"}>
               <Checkbox
-                checked={this.state.advanced.clock_master}
+                defaultChecked={this.state.advanced.clock_master}
                 onChange={this.changeClockMaster}
               />
             </div>
@@ -66,7 +66,7 @@ export class Options extends Component {
             </div>
             <div className={"margin-right-1 flex-basis-33"}>
               <Checkbox
-                checked={this.state.advanced.dual_power}
+                defaultChecked={this.state.advanced.dual_power}
                 onChange={this.changeDualPower}
               />
             </div>
@@ -111,7 +111,7 @@ export class Options extends Component {
             </div>
             <div className={"margin-right-1 flex-basis-33"}>
               <Checkbox
-                checked={this.state.advanced.sysLogEnabled}
+                defaultChecked={this.state.advanced.sysLogEnabled}
                 onChange={this.changeSysLogEnabled}
               />
             </div>
@@ -130,7 +130,7 @@ export class Options extends Component {
             <div className={"margin-right-1 flex-basis-16"}>
               <FormControl
                 type="text"
-                value={this.state.advanced.sysLogIp}
+                defaultValue={this.state.advanced.sysLogIp}
                 placeholder={"IPv4 address"}
                 onChange={this.changeSysLogIp}
               />

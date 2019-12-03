@@ -89,7 +89,7 @@ export class MainConfig extends Component {
                 type="text"
                 placeholder={"Name"}
                 disabled
-                value={this.props.iadsByTrunk.routingMode}
+                defaultValue={this.props.iadsByTrunk.routingMode}
               />
             </div>
           </Col>
