@@ -32,7 +32,7 @@ export class RoutingNumber extends Component {
     searchValue: ""
   };
 
-  componentDidMount() {
+  fetchTrunks = () => {
     this.props
       .fetchGetEnterpriseTrunksByGroup(
         this.props.match.params.tenantId,
@@ -53,6 +53,10 @@ export class RoutingNumber extends Component {
           () => this.pagination()
         )
       );
+  };
+
+  componentDidMount() {
+    this.fetchTrunks();
   }
   render() {
     if (this.state.isLoading) {
@@ -143,7 +147,11 @@ export class RoutingNumber extends Component {
               </thead>
               <tbody>
                 {this.state.trunks.map((trunk, i) => (
-                  <Trunk key={i} trunk={trunk} />
+                  <Trunk
+                    key={i}
+                    trunk={trunk}
+                    onReload={() => this.fetchTrunks()}
+                  />
                 ))}
               </tbody>
             </Table>

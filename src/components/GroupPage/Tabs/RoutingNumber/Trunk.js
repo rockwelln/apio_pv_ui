@@ -11,7 +11,7 @@ class Trunk extends Component {
   state = { showDelete: false };
 
   render() {
-    const { trunk } = this.props;
+    const { trunk, onReload } = this.props;
     const { showDelete } = this.state;
     return (
       <tr>
@@ -35,7 +35,7 @@ class Trunk extends Component {
               trunk={trunk}
               show={showDelete}
               onClose={e => {
-                //onReload && onReload();
+                onReload && onReload();
                 this.setState({ showDelete: false });
               }}
             />
