@@ -151,211 +151,207 @@ export class PhoneNumbersTab extends Component {
             </Link>
           </Col>
         </Row>
-        {paginationPhoneNumbers.length ? (
-          <React.Fragment>
-            <Row>
-              <Col mdOffset={1} md={10}>
-                <div className={"flex space-between indent-top-bottom-1"}>
-                  <div className={"flex align-items-center"}>
-                    {/* <Checkbox
+        {/* {paginationPhoneNumbers.length ? ( */}
+        <React.Fragment>
+          <Row>
+            <Col mdOffset={1} md={10}>
+              <div className={"flex space-between indent-top-bottom-1"}>
+                <div className={"flex align-items-center"}>
+                  {/* <Checkbox
                       className={"margin-checbox"}
                       checked={this.state.selectAll}
                       onChange={this.handleSelectAllClick}
                     >
                       (Un)select all shown numbers
                     </Checkbox> */}
-                    <div
+                  <div
+                    onClick={this.deleteSlectedNumbers}
+                    className={
+                      "cursor-pointer padding-left-05 flex text-align-center align-items-center margin-right-1"
+                    }
+                  >
+                    <Glyphicon
+                      glyph="glyphicon glyphicon-trash"
+                      className={"margin-right-1"}
                       onClick={this.deleteSlectedNumbers}
-                      className={
-                        "cursor-pointer padding-left-05 flex text-align-center align-items-center margin-right-1"
-                      }
-                    >
-                      <Glyphicon
-                        glyph="glyphicon glyphicon-trash"
-                        className={"margin-right-1"}
-                        onClick={this.deleteSlectedNumbers}
-                      />
-                      <div>Delete selected numbers</div>
-                    </div>
-                    <DeleteModal
-                      rangeStart={numbersForDelete.map(
-                        number => number.phoneNumbers || number.phoneNumber
-                      )}
-                      show={showDelete}
-                      onClose={e => {
-                        this.fetchGetNumbers();
-                        this.setState({ showDelete: false, selectAll: false });
-                      }}
-                      {...this.props}
                     />
-                    <Button
-                      onClick={this.updateStatus}
-                      className={"btn-primary margin-right-1"}
-                      disabled={
-                        this.state.disabledUpdateStatusActive ||
-                        this.state.disabledUpdateStatusPreActive
-                      }
-                    >
-                      <FormattedMessage
-                        id="updateStatus"
-                        defaultMessage="Update Status"
-                      />
-                    </Button>
-                    <Button
-                      onClick={this.refreshInformation}
-                      className={"btn-primary margin-right-1"}
-                    >
-                      <FormattedMessage
-                        id="refreshInformation"
-                        defaultMessage="Refresh information"
-                      />
-                    </Button>
+                    <div>Delete selected numbers</div>
+                  </div>
+                  <DeleteModal
+                    rangeStart={numbersForDelete.map(
+                      number => number.phoneNumbers || number.phoneNumber
+                    )}
+                    show={showDelete}
+                    onClose={e => {
+                      this.fetchGetNumbers();
+                      this.setState({ showDelete: false, selectAll: false });
+                    }}
+                    {...this.props}
+                  />
+                  <Button
+                    onClick={this.updateStatus}
+                    className={"btn-primary margin-right-1"}
+                    disabled={
+                      this.state.disabledUpdateStatusActive ||
+                      this.state.disabledUpdateStatusPreActive
+                    }
+                  >
+                    <FormattedMessage
+                      id="updateStatus"
+                      defaultMessage="Update Status"
+                    />
+                  </Button>
+                  <Button
+                    onClick={this.refreshInformation}
+                    className={"btn-primary margin-right-1"}
+                  >
+                    <FormattedMessage
+                      id="refreshInformation"
+                      defaultMessage="Refresh information"
+                    />
+                  </Button>
+                  <Button
+                    onClick={() =>
+                      this.setState({ showRefreshAllDialog: true })
+                    }
+                    className={"btn-primary margin-right-1"}
+                  >
+                    <FormattedMessage
+                      id="refreshAll"
+                      defaultMessage="Refresh all"
+                    />
+                  </Button>
+                </div>
+                <Modal show={this.state.showRefreshAllDialog}>
+                  <Modal.Header>
+                    <Modal.Title>Refresh All</Modal.Title>
+                  </Modal.Header>
+
+                  <Modal.Body>This activity could take a long time</Modal.Body>
+
+                  <Modal.Footer>
                     <Button
                       onClick={() =>
-                        this.setState({ showRefreshAllDialog: true })
+                        this.setState({ showRefreshAllDialog: false })
                       }
-                      className={"btn-primary margin-right-1"}
+                      disabled={this.state.disableDialogButtons}
                     >
-                      <FormattedMessage
-                        id="refreshAll"
-                        defaultMessage="Refresh all"
-                      />
+                      Close
                     </Button>
-                  </div>
-                  <Modal show={this.state.showRefreshAllDialog}>
-                    <Modal.Header>
-                      <Modal.Title>Refresh All</Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>
-                      This activity could take a long time
-                    </Modal.Body>
-
-                    <Modal.Footer>
-                      <Button
-                        onClick={() =>
-                          this.setState({ showRefreshAllDialog: false })
-                        }
-                        disabled={this.state.disableDialogButtons}
-                      >
-                        Close
-                      </Button>
-                      <Button
-                        disabled={this.state.disableDialogButtons}
-                        onClick={this.refreshAll}
-                        bsStyle="primary"
-                      >
-                        OK
-                      </Button>
-                    </Modal.Footer>
-                  </Modal>
-
-                  <div className={"flex align-items-center"}>
-                    <div>Item per page</div>
-                    <FormControl
-                      componentClass="select"
-                      defaultValue={countPerPage}
-                      style={{ display: "inline", width: "auto" }}
-                      className={"margin-left-1"}
-                      onChange={this.changeCoutOnPage}
+                    <Button
+                      disabled={this.state.disableDialogButtons}
+                      onClick={this.refreshAll}
+                      bsStyle="primary"
                     >
-                      {countsPerPages.map(counts => (
-                        <option key={counts.value} value={counts.value}>
-                          {counts.title}
-                        </option>
-                      ))}
-                    </FormControl>
-                  </div>
+                      OK
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+
+                <div className={"flex align-items-center"}>
+                  <div>Item per page</div>
+                  <FormControl
+                    componentClass="select"
+                    defaultValue={countPerPage}
+                    style={{ display: "inline", width: "auto" }}
+                    className={"margin-left-1"}
+                    onChange={this.changeCoutOnPage}
+                  >
+                    {countsPerPages.map(counts => (
+                      <option key={counts.value} value={counts.value}>
+                        {counts.title}
+                      </option>
+                    ))}
+                  </FormControl>
                 </div>
-              </Col>
-            </Row>
-            <Row>
-              <Col mdOffset={1} md={10}>
-                <Table hover>
-                  <thead>
-                    <tr>
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col mdOffset={1} md={10}>
+              <Table hover>
+                <thead>
+                  <tr>
+                    <th>
+                      <Checkbox
+                        className={"margin-0 height-20"}
+                        checked={this.state.selectAll}
+                        onChange={this.handleSelectAllClick}
+                      />
+                    </th>
+                    <React.Fragment>
                       <th>
                         <Checkbox
-                          className={"margin-0 height-20"}
-                          checked={this.state.selectAll}
-                          onChange={this.handleSelectAllClick}
-                        />
-                      </th>
-                      <React.Fragment>
-                        <th>
-                          <Checkbox
-                            className={"margin-0"}
-                            checked={this.state.selectAllActive}
-                            onChange={this.handleSelectAllClickActive}
-                          >
-                            <div className={"font-weight-bold"}>
-                              <FormattedMessage
-                                id="activate"
-                                defaultMessage="Activate"
-                              />
-                            </div>
-                          </Checkbox>
-                        </th>
-                        <th>
-                          <Checkbox
-                            className={"margin-0"}
-                            checked={this.state.selectAllPreActive}
-                            onChange={this.handleSelectAllClickPreActive}
-                          >
-                            <div className={"font-weight-bold"}>
-                              <FormattedMessage
-                                id="pre-activate"
-                                defaultMessage="Pre-activate"
-                              />
-                            </div>
-                          </Checkbox>
-                        </th>
-                      </React.Fragment>
-                      <th>
-                        <FormattedMessage
-                          id="tenant-id"
-                          defaultMessage="Range start"
-                        />
-                        <Glyphicon
-                          glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByRangeStart}
-                        />
+                          className={"margin-0"}
+                          checked={this.state.selectAllActive}
+                          onChange={this.handleSelectAllClickActive}
+                        >
+                          <div className={"font-weight-bold"}>
+                            <FormattedMessage
+                              id="activate"
+                              defaultMessage="Activate"
+                            />
+                          </div>
+                        </Checkbox>
                       </th>
                       <th>
-                        <FormattedMessage
-                          id="name"
-                          defaultMessage="Range end"
-                        />
-                        <Glyphicon
-                          glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByRangeEnd}
-                        />
+                        <Checkbox
+                          className={"margin-0"}
+                          checked={this.state.selectAllPreActive}
+                          onChange={this.handleSelectAllClickPreActive}
+                        >
+                          <div className={"font-weight-bold"}>
+                            <FormattedMessage
+                              id="pre-activate"
+                              defaultMessage="Pre-activate"
+                            />
+                          </div>
+                        </Checkbox>
                       </th>
-                      <th>
-                        <FormattedMessage
-                          id="mainNumber"
-                          defaultMessage="Main Number"
-                        />
-                        <Glyphicon
-                          glyph="glyphicon glyphicon-sort"
-                          //onClick={this.sortByAssignedToGroup}
-                        />
-                      </th>
-                      <th>
-                        <FormattedMessage
-                          id="maintenanceNumber"
-                          defaultMessage="Maintenance Number"
-                        />
-                        <Glyphicon
-                          glyph="glyphicon glyphicon-sort"
-                          //onClick={this.sortByAssignedToGroup}
-                        />
-                      </th>
-                      <th />
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {paginationPhoneNumbers[page].map((number, i) => (
+                    </React.Fragment>
+                    <th>
+                      <FormattedMessage
+                        id="tenant-id"
+                        defaultMessage="Range start"
+                      />
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-sort"
+                        onClick={this.sortByRangeStart}
+                      />
+                    </th>
+                    <th>
+                      <FormattedMessage id="name" defaultMessage="Range end" />
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-sort"
+                        onClick={this.sortByRangeEnd}
+                      />
+                    </th>
+                    <th>
+                      <FormattedMessage
+                        id="mainNumber"
+                        defaultMessage="Main Number"
+                      />
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-sort"
+                        //onClick={this.sortByAssignedToGroup}
+                      />
+                    </th>
+                    <th>
+                      <FormattedMessage
+                        id="maintenanceNumber"
+                        defaultMessage="Maintenance Number"
+                      />
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-sort"
+                        //onClick={this.sortByAssignedToGroup}
+                      />
+                    </th>
+                    <th />
+                  </tr>
+                </thead>
+                <tbody>
+                  {!!paginationPhoneNumbers.length &&
+                    paginationPhoneNumbers[page].map((number, i) => (
                       <PhoneNumber
                         index={i}
                         key={i}
@@ -373,30 +369,30 @@ export class PhoneNumbersTab extends Component {
                         onReload={() => this.fetchGetNumbers()}
                       />
                     ))}
-                  </tbody>
-                </Table>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={11}>
-                <div className="flex flex-row flex-end-center">
-                  <Pagination className={"indent-top-bottom-1"}>
-                    <Pagination.Prev onClick={this.decrementPage} />
-                    <Pagination.Item>{this.state.page + 1}</Pagination.Item>
-                    <Pagination.Next onClick={this.incrementPage} />
-                  </Pagination>
-                </div>
-              </Col>
-            </Row>
-          </React.Fragment>
-        ) : (
+                </tbody>
+              </Table>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={11}>
+              <div className="flex flex-row flex-end-center">
+                <Pagination className={"indent-top-bottom-1"}>
+                  <Pagination.Prev onClick={this.decrementPage} />
+                  <Pagination.Item>{this.state.page + 1}</Pagination.Item>
+                  <Pagination.Next onClick={this.incrementPage} />
+                </Pagination>
+              </div>
+            </Col>
+          </Row>
+        </React.Fragment>
+        {/* ) : (
           <Col mdOffset={1} md={10}>
             <FormattedMessage
               id="notFound"
               defaultMessage="No phone numbers were found"
             />
           </Col>
-        )}
+        )} */}
       </React.Fragment>
     );
   }
