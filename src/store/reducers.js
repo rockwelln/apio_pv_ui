@@ -501,7 +501,7 @@ function mainReducer(state = initialState, action) {
           ...el,
           checked: true
         })),
-        ...action.data.iads_from_other_sites.map(el => ({
+        ...action.data.main_iads_available.map(el => ({
           ...el,
           checked: false
         }))
@@ -772,6 +772,32 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         phoneNumbersByGroup: phoneNumbers
+      };
+    }
+    case actionType.PUT_UPDATE_ENTERPRISE_TRNUK: {
+      const iadFromSite = [
+        ...action.data.iads_from_main_site.map(el => ({
+          ...el,
+          checked: true
+        })),
+        ...action.data.main_iads_available.map(el => ({
+          ...el,
+          checked: false
+        }))
+      ];
+      const iadNotFromSite = [
+        ...action.data.iads_from_other_sites.map(el => ({
+          ...el,
+          checked: true
+        })),
+        ...action.data.other_iads_available.map(el => ({
+          ...el,
+          checked: false
+        }))
+      ];
+      return {
+        ...state,
+        iadsByTrunk: { ...action.data, iadFromSite, iadNotFromSite }
       };
     }
     case actionType.DELETE_TENANT: {

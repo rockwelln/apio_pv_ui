@@ -29,7 +29,8 @@ export class MainConfig extends Component {
     routeExhaustionAction: "",
     routeExhaustionDestination: ""
   };
-  componentDidMount() {
+
+  fetchIADs = () => {
     this.props
       .fetchGetIADsByTrunk(
         this.props.match.params.tenantId,
@@ -53,6 +54,9 @@ export class MainConfig extends Component {
             : ""
         })
       );
+  };
+  componentDidMount() {
+    this.fetchIADs();
   }
   render() {
     if (this.state.isLoading) {
@@ -275,13 +279,15 @@ export class MainConfig extends Component {
       routeExhaustionAction,
       routeExhaustionDestination
     };
-    const clearData = removeEmpty(data);
-    this.props.fetchPutUpdateEnterpriseTrunk(
-      this.props.match.params.tenantId,
-      this.props.match.params.groupId,
-      this.props.match.params.entTrunkId,
-      clearData
-    );
+    //const clearData = removeEmpty(data);
+    this.props
+      .fetchPutUpdateEnterpriseTrunk(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        this.props.match.params.entTrunkId,
+        data
+      )
+      .then(() => this.fetchIADs());
   };
 
   changeStatusOfIadFromSite = (e, i) => {
