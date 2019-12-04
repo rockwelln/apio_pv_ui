@@ -27,11 +27,13 @@ import IPAddress from "./Tabs/IpAddress";
 import Advanced from "./Tabs/Advanced";
 import PraInfo from "./Tabs/PraInfo";
 import Loading from "../../common/Loading";
+import DeleteModal from "./DeleteModal";
 
 export class IADPage extends Component {
   state = {
     isLoading: true,
-    disabledButton: false
+    disabledButton: false,
+    showDelete: false
   };
   componentDidMount() {
     this.props.fetchGetGroupById(
@@ -60,7 +62,21 @@ export class IADPage extends Component {
           <Row className={"header"}>
             <Col md={12} className={"padding-0"}>
               <div className="button-row">
-                <div className="pull-left">{`IAD: ${this.props.match.params.iadId}`}</div>
+                <div className="pull-left">
+                  {`IAD: ${this.props.match.params.iadId}`}
+                  <Glyphicon
+                    glyph="glyphicon glyphicon-trash"
+                    onClick={() => this.setState({ showDelete: true })}
+                  />
+                  <DeleteModal
+                    iadId={this.props.match.params.iadId}
+                    show={this.state.showDelete}
+                    notifications={this.props.notifications}
+                    onClose={() => {
+                      this.setState({ showDelete: false });
+                    }}
+                  />
+                </div>
                 <div className="pull-right">
                   <Button
                     onClick={this.updateIAD}
@@ -69,7 +85,10 @@ export class IADPage extends Component {
                     disabled={this.state.disabledButton}
                   >
                     <Glyphicon glyph="glyphicon glyphicon-ok" />
-                    <FormattedMessage id="update" defaultMessage="Update" />
+                    <FormattedMessage
+                      id="updateIad"
+                      defaultMessage="Update IAD"
+                    />
                   </Button>
                 </div>
               </div>
