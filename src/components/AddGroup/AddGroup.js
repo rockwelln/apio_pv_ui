@@ -81,7 +81,6 @@ export class AddGroup extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex font-24"}>
-                  {" "}
                   <FormattedMessage
                     id="siteDetails"
                     defaultMessage="Site details"

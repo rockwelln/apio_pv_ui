@@ -30,6 +30,7 @@ export class AddIAD extends Component {
   state = {
     isLoadingConfig: true,
     errorMacAddress: null,
+    errorPbxIpAdress: null,
     isLoadingGroup: true,
     isloadingIADs: true,
     secondEDU: false,
@@ -115,7 +116,8 @@ export class AddIAD extends Component {
       srSAPB,
       iadType,
       pilotNumber,
-      errorMacAddress
+      errorMacAddress,
+      errorPbxIpAdress
     } = this.state;
     if (
       this.state.isLoadingConfig ||
@@ -286,7 +288,8 @@ export class AddIAD extends Component {
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
-                    type="text"
+                    className={"hide-arrows"}
+                    type="number"
                     value={this.state.pilotNumber}
                     placeholder={"Pilot Number"}
                     onChange={e =>
@@ -387,7 +390,6 @@ export class AddIAD extends Component {
                     id="eduConfiguration"
                     defaultMessage="EDU configuration"
                   />
-                  {"\u002a"}
                 </div>
               </Col>
             </Row>
@@ -399,6 +401,7 @@ export class AddIAD extends Component {
                       id="eduAName"
                       defaultMessage="EDU A Name"
                     />
+                    {"\u002a"}
                   </ControlLabel>
                 </div>
                 <div className={"margin-right-1 flex-basis-66"}>
@@ -419,6 +422,7 @@ export class AddIAD extends Component {
                         id="eduBName"
                         defaultMessage="EDU B Name"
                       />
+                      {"\u002a"}
                     </ControlLabel>
                   </div>
                   <div className={"margin-right-1 flex-basis-66"}>
@@ -440,6 +444,7 @@ export class AddIAD extends Component {
                 <div className={"margin-right-1 flex flex-basis-33"}>
                   <ControlLabel>
                     <FormattedMessage id="lanPort" defaultMessage="LAN port" />
+                    {"\u002a"}
                   </ControlLabel>
                 </div>
                 <div className={"margin-right-1 flex-basis-66"}>
@@ -447,7 +452,12 @@ export class AddIAD extends Component {
                     type="text"
                     value={this.state.lanPortA}
                     placeholder={"LAN port"}
-                    onChange={e => this.setState({ lanPortA: e.target.value })}
+                    onChange={e => {
+                      if (isNaN(e.target.value)) {
+                        return;
+                      }
+                      this.setState({ lanPortA: e.target.value });
+                    }}
                     disabled={this.props.group.virtual}
                   />
                 </div>
@@ -460,6 +470,7 @@ export class AddIAD extends Component {
                         id="lanPort"
                         defaultMessage="LAN port"
                       />
+                      {"\u002a"}
                     </ControlLabel>
                   </div>
                   <div className={"margin-right-1 flex-basis-66"}>
@@ -467,9 +478,12 @@ export class AddIAD extends Component {
                       type="text"
                       value={this.state.lanPortB}
                       placeholder={"LAN port"}
-                      onChange={e =>
-                        this.setState({ lanPortB: e.target.value })
-                      }
+                      onChange={e => {
+                        if (isNaN(e.target.value)) {
+                          return;
+                        }
+                        this.setState({ lanPortB: e.target.value });
+                      }}
                       disabled={this.props.group.virtual}
                     />
                   </div>
@@ -481,6 +495,7 @@ export class AddIAD extends Component {
                 <div className={"margin-right-1 flex flex-basis-33"}>
                   <ControlLabel>
                     <FormattedMessage id="wanPort" defaultMessage="WAN port" />
+                    {"\u002a"}
                   </ControlLabel>
                 </div>
                 <div className={"margin-right-1 flex-basis-66"}>
@@ -488,7 +503,12 @@ export class AddIAD extends Component {
                     type="text"
                     value={this.state.wanPortA}
                     placeholder={"WAN port"}
-                    onChange={e => this.setState({ wanPortA: e.target.value })}
+                    onChange={e => {
+                      if (isNaN(e.target.value)) {
+                        return;
+                      }
+                      this.setState({ wanPortA: e.target.value });
+                    }}
                     disabled={this.props.group.virtual}
                   />
                 </div>
@@ -501,6 +521,7 @@ export class AddIAD extends Component {
                         id="wanPort"
                         defaultMessage="WAN port"
                       />
+                      {"\u002a"}
                     </ControlLabel>
                   </div>
                   <div className={"margin-right-1 flex-basis-66"}>
@@ -508,9 +529,12 @@ export class AddIAD extends Component {
                       type="text"
                       value={this.state.wanPortB}
                       placeholder={"WAN port"}
-                      onChange={e =>
-                        this.setState({ wanPortB: e.target.value })
-                      }
+                      onChange={e => {
+                        if (isNaN(e.target.value)) {
+                          return;
+                        }
+                        this.setState({ wanPortB: e.target.value });
+                      }}
                       disabled={this.props.group.virtual}
                     />
                   </div>
@@ -525,6 +549,7 @@ export class AddIAD extends Component {
                       id="eduVlanId"
                       defaultMessage="EDU VLAN ID"
                     />
+                    {"\u002a"}
                   </ControlLabel>
                 </div>
                 <div className={"margin-right-1 flex-basis-66"}>
@@ -547,6 +572,7 @@ export class AddIAD extends Component {
                         id="eduVlanId"
                         defaultMessage="EDU VLAN ID"
                       />
+                      {"\u002a"}
                     </ControlLabel>
                   </div>
                   <div className={"margin-right-1 flex-basis-66"}>
@@ -568,6 +594,7 @@ export class AddIAD extends Component {
                 <div className={"margin-right-1 flex flex-basis-33"}>
                   <ControlLabel>
                     <FormattedMessage id="srName" defaultMessage="SR name" />
+                    {"\u002a"}
                   </ControlLabel>
                 </div>
                 <div className={"margin-right-1 flex-basis-66"}>
@@ -585,6 +612,7 @@ export class AddIAD extends Component {
                   <div className={"margin-right-1 flex flex-basis-33"}>
                     <ControlLabel>
                       <FormattedMessage id="srName" defaultMessage="SR name" />
+                      {"\u002a"}
                     </ControlLabel>
                   </div>
                   <div className={"margin-right-1 flex-basis-66"}>
@@ -604,6 +632,7 @@ export class AddIAD extends Component {
                 <div className={"margin-right-1 flex flex-basis-33"}>
                   <ControlLabel>
                     <FormattedMessage id="srSap" defaultMessage="SR SAP" />
+                    {"\u002a"}
                   </ControlLabel>
                 </div>
                 <div className={"margin-right-1 flex-basis-66"}>
@@ -621,6 +650,7 @@ export class AddIAD extends Component {
                   <div className={"margin-right-1 flex flex-basis-33"}>
                     <ControlLabel>
                       <FormattedMessage id="srSap" defaultMessage="SR SAP" />
+                      {"\u002a"}
                     </ControlLabel>
                   </div>
                   <div className={"margin-right-1 flex-basis-66"}>
@@ -795,7 +825,7 @@ export class AddIAD extends Component {
                 </Col>
               </Row>
             )}
-            <Row className={"margin-top-1"}>
+            <Row className={"margin-top-1 "}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
                   <ControlLabel>
@@ -810,18 +840,32 @@ export class AddIAD extends Component {
                     "margin-right-1 flex flex-basis-33 align-items-center"
                   }
                 >
-                  <ControlLabel className={"margin-0 margin-right-1"}>
-                    <FormattedMessage
-                      id="IPAddress"
-                      defaultMessage="IP Address"
-                    />
-                  </ControlLabel>
-                  <FormControl
-                    type="text"
-                    value={this.state.IPAddress}
-                    placeholder={"IP Address"}
-                    onChange={e => this.setState({ IPAddress: e.target.value })}
-                  />
+                  <FormGroup
+                    controlId="errorPbxIpAdress"
+                    validationState={this.state.errorPbxIpAdress}
+                    className={"margin-0 flex width-100p"}
+                  >
+                    <div className={"flex align-items-center width-100p"}>
+                      <ControlLabel className={"margin-0 margin-right-1"}>
+                        <FormattedMessage
+                          id="IPAddress"
+                          defaultMessage="IP Address"
+                        />
+                      </ControlLabel>
+                      <FormControl
+                        type="text"
+                        value={this.state.IPAddress}
+                        placeholder={"IP Address"}
+                        onChange={e =>
+                          this.setState({
+                            IPAddress: e.target.value,
+                            errorPbxIpAdress: null
+                          })
+                        }
+                        onBlur={this.validatePbxIPAddress}
+                      />
+                    </div>
+                  </FormGroup>
                 </div>
                 <div
                   className={
@@ -835,11 +879,35 @@ export class AddIAD extends Component {
                     type="text"
                     value={this.state.port}
                     placeholder={"Port"}
-                    onChange={e => this.setState({ port: e.target.value })}
+                    onChange={e => {
+                      if (isNaN(e.target.value)) {
+                        return;
+                      }
+                      this.setState({ port: e.target.value });
+                    }}
                   />
                 </div>
               </Col>
             </Row>
+            {this.state.errorPbxIpAdress && (
+              <Row className={"margin-top-1 "}>
+                <Col md={12} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex flex-basis-16"}></div>
+                  <div
+                    className={
+                      "margin-right-1 flex flex-basis-33 align-items-center"
+                    }
+                  >
+                    <HelpBlock bsClass="color-error">
+                      <FormattedMessage
+                        id="errorIpAdress"
+                        defaultMessage="Invalide IP address"
+                      />
+                    </HelpBlock>
+                  </div>
+                </Col>
+              </Row>
+            )}
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex font-24"}>
@@ -983,6 +1051,7 @@ export class AddIAD extends Component {
                         this.props.group.virtual
                           ? !iadType || !pilotNumber
                           : errorMacAddress ||
+                            errorPbxIpAdress ||
                             !iadType ||
                             !pilotNumber ||
                             !nameEDUA ||
@@ -1028,6 +1097,15 @@ export class AddIAD extends Component {
       };
     }
     this.setState({ praByIad });
+  };
+
+  validatePbxIPAddress = e => {
+    let reg = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
+    if (reg.test(e.target.value) || e.target.value === "") {
+      return;
+    } else {
+      return this.setState({ errorPbxIpAdress: "error" });
+    }
   };
 
   validateMacAddress = e => {
