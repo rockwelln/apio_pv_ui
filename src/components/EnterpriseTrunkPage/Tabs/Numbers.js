@@ -238,14 +238,12 @@ export class Numbers extends Component {
   changeStatusOfGroupNumbers = (e, i, phoneNumber) => {
     const groupNumbers = [...this.state.groupNumbers];
     const searchablePhoneNumber = [...this.state.searchablePhoneNumber];
-    console.log(phoneNumber);
     let index;
     searchablePhoneNumber.map((num, i) => {
       if (num.phoneNumber === phoneNumber) {
         index = i;
       }
     });
-    console.log(index);
     const elSearchArr = searchablePhoneNumber.splice(index, 1);
     const updatedSearchElArr = { ...elSearchArr[0], checked: e.target.checked };
     searchablePhoneNumber.splice(i, 0, updatedSearchElArr);

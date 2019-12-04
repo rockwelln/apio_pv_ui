@@ -1753,7 +1753,16 @@ export function fetchPutUpdateEnterpriseTrunk(
       data
     )
       .then(res => res.json())
-      .then(data => dispatch(putUpdateEnterpriseTrunk(data)))
+      .then(data => {
+        dispatch(putUpdateEnterpriseTrunk(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="successfulEnterpriseTrunkUpdated"
+            defaultMessage="Successful enterprise trunk update"
+          />,
+          "Updated"
+        );
+      })
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage

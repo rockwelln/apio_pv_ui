@@ -271,7 +271,7 @@ export class MainConfig extends Component {
     const checkedIadFromSite = iadFromSite.filter(el => el.checked);
     const data = {
       iads_from_other_sites: checkedIadNotFromSite,
-      main_iads_available: checkedIadFromSite,
+      iads_from_main_site: checkedIadFromSite,
       routeExhaustionAction,
       routeExhaustionDestination
     };
