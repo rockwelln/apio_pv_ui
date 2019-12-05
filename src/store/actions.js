@@ -25,33 +25,13 @@ export const getGroupsByTenantId = data => ({
   data
 });
 
-export const getAdminsByTenantId = data => ({
-  type: actionType.GET_ADMINS_TENANT,
-  data
-});
-
 export const getGroupById = data => ({
   type: actionType.GET_GROUP,
   data
 });
 
-export const getUsersByGroupId = data => ({
-  type: actionType.GET_USERS,
-  data
-});
-
 export const getPhoneNumbersByGroupId = data => ({
   type: actionType.GET_PHONE_NUMBERS_BY_GROUP_ID,
-  data
-});
-
-export const getLicensesByGroupId = data => ({
-  type: actionType.GET_LICENSES_BY_GROUP_ID,
-  data
-});
-
-export const getDevicesByGroupId = data => ({
-  type: actionType.GET_DEVICES_BY_GROUP_ID,
   data
 });
 
@@ -67,11 +47,6 @@ export const getTrunkByGroupID = data => ({
 
 export const getAvailableNumbersByGroupID = data => ({
   type: actionType.GET_AVAILABLE_NUMBERS_BY_GROUP_ID,
-  data
-});
-
-export const getAdminsByGroupId = data => ({
-  type: actionType.GET_ADMINS_GROUP,
   data
 });
 
@@ -796,24 +771,6 @@ export function fetchGetGroupsByTenantId(Id) {
   };
 }
 
-export function fetchGetAdminsByTenantId(Id) {
-  return function(dispatch) {
-    return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${Id}/admins`
-    )
-      .then(data => dispatch(getAdminsByTenantId(data)))
-      .catch(error =>
-        NotificationsManager.error(
-          <FormattedMessage
-            id="fetch-admins-failed"
-            defaultMessage="Failed to fetch admins!"
-          />,
-          error.message
-        )
-      );
-  };
-}
-
 export function fetchGetGroupById(tenantId, groupId) {
   ///////////////////////////////////
   return function(dispatch) {
@@ -871,24 +828,6 @@ export function fetchGetPhoneNumbersWithRefreshDB(tenantId, groupId, data) {
   };
 }
 
-export function fetchGetUsersByGroupId(tenantId, groupId) {
-  return function(dispatch) {
-    return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/users`
-    )
-      .then(data => dispatch(getUsersByGroupId(data)))
-      .catch(error =>
-        NotificationsManager.error(
-          <FormattedMessage
-            id="fetch-users-failed"
-            defaultMessage="Failed to fetch users!"
-          />,
-          error.message
-        )
-      );
-  };
-}
-
 export function fetchGetPhoneNumbersByGroupId(tenantId, groupId, withStatus) {
   //////////////////////
   return function(dispatch) {
@@ -903,60 +842,6 @@ export function fetchGetPhoneNumbersByGroupId(tenantId, groupId, withStatus) {
           <FormattedMessage
             id="fetch-numbers-failed"
             defaultMessage="Failed to fetch phone numbers!"
-          />,
-          error.message
-        )
-      );
-  };
-}
-
-export function fetchGetLicensesByGroupId(tenantId, groupId) {
-  return function(dispatch) {
-    return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/licenses`
-    )
-      .then(data => dispatch(getLicensesByGroupId(data)))
-      .catch(error =>
-        NotificationsManager.error(
-          <FormattedMessage
-            id="fetch-licenses-failed"
-            defaultMessage="Failed to fetch licenses!"
-          />,
-          error.message
-        )
-      );
-  };
-}
-
-export function fetchGetDevicesByGroupId(tenantId, groupId) {
-  return function(dispatch) {
-    return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/access_devices`
-    )
-      .then(data => dispatch(getDevicesByGroupId(data)))
-      .catch(error =>
-        NotificationsManager.error(
-          <FormattedMessage
-            id="fetch-devices-failed"
-            defaultMessage="Failed to fetch devices!"
-          />,
-          error.message
-        )
-      );
-  };
-}
-
-export function fetchGetAdminsByGroupId(tenantId, groupId) {
-  return function(dispatch) {
-    return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/admins`
-    )
-      .then(data => dispatch(getAdminsByGroupId(data)))
-      .catch(error =>
-        NotificationsManager.error(
-          <FormattedMessage
-            id="fetch-group-admins-failed"
-            defaultMessage="Failed to fetch group admins!"
           />,
           error.message
         )

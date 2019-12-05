@@ -4,18 +4,12 @@ const initialState = {
   tenants: [],
   tenant: {},
   groups: [],
-  adminsTenant: [],
   group: {},
-  users: [],
   phoneNumbersByGroup: [],
   licensesByGroup: [],
-  servicePacks: [],
-  groupServices: [],
-  devices: [],
   user: {},
   trunkGroups: {},
   availableNumbers: [],
-  adminsGroup: [],
   errorMassage: "",
   shouldRedirect: false,
   groupAdmin: {},
@@ -153,30 +147,12 @@ function mainReducer(state = initialState, action) {
         groups: action.data.groups
       };
     }
-    case actionType.GET_ADMINS_TENANT: {
-      return {
-        ...state,
-        adminsTenant: action.data.admins
-      };
-    }
     case actionType.GET_GROUP: {
       return {
         ...state,
         group: action.data,
         shouldRedirect: false,
         errorMassage: ""
-      };
-    }
-    case actionType.GET_USERS: {
-      const users = action.data.users.map(user => ({
-        ...user,
-        type: user.inTrunkGroup ? "trunk" : "normal",
-        userChecked: false
-      }));
-
-      return {
-        ...state,
-        users: users.filter(user => user.type !== "trunk")
       };
     }
     case actionType.GET_PHONE_NUMBERS_BY_GROUP_ID: {
@@ -215,55 +191,6 @@ function mainReducer(state = initialState, action) {
         phoneNumbersByGroup: phoneNumbers
       };
     }
-    case actionType.GET_LICENSES_BY_GROUP_ID: {
-      const groupServicesShown = action.data.groupServices
-        .filter(
-          group =>
-            group.name === "Auto Attendant" ||
-            group.name === "Auto Attendant - Standard" ||
-            group.name === "Call Pickup" ||
-            group.name === "Hunt Group" ||
-            group.name === "Group Paging" ||
-            group.name === "Meet-me Conferencing" ||
-            group.name === "Trunk Group"
-        )
-        .sort((a, b) => {
-          if (a.name < b.name) return -1;
-          if (a.name > b.name) return 1;
-          return 0;
-        });
-      const groupServicesHide = action.data.groupServices
-        .filter(
-          group =>
-            group.name !== "Auto Attendant" &&
-            group.name !== "Auto Attendant - Standard" &&
-            group.name !== "Call Pickup" &&
-            group.name !== "Hunt Group" &&
-            group.name !== "Group Paging" &&
-            group.name !== "Meet-me Conferencing" &&
-            group.name !== "Trunk Group"
-        )
-        .sort((a, b) => {
-          if (a.name < b.name) return -1;
-          if (a.name > b.name) return 1;
-          return 0;
-        });
-      const groupServices = [...groupServicesShown, ...groupServicesHide];
-      return {
-        ...state,
-        servicePacks: action.data.servicePacks,
-        groupServices: {
-          groups: groupServices,
-          countShown: groupServicesShown.length
-        }
-      };
-    }
-    case actionType.GET_DEVICES_BY_GROUP_ID: {
-      return {
-        ...state,
-        devices: action.data.access_devices
-      };
-    }
     case actionType.GET_USER: {
       return {
         ...state,
@@ -281,12 +208,6 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         availableNumbers: action.data.available_numbers
-      };
-    }
-    case actionType.GET_ADMINS_GROUP: {
-      return {
-        ...state,
-        adminsGroup: action.data.admins
       };
     }
     case actionType.GET_GROUP_ADMIN_BY_ADMIN_ID: {
