@@ -43,9 +43,7 @@ export class Details extends Component {
                 value={this.state.pilotUserId}
                 onChange={e => this.setState({ pilotUserId: e.target.value })}
               >
-                <option value={this.props.trunkGroup.pilotUserId}>
-                  {this.props.trunkGroup.pilotUserId}
-                </option>
+                <option value={""}>None</option>
                 {this.props.trunkGroupUsers.map(user => (
                   <option key={user.userId} value={user.userId}>
                     {user.userId}
@@ -104,7 +102,7 @@ export class Details extends Component {
     const { pilotUserId, accessDevice, sipAuthenticationPassword } = this.state;
 
     const data = {
-      pilotUserId: pilotUserId && pilotUserId
+      pilotUserId
     };
 
     this.setState({ disableButton: true }, () =>
