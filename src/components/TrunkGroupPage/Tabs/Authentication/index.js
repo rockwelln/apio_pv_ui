@@ -12,7 +12,7 @@ import { fetchPutUpdateTrunkGroup } from "../../../../store/actions";
 
 export class Authentication extends Component {
   state = {
-    requireAuthentication: null,
+    requireAuthentication: false,
     sipAuthenticationUserName: null,
     sipAuthenticationPassword: null,
     disableButton: false
@@ -20,10 +20,15 @@ export class Authentication extends Component {
 
   componentDidMount() {
     this.setState({
-      requireAuthentication: this.props.trunkGroup.requireAuthentication,
-      sipAuthenticationUserName: this.props.trunkGroup
-        .sipAuthenticationUserName,
+      requireAuthentication: this.props.trunkGroup.requireAuthentication
+        ? this.props.trunkGroup.requireAuthentication
+        : false,
+      sipAuthenticationUserName: this.props.trunkGroup.sipAuthenticationUserName
+        ? this.props.trunkGroup.sipAuthenticationUserName
+        : "",
       sipAuthenticationPassword: this.props.trunkGroup.sipAuthenticationPassword
+        ? this.props.trunkGroup.sipAuthenticationPassword
+        : ""
     });
   }
 

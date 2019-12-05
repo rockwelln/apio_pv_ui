@@ -12,8 +12,6 @@ import { fetchPutUpdateTrunkGroup } from "../../../../store/actions";
 
 export class Details extends Component {
   state = {
-    requireAuthentication: null,
-    sipAuthenticationUserName: null,
     pilotUserId: null,
     accessDevice: null,
     disableButton: false,
@@ -22,11 +20,12 @@ export class Details extends Component {
 
   componentDidMount() {
     this.setState({
-      requireAuthentication: this.props.trunkGroup.requireAuthentication,
-      sipAuthenticationUserName: this.props.trunkGroup
-        .sipAuthenticationUserName,
-      pilotUserId: this.props.trunkGroup.pilotUserId,
-      accessDevice: this.props.trunkGroup.accessDevice.name
+      pilotUserId: this.props.trunkGroup.pilotUserId
+        ? this.props.trunkGroup.pilotUserId
+        : "",
+      accessDevice: this.props.trunkGroup.accessDevice
+        ? this.props.trunkGroup.accessDevice.name
+        : ""
     });
   }
 
@@ -102,23 +101,10 @@ export class Details extends Component {
     );
   }
   update = () => {
-    const {
-      requireAuthentication,
-      sipAuthenticationUserName,
-      pilotUserId,
-      accessDevice,
-      sipAuthenticationPassword
-    } = this.state;
+    const { pilotUserId, accessDevice, sipAuthenticationPassword } = this.state;
 
     const data = {
-      //requireAuthentication: requireAuthentication && requireAuthentication,
-      //sipAuthenticationPassword,
-      //sipAuthenticationUserName:
-      //  sipAuthenticationUserName && sipAuthenticationUserName,
       pilotUserId: pilotUserId && pilotUserId
-      //accessDevice: accessDevice && {
-      //name: accessDevice
-      //}
     };
 
     this.setState({ disableButton: true }, () =>

@@ -21,10 +21,16 @@ export class Advanced extends Component {
 
   componentDidMount() {
     this.setState({
-      peeringDomain: this.props.trunkGroup.peeringDomain,
-      routeToPeeringDomain: this.props.trunkGroup.routeToPeeringDomain,
-      prefixEnabled: this.props.trunkGroup.prefixEnabled,
-      prefix: this.props.trunkGroup.prefix
+      peeringDomain: this.props.trunkGroup.peeringDomain
+        ? this.props.trunkGroup.peeringDomain
+        : "",
+      routeToPeeringDomain: this.props.trunkGroup.routeToPeeringDomain
+        ? this.props.trunkGroup.routeToPeeringDomain
+        : "",
+      prefixEnabled: this.props.trunkGroup.prefixEnabled
+        ? this.props.trunkGroup.prefixEnabled
+        : "",
+      prefix: this.props.trunkGroup.prefix ? this.props.trunkGroup.prefix : ""
     });
   }
 

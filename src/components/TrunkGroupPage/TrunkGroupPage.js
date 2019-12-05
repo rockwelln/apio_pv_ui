@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 
 import Tabs from "react-bootstrap/lib/Tabs";
 import Tab from "react-bootstrap/lib/Tab";
+import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import Loading from "../../common/Loading";
 
@@ -19,6 +20,7 @@ import StatefulRerouting from "./Tabs/StatefulRerouting";
 import CLI from "./Tabs/CLI";
 import Advanced from "./Tabs/Advanced";
 import Authentication from "./Tabs/Authentication";
+import DeleteModal from "./DeleteModal";
 
 class TrunkGroupPage extends Component {
   state = {
@@ -57,10 +59,25 @@ class TrunkGroupPage extends Component {
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
-          <div
-            className={"header"}
-          >{`Name: ${this.props.trunkGroup.accessDevice.name}`}</div>
-          <div>{`Level: ${this.props.trunkGroup.accessDevice.level}`}</div>
+          <div className={"header"}>
+            {`Name: ${this.props.match.params.trunkGroupName}`}{" "}
+            <Glyphicon
+              glyph="glyphicon glyphicon-trash"
+              onClick={() => this.setState({ showDelete: true })}
+            />
+            <DeleteModal
+              trunkGroupName={this.props.match.params.trunkGroupName}
+              show={this.state.showDelete}
+              onClose={() => {
+                this.setState({ showDelete: false });
+              }}
+            />
+          </div>
+          <div>{`Level: ${
+            this.props.trunkGroup.accessDevice
+              ? this.props.trunkGroup.accessDevice.level
+              : ""
+          }`}</div>
         </div>
         <div className={"panel-body"}>
           <Tabs defaultActiveKey={0} id="tenant_tabs">

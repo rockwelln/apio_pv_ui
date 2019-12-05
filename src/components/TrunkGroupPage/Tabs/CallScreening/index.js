@@ -18,9 +18,13 @@ export class CallScreening extends Component {
 
   componentDidMount() {
     this.setState({
-      allowUnscreenedCalls: this.props.trunkGroup.allowUnscreenedCalls,
+      allowUnscreenedCalls: this.props.trunkGroup.allowUnscreenedCalls
+        ? this.props.trunkGroup.allowUnscreenedCalls
+        : false,
       allowUnscreenedEmergencyCalls: this.props.trunkGroup
         .allowUnscreenedEmergencyCalls
+        ? this.props.trunkGroup.allowUnscreenedEmergencyCalls
+        : false
     });
   }
 

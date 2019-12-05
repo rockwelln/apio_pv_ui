@@ -21,10 +21,18 @@ export class Capacity extends Component {
 
   componentDidMount() {
     this.setState({
-      maxActiveCalls: this.props.trunkGroup.maxActiveCalls,
-      maxIncomingCalls: this.props.trunkGroup.maxIncomingCalls,
-      maxOutgoingCalls: this.props.trunkGroup.maxOutgoingCalls,
+      maxActiveCalls: this.props.trunkGroup.maxActiveCalls
+        ? this.props.trunkGroup.maxActiveCalls
+        : "",
+      maxIncomingCalls: this.props.trunkGroup.maxIncomingCalls
+        ? this.props.trunkGroup.maxIncomingCalls
+        : "",
+      maxOutgoingCalls: this.props.trunkGroup.maxOutgoingCalls
+        ? this.props.trunkGroup.maxOutgoingCalls
+        : "",
       enableBursting: this.props.trunkGroup.enableBursting
+        ? this.props.trunkGroup.enableBursting
+        : false
     });
   }
 

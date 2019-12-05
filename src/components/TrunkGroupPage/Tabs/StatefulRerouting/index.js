@@ -25,19 +25,35 @@ export class CallScreening extends Component {
 
   componentDidMount() {
     this.setState({
-      statefulReroutingEnabled: this.props.trunkGroup.statefulReroutingEnabled,
+      statefulReroutingEnabled: this.props.trunkGroup.statefulReroutingEnabled
+        ? this.props.trunkGroup.statefulReroutingEnabled
+        : false,
       sendContinuousOptionsMessage: this.props.trunkGroup
-        .sendContinuousOptionsMessage,
+        .sendContinuousOptionsMessage
+        ? this.props.trunkGroup.sendContinuousOptionsMessage
+        : false,
       continuousOptionsSendingIntervalSeconds: this.props.trunkGroup
-        .continuousOptionsSendingIntervalSeconds,
+        .continuousOptionsSendingIntervalSeconds
+        ? this.props.trunkGroup.continuousOptionsSendingIntervalSeconds
+        : "",
       failureOptionsSendingIntervalSeconds: this.props.trunkGroup
-        .failureOptionsSendingIntervalSeconds,
-      failureThresholdCounter: this.props.trunkGroup.failureThresholdCounter,
-      successThresholdCounter: this.props.trunkGroup.successThresholdCounter,
+        .failureOptionsSendingIntervalSeconds
+        ? this.props.trunkGroup.failureOptionsSendingIntervalSeconds
+        : "",
+      failureThresholdCounter: this.props.trunkGroup.failureThresholdCounter
+        ? this.props.trunkGroup.failureThresholdCounter
+        : "",
+      successThresholdCounter: this.props.trunkGroup.successThresholdCounter
+        ? this.props.trunkGroup.successThresholdCounter
+        : "",
       inviteFailureThresholdCounter: this.props.trunkGroup
-        .inviteFailureThresholdCounter,
+        .inviteFailureThresholdCounter
+        ? this.props.trunkGroup.inviteFailureThresholdCounter
+        : "",
       inviteFailureThresholdWindowSeconds: this.props.trunkGroup
         .inviteFailureThresholdWindowSeconds
+        ? this.props.trunkGroup.inviteFailureThresholdWindowSeconds
+        : ""
     });
   }
 

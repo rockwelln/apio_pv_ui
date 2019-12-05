@@ -29,11 +29,19 @@ export class CallScreening extends Component {
   componentDidMount() {
     this.setState({
       pilotUserCallingLineIdentityForExternalCallsPolicy: this.props.trunkGroup
-        .pilotUserCallingLineIdentityForExternalCallsPolicy,
+        .pilotUserCallingLineIdentityForExternalCallsPolicy
+        ? this.props.trunkGroup
+            .pilotUserCallingLineIdentityForExternalCallsPolicy
+        : "",
       pilotUserChargeNumberPolicy: this.props.trunkGroup
-        .pilotUserChargeNumberPolicy,
+        .pilotUserChargeNumberPolicy
+        ? this.props.trunkGroup.pilotUserChargeNumberPolicy
+        : "",
       pilotUserCallingLineIdentityForEmergencyCallsPolicy: this.props.trunkGroup
         .pilotUserCallingLineIdentityForEmergencyCallsPolicy
+        ? this.props.trunkGroup
+            .pilotUserCallingLineIdentityForEmergencyCallsPolicy
+        : ""
     });
   }
 
