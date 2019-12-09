@@ -10,7 +10,6 @@ import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Radio from "react-bootstrap/lib/Radio";
 import FormGroup from "react-bootstrap/lib/FormGroup";
-import Table from "react-bootstrap/lib/Table";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import HelpBlock from "react-bootstrap/lib/HelpBlock";
 
@@ -1157,9 +1156,7 @@ export class AddIAD extends Component {
       dtmf,
       direction,
       channelsIn,
-      channelsOut,
-      tpid,
-      circuitID
+      channelsOut
     } = this.state;
     const data = {
       iadType,

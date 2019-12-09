@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
 
 import Table from "react-bootstrap/lib/Table";
@@ -50,13 +49,7 @@ export class RoutingNumbers extends Component {
       );
   }
   render() {
-    const {
-      isLoading,
-      countPerPage,
-      pagination,
-      paginationTrunks,
-      page
-    } = this.state;
+    const { isLoading, countPerPage, paginationTrunks, page } = this.state;
     if (isLoading) {
       return <Loading />;
     }

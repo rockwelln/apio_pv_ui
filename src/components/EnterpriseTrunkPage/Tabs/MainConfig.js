@@ -11,8 +11,6 @@ import Checkbox from "react-bootstrap/lib/Checkbox";
 import Button from "react-bootstrap/lib/Button";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 
-import { removeEmpty } from "../../remuveEmptyInObject";
-
 import {
   fetchGetIADsByTrunk,
   fetchPutUpdateEnterpriseTrunk

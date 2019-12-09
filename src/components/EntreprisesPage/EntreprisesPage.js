@@ -38,7 +38,6 @@ class TenantPage extends Component {
   }
 
   render() {
-    const { tenant } = this.props;
     const { isLoading } = this.state;
     if (isLoading) {
       return <Loading />;

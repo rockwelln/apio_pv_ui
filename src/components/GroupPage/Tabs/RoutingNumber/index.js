@@ -47,7 +47,6 @@ export class RoutingNumber extends Component {
               if (a.name > b.name) return 1;
               return 0;
             }),
-            isLoading: false,
             sortedBy: "name"
           },
           () => this.pagination()

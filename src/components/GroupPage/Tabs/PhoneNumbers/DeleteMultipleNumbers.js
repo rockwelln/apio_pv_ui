@@ -30,7 +30,10 @@ class DeleteModal extends Component {
         const range = number.split(" - ");
         const expandedRange = getRange(range[0], range[1]);
         allNumbers.push(...expandedRange);
-      } else allNumbers.push(number);
+      } else {
+        allNumbers.push(number);
+      }
+      return 0;
     });
 
     const data = {

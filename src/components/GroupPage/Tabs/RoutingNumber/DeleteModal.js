@@ -33,7 +33,7 @@ class DeleteModal extends Component {
   }
 
   render() {
-    const { tenantId, groupId, trunk, show, onClose } = this.props;
+    const { trunk, show, onClose } = this.props;
     const { deleting } = this.state;
 
     return (

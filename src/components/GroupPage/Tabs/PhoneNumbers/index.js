@@ -421,6 +421,7 @@ export class PhoneNumbersTab extends Component {
       if (!!phone.phoneChecked) {
         numbersForRefresh.push(phone.phoneNumber);
       }
+      return 0;
     });
     if (!numbersForRefresh.length) {
       NotificationsManager.error(
@@ -453,9 +454,11 @@ export class PhoneNumbersTab extends Component {
     const allPreActiveNumbers = [];
     activeNumbers.map(el => {
       allActiveNumbers.push(el.phoneNumber);
+      return 0;
     });
     preActiveNumbers.map(el => {
       allPreActiveNumbers.push(el.phoneNumber);
+      return 0;
     });
     const activeData = {
       numbers: allActiveNumbers.map(number => ({ phoneNumber: number })),

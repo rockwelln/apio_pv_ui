@@ -48,7 +48,6 @@ export class IADs extends Component {
                 if (a.iadId > b.iadId) return 1;
                 return 0;
               }),
-              isLoading: false,
               sortedBy: "iadId"
             },
             () => this.pagination()
@@ -68,13 +67,7 @@ export class IADs extends Component {
   }
 
   render() {
-    const {
-      isLoading,
-      countPerPage,
-      pagination,
-      paginationIads,
-      page
-    } = this.state;
+    const { isLoading, countPerPage, paginationIads, page } = this.state;
     if (isLoading) {
       return <Loading />;
     }

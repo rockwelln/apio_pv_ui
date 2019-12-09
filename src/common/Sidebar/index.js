@@ -3,10 +3,10 @@ import { withRouter } from "react-router";
 
 import Nav from "react-bootstrap/lib/Nav";
 import NavItem from "react-bootstrap/lib/NavItem";
-import DropdownButton from "react-bootstrap/lib/DropdownButton";
+//import DropdownButton from "react-bootstrap/lib/DropdownButton";
 import { LinkContainer } from "react-router-bootstrap";
 
-import CategoriesSideBar from "../../components/CategoriesSideBar";
+//import CategoriesSideBar from "../../components/CategoriesSideBar";
 
 export class Sidebar extends Component {
   state = {

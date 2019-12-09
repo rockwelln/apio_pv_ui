@@ -243,6 +243,7 @@ export class Numbers extends Component {
       if (num.phoneNumber === phoneNumber) {
         index = i;
       }
+      return 0;
     });
     const elSearchArr = searchablePhoneNumber.splice(index, 1);
     const updatedSearchElArr = { ...elSearchArr[0], checked: e.target.checked };

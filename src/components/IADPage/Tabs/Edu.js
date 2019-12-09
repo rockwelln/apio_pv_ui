@@ -58,9 +58,6 @@ export class Edu extends Component {
     });
   }
   render() {
-    const iadType = this.props.config.tenant.group.iad.iadType.filter(
-      el => el.value === this.props.iad.iadType
-    );
     return (
       <React.Fragment>
         <Row className={"margin-top-1"}>

@@ -10,7 +10,6 @@ import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Radio from "react-bootstrap/lib/Radio";
 import FormGroup from "react-bootstrap/lib/FormGroup";
-import Checkbox from "react-bootstrap/lib/Checkbox";
 
 import { STATENUMBERS } from "../../constants";
 

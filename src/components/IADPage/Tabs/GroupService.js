@@ -5,14 +5,9 @@ import { withRouter } from "react-router";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import FormControl from "react-bootstrap/lib/FormControl";
-import Panel from "react-bootstrap/lib/Panel";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
-import Radio from "react-bootstrap/lib/Radio";
-import FormGroup from "react-bootstrap/lib/FormGroup";
-import Table from "react-bootstrap/lib/Table";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
-import HelpBlock from "react-bootstrap/lib/HelpBlock";
 
 import { FormattedMessage } from "react-intl";
 

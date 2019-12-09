@@ -7,7 +7,6 @@ import Col from "react-bootstrap/lib/Col";
 import FormControl from "react-bootstrap/lib/FormControl";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Button from "react-bootstrap/lib/Button";
-import Checkbox from "react-bootstrap/lib/Checkbox";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import Radio from "react-bootstrap/lib/Radio";
 
@@ -273,17 +272,10 @@ export class index extends Component {
   }
 
   updateGroup = () => {
-    const {
-      groupName,
-      cliName,
-      zipCode,
-      virtualSite,
-      cliPhoneNumber
-    } = this.state.group;
+    const { groupName, cliName, zipCode, cliPhoneNumber } = this.state.group;
     const data = {
       groupName,
       cliName,
-      //virtualSite,
       cliPhoneNumber,
       zipCode
     };
