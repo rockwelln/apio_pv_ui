@@ -21,6 +21,7 @@ import {
   fetchGetIADs
 } from "../../store/actions";
 import { removeEmpty } from "../remuveEmptyInObject";
+import { validateInputPhoneNumber } from "../validateInputPhoneNumber";
 
 import { TRANSPORTMODE, IP1MODE } from "../../constants";
 import Loading from "../../common/Loading";
@@ -287,10 +288,10 @@ export class AddIAD extends Component {
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
-                    className={"hide-arrows"}
-                    type="number"
+                    type="text"
                     value={this.state.pilotNumber}
                     placeholder={"Pilot Number"}
+                    onKeyDown={validateInputPhoneNumber}
                     onChange={e =>
                       this.setState({ pilotNumber: e.target.value })
                     }

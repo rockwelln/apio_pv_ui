@@ -15,6 +15,7 @@ import Checkbox from "react-bootstrap/lib/Checkbox";
 import { FormattedMessage } from "react-intl";
 
 import { removeEmpty } from "../remuveEmptyInObject";
+import { validateInputPhoneNumber } from "../validateInputPhoneNumber";
 
 import {
   fetchGetListOfIads,
@@ -153,6 +154,7 @@ export class AddEntrepriseTrunk extends Component {
                     type="text"
                     placeholder={"Phone Number"}
                     value={this.state.routeExhaustionDestination}
+                    onKeyDown={validateInputPhoneNumber}
                     onChange={e =>
                       this.setState({
                         routeExhaustionDestination: e.target.value

@@ -16,6 +16,7 @@ import { STATENUMBERS } from "../../constants";
 import { fetchPostAssignPhoneNumbersToGroup } from "../../store/actions";
 
 import { removeEmpty } from "../remuveEmptyInObject";
+import { validateInputPhoneNumber } from "../validateInputPhoneNumber";
 
 export class AddPhoneNumber extends Component {
   state = {
@@ -85,7 +86,10 @@ export class AddPhoneNumber extends Component {
                     type="text"
                     value={this.state.arrayFrom}
                     placeholder={"From phone number"}
-                    onChange={e => this.setState({ arrayFrom: e.target.value })}
+                    onKeyDown={validateInputPhoneNumber}
+                    onChange={e => {
+                      this.setState({ arrayFrom: e.target.value });
+                    }}
                   />
                 </div>
               </Col>
@@ -96,6 +100,7 @@ export class AddPhoneNumber extends Component {
                     type="text"
                     value={this.state.arrayTo}
                     placeholder={"To phone number"}
+                    onKeyDown={validateInputPhoneNumber}
                     onChange={e => this.setState({ arrayTo: e.target.value })}
                   />
                 </div>
@@ -114,6 +119,7 @@ export class AddPhoneNumber extends Component {
                         type="text"
                         value={number.phoneNumber}
                         placeholder={"Phone number"}
+                        onKeyDown={validateInputPhoneNumber}
                         onChange={e => {
                           const val = e.target.value;
                           this.setState(curState => {
@@ -175,6 +181,8 @@ export class AddPhoneNumber extends Component {
       </React.Fragment>
     );
   }
+
+  validteInputPhoneNumber = e => {};
 
   addPhoneToArray = () => {
     const numbers = this.state.numbers;
