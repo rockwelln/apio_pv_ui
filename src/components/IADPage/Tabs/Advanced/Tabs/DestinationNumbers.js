@@ -26,10 +26,10 @@ export class TrunkId extends Component {
     this.setState({
       advanced: this.props.iad.advanced
         ? {
-            destnr1: this.props.iad.advanced.destnr1,
-            destnr2: this.props.iad.advanced.destnr2,
-            destnr3: this.props.iad.advanced.destnr3,
-            destnr4: this.props.iad.advanced.destnr4,
+            // destnr1: this.props.iad.advanced.destnr1,
+            // destnr2: this.props.iad.advanced.destnr2,
+            // destnr3: this.props.iad.advanced.destnr3,
+            // destnr4: this.props.iad.advanced.destnr4,
             destnr5: this.props.iad.advanced.destnr5,
             destnr6: this.props.iad.advanced.destnr6,
             destnr7: this.props.iad.advanced.destnr7,
@@ -43,7 +43,7 @@ export class TrunkId extends Component {
   render() {
     return (
       <React.Fragment>
-        <Row className={"margin-top-1"}>
+        {/* <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>
               <ControlLabel>
@@ -142,7 +142,7 @@ export class TrunkId extends Component {
               </FormControl>
             </div>
           </Col>
-        </Row>
+        </Row> */}
         <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>
@@ -159,7 +159,7 @@ export class TrunkId extends Component {
                 value={this.state.advanced.destnr5}
                 onChange={this.chageDestnr5}
               >
-                {this.props.config.tenant.group.iad.destnr.map((el, i) => (
+                {this.props.config.tenant.group.iad.destnr1.map((el, i) => (
                   <option key={i} value={el.value}>
                     {el.label}
                   </option>
@@ -336,45 +336,45 @@ export class TrunkId extends Component {
     }
   };
 
-  chageDestnr1 = e => {
-    this.setState({
-      advanced: {
-        ...this.state.advanced,
-        destnr1: e.target.value
-      }
-    });
-    this.props.changeObjectIAD("advanced", "destnr1", e.target.value);
-  };
+  // chageDestnr1 = e => {
+  //   this.setState({
+  //     advanced: {
+  //       ...this.state.advanced,
+  //       destnr1: e.target.value
+  //     }
+  //   });
+  //   this.props.changeObjectIAD("advanced", "destnr1", e.target.value);
+  // };
 
-  chageDestnr2 = e => {
-    this.setState({
-      advanced: {
-        ...this.state.advanced,
-        destnr2: e.target.value
-      }
-    });
-    this.props.changeObjectIAD("advanced", "destnr2", e.target.value);
-  };
+  // chageDestnr2 = e => {
+  //   this.setState({
+  //     advanced: {
+  //       ...this.state.advanced,
+  //       destnr2: e.target.value
+  //     }
+  //   });
+  //   this.props.changeObjectIAD("advanced", "destnr2", e.target.value);
+  // };
 
-  chageDestnr3 = e => {
-    this.setState({
-      advanced: {
-        ...this.state.advanced,
-        destnr3: e.target.value
-      }
-    });
-    this.props.changeObjectIAD("advanced", "destnr3", e.target.value);
-  };
+  // chageDestnr3 = e => {
+  //   this.setState({
+  //     advanced: {
+  //       ...this.state.advanced,
+  //       destnr3: e.target.value
+  //     }
+  //   });
+  //   this.props.changeObjectIAD("advanced", "destnr3", e.target.value);
+  // };
 
-  chageDestnr4 = e => {
-    this.setState({
-      advanced: {
-        ...this.state.advanced,
-        destnr4: e.target.value
-      }
-    });
-    this.props.changeObjectIAD("advanced", "destnr4", e.target.value);
-  };
+  // chageDestnr4 = e => {
+  //   this.setState({
+  //     advanced: {
+  //       ...this.state.advanced,
+  //       destnr4: e.target.value
+  //     }
+  //   });
+  //   this.props.changeObjectIAD("advanced", "destnr4", e.target.value);
+  // };
 
   chageDestnr5 = e => {
     this.setState({
