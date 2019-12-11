@@ -364,7 +364,7 @@ export class TrunkId extends Component {
     this.setState({
       advanced: {
         ...this.state.advanced,
-        trunkId7: e.target.value
+        trunkId7: Number(e.target.value)
       }
     });
     this.props.changeObjectIAD("advanced", "trunkId7", e.target.value);
