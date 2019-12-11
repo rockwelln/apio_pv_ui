@@ -8,6 +8,7 @@ import FormControl from "react-bootstrap/lib/FormControl";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
+import Checkbox from "react-bootstrap/lib/Checkbox";
 
 import { FormattedMessage } from "react-intl";
 
@@ -41,7 +42,7 @@ export class PraInfo extends Component {
                 <div className={"margin-right-1 flex font-18"}>
                   <FormattedMessage
                     id="praNumber"
-                    defaultMessage={`PRA ${i + 1}`}
+                    defaultMessage={`PRA ID ${i + 1}`}
                   />
                 </div>
               </Col>
@@ -103,6 +104,36 @@ export class PraInfo extends Component {
                             [el]: {
                               ...this.state.praByIad[el],
                               circuit_id: e.target.value
+                            }
+                          }
+                        },
+                        () =>
+                          this.props.changeIAD("pra_info", this.state.praByIad)
+                      )
+                    }
+                  />
+                </div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  <ControlLabel>
+                    <FormattedMessage id="enabled" defaultMessage="Enabled" />
+                  </ControlLabel>
+                </div>
+                <div className={"margin-right-1 flex-basis-33"}>
+                  <Checkbox
+                    className={"table-checkbox"}
+                    checked={this.state.praByIad[el].enabled}
+                    onChange={e =>
+                      this.setState(
+                        {
+                          praByIad: {
+                            ...this.state.praByIad,
+                            [el]: {
+                              ...this.state.praByIad[el],
+                              enabled: e.target.checked
                             }
                           }
                         },

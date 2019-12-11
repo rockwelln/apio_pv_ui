@@ -12,6 +12,7 @@ import Radio from "react-bootstrap/lib/Radio";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import HelpBlock from "react-bootstrap/lib/HelpBlock";
+import Checkbox from "react-bootstrap/lib/Checkbox";
 
 import { FormattedMessage } from "react-intl";
 import {
@@ -64,7 +65,9 @@ export class AddIAD extends Component {
     buttonName: "Create",
     tpid: "",
     circuitID: "",
-    praByIad: {}
+    praByIad: {},
+    arrayOfPraId: [],
+    selectedID: []
   };
   componentDidMount() {
     this.props
@@ -309,7 +312,7 @@ export class AddIAD extends Component {
               </Row>
             )}
             {this.props.group.pbxType === "PRA" &&
-              Object.keys(this.state.praByIad).map((el, i) => (
+              Object.keys(this.state.praByIad).map((pra, i) => (
                 <React.Fragment key={i + ""}>
                   <Row className={"margin-top-1"}>
                     <Col md={12} className={"flex align-items-center"}>
@@ -318,6 +321,67 @@ export class AddIAD extends Component {
                           id="praNumber"
                           defaultMessage={`PRA ${i + 1}`}
                         />
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row className={"margin-top-1"}>
+                    <Col md={12} className={"flex align-items-center"}>
+                      <div className={"margin-right-1 flex flex-basis-16"}>
+                        <ControlLabel>
+                          <FormattedMessage
+                            id="praId"
+                            defaultMessage="PRA ID"
+                          />
+                        </ControlLabel>
+                      </div>
+                      <div className={"margin-right-1 flex-basis-33"}>
+                        <FormControl
+                          componentClass="select"
+                          value={this.state.praByIad[pra].praID}
+                          onChange={e => {
+                            let selectedID = [...this.state.selectedID];
+                            if (Number(e.target.value) !== 0) {
+                              selectedID.push(Number(e.target.value));
+                              if (this.state.praByIad[pra].praID) {
+                                const index = selectedID.indexOf(
+                                  this.state.praByIad[pra].praID
+                                );
+                                if (index !== -1) {
+                                  selectedID.splice(index, 1);
+                                }
+                              }
+                            } else if (Number(e.target.value) === 0) {
+                              const index = selectedID.indexOf(
+                                this.state.praByIad[pra].praID
+                              );
+                              if (index !== -1) {
+                                selectedID.splice(index, 1);
+                              }
+                            }
+                            this.setState({
+                              selectedID,
+                              praByIad: {
+                                ...this.state.praByIad,
+                                [pra]: {
+                                  ...this.state.praByIad[pra],
+                                  praID: Number(e.target.value)
+                                }
+                              }
+                            });
+                          }}
+                        >
+                          {this.state.arrayOfPraId.map((el, i) => (
+                            <option
+                              key={i}
+                              value={el.value}
+                              disabled={this.state.selectedID.includes(
+                                el.value
+                              )}
+                            >
+                              {el.label}
+                            </option>
+                          ))}
+                        </FormControl>
                       </div>
                     </Col>
                   </Row>
@@ -335,12 +399,13 @@ export class AddIAD extends Component {
                         <FormControl
                           type="text"
                           placeholder={"Tina Product ID"}
+                          disabled={!this.state.praByIad[pra].praID}
                           onChange={e =>
                             this.setState({
                               praByIad: {
                                 ...this.state.praByIad,
-                                [el]: {
-                                  ...this.state.praByIad[el],
+                                [pra]: {
+                                  ...this.state.praByIad[pra],
                                   tpid: e.target.value
                                 }
                               }
@@ -366,13 +431,42 @@ export class AddIAD extends Component {
                           placeholder={
                             "Prefix followed by national phone number"
                           }
+                          disabled={!this.state.praByIad[pra].praID}
                           onChange={e =>
                             this.setState({
                               praByIad: {
                                 ...this.state.praByIad,
-                                [el]: {
-                                  ...this.state.praByIad[el],
+                                [pra]: {
+                                  ...this.state.praByIad[pra],
                                   circuit_id: e.target.value
+                                }
+                              }
+                            })
+                          }
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row className={"margin-top-1"}>
+                    <Col md={12} className={"flex align-items-center"}>
+                      <div className={"margin-right-1 flex flex-basis-16"}>
+                        <ControlLabel>
+                          <FormattedMessage
+                            id="enabled"
+                            defaultMessage="Enabled"
+                          />
+                        </ControlLabel>
+                      </div>
+                      <div className={"margin-right-1 flex-basis-33"}>
+                        <Checkbox
+                          className={"table-checkbox"}
+                          onChange={e =>
+                            this.setState({
+                              praByIad: {
+                                ...this.state.praByIad,
+                                [pra]: {
+                                  ...this.state.praByIad[pra],
+                                  enabled: e.target.checked
                                 }
                               }
                             })
@@ -1084,19 +1178,22 @@ export class AddIAD extends Component {
 
   setPraByIad = () => {
     let praByIad = {};
+    let arrayOfPraId = [{ value: 0, label: "None" }];
     const createdIADs = this.props.iads.iads.map(el =>
       Number(el.iadId.slice(-2))
     );
     const unic = Object.keys(this.props.iads.praByIad).filter(
       el => createdIADs.indexOf(Number(el)) === -1
     );
+
     for (let i = 0; i < this.props.iads.praByIad[unic[0]]; i++) {
       praByIad = {
         ...praByIad,
-        [i + 1]: { tpid: "", circuit_id: "" }
+        [i + 1]: { tpid: "", circuit_id: "", praID: "", enabled: "" }
       };
+      arrayOfPraId.push({ value: Number(i + 1), label: i + 1 });
     }
-    this.setState({ praByIad });
+    this.setState({ praByIad, arrayOfPraId });
   };
 
   validatePbxIPAddress = e => {
@@ -1159,6 +1256,20 @@ export class AddIAD extends Component {
       channelsIn,
       channelsOut
     } = this.state;
+    let pra_info = {};
+    Object.keys(this.state.praByIad).forEach(key => {
+      if (this.state.praByIad[key].praID === 0) {
+        return;
+      }
+      pra_info = {
+        ...pra_info,
+        [this.state.praByIad[key].praID]: {
+          tpid: this.state.praByIad[key].tpid,
+          circuit_id: this.state.praByIad[key].circuit_id,
+          enabled: this.state.praByIad[key].enabled
+        }
+      };
+    });
     const data = {
       iadType,
       pilotNumber,
@@ -1207,7 +1318,7 @@ export class AddIAD extends Component {
         channelsOut
       },
       virtual: this.props.group.virtual,
-      pra_info: this.state.praByIad
+      pra_info
     };
     const clearData = removeEmpty(data);
     this.props
