@@ -40,7 +40,6 @@ export class PraInfo extends Component {
         [key]: { ...this.props.iad.pra_info[key], praID: key }
       };
     });
-    console.log(praByIad);
     if (Object.keys(praByIad).length < this.props.iad.pra_needed) {
       for (
         let i = 0;
@@ -86,7 +85,6 @@ export class PraInfo extends Component {
                       if (Number(e.target.value) !== 0) {
                         selectedID.push(Number(e.target.value));
                         if (this.state.praByIad[pra].praID) {
-                          console.log("if");
                           const index = selectedID.indexOf(
                             Number(this.state.praByIad[pra].praID)
                           );
