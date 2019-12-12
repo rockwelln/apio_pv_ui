@@ -114,7 +114,7 @@ export class index extends Component {
             </div>
           </Col>
         </Row>
-        <Row className={"margin-top-1"}>
+        {/* <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>
               <FormattedMessage id="mainNumber" defaultMessage="CLI Name" />
@@ -133,7 +133,7 @@ export class index extends Component {
               />
             </div>
           </Col>
-        </Row>
+        </Row> */}
         <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>
@@ -272,10 +272,15 @@ export class index extends Component {
   }
 
   updateGroup = () => {
-    const { groupName, cliName, zipCode, cliPhoneNumber } = this.state.group;
+    const {
+      groupName,
+      //cliName,
+      zipCode,
+      cliPhoneNumber
+    } = this.state.group;
     const data = {
       groupName,
-      cliName,
+      //cliName,
       cliPhoneNumber,
       zipCode
     };
