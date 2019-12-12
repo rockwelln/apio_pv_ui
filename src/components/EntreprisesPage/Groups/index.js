@@ -168,7 +168,7 @@ export class GroupsTab extends Component {
                         />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByID}
+                          onClick={this.sortByProduct}
                         />
                       </th>
                       <th>
@@ -178,7 +178,27 @@ export class GroupsTab extends Component {
                         />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByID}
+                          onClick={this.sortByAccess}
+                        />
+                      </th>
+                      <th>
+                        <FormattedMessage
+                          id="tenant-id"
+                          defaultMessage="Virtual"
+                        />
+                        <Glyphicon
+                          glyph="glyphicon glyphicon-sort"
+                          onClick={this.sortByVitual}
+                        />
+                      </th>
+                      <th>
+                        <FormattedMessage
+                          id="tenant-id"
+                          defaultMessage="Number of channels"
+                        />
+                        <Glyphicon
+                          glyph="glyphicon glyphicon-sort"
+                          onClick={this.sortByNumberOfChannels}
                         />
                       </th>
                       <th />
@@ -279,6 +299,75 @@ export class GroupsTab extends Component {
       )
       .map(group => group);
     this.setState({ groups: SearchArray }, () => this.pagination());
+  };
+
+  sortByNumberOfChannels = () => {
+    const { groups, sortedBy } = this.state;
+    if (sortedBy === "numberOfChannels") {
+      const groupsSorted = groups.reverse();
+      this.setState({ groups: groupsSorted }, () => this.pagination());
+    } else {
+      const groupsSorted = groups.sort((a, b) => {
+        if (a.numberOfChannels < b.numberOfChannels) return -1;
+        if (a.numberOfChannels > b.numberOfChannels) return 1;
+        return 0;
+      });
+      this.setState(
+        { groups: groupsSorted, sortedBy: "numberOfChannels" },
+        () => this.pagination()
+      );
+    }
+  };
+
+  sortByVitual = () => {
+    const { groups, sortedBy } = this.state;
+    if (sortedBy === "virtual") {
+      const groupsSorted = groups.reverse();
+      this.setState({ groups: groupsSorted }, () => this.pagination());
+    } else {
+      const groupsSorted = groups.sort((a, b) => {
+        if (a.virtual < b.virtual) return -1;
+        if (a.virtual > b.virtual) return 1;
+        return 0;
+      });
+      this.setState({ groups: groupsSorted, sortedBy: "virtual" }, () =>
+        this.pagination()
+      );
+    }
+  };
+
+  sortByAccess = () => {
+    const { groups, sortedBy } = this.state;
+    if (sortedBy === "accessType") {
+      const groupsSorted = groups.reverse();
+      this.setState({ groups: groupsSorted }, () => this.pagination());
+    } else {
+      const groupsSorted = groups.sort((a, b) => {
+        if (a.accessType < b.accessType) return -1;
+        if (a.accessType > b.accessType) return 1;
+        return 0;
+      });
+      this.setState({ groups: groupsSorted, sortedBy: "accessType" }, () =>
+        this.pagination()
+      );
+    }
+  };
+
+  sortByProduct = () => {
+    const { groups, sortedBy } = this.state;
+    if (sortedBy === "productType") {
+      const groupsSorted = groups.reverse();
+      this.setState({ groups: groupsSorted }, () => this.pagination());
+    } else {
+      const groupsSorted = groups.sort((a, b) => {
+        if (a.productType < b.productType) return -1;
+        if (a.productType > b.productType) return 1;
+        return 0;
+      });
+      this.setState({ groups: groupsSorted, sortedBy: "productType" }, () =>
+        this.pagination()
+      );
+    }
   };
 
   sortByID = () => {

@@ -21,9 +21,11 @@ class Group extends Component {
             {group.groupId}
           </Link>
         </td>
-        <td>{group.groupName}</td>
-        <td>-</td>
-        <td>-</td>
+        <td>{group.groupName ? group.groupName : "-"}</td>
+        <td>{group.productType ? group.productType : "-"}</td>
+        <td>{group.accessType ? group.accessType : "-"}</td>
+        <td>{group.virtual ? "Yes" : "No"}</td>
+        <td>{group.numberOfChannels ? group.numberOfChannels : "-"}</td>
         <td>
           <ButtonToolbar>
             <Glyphicon
