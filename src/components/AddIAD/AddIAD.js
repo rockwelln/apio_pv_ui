@@ -1177,7 +1177,7 @@ export class AddIAD extends Component {
   }
 
   setPraByIad = () => {
-    let praByIad = {};
+    let praByIad = { ...this.state.praByIad };
     let arrayOfPraId = [
       { value: 0, label: "None" },
       { value: 1, label: 1 },
@@ -1191,12 +1191,13 @@ export class AddIAD extends Component {
     const unic = Object.keys(this.props.iads.praByIad).filter(
       el => createdIADs.indexOf(Number(el)) === -1
     );
-
-    for (let i = 0; i < this.props.iads.praByIad[unic[0]]; i++) {
-      praByIad = {
-        ...praByIad,
-        [i + 1]: { tpid: "", circuit_id: "", praID: "", enabled: "" }
-      };
+    if (Object.keys(praByIad).length < unic[0]) {
+      for (let i = 0; i < this.props.iads.praByIad[unic[0]]; i++) {
+        praByIad = {
+          ...praByIad,
+          [i + 1]: { tpid: "", circuit_id: "", praID: "", enabled: "" }
+        };
+      }
     }
     this.setState({ praByIad, arrayOfPraId });
   };

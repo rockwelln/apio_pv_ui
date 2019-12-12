@@ -35,7 +35,10 @@ export class PraInfo extends Component {
     ];
     Object.keys(this.props.iad.pra_info).forEach(key => {
       selectedID.push(Number(key));
-      praByIad = { [key]: { ...this.props.iad.pra_info[key], praID: key } };
+      praByIad = {
+        ...praByIad,
+        [key]: { ...this.props.iad.pra_info[key], praID: key }
+      };
     });
     console.log(praByIad);
     if (Object.keys(praByIad).length < this.props.iad.pra_needed) {
@@ -50,11 +53,9 @@ export class PraInfo extends Component {
         };
       }
     }
-    //praByIad = { ...praByIad, ...this.props.iad.pra_info };
     this.setState({ praByIad, arrayOfPraId, selectedID });
   }
   render() {
-    console.log(this.state.selectedID);
     return (
       <React.Fragment>
         {Object.keys(this.state.praByIad).map((pra, i) => (
