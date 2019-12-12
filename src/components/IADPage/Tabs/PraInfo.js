@@ -41,7 +41,7 @@ export class PraInfo extends Component {
     if (Object.keys(praByIad).length < this.props.iad.pra_needed) {
       for (
         let i = 0;
-        i < this.props.iad.pra_needed - Object.keys(praByIad).length;
+        i <= this.props.iad.pra_needed - Object.keys(praByIad).length;
         i++
       ) {
         praByIad = {
