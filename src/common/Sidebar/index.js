@@ -49,17 +49,19 @@ export class Sidebar extends Component {
             >
               <CategoriesSideBar />
             </Nav>
-          </DropdownButton>
+          </DropdownButton>*/}
           <LinkContainer
             to={`/provisioning/${this.props.match.params.gwName}/configs`}
           >
-            <NavItem eventKey={3}>CONFIGS</NavItem>
+            <NavItem eventKey={3} className={"text-align-center"}>
+              CONFIGS
+            </NavItem>
           </LinkContainer>
-          <LinkContainer
+          {/* <LinkContainer
             to={`/provisioning/${this.props.match.params.gwName}/localusers`}
           >
             <NavItem eventKey={0}>LOCAL USERS</NavItem>
-          </LinkContainer> */}
+          </LinkContainer>  */}
         </Nav>
       </React.Fragment>
     );

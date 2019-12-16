@@ -24,7 +24,8 @@ const initialState = {
   phoneNumbersByGroupNotTP: [],
   tenantEnterpriseTrunks: [],
   listOfIads: { main_iads_available: [], other_iads_available: [] },
-  numbersByEnterpriseTrunk: { enterprise_trunk_numbers: [], group_numbers: [] }
+  numbersByEnterpriseTrunk: { enterprise_trunk_numbers: [], group_numbers: [] },
+  emergencyRouting: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -229,6 +230,12 @@ function mainReducer(state = initialState, action) {
     case actionType.POST_CREATE_ENTERPRISE_TRUNK: {
       return {
         ...state
+      };
+    }
+    case actionType.POST_EMERGENCY_ROUTING: {
+      return {
+        ...state,
+        emergencyRouting: action.data.results
       };
     }
     case actionType.PUT_UPDATE_IAD: {

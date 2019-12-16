@@ -145,6 +145,11 @@ export const postCreateEnterpriseTrunk = data => ({
   data
 });
 
+export const postEmergencyRouting = data => ({
+  type: actionType.POST_EMERGENCY_ROUTING,
+  data
+});
+
 export const putUpdateNumbersStatus = data => ({
   type: actionType.PUT_UPDATE_NUMBERS_STATUS,
   data
@@ -467,6 +472,29 @@ export function fetchGetListOfIads(tenantId, groupId) {
           error.message
         )
       );
+  };
+}
+
+export function fetchPostEmergencyRouting(data) {
+  /////////////////////////////////////
+  return function(dispatch) {
+    return fetch_post(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/emergency_routing/`,
+      data
+    )
+      .then(resp => resp.json())
+      .then(data => {
+        dispatch(postEmergencyRouting(data));
+      })
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-emergency-routing"
+            defaultMessage="Emergency Routing Failed"
+          />,
+          error.message
+        );
+      });
   };
 }
 
