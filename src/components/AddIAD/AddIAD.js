@@ -32,6 +32,8 @@ export class AddIAD extends Component {
     isLoadingConfig: true,
     errorMacAddress: null,
     errorPbxIpAdress: null,
+    errorIpAdressV4: null,
+    errorNetMaskV4: null,
     isLoadingGroup: true,
     isloadingIADs: true,
     secondEDU: false,
@@ -91,14 +93,14 @@ export class AddIAD extends Component {
             })
           )
         )
-      );
-    this.props
-      .fetchGetIADs(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId
       )
       .then(() =>
-        this.setState({ isloadingIADs: false }, () => this.setPraByIad())
+        this.props
+          .fetchGetIADs(
+            this.props.match.params.tenantId,
+            this.props.match.params.groupId
+          )
+          .then(() => this.setPraByIad())
       );
   }
 
@@ -120,7 +122,9 @@ export class AddIAD extends Component {
       iadType,
       pilotNumber,
       errorMacAddress,
-      errorPbxIpAdress
+      errorPbxIpAdress,
+      errorIpAdressV4,
+      errorNetMaskV4
     } = this.state;
     if (
       this.state.isLoadingConfig ||
@@ -129,6 +133,7 @@ export class AddIAD extends Component {
     ) {
       return <Loading />;
     }
+    console.log(this.state.praByIad);
     return (
       <React.Fragment>
         <Panel className={"margin-0"}>
@@ -834,47 +839,124 @@ export class AddIAD extends Component {
               </Col>
             </Row>
             {this.state.ip1mode === "IPv4" && (
-              <Row className={"margin-top-1"}>
-                <Col md={12} className={"flex align-items-center"}>
-                  <div className={"margin-right-1 flex flex-basis-16"}></div>
-                  <div className={"margin-right-1 flex flex-basis-16"}>
-                    <ControlLabel>
-                      <FormattedMessage
-                        id="IPv4Address"
-                        defaultMessage="IPv4 address"
+              <React.Fragment>
+                <Row className={"margin-top-1"}>
+                  <Col md={6}>
+                    <FormGroup
+                      controlId="errorIpAdressv4"
+                      validationState={this.state.errorIpAdressV4}
+                      className={"ip-address-styles"}
+                    >
+                      <ControlLabel className={"margin-right-1 flex-basis-33"}>
+                        <FormattedMessage
+                          id="IPv4Address"
+                          defaultMessage="IPv4 address"
+                        />
+                      </ControlLabel>
+                      <FormControl
+                        className={"flex-basis-66"}
+                        type="text"
+                        value={this.state.ipv4Address}
+                        placeholder={"IPv4 address"}
+                        onChange={e =>
+                          this.setState({
+                            ipv4Address: e.target.value,
+                            errorIpAdressV4: null
+                          })
+                        }
+                        onBlur={this.validateIPAddressV4}
                       />
-                    </ControlLabel>
-                  </div>
-                  <div className={"margin-right-1 flex-basis-16"}>
-                    <FormControl
-                      type="text"
-                      value={this.state.ipv4Address}
-                      placeholder={"IPv4 address"}
-                      onChange={e =>
-                        this.setState({ ipv4Address: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div className={"margin-right-1 flex flex-basis-16"}>
-                    <ControlLabel>
-                      <FormattedMessage
-                        id="IPv4Netmask"
-                        defaultMessage="IPv4 netmask"
+                    </FormGroup>
+                  </Col>
+                </Row>
+                {this.state.errorIpAdressV4 && (
+                  <Row className={"margin-top-1 "}>
+                    <Col md={6} className={"flex"}>
+                      <div
+                        className={"margin-right-1 flex flex-basis-33"}
+                      ></div>
+                      <div className={"flex-basis-66"}>
+                        <HelpBlock bsClass="color-error">
+                          <FormattedMessage
+                            id="errorIpAdress"
+                            defaultMessage="Invalide IP address"
+                          />
+                        </HelpBlock>
+                      </div>
+                    </Col>
+                  </Row>
+                )}
+                <Row className={"margin-top-1"}>
+                  <Col md={6}>
+                    <FormGroup
+                      controlId="errorNetMaskV4"
+                      validationState={this.state.errorNetMaskV4}
+                      className={"ip-address-styles"}
+                    >
+                      <ControlLabel className={"margin-right-1 flex-basis-33"}>
+                        <FormattedMessage
+                          id="IPv4Netmask"
+                          defaultMessage="IPv4 netmask"
+                        />
+                      </ControlLabel>
+                      <FormControl
+                        className={"flex-basis-66"}
+                        type="text"
+                        value={this.state.ipv4Netmask}
+                        placeholder={"IPv4 netmask"}
+                        onChange={e =>
+                          this.setState({
+                            ipv4Netmask: e.target.value,
+                            errorNetMaskV4: null
+                          })
+                        }
+                        onBlur={this.validateNetMaskV4}
                       />
-                    </ControlLabel>
-                  </div>
-                  <div className={"margin-right-1 flex-basis-16"}>
-                    <FormControl
-                      type="text"
-                      value={this.state.ipv4Netmask}
-                      placeholder={"IPv4 netmask"}
-                      onChange={e =>
-                        this.setState({ ipv4Netmask: e.target.value })
-                      }
-                    />
-                  </div>
-                </Col>
-              </Row>
+                    </FormGroup>
+                  </Col>
+                </Row>
+                {this.state.errorNetMaskV4 && (
+                  <Row className={"margin-top-1 "}>
+                    <Col md={6} className={"flex"}>
+                      <div
+                        className={"margin-right-1 flex flex-basis-33"}
+                      ></div>
+                      <div className={"flex-basis-66"}>
+                        <HelpBlock bsClass="color-error">
+                          <FormattedMessage
+                            id="errorNetMask"
+                            defaultMessage="Invalide Net Mask"
+                          />
+                        </HelpBlock>
+                      </div>
+                    </Col>
+                  </Row>
+                )}
+                {/* <Row className={"margin-top-1"}>
+                  <Col md={12} className={"flex align-items-center"}>
+                    <div className={"margin-right-1 flex flex-basis-16"}></div>
+
+                    <div className={"margin-right-1 flex flex-basis-16"}>
+                      <ControlLabel>
+                        <FormattedMessage
+                          id="IPv4Netmask"
+                          defaultMessage="IPv4 netmask"
+                        />
+                      </ControlLabel>
+                    </div>
+                    <div className={"margin-right-1 flex-basis-33"}>
+                      <FormControl
+                        type="text"
+                        value={this.state.ipv4Netmask}
+                        placeholder={"IPv4 netmask"}
+                        onChange={e =>
+                          this.setState({ ipv4Netmask: e.target.value })
+                        }
+                      />
+                    </div>
+                  </Col>
+                </Row> */}
+              </React.Fragment>
             )}
             {this.state.ip1mode === "IPv6" && (
               <Row className={"margin-top-1"}>
@@ -1146,6 +1228,8 @@ export class AddIAD extends Component {
                           ? !iadType || !pilotNumber
                           : errorMacAddress ||
                             errorPbxIpAdress ||
+                            errorIpAdressV4 ||
+                            errorNetMaskV4 ||
                             !iadType ||
                             !pilotNumber ||
                             !nameEDUA ||
@@ -1199,7 +1283,26 @@ export class AddIAD extends Component {
         };
       }
     }
-    this.setState({ praByIad, arrayOfPraId });
+    console.log(praByIad);
+    this.setState({ praByIad, arrayOfPraId, isloadingIADs: false });
+  };
+
+  validateNetMaskV4 = e => {
+    let reg = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
+    if (reg.test(e.target.value) || e.target.value === "") {
+      return;
+    } else {
+      return this.setState({ errorNetMaskV4: "error" });
+    }
+  };
+
+  validateIPAddressV4 = e => {
+    let reg = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
+    if (reg.test(e.target.value) || e.target.value === "") {
+      return;
+    } else {
+      return this.setState({ errorIpAdressV4: "error" });
+    }
   };
 
   validatePbxIPAddress = e => {

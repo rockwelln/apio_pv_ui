@@ -10,7 +10,7 @@ const initialState = {
   createdTenant: {},
   createdGroup: {},
   addedNumbersToGroup: {},
-  iads: { iads: [] },
+  iads: { iads: [], praByIad: {} },
   config: {
     tenant: {
       group: { iad: { iadType: [] } }

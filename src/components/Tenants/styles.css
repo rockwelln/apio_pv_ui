@@ -304,3 +304,9 @@ textarea {
 .hide-arrows {
   -moz-appearance: textfield;
 }
+
+.ip-address-styles {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
