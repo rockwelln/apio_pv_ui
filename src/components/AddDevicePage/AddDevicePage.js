@@ -28,7 +28,7 @@ export class AddDevicePage extends Component {
     macAddress: "",
     isLoading: true,
     deviceName: "",
-    deviceType: "",
+    deviceType: "Other",
     showMore: false,
     netAddress: "",
     netPort: "",
@@ -39,7 +39,8 @@ export class AddDevicePage extends Component {
     description: "",
     physicalLocation: "",
     transportProtocol: "",
-    useCustomUserNamePassword: false
+    useCustomUserNamePassword: false,
+    customDeviceType: ""
   };
 
   componentDidMount() {
@@ -48,7 +49,7 @@ export class AddDevicePage extends Component {
         isLoading: false,
         deviceType: this.props.phoneTypes.technicalName
           ? this.props.phoneTypes[0].technicalName
-          : ""
+          : "Other"
       })
     );
   }
@@ -117,7 +118,7 @@ export class AddDevicePage extends Component {
                 </div>
               </Col>
             </Row>
-            {this.state.deviceType === "Other" && (
+            {!!(this.state.deviceType === "Other") && (
               <Row className={"margin-top-1"}>
                 <Col md={12} className={"flex align-items-center"}>
                   <div className={"margin-right-1 flex flex-basis-16"}>
@@ -130,7 +131,14 @@ export class AddDevicePage extends Component {
                     </ControlLabel>
                   </div>
                   <div className={"margin-right-1 flex-basis-33"}>
-                    <FormControl type="text" placeholder={"Device type"} />
+                    <FormControl
+                      type="text"
+                      placeholder={"Device type"}
+                      value={this.state.customDeviceType}
+                      onChange={e =>
+                        this.setState({ customDeviceType: e.target.value })
+                      }
+                    />
                   </div>
                 </Col>
               </Row>
@@ -449,6 +457,10 @@ export class AddDevicePage extends Component {
                       disabled={
                         !this.state.deviceName ||
                         !this.state.deviceType ||
+                        !(
+                          this.state.deviceType === "Other" &&
+                          this.state.customDeviceType
+                        ) ||
                         this.state.errorMacAddress === "error"
                       }
                     >
@@ -478,13 +490,14 @@ export class AddDevicePage extends Component {
       description,
       physicalLocation,
       transportProtocol,
-      useCustomUserNamePassword
+      useCustomUserNamePassword,
+      customDeviceType
     } = this.state;
 
     const data = {
       macAddress,
       deviceName,
-      deviceType,
+      deviceType: deviceType === "Other" ? customDeviceType : deviceType,
       netAddress,
       netPort,
       errorTPCIP,
