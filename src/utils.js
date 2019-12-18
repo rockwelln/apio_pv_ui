@@ -78,7 +78,11 @@ export function checkStatus(response) {
   const contentType = response.headers.get("content-type");
   if (contentType && contentType.indexOf("application/json") !== -1) {
     return response.json().then(function(json) {
-      const message = json.errors[0].message
+      const message = json.errors[0].details.errors["0"].summary
+        ? `${json.errors[0].details.errors["0"].summary}. Status Code: ${response.status}`
+        : json.errors[0].details.reason
+        ? `${json.errors[0].details.reason}. Status Code: ${response.status}`
+        : json.errors[0].message
         ? `${json.errors[0].message}. Status Code: ${response.status}`
         : response.statusText; //Task - [PROV GUI] Provide more clear error codes
       let error = new Error(message);
