@@ -121,8 +121,8 @@ export class Details extends Component {
             <div className={"margin-right-1 flex flex-basis-16"}>
               <ControlLabel>
                 <FormattedMessage
-                  id="pilotNumber"
-                  defaultMessage="Pilot Number"
+                  id="maintenanceNumber"
+                  defaultMessage="Maintenance number"
                 />
               </ControlLabel>
             </div>

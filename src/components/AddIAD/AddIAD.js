@@ -288,8 +288,8 @@ export class AddIAD extends Component {
                 <div className={"margin-right-1 flex flex-basis-16"}>
                   <ControlLabel>
                     <FormattedMessage
-                      id="pilotNumber"
-                      defaultMessage="Pilot Number"
+                      id="maintenanceNumber"
+                      defaultMessage="Maintenance number"
                     />
                     {"\u002a"}
                   </ControlLabel>
@@ -298,7 +298,7 @@ export class AddIAD extends Component {
                   <FormControl
                     type="text"
                     value={this.state.pilotNumber}
-                    placeholder={"Pilot Number"}
+                    placeholder={"Maintenance number"}
                     onKeyDown={validateInputPhoneNumber}
                     onChange={e =>
                       this.setState({ pilotNumber: e.target.value })
