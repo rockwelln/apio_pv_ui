@@ -21,7 +21,8 @@ export class Details extends Component {
     errorMacAddress: null,
     macAddress: "",
     pilotNumber: "",
-    disabledButton: false
+    disabledButton: false,
+    isDisabled: true
   };
   render() {
     const iadType = this.props.config.tenant.group.iad.iadType.filter(
@@ -29,6 +30,22 @@ export class Details extends Component {
     );
     return (
       <React.Fragment>
+        <Row>
+          <Col md={12} className={"flex align-items-center"}>
+            <React.Fragment>
+              <div className={"header margin-right-2"}>
+                <FormattedMessage id="details" defaultMessage="Details" />
+              </div>
+              {this.state.isDisabled && (
+                <Glyphicon
+                  className={"font-18"}
+                  glyph="glyphicon glyphicon-pencil"
+                  onClick={() => this.setState({ isDisabled: false })}
+                />
+              )}
+            </React.Fragment>
+          </Col>
+        </Row>
         <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>
@@ -76,6 +93,7 @@ export class Details extends Component {
                   type="text"
                   value={this.state.macAddress || this.props.iad.macAddress}
                   placeholder={"MAC Address"}
+                  disabled={this.state.isDisabled}
                   onChange={this.upadateMacAddres}
                   onBlur={this.validateMacAddress}
                 />
@@ -119,25 +137,36 @@ export class Details extends Component {
             </div>
           </Col>
         </Row>
-        <Row>
-          <Col md={12}>
-            <div className="button-row">
-              <div className="pull-right">
-                <Button
-                  onClick={this.updateIAD}
-                  type="submit"
-                  className="btn-primary"
-                  disabled={
-                    this.state.errorMacAddress || this.state.disabledButton
-                  }
-                >
-                  <Glyphicon glyph="glyphicon glyphicon-ok" />
-                  <FormattedMessage id="update" defaultMessage="Update" />
-                </Button>
+        {!this.state.isDisabled && (
+          <Row>
+            <Col md={12}>
+              <div className="button-row">
+                <div className="pull-right">
+                  <Button
+                    onClick={this.updateIAD}
+                    type="submit"
+                    className="btn-primary"
+                    disabled={
+                      this.state.errorMacAddress || this.state.disabledButton
+                    }
+                  >
+                    <Glyphicon glyph="glyphicon glyphicon-ok" />
+                    <FormattedMessage id="update" defaultMessage="Update" />
+                  </Button>
+                </div>
+                <div className="pull-right margin-right-1">
+                  <Button
+                    onClick={() => this.setState({ isDisabled: true })}
+                    type="submit"
+                    className="btn-danger"
+                  >
+                    <FormattedMessage id="cancel" defaultMessage="Cancel" />
+                  </Button>
+                </div>
               </div>
-            </div>
-          </Col>
-        </Row>
+            </Col>
+          </Row>
+        )}
       </React.Fragment>
     );
   }
@@ -155,7 +184,9 @@ export class Details extends Component {
             this.props.match.params.iadId,
             clearData
           )
-          .then(() => this.setState({ disabledButton: false }))
+          .then(() =>
+            this.setState({ disabledButton: false, isDisabled: true })
+          )
       );
     } else {
       this.setState({ disabledButton: true }, () =>

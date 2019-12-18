@@ -96,10 +96,11 @@ export class IADPage extends Component {
           </Row>
         </div>
         <div className={"panel-body"}>
-          <Tabs defaultActiveKey={0} id="iads_tabs">
-            <Tab eventKey={0} title="Details">
+          <Details />
+          <Tabs defaultActiveKey={1} id="iads_tabs" className={"margin-top-1"}>
+            {/* <Tab eventKey={0} title="Details">
               <Details />
-            </Tab>
+            </Tab> */}
             <Tab eventKey={1} title="EDUs">
               <Edu />
             </Tab>
