@@ -184,13 +184,11 @@ export class Details extends Component {
             this.props.match.params.iadId,
             clearData
           )
-          .then(() =>
-            this.setState({ disabledButton: false, isDisabled: true })
+          .then(res =>
+            res === "successful"
+              ? this.setState({ disabledButton: false, isDisabled: true })
+              : this.setState({ disabledButton: false })
           )
-      );
-    } else {
-      this.setState({ disabledButton: true }, () =>
-        this.setState({ disabledButton: false })
       );
     }
   };

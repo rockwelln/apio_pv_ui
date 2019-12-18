@@ -705,6 +705,7 @@ export function fetchPutUpdateIAD(tenantId, groupId, iadId, data) {
           />,
           "Updated"
         );
+        return "successful";
       })
       .catch(error =>
         NotificationsManager.error(
