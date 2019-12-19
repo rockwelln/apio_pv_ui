@@ -736,6 +736,7 @@ export function fetchPutUpdateGroupDetails(tenantId, groupId, data) {
           "Updated"
         );
         dispatch(putUpdateGroupDetails(data));
+        return "successful";
       })
       .catch(error =>
         NotificationsManager.error(

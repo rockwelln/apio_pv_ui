@@ -15,10 +15,13 @@ import { changeObjectIAD, fetchPutUpdateIAD } from "../../../store/actions";
 
 import { removeEmpty } from "../../remuveEmptyInObject";
 
+import RebootWindow from "../RebootWindow";
+
 export class GroupService extends Component {
   state = {
     services: { dtmf: "", direction: "", channelsIn: "", channelsOut: "" },
-    disabledButton: false
+    disabledButton: false,
+    showRebootDialog: false
   };
   componentDidMount() {
     this.setState({
@@ -151,6 +154,11 @@ export class GroupService extends Component {
             </div>
           </Col>
         </Row>
+        <RebootWindow
+          data={this.state.data}
+          show={this.state.showRebootDialog}
+          onClose={() => this.setState({ showRebootDialog: false })}
+        />
       </React.Fragment>
     );
   }
@@ -159,6 +167,10 @@ export class GroupService extends Component {
     const { services } = this.state;
     const data = { services };
     const clearData = removeEmpty(data);
+    if (services.dtmf !== this.props.iad.services.dtmf) {
+      this.setState({ showRebootDialog: true, data: clearData });
+      return;
+    }
     if (Object.keys(clearData).length) {
       this.setState({ disabledButton: true }, () =>
         this.props

@@ -28,12 +28,14 @@ import Advanced from "./Tabs/Advanced";
 import PraInfo from "./Tabs/PraInfo";
 import Loading from "../../common/Loading";
 import DeleteModal from "./DeleteModal";
+import RebootWindow from "./RebootWindow";
 
 export class IADPage extends Component {
   state = {
     isLoading: true,
     disabledButton: false,
-    showDelete: false
+    showDelete: false,
+    showRebootDialog: false
   };
   componentDidMount() {
     this.props.fetchGetGroupById(
@@ -120,6 +122,11 @@ export class IADPage extends Component {
             )}
           </Tabs>
         </div>
+        <RebootWindow
+          data={this.state.data}
+          show={this.state.showRebootDialog}
+          onClose={() => this.setState({ showRebootDialog: false })}
+        />
       </React.Fragment>
     );
   }
@@ -145,6 +152,15 @@ export class IADPage extends Component {
       : null;
     const data = { ...iadForUpdate, ip1: checkedIp };
     const clearData = removeEmpty(data);
+    if (
+      clearData.services &&
+      clearData.services.dtmf &&
+      clearData.services.dtmf !== this.props.iad.services.dtmf
+    ) {
+      this.setState({ showRebootDialog: true, data: clearData });
+      return;
+    }
+    console.log(124231241);
     if (Object.keys(clearData).length) {
       this.setState({ disabledButton: true }, () =>
         this.props
@@ -166,7 +182,8 @@ export class IADPage extends Component {
 
 const mapStateToProps = state => ({
   iadForUpdate: state.iadForUpdate,
-  group: state.group
+  group: state.group,
+  iad: state.iad
 });
 
 const mapDispatchToProps = {

@@ -18,11 +18,14 @@ import {
   fetchPutUpdateGroupDetails
 } from "../../../../store/actions";
 
+import RebootWindow from "../../RebootWindow";
+
 export class NumberFormatting extends Component {
   state = {
     isLoading: true,
     group: {},
-    disableButton: false
+    disableButton: false,
+    showRebootDialog: false
   };
   componentDidMount() {
     this.props
@@ -293,6 +296,11 @@ export class NumberFormatting extends Component {
             </div>
           </div>
         </Row>
+        <RebootWindow
+          data={this.state.data}
+          show={this.state.showRebootDialog}
+          onClose={() => this.setState({ showRebootDialog: false })}
+        />
       </React.Fragment>
     );
   }
@@ -315,6 +323,21 @@ export class NumberFormatting extends Component {
     };
     this.setState({ disableButton: true });
     const clearData = removeEmpty(data);
+    if (
+      pra_nat_dst !== this.props.group.pra_nat_dst ||
+      pra_nat_src !== this.props.group.pra_nat_src ||
+      pra_int_src !== this.props.group.pra_int_src ||
+      sip_nat_dst !== this.props.group.sip_nat_dst ||
+      sip_nat_src !== this.props.group.sip_nat_src ||
+      sip_int_src !== this.props.group.sip_int_src
+    ) {
+      this.setState({
+        showRebootDialog: true,
+        data: clearData,
+        disableButton: false
+      });
+      return;
+    }
     this.props
       .fetchPutUpdateGroupDetails(
         this.props.match.params.tenantId,
