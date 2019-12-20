@@ -159,7 +159,7 @@ export class TrunkId extends Component {
                 value={this.state.advanced.destnr5}
                 onChange={this.chageDestnr5}
               >
-                {this.props.config.tenant.group.iad.destnr1.map((el, i) => (
+                {this.props.config.tenant.group.iad.destnr5.map((el, i) => (
                   <option key={i} value={el.value}>
                     {el.label}
                   </option>
