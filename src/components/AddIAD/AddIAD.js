@@ -34,6 +34,8 @@ export class AddIAD extends Component {
     errorPbxIpAdress: null,
     errorIpAdressV4: null,
     errorNetMaskV4: null,
+    errorIpAdressV6: null,
+    errorNetMaskV6: null,
     isLoadingGroup: true,
     isloadingIADs: true,
     secondEDU: false,
@@ -124,7 +126,9 @@ export class AddIAD extends Component {
       errorMacAddress,
       errorPbxIpAdress,
       errorIpAdressV4,
-      errorNetMaskV4
+      errorNetMaskV4,
+      errorIpAdressV6,
+      errorNetMaskV6
     } = this.state;
     if (
       this.state.isLoadingConfig ||
@@ -959,6 +963,102 @@ export class AddIAD extends Component {
               </React.Fragment>
             )}
             {this.state.ip1mode === "IPv6" && (
+              <React.Fragment>
+                <Row className={"margin-top-1"}>
+                  <Col md={6}>
+                    <FormGroup
+                      controlId="errorIpAdressv6"
+                      validationState={this.state.errorIpAdressV6}
+                      className={"ip-address-styles"}
+                    >
+                      <ControlLabel className={"margin-right-1 flex-basis-33"}>
+                        <FormattedMessage
+                          id="IPv6Address"
+                          defaultMessage="IPv6 address"
+                        />
+                      </ControlLabel>
+                      <FormControl
+                        className={"flex-basis-66"}
+                        value={this.state.ipv6Address}
+                        placeholder={"IPv6 address"}
+                        onChange={e =>
+                          this.setState({
+                            ipv6Address: e.target.value,
+                            errorIpAdressV6: null
+                          })
+                        }
+                        type="text"
+                        onBlur={this.validateIPAddressV6}
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                {this.state.errorIpAdressV6 && (
+                  <Row className={"margin-top-1 "}>
+                    <Col md={6} className={"flex"}>
+                      <div
+                        className={"margin-right-1 flex flex-basis-33"}
+                      ></div>
+                      <div className={"flex-basis-66"}>
+                        <HelpBlock bsClass="color-error">
+                          <FormattedMessage
+                            id="errorIpAdress"
+                            defaultMessage="Invalide IP address"
+                          />
+                        </HelpBlock>
+                      </div>
+                    </Col>
+                  </Row>
+                )}
+                <Row className={"margin-top-1"}>
+                  <Col md={6}>
+                    <FormGroup
+                      controlId="errorNetMaskV6"
+                      validationState={this.state.errorNetMaskV6}
+                      className={"ip-address-styles"}
+                    >
+                      <ControlLabel className={"margin-right-1 flex-basis-33"}>
+                        <FormattedMessage
+                          id="IPv6Netmask"
+                          defaultMessage="IPv6 netmask"
+                        />
+                      </ControlLabel>
+                      <FormControl
+                        className={"flex-basis-66"}
+                        type="text"
+                        value={this.state.ipv6Netmask}
+                        placeholder={"IPv6 netmask"}
+                        onChange={e =>
+                          this.setState({
+                            ipv6Netmask: e.target.value,
+                            errorNetMaskV6: null
+                          })
+                        }
+                        onBlur={this.validateNetMaskV6}
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                {this.state.errorNetMaskV6 && (
+                  <Row className={"margin-top-1 "}>
+                    <Col md={6} className={"flex"}>
+                      <div
+                        className={"margin-right-1 flex flex-basis-33"}
+                      ></div>
+                      <div className={"flex-basis-66"}>
+                        <HelpBlock bsClass="color-error">
+                          <FormattedMessage
+                            id="errorNetMask"
+                            defaultMessage="Invalide Net Mask"
+                          />
+                        </HelpBlock>
+                      </div>
+                    </Col>
+                  </Row>
+                )}
+              </React.Fragment>
+            )}
+            {/* {this.state.ip1mode === "IPv6" && (
               <Row className={"margin-top-1"}>
                 <Col md={12} className={"flex align-items-center"}>
                   <div className={"margin-right-1 flex flex-basis-16"}></div>
@@ -1000,7 +1100,7 @@ export class AddIAD extends Component {
                   </div>
                 </Col>
               </Row>
-            )}
+            )} */}
             <Row className={"margin-top-1 "}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
@@ -1230,6 +1330,8 @@ export class AddIAD extends Component {
                             errorPbxIpAdress ||
                             errorIpAdressV4 ||
                             errorNetMaskV4 ||
+                            errorIpAdressV6 ||
+                            errorNetMaskV6 ||
                             !iadType ||
                             !pilotNumber ||
                             !nameEDUA ||
@@ -1285,6 +1387,24 @@ export class AddIAD extends Component {
     }
     console.log(praByIad);
     this.setState({ praByIad, arrayOfPraId, isloadingIADs: false });
+  };
+
+  validateNetMaskV6 = e => {
+    let reg = /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/;
+    if (reg.test(e.target.value) || e.target.value === "") {
+      return;
+    } else {
+      return this.setState({ errorNetMaskV6: "error" });
+    }
+  };
+
+  validateIPAddressV6 = e => {
+    let reg = /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/;
+    if (reg.test(e.target.value) || e.target.value === "") {
+      return;
+    } else {
+      return this.setState({ errorIpAdressV6: "error" });
+    }
   };
 
   validateNetMaskV4 = e => {
