@@ -33,30 +33,34 @@ export class GroupService extends Component {
   render() {
     return (
       <React.Fragment>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage id="dtmf" defaultMessage="DTMF" />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.services.dtmf}
-                onChange={this.changeDtmf}
-              >
-                {this.props.config.tenant.group.iad.dtmfOverride.map(
-                  (el, i) => (
-                    <option key={i} value={el.value}>
-                      {el.label}
-                    </option>
-                  )
-                )}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
+        {(this.props.iad.protocolMode === "SIP" ||
+          this.props.iad.protocolMode === "PRA_SIP" ||
+          this.props.iad.protocolMode === "SIP_PRA") && (
+          <Row className={"margin-top-1"}>
+            <Col md={12} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-16"}>
+                <ControlLabel>
+                  <FormattedMessage id="dtmf" defaultMessage="DTMF" />
+                </ControlLabel>
+              </div>
+              <div className={"margin-right-1 flex"}>
+                <FormControl
+                  componentClass="select"
+                  value={this.state.services.dtmf}
+                  onChange={this.changeDtmf}
+                >
+                  {this.props.config.tenant.group.iad.dtmfOverride.map(
+                    (el, i) => (
+                      <option key={i} value={el.value}>
+                        {el.label}
+                      </option>
+                    )
+                  )}
+                </FormControl>
+              </div>
+            </Col>
+          </Row>
+        )}
         <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>

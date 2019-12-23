@@ -74,208 +74,220 @@ export class NumberFormatting extends Component {
     }
     return (
       <React.Fragment>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex font-24"}>PRA</div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="nationalCalled"
-                  defaultMessage="National Called"
-                />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.group.pra_nat_dst}
-                onChange={e =>
-                  this.setState({
-                    group: {
-                      ...this.state.group,
-                      pra_nat_dst: e.target.value
+        {(this.state.group.pbxType === "PRA" ||
+          this.state.group.pbxType === "PRA_SIP" ||
+          this.state.group.pbxType === "SIP_PRA") && (
+          <React.Fragment>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex font-24"}>PRA</div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  <ControlLabel>
+                    <FormattedMessage
+                      id="nationalCalled"
+                      defaultMessage="National Called"
+                    />
+                  </ControlLabel>
+                </div>
+                <div className={"margin-right-1 flex-basis-33"}>
+                  <FormControl
+                    componentClass="select"
+                    value={this.state.group.pra_nat_dst}
+                    onChange={e =>
+                      this.setState({
+                        group: {
+                          ...this.state.group,
+                          pra_nat_dst: e.target.value
+                        }
+                      })
                     }
-                  })
-                }
-              >
-                {this.props.config.tenant.group.pra_nat_dst.map((el, i) => (
-                  <option key={i} value={el.value}>
-                    {el.label}
-                  </option>
-                ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="nationalCalling"
-                  defaultMessage="National Calling"
-                />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.group.pra_nat_src}
-                onChange={e =>
-                  this.setState({
-                    group: {
-                      ...this.state.group,
-                      pra_nat_src: e.target.value
+                  >
+                    {this.props.config.tenant.group.pra_nat_dst.map((el, i) => (
+                      <option key={i} value={el.value}>
+                        {el.label}
+                      </option>
+                    ))}
+                  </FormControl>
+                </div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  <ControlLabel>
+                    <FormattedMessage
+                      id="nationalCalling"
+                      defaultMessage="National Calling"
+                    />
+                  </ControlLabel>
+                </div>
+                <div className={"margin-right-1 flex-basis-33"}>
+                  <FormControl
+                    componentClass="select"
+                    value={this.state.group.pra_nat_src}
+                    onChange={e =>
+                      this.setState({
+                        group: {
+                          ...this.state.group,
+                          pra_nat_src: e.target.value
+                        }
+                      })
                     }
-                  })
-                }
-              >
-                {this.props.config.tenant.group.pra_nat_src.map((el, i) => (
-                  <option key={i} value={el.value}>
-                    {el.label}
-                  </option>
-                ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="internationalCalling"
-                  defaultMessage="International Calling"
-                />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.group.pra_int_src}
-                onChange={e =>
-                  this.setState({
-                    group: {
-                      ...this.state.group,
-                      pra_int_src: e.target.value
+                  >
+                    {this.props.config.tenant.group.pra_nat_src.map((el, i) => (
+                      <option key={i} value={el.value}>
+                        {el.label}
+                      </option>
+                    ))}
+                  </FormControl>
+                </div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  <ControlLabel>
+                    <FormattedMessage
+                      id="internationalCalling"
+                      defaultMessage="International Calling"
+                    />
+                  </ControlLabel>
+                </div>
+                <div className={"margin-right-1 flex-basis-33"}>
+                  <FormControl
+                    componentClass="select"
+                    value={this.state.group.pra_int_src}
+                    onChange={e =>
+                      this.setState({
+                        group: {
+                          ...this.state.group,
+                          pra_int_src: e.target.value
+                        }
+                      })
                     }
-                  })
-                }
-              >
-                {this.props.config.tenant.group.pra_int_src.map((el, i) => (
-                  <option key={i} value={el.value}>
-                    {el.label}
-                  </option>
-                ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex font-24"}>SIP</div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="nationalCalled"
-                  defaultMessage="National Called"
-                />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.group.sip_nat_dst}
-                onChange={e =>
-                  this.setState({
-                    group: {
-                      ...this.state.group,
-                      sip_nat_dst: e.target.value
+                  >
+                    {this.props.config.tenant.group.pra_int_src.map((el, i) => (
+                      <option key={i} value={el.value}>
+                        {el.label}
+                      </option>
+                    ))}
+                  </FormControl>
+                </div>
+              </Col>
+            </Row>
+          </React.Fragment>
+        )}
+        {(this.state.group.pbxType === "SIP" ||
+          this.state.group.pbxType === "PRA_SIP" ||
+          this.state.group.pbxType === "SIP_PRA") && (
+          <React.Fragment>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex font-24"}>SIP</div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  <ControlLabel>
+                    <FormattedMessage
+                      id="nationalCalled"
+                      defaultMessage="National Called"
+                    />
+                  </ControlLabel>
+                </div>
+                <div className={"margin-right-1 flex-basis-33"}>
+                  <FormControl
+                    componentClass="select"
+                    value={this.state.group.sip_nat_dst}
+                    onChange={e =>
+                      this.setState({
+                        group: {
+                          ...this.state.group,
+                          sip_nat_dst: e.target.value
+                        }
+                      })
                     }
-                  })
-                }
-              >
-                {this.props.config.tenant.group.sip_nat_dst.map((el, i) => (
-                  <option key={i} value={el.value}>
-                    {el.label}
-                  </option>
-                ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="nationalCalling"
-                  defaultMessage="National Calling"
-                />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.group.sip_nat_src}
-                onChange={e =>
-                  this.setState({
-                    group: {
-                      ...this.state.group,
-                      sip_nat_src: e.target.value
+                  >
+                    {this.props.config.tenant.group.sip_nat_dst.map((el, i) => (
+                      <option key={i} value={el.value}>
+                        {el.label}
+                      </option>
+                    ))}
+                  </FormControl>
+                </div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  <ControlLabel>
+                    <FormattedMessage
+                      id="nationalCalling"
+                      defaultMessage="National Calling"
+                    />
+                  </ControlLabel>
+                </div>
+                <div className={"margin-right-1 flex-basis-33"}>
+                  <FormControl
+                    componentClass="select"
+                    value={this.state.group.sip_nat_src}
+                    onChange={e =>
+                      this.setState({
+                        group: {
+                          ...this.state.group,
+                          sip_nat_src: e.target.value
+                        }
+                      })
                     }
-                  })
-                }
-              >
-                {this.props.config.tenant.group.sip_nat_src.map((el, i) => (
-                  <option key={i} value={el.value}>
-                    {el.label}
-                  </option>
-                ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="internationalCalling"
-                  defaultMessage="International Calling"
-                />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.group.sip_int_src}
-                onChange={e =>
-                  this.setState({
-                    group: {
-                      ...this.state.group,
-                      sip_int_src: e.target.value
+                  >
+                    {this.props.config.tenant.group.sip_nat_src.map((el, i) => (
+                      <option key={i} value={el.value}>
+                        {el.label}
+                      </option>
+                    ))}
+                  </FormControl>
+                </div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  <ControlLabel>
+                    <FormattedMessage
+                      id="internationalCalling"
+                      defaultMessage="International Calling"
+                    />
+                  </ControlLabel>
+                </div>
+                <div className={"margin-right-1 flex-basis-33"}>
+                  <FormControl
+                    componentClass="select"
+                    value={this.state.group.sip_int_src}
+                    onChange={e =>
+                      this.setState({
+                        group: {
+                          ...this.state.group,
+                          sip_int_src: e.target.value
+                        }
+                      })
                     }
-                  })
-                }
-              >
-                {this.props.config.tenant.group.sip_int_src.map((el, i) => (
-                  <option key={i} value={el.value}>
-                    {el.label}
-                  </option>
-                ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
+                  >
+                    {this.props.config.tenant.group.sip_int_src.map((el, i) => (
+                      <option key={i} value={el.value}>
+                        {el.label}
+                      </option>
+                    ))}
+                  </FormControl>
+                </div>
+              </Col>
+            </Row>
+          </React.Fragment>
+        )}
         <Row>
           <div className="button-row">
             <div className="pull-right">

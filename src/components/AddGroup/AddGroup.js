@@ -266,26 +266,29 @@ export class AddGroup extends Component {
                 </div>
               </Col>
             </Row>
-            <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>
-                  <ControlLabel>
-                    <FormattedMessage
-                      id="np1Redundancy"
-                      defaultMessage="N+1 Redundancy"
+            {(this.state.typeOfIad === "SIP" ||
+              this.state.typeOfIad === "SIP_PRA") && (
+              <Row className={"margin-top-1"}>
+                <Col md={12} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex flex-basis-16"}>
+                    <ControlLabel>
+                      <FormattedMessage
+                        id="np1Redundancy"
+                        defaultMessage="N+1 Redundancy"
+                      />
+                    </ControlLabel>
+                  </div>
+                  <div className={"margin-right-1 flex-basis-33"}>
+                    <Checkbox
+                      defaultChecked={this.state.np1Redundancy}
+                      onChange={e =>
+                        this.setState({ np1Redundancy: e.target.checked })
+                      }
                     />
-                  </ControlLabel>
-                </div>
-                <div className={"margin-right-1 flex-basis-33"}>
-                  <Checkbox
-                    defaultChecked={this.state.np1Redundancy}
-                    onChange={e =>
-                      this.setState({ np1Redundancy: e.target.checked })
-                    }
-                  />
-                </div>
-              </Col>
-            </Row>
+                  </div>
+                </Col>
+              </Row>
+            )}
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>

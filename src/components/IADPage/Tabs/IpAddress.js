@@ -10,6 +10,7 @@ import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import Radio from "react-bootstrap/lib/Radio";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
+import HelpBlock from "react-bootstrap/lib/HelpBlock";
 
 import { FormattedMessage } from "react-intl";
 
@@ -27,7 +28,13 @@ export class IPAddress extends Component {
     ip1: {},
     pbx: {},
     transportMode: "",
-    disabledButton: false
+    disabledButton: false,
+    errorMacAddress: null,
+    errorPbxIpAdress: null,
+    errorIpAdressV4: null,
+    errorNetMaskV4: null,
+    errorIpAdressV6: null,
+    errorNetMaskV6: null
   };
 
   componentDidMount() {
@@ -40,180 +47,367 @@ export class IPAddress extends Component {
     });
   }
   render() {
+    const {
+      errorMacAddress,
+      errorPbxIpAdress,
+      errorIpAdressV4,
+      errorNetMaskV4,
+      errorIpAdressV6,
+      errorNetMaskV6
+    } = this.state;
     return (
       <React.Fragment>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="transportMode"
-                  defaultMessage="Transport mode"
-                />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex"}>
-              <FormGroup className={"margin-0 flex"}>
-                {TRANSPORTMODE.map((type, i) => (
-                  <Radio
-                    className={"margin-0 flex margin-right-2"}
-                    key={i + ""}
-                    name="transportMode"
-                    value={type.value}
-                    checked={type.value === this.state.transportMode}
-                    onChange={this.changeTransportMode}
-                  >
-                    <div className="font-weight-bold flex">{type.name}</div>
-                  </Radio>
-                ))}
-              </FormGroup>
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="iadLanAddress"
-                  defaultMessage="IAD LAN address"
-                />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex"}>
-              <FormGroup className={"margin-0 flex"}>
-                {IP1MODE.map((type, i) => (
-                  <Radio
-                    className={"margin-0 flex margin-right-2"}
-                    key={i + ""}
-                    name="ip1mode"
-                    value={type.value}
-                    checked={type.value === this.state.ip1.mode}
-                    onChange={this.changeIPMode}
-                  >
-                    <div className="font-weight-bold flex">{type.name}</div>
-                  </Radio>
-                ))}
-              </FormGroup>
-            </div>
-          </Col>
-        </Row>
-        {this.state.ip1.mode === "IPv4" && (
+        {(this.props.iad.protocolMode === "SIP" ||
+          this.props.iad.protocolMode === "PRA_SIP" ||
+          this.props.iad.protocolMode === "SIP_PRA") && (
           <Row className={"margin-top-1"}>
             <Col md={12} className={"flex align-items-center"}>
-              <div className={"margin-right-1 flex flex-basis-16"}></div>
               <div className={"margin-right-1 flex flex-basis-16"}>
                 <ControlLabel>
                   <FormattedMessage
-                    id="IPv4Address"
-                    defaultMessage="IPv4 address"
+                    id="transportMode"
+                    defaultMessage="Transport mode"
                   />
                 </ControlLabel>
               </div>
-              <div className={"margin-right-1 flex-basis-16"}>
-                <FormControl
-                  type="text"
-                  value={this.state.ip1.ipv4Address}
-                  placeholder={"IPv4 address"}
-                  onChange={this.changeIPv4Address}
-                />
-              </div>
-              <div className={"margin-right-1 flex flex-basis-16"}>
-                <ControlLabel>
-                  <FormattedMessage
-                    id="IPv4Netmask"
-                    defaultMessage="IPv4 netmask"
-                  />
-                </ControlLabel>
-              </div>
-              <div className={"margin-right-1 flex-basis-16"}>
-                <FormControl
-                  type="text"
-                  value={this.state.ip1.ipv4Netmask}
-                  placeholder={"IPv4 netmask"}
-                  onChange={this.changeIPv4Netmask}
-                />
+              <div className={"margin-right-1 flex"}>
+                <FormGroup className={"margin-0 flex"}>
+                  {TRANSPORTMODE.map((type, i) => (
+                    <Radio
+                      className={"margin-0 flex margin-right-2"}
+                      key={i + ""}
+                      name="transportMode"
+                      value={type.value}
+                      checked={type.value === this.state.transportMode}
+                      onChange={this.changeTransportMode}
+                    >
+                      <div className="font-weight-bold flex">{type.name}</div>
+                    </Radio>
+                  ))}
+                </FormGroup>
               </div>
             </Col>
           </Row>
         )}
-        {this.state.ip1.mode === "IPv6" && (
-          <Row className={"margin-top-1"}>
-            <Col md={12} className={"flex align-items-center"}>
-              <div className={"margin-right-1 flex flex-basis-16"}></div>
-              <div className={"margin-right-1 flex flex-basis-16"}>
-                <ControlLabel>
-                  <FormattedMessage
-                    id="IPv6Address"
-                    defaultMessage="IPv6 address"
-                  />
-                </ControlLabel>
-              </div>
-              <div className={"margin-right-1 flex-basis-16"}>
-                <FormControl
-                  type="text"
-                  value={this.state.ip1.ipv6Address}
-                  placeholder={"IPv6 address"}
-                  onChange={this.changeIPv6Address}
-                />
-              </div>
-              <div className={"margin-right-1 flex flex-basis-16"}>
-                <ControlLabel>
-                  <FormattedMessage
-                    id="IPv6Netmask"
-                    defaultMessage="IPv6 netmask"
-                  />
-                </ControlLabel>
-              </div>
-              <div className={"margin-right-1 flex-basis-16"}>
-                <FormControl
-                  type="text"
-                  value={this.state.ip1.ipv6Netmask}
-                  placeholder={"IPv6 netmask"}
-                  onChange={this.changeIPv6Netmask}
-                />
-              </div>
-            </Col>
-          </Row>
+        {(this.props.iad.protocolMode === "SIP" ||
+          this.props.iad.protocolMode === "PRA_SIP" ||
+          this.props.iad.protocolMode === "SIP_PRA") && (
+          <React.Fragment>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  <ControlLabel>
+                    <FormattedMessage
+                      id="iadLanAddress"
+                      defaultMessage="IAD LAN address"
+                    />
+                  </ControlLabel>
+                </div>
+                <div className={"margin-right-1 flex"}>
+                  <FormGroup className={"margin-0 flex"}>
+                    {IP1MODE.map((type, i) => (
+                      <Radio
+                        className={"margin-0 flex margin-right-2"}
+                        key={i + ""}
+                        name="ip1mode"
+                        value={type.value}
+                        checked={type.value === this.state.ip1mode}
+                        onChange={e =>
+                          this.setState({
+                            ip1mode: e.target.value
+                          })
+                        }
+                      >
+                        <div className="font-weight-bold flex">{type.name}</div>
+                      </Radio>
+                    ))}
+                  </FormGroup>
+                </div>
+              </Col>
+            </Row>
+            {this.state.ip1mode === "IPv4" && (
+              <React.Fragment>
+                <Row className={"margin-top-1"}>
+                  <Col md={6}>
+                    <FormGroup
+                      controlId="errorIpAdressv4"
+                      validationState={this.state.errorIpAdressV4}
+                      className={"ip-address-styles"}
+                    >
+                      <ControlLabel className={"margin-right-1 flex-basis-33"}>
+                        <FormattedMessage
+                          id="IPv4Address"
+                          defaultMessage="IPv4 address"
+                        />
+                      </ControlLabel>
+                      <FormControl
+                        className={"flex-basis-66"}
+                        type="text"
+                        value={this.state.ipv4Address}
+                        placeholder={"IPv4 address"}
+                        onChange={e =>
+                          this.setState({
+                            ipv4Address: e.target.value,
+                            errorIpAdressV4: null
+                          })
+                        }
+                        onBlur={this.validateIPAddressV4}
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                {this.state.errorIpAdressV4 && (
+                  <Row className={"margin-top-1 "}>
+                    <Col md={6} className={"flex"}>
+                      <div
+                        className={"margin-right-1 flex flex-basis-33"}
+                      ></div>
+                      <div className={"flex-basis-66"}>
+                        <HelpBlock bsClass="color-error">
+                          <FormattedMessage
+                            id="errorIpAdress"
+                            defaultMessage="Invalide IP address"
+                          />
+                        </HelpBlock>
+                      </div>
+                    </Col>
+                  </Row>
+                )}
+                <Row className={"margin-top-1"}>
+                  <Col md={6}>
+                    <FormGroup
+                      controlId="errorNetMaskV4"
+                      validationState={this.state.errorNetMaskV4}
+                      className={"ip-address-styles"}
+                    >
+                      <ControlLabel className={"margin-right-1 flex-basis-33"}>
+                        <FormattedMessage
+                          id="IPv4Netmask"
+                          defaultMessage="IPv4 netmask"
+                        />
+                      </ControlLabel>
+                      <FormControl
+                        className={"flex-basis-66"}
+                        type="text"
+                        value={this.state.ipv4Netmask}
+                        placeholder={"IPv4 netmask"}
+                        onChange={e =>
+                          this.setState({
+                            ipv4Netmask: e.target.value,
+                            errorNetMaskV4: null
+                          })
+                        }
+                        onBlur={this.validateNetMaskV4}
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                {this.state.errorNetMaskV4 && (
+                  <Row className={"margin-top-1 "}>
+                    <Col md={6} className={"flex"}>
+                      <div
+                        className={"margin-right-1 flex flex-basis-33"}
+                      ></div>
+                      <div className={"flex-basis-66"}>
+                        <HelpBlock bsClass="color-error">
+                          <FormattedMessage
+                            id="errorNetMask"
+                            defaultMessage="Invalide Net Mask"
+                          />
+                        </HelpBlock>
+                      </div>
+                    </Col>
+                  </Row>
+                )}
+              </React.Fragment>
+            )}
+            {this.state.ip1mode === "IPv6" && (
+              <React.Fragment>
+                <Row className={"margin-top-1"}>
+                  <Col md={6}>
+                    <FormGroup
+                      controlId="errorIpAdressv6"
+                      validationState={this.state.errorIpAdressV6}
+                      className={"ip-address-styles"}
+                    >
+                      <ControlLabel className={"margin-right-1 flex-basis-33"}>
+                        <FormattedMessage
+                          id="IPv6Address"
+                          defaultMessage="IPv6 address"
+                        />
+                      </ControlLabel>
+                      <FormControl
+                        className={"flex-basis-66"}
+                        value={this.state.ipv6Address}
+                        placeholder={"IPv6 address"}
+                        onChange={e =>
+                          this.setState({
+                            ipv6Address: e.target.value,
+                            errorIpAdressV6: null
+                          })
+                        }
+                        type="text"
+                        onBlur={this.validateIPAddressV6}
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                {this.state.errorIpAdressV6 && (
+                  <Row className={"margin-top-1 "}>
+                    <Col md={6} className={"flex"}>
+                      <div
+                        className={"margin-right-1 flex flex-basis-33"}
+                      ></div>
+                      <div className={"flex-basis-66"}>
+                        <HelpBlock bsClass="color-error">
+                          <FormattedMessage
+                            id="errorIpAdress"
+                            defaultMessage="Invalide IP address"
+                          />
+                        </HelpBlock>
+                      </div>
+                    </Col>
+                  </Row>
+                )}
+                <Row className={"margin-top-1"}>
+                  <Col md={6}>
+                    <FormGroup
+                      controlId="errorNetMaskV6"
+                      validationState={this.state.errorNetMaskV6}
+                      className={"ip-address-styles"}
+                    >
+                      <ControlLabel className={"margin-right-1 flex-basis-33"}>
+                        <FormattedMessage
+                          id="IPv6Netmask"
+                          defaultMessage="IPv6 netmask"
+                        />
+                      </ControlLabel>
+                      <FormControl
+                        className={"flex-basis-66"}
+                        type="text"
+                        value={this.state.ipv6Netmask}
+                        placeholder={"IPv6 netmask"}
+                        onChange={e =>
+                          this.setState({
+                            ipv6Netmask: e.target.value,
+                            errorNetMaskV6: null
+                          })
+                        }
+                        onBlur={this.validateNetMaskV6}
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                {this.state.errorNetMaskV6 && (
+                  <Row className={"margin-top-1 "}>
+                    <Col md={6} className={"flex"}>
+                      <div
+                        className={"margin-right-1 flex flex-basis-33"}
+                      ></div>
+                      <div className={"flex-basis-66"}>
+                        <HelpBlock bsClass="color-error">
+                          <FormattedMessage
+                            id="errorNetMask"
+                            defaultMessage="Invalide Net Mask"
+                          />
+                        </HelpBlock>
+                      </div>
+                    </Col>
+                  </Row>
+                )}
+              </React.Fragment>
+            )}
+          </React.Fragment>
         )}
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="IPPBXAddress"
-                  defaultMessage="IP-PBX address"
-                />
-              </ControlLabel>
-            </div>
-            <div
-              className={"margin-right-1 flex flex-basis-33 align-items-center"}
-            >
-              <ControlLabel className={"margin-0 margin-right-1"}>
-                <FormattedMessage id="IPAddress" defaultMessage="IP Address" />
-              </ControlLabel>
-              <FormControl
-                type="text"
-                defaultValue={this.state.pbx.ipAddress}
-                placeholder={"IP Address"}
-                onChange={this.changePbxAddress}
-              />
-            </div>
-            <div
-              className={"margin-right-1 flex flex-basis-33 align-items-center"}
-            >
-              <ControlLabel className={"margin-0 margin-right-1"}>
-                <FormattedMessage id="port" defaultMessage="Port" />
-              </ControlLabel>
-              <FormControl
-                type="text"
-                defaultValue={this.state.pbx.port}
-                placeholder={"Port"}
-                onChange={this.changePbxPort}
-              />
-            </div>
-          </Col>
-        </Row>
+        {(this.props.iad.protocolMode === "SIP" ||
+          this.props.iad.protocolMode === "PRA_SIP" ||
+          this.props.iad.protocolMode === "SIP_PRA") && (
+          <React.Fragment>
+            <Row className={"margin-top-1 "}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  <ControlLabel>
+                    <FormattedMessage
+                      id="IPPBXAddress"
+                      defaultMessage="IP-PBX address"
+                    />
+                  </ControlLabel>
+                </div>
+                <div
+                  className={
+                    "margin-right-1 flex flex-basis-33 align-items-center"
+                  }
+                >
+                  <FormGroup
+                    controlId="errorPbxIpAdress"
+                    validationState={this.state.errorPbxIpAdress}
+                    className={"margin-0 flex width-100p"}
+                  >
+                    <div className={"flex align-items-center width-100p"}>
+                      <ControlLabel className={"margin-0 margin-right-1"}>
+                        <FormattedMessage
+                          id="IPAddress"
+                          defaultMessage="IP Address"
+                        />
+                      </ControlLabel>
+                      <FormControl
+                        type="text"
+                        value={this.state.IPAddress}
+                        placeholder={"IP Address"}
+                        onChange={e =>
+                          this.setState({
+                            IPAddress: e.target.value,
+                            errorPbxIpAdress: null
+                          })
+                        }
+                        onBlur={this.validatePbxIPAddress}
+                      />
+                    </div>
+                  </FormGroup>
+                </div>
+                <div
+                  className={
+                    "margin-right-1 flex flex-basis-33 align-items-center"
+                  }
+                >
+                  <ControlLabel className={"margin-0 margin-right-1"}>
+                    <FormattedMessage id="port" defaultMessage="Port" />
+                  </ControlLabel>
+                  <FormControl
+                    type="text"
+                    value={this.state.port}
+                    placeholder={"Port"}
+                    onChange={e => {
+                      if (isNaN(e.target.value)) {
+                        return;
+                      }
+                      this.setState({ port: e.target.value });
+                    }}
+                  />
+                </div>
+              </Col>
+            </Row>
+            {this.state.errorPbxIpAdress && (
+              <Row className={"margin-top-1 "}>
+                <Col md={12} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex flex-basis-16"}></div>
+                  <div
+                    className={
+                      "margin-right-1 flex flex-basis-33 align-items-center"
+                    }
+                  >
+                    <HelpBlock bsClass="color-error">
+                      <FormattedMessage
+                        id="errorIpAdress"
+                        defaultMessage="Invalide IP address"
+                      />
+                    </HelpBlock>
+                  </div>
+                </Col>
+              </Row>
+            )}
+          </React.Fragment>
+        )}
         <Row>
           <Col md={12}>
             <div className="button-row">
@@ -222,7 +416,15 @@ export class IPAddress extends Component {
                   onClick={this.updateIAD}
                   type="submit"
                   className="btn-primary"
-                  disabled={this.state.disabledButton}
+                  disabled={
+                    this.state.disabledButton ||
+                    errorMacAddress ||
+                    errorPbxIpAdress ||
+                    errorIpAdressV4 ||
+                    errorNetMaskV4 ||
+                    errorIpAdressV6 ||
+                    errorNetMaskV6
+                  }
                 >
                   <Glyphicon glyph="glyphicon glyphicon-ok" />
                   <FormattedMessage id="update" defaultMessage="Update" />
@@ -270,6 +472,65 @@ export class IPAddress extends Component {
       this.setState({ disabledButton: true }, () =>
         this.setState({ disabledButton: false })
       );
+    }
+  };
+
+  validateNetMaskV6 = e => {
+    let reg = /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/;
+    if (reg.test(e.target.value) || e.target.value === "") {
+      return;
+    } else {
+      return this.setState({ errorNetMaskV6: "error" });
+    }
+  };
+
+  validateIPAddressV6 = e => {
+    let reg = /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/;
+    if (reg.test(e.target.value) || e.target.value === "") {
+      return;
+    } else {
+      return this.setState({ errorIpAdressV6: "error" });
+    }
+  };
+
+  validateNetMaskV4 = e => {
+    let reg = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
+    if (reg.test(e.target.value) || e.target.value === "") {
+      return;
+    } else {
+      return this.setState({ errorNetMaskV4: "error" });
+    }
+  };
+
+  validateIPAddressV4 = e => {
+    let reg = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
+    if (reg.test(e.target.value) || e.target.value === "") {
+      return;
+    } else {
+      return this.setState({ errorIpAdressV4: "error" });
+    }
+  };
+
+  validatePbxIPAddress = e => {
+    let reg = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
+    if (reg.test(e.target.value) || e.target.value === "") {
+      return;
+    } else {
+      return this.setState({ errorPbxIpAdress: "error" });
+    }
+  };
+
+  validateMacAddress = e => {
+    let regDots = /^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$/;
+    let reg = /^([0-9A-Fa-f]{2}){5}([0-9A-Fa-f]{2})$/;
+    if (
+      reg.test(e.target.value) ||
+      regDots.test(e.target.value) ||
+      e.target.value === ""
+    ) {
+      return;
+    } else {
+      this.setState({ errorMacAddress: "error" });
     }
   };
 
@@ -352,7 +613,11 @@ export class IPAddress extends Component {
   };
 }
 
-const mapStateToProps = state => ({ iad: state.iad, config: state.config });
+const mapStateToProps = state => ({
+  iad: state.iad,
+  config: state.config,
+  group: state.group
+});
 
 const mapDispatchToProps = { changeIAD, fetchPutUpdateIAD, changeObjectIAD };
 

@@ -106,16 +106,21 @@ export class IADPage extends Component {
             <Tab eventKey={1} title="EDUs">
               <Edu />
             </Tab>
-            <Tab eventKey={2} title="IP Addressing">
-              <IPAddress />
-            </Tab>
+            {(this.props.iad.protocolMode === "SIP" ||
+              this.props.iad.protocolMode === "PRA_SIP" ||
+              this.props.iad.protocolMode === "SIP_PRA") && (
+              <Tab eventKey={2} title="IP Addressing">
+                <IPAddress />
+              </Tab>
+            )}
             <Tab eventKey={3} title="Site services override">
               <GroupService />
             </Tab>
             <Tab eventKey={4} title="Advanced settings">
               <Advanced />
             </Tab>
-            {this.props.group.pbxType === "PRA" && (
+            {(this.props.iad.protocolMode === "PRA" ||
+              this.props.iad.protocolMode === "PRA_SIP") && (
               <Tab eventKey={5} title="PRA lines configuration">
                 <PraInfo isLoading={this.state.isLoading} />
               </Tab>

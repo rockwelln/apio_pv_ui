@@ -62,6 +62,7 @@ export class Product extends Component {
         </div>
       );
     }
+    console.log(this.state.group);
     return (
       <React.Fragment>
         <Row className={"margin-top-1"}>
@@ -160,32 +161,35 @@ export class Product extends Component {
             </div>
           </Col>
         </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="np1Redundancy"
-                  defaultMessage="N+1 Redundancy"
+        {(this.state.group.pbxType === "SIP" ||
+          this.state.group.pbxType === "SIP_PRA") && (
+          <Row className={"margin-top-1"}>
+            <Col md={12} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-16"}>
+                <ControlLabel>
+                  <FormattedMessage
+                    id="np1Redundancy"
+                    defaultMessage="N+1 Redundancy"
+                  />
+                </ControlLabel>
+              </div>
+              <div className={"margin-right-1 flex-basis-33"}>
+                <Checkbox
+                  defaultChecked={this.state.group.np1Redundancy}
+                  onChange={e => {
+                    this.setState({
+                      group: {
+                        ...this.state.group,
+                        np1Redundancy: e.target.checked
+                      }
+                    });
+                  }}
+                  disabled
                 />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <Checkbox
-                defaultChecked={this.state.group.np1Redundancy}
-                onChange={e => {
-                  this.setState({
-                    group: {
-                      ...this.state.group,
-                      np1Redundancy: e.target.checked
-                    }
-                  });
-                }}
-                disabled
-              />
-            </div>
-          </Col>
-        </Row>
+              </div>
+            </Col>
+          </Row>
+        )}
         <Row>
           <div className="button-row">
             <div className="pull-right">
