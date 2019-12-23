@@ -205,7 +205,7 @@ class TenantPage extends Component {
                     <Tab
                       eventKey={0}
                       title={
-                        <FormattedMessage id="groups" defaultMessage="Groups" />
+                        <FormattedMessage id="sites" defaultMessage="Sites" />
                       }
                     >
                       <Groups />

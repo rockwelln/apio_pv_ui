@@ -83,7 +83,7 @@ export class GroupsTab extends Component {
               </InputGroup.Addon>
               <FormattedMessage
                 id="search_placeholder"
-                defaultMessage="Group ID or Name"
+                defaultMessage="Site ID or Name"
               >
                 {placeholder => (
                   <FormControl

@@ -80,7 +80,7 @@ export class IADs extends Component {
                 <FormattedMessage
                   id="moreIads"
                   defaultMessage={`You still need to create ${this.props.iads
-                    .nbrIadsNeeded - this.props.iads.iads.length} Trunk Groups`}
+                    .nbrIadsNeeded - this.props.iads.iads.length} IADs`}
                 />
               </Alert>
             ) : (

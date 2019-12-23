@@ -109,14 +109,14 @@ export class IADPage extends Component {
             <Tab eventKey={2} title="IP Addressing">
               <IPAddress />
             </Tab>
-            <Tab eventKey={3} title="Group service override">
+            <Tab eventKey={3} title="Site services override">
               <GroupService />
             </Tab>
             <Tab eventKey={4} title="Advanced settings">
               <Advanced />
             </Tab>
             {this.props.group.pbxType === "PRA" && (
-              <Tab eventKey={5} title="PRA Info">
+              <Tab eventKey={5} title="PRA lines configuration">
                 <PraInfo isLoading={this.state.isLoading} />
               </Tab>
             )}

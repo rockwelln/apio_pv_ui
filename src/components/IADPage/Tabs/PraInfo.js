@@ -73,7 +73,7 @@ export class PraInfo extends Component {
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
                   <ControlLabel>
-                    <FormattedMessage id="praId" defaultMessage="PRA ID" />
+                    <FormattedMessage id="praPort" defaultMessage="PRA Port" />
                   </ControlLabel>
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>

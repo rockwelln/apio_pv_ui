@@ -858,8 +858,8 @@ export function fetchDeleteTrunkGroup(tenantId, groupId, trunkName) {
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage
-            id="failed-to-delete-trunk-group"
-            defaultMessage="Failed to delete trunk group!"
+            id="failed-to-delete-iad"
+            defaultMessage="Failed to delete iad!"
           />,
           error.message
         )

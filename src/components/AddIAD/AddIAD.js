@@ -311,181 +311,6 @@ export class AddIAD extends Component {
                 </div>
               </Col>
             </Row>
-            {this.props.group.pbxType === "PRA" && (
-              <Row className={"margin-top-1"}>
-                <Col md={12} className={"flex align-items-center"}>
-                  <div className={"margin-right-1 flex font-24"}>
-                    <FormattedMessage id="praByIad" defaultMessage="PRA info" />
-                  </div>
-                </Col>
-              </Row>
-            )}
-            {this.props.group.pbxType === "PRA" &&
-              Object.keys(this.state.praByIad).map((pra, i) => (
-                <React.Fragment key={i + ""}>
-                  <Row className={"margin-top-1"}>
-                    <Col md={12} className={"flex align-items-center"}>
-                      <div className={"margin-right-1 flex font-18"}>
-                        <FormattedMessage
-                          id="praNumber"
-                          defaultMessage={`PRA ${i + 1}`}
-                        />
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row className={"margin-top-1"}>
-                    <Col md={12} className={"flex align-items-center"}>
-                      <div className={"margin-right-1 flex flex-basis-16"}>
-                        <ControlLabel>
-                          <FormattedMessage
-                            id="praId"
-                            defaultMessage="PRA ID"
-                          />
-                        </ControlLabel>
-                      </div>
-                      <div className={"margin-right-1 flex-basis-33"}>
-                        <FormControl
-                          componentClass="select"
-                          value={this.state.praByIad[pra].praID}
-                          onChange={e => {
-                            let selectedID = [...this.state.selectedID];
-                            if (Number(e.target.value) !== 0) {
-                              selectedID.push(Number(e.target.value));
-                              if (this.state.praByIad[pra].praID) {
-                                const index = selectedID.indexOf(
-                                  this.state.praByIad[pra].praID
-                                );
-                                if (index !== -1) {
-                                  selectedID.splice(index, 1);
-                                }
-                              }
-                            } else if (Number(e.target.value) === 0) {
-                              const index = selectedID.indexOf(
-                                this.state.praByIad[pra].praID
-                              );
-                              if (index !== -1) {
-                                selectedID.splice(index, 1);
-                              }
-                            }
-                            this.setState({
-                              selectedID,
-                              praByIad: {
-                                ...this.state.praByIad,
-                                [pra]: {
-                                  ...this.state.praByIad[pra],
-                                  praID: Number(e.target.value)
-                                }
-                              }
-                            });
-                          }}
-                        >
-                          {this.state.arrayOfPraId.map((el, i) => (
-                            <option
-                              key={i}
-                              value={el.value}
-                              disabled={this.state.selectedID.includes(
-                                el.value
-                              )}
-                            >
-                              {el.label}
-                            </option>
-                          ))}
-                        </FormControl>
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row className={"margin-top-1"}>
-                    <Col md={12} className={"flex align-items-center"}>
-                      <div className={"margin-right-1 flex flex-basis-16"}>
-                        <ControlLabel>
-                          <FormattedMessage
-                            id="tpid"
-                            defaultMessage="Tina Product ID"
-                          />
-                        </ControlLabel>
-                      </div>
-                      <div className={"margin-right-1 flex-basis-33"}>
-                        <FormControl
-                          type="text"
-                          placeholder={"Tina Product ID"}
-                          disabled={!this.state.praByIad[pra].praID}
-                          onChange={e =>
-                            this.setState({
-                              praByIad: {
-                                ...this.state.praByIad,
-                                [pra]: {
-                                  ...this.state.praByIad[pra],
-                                  tpid: e.target.value
-                                }
-                              }
-                            })
-                          }
-                        />
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row className={"margin-top-1"}>
-                    <Col md={12} className={"flex align-items-center"}>
-                      <div className={"margin-right-1 flex flex-basis-16"}>
-                        <ControlLabel>
-                          <FormattedMessage
-                            id="circuitID"
-                            defaultMessage="Circuit ID"
-                          />
-                        </ControlLabel>
-                      </div>
-                      <div className={"margin-right-1 flex-basis-33"}>
-                        <FormControl
-                          type="text"
-                          placeholder={
-                            "Prefix followed by national phone number"
-                          }
-                          disabled={!this.state.praByIad[pra].praID}
-                          onChange={e =>
-                            this.setState({
-                              praByIad: {
-                                ...this.state.praByIad,
-                                [pra]: {
-                                  ...this.state.praByIad[pra],
-                                  circuit_id: e.target.value
-                                }
-                              }
-                            })
-                          }
-                        />
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row className={"margin-top-1"}>
-                    <Col md={12} className={"flex align-items-center"}>
-                      <div className={"margin-right-1 flex flex-basis-16"}>
-                        <ControlLabel>
-                          <FormattedMessage
-                            id="enabled"
-                            defaultMessage="Enabled"
-                          />
-                        </ControlLabel>
-                      </div>
-                      <div className={"margin-right-1 flex-basis-33"}>
-                        <Checkbox
-                          className={"table-checkbox"}
-                          onChange={e =>
-                            this.setState({
-                              praByIad: {
-                                ...this.state.praByIad,
-                                [pra]: {
-                                  ...this.state.praByIad[pra],
-                                  enabled: e.target.checked
-                                }
-                              }
-                            })
-                          }
-                        />
-                      </div>
-                    </Col>
-                  </Row>
-                </React.Fragment>
-              ))}
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex font-24"}>
@@ -772,6 +597,313 @@ export class AddIAD extends Component {
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex font-24"}>
                   <FormattedMessage
+                    id="overrideSite"
+                    defaultMessage="Override the default site settings"
+                  />
+                </div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  <ControlLabel>
+                    <FormattedMessage id="dtmf" defaultMessage="DTMF" />
+                  </ControlLabel>
+                </div>
+                <div className={"margin-right-1 flex"}>
+                  <FormControl
+                    componentClass="select"
+                    value={this.state.dtmf}
+                    onChange={e =>
+                      this.setState({
+                        dtmf: e.target.value
+                      })
+                    }
+                  >
+                    {this.props.config.tenant.group.iad.dtmfOverride.map(
+                      (el, i) => (
+                        <option key={i} value={el.value}>
+                          {el.label}
+                        </option>
+                      )
+                    )}
+                  </FormControl>
+                </div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  <ControlLabel>
+                    <FormattedMessage
+                      id="direction"
+                      defaultMessage="Direction"
+                    />
+                  </ControlLabel>
+                </div>
+                <div className={"margin-right-1 flex"}>
+                  <FormControl
+                    componentClass="select"
+                    value={this.state.direction}
+                    onChange={e =>
+                      this.setState({
+                        direction: e.target.value
+                      })
+                    }
+                  >
+                    {this.props.config.tenant.group.iad.directionOverride.map(
+                      (el, i) => (
+                        <option key={i} value={el.value}>
+                          {el.label}
+                        </option>
+                      )
+                    )}
+                  </FormControl>
+                </div>
+              </Col>
+            </Row>
+            {this.state.direction === "Uni" && (
+              <React.Fragment>
+                <Row className={"margin-top-1"}>
+                  <Col md={12} className={"flex align-items-center"}>
+                    <div className={"margin-right-1 flex flex-basis-16"}>
+                      <ControlLabel>
+                        <FormattedMessage
+                          id="numbersOfChannels"
+                          defaultMessage="Numbers Of Channels"
+                        />
+                      </ControlLabel>
+                      {"\u002a"}
+                    </div>
+                    <React.Fragment>
+                      <div className={"margin-right-1 flex"}>
+                        <ControlLabel className={"margin-0 margin-right-1"}>
+                          <FormattedMessage id="in" defaultMessage="In" />
+                        </ControlLabel>
+                      </div>
+                      <div className={"margin-right-1 flex-basis-11"}>
+                        <FormControl
+                          type="text"
+                          value={this.state.channelsIn}
+                          placeholder={"In"}
+                          onChange={e =>
+                            this.setState({
+                              channelsIn: Number(e.target.value)
+                            })
+                          }
+                        />
+                      </div>
+                      <div className={"margin-right-1 flex"}>
+                        <ControlLabel className={"margin-0 margin-right-1"}>
+                          <FormattedMessage id="out" defaultMessage="Out" />
+                        </ControlLabel>
+                      </div>
+                      <div className={"margin-right-1 flex-basis-11"}>
+                        <FormControl
+                          type="text"
+                          value={this.state.channelsOut}
+                          placeholder={"Out"}
+                          onChange={e =>
+                            this.setState({
+                              channelsOut: Number(e.target.value)
+                            })
+                          }
+                        />
+                      </div>
+                    </React.Fragment>
+                  </Col>
+                </Row>
+                <Row className={"margin-top-1"}>
+                  <Col md={12} className={"flex align-items-center"}>
+                    <div className={"margin-right-1 flex flex-basis-16"} />
+                    <div className={"margin-right-1 flex-basis-33"}>
+                      {/* {"\u002a"}
+                      <FormattedMessage id="nocInfo" defaultMessage="" /> */}
+                    </div>
+                  </Col>
+                </Row>
+              </React.Fragment>
+            )}
+            {this.props.group.pbxType === "PRA" && (
+              <Row className={"margin-top-1"}>
+                <Col md={12} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex font-24"}>
+                    <FormattedMessage id="praByIad" defaultMessage="PRA info" />
+                  </div>
+                </Col>
+              </Row>
+            )}
+            {this.props.group.pbxType === "PRA" &&
+              Object.keys(this.state.praByIad).map((pra, i) => (
+                <React.Fragment key={i + ""}>
+                  <Row className={"margin-top-1"}>
+                    <Col md={12} className={"flex align-items-center"}>
+                      <div className={"margin-right-1 flex font-18"}>
+                        <FormattedMessage
+                          id="praNumber"
+                          defaultMessage={`PRA ${i + 1}`}
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row className={"margin-top-1"}>
+                    <Col md={12} className={"flex align-items-center"}>
+                      <div className={"margin-right-1 flex flex-basis-16"}>
+                        <ControlLabel>
+                          <FormattedMessage
+                            id="praPort"
+                            defaultMessage="PRA Port"
+                          />
+                        </ControlLabel>
+                      </div>
+                      <div className={"margin-right-1 flex-basis-33"}>
+                        <FormControl
+                          componentClass="select"
+                          value={this.state.praByIad[pra].praID}
+                          onChange={e => {
+                            let selectedID = [...this.state.selectedID];
+                            if (Number(e.target.value) !== 0) {
+                              selectedID.push(Number(e.target.value));
+                              if (this.state.praByIad[pra].praID) {
+                                const index = selectedID.indexOf(
+                                  this.state.praByIad[pra].praID
+                                );
+                                if (index !== -1) {
+                                  selectedID.splice(index, 1);
+                                }
+                              }
+                            } else if (Number(e.target.value) === 0) {
+                              const index = selectedID.indexOf(
+                                this.state.praByIad[pra].praID
+                              );
+                              if (index !== -1) {
+                                selectedID.splice(index, 1);
+                              }
+                            }
+                            this.setState({
+                              selectedID,
+                              praByIad: {
+                                ...this.state.praByIad,
+                                [pra]: {
+                                  ...this.state.praByIad[pra],
+                                  praID: Number(e.target.value)
+                                }
+                              }
+                            });
+                          }}
+                        >
+                          {this.state.arrayOfPraId.map((el, i) => (
+                            <option
+                              key={i}
+                              value={el.value}
+                              disabled={this.state.selectedID.includes(
+                                el.value
+                              )}
+                            >
+                              {el.label}
+                            </option>
+                          ))}
+                        </FormControl>
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row className={"margin-top-1"}>
+                    <Col md={12} className={"flex align-items-center"}>
+                      <div className={"margin-right-1 flex flex-basis-16"}>
+                        <ControlLabel>
+                          <FormattedMessage
+                            id="tpid"
+                            defaultMessage="Tina Product ID"
+                          />
+                        </ControlLabel>
+                      </div>
+                      <div className={"margin-right-1 flex-basis-33"}>
+                        <FormControl
+                          type="text"
+                          placeholder={"Tina Product ID"}
+                          disabled={!this.state.praByIad[pra].praID}
+                          onChange={e =>
+                            this.setState({
+                              praByIad: {
+                                ...this.state.praByIad,
+                                [pra]: {
+                                  ...this.state.praByIad[pra],
+                                  tpid: e.target.value
+                                }
+                              }
+                            })
+                          }
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row className={"margin-top-1"}>
+                    <Col md={12} className={"flex align-items-center"}>
+                      <div className={"margin-right-1 flex flex-basis-16"}>
+                        <ControlLabel>
+                          <FormattedMessage
+                            id="circuitID"
+                            defaultMessage="Circuit ID"
+                          />
+                        </ControlLabel>
+                      </div>
+                      <div className={"margin-right-1 flex-basis-33"}>
+                        <FormControl
+                          type="text"
+                          placeholder={
+                            "Prefix followed by national phone number"
+                          }
+                          disabled={!this.state.praByIad[pra].praID}
+                          onChange={e =>
+                            this.setState({
+                              praByIad: {
+                                ...this.state.praByIad,
+                                [pra]: {
+                                  ...this.state.praByIad[pra],
+                                  circuit_id: e.target.value
+                                }
+                              }
+                            })
+                          }
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row className={"margin-top-1"}>
+                    <Col md={12} className={"flex align-items-center"}>
+                      <div className={"margin-right-1 flex flex-basis-16"}>
+                        <ControlLabel>
+                          <FormattedMessage
+                            id="enabled"
+                            defaultMessage="Enabled"
+                          />
+                        </ControlLabel>
+                      </div>
+                      <div className={"margin-right-1 flex-basis-33"}>
+                        <Checkbox
+                          className={"table-checkbox"}
+                          disabled={!this.state.praByIad[pra].praID}
+                          onChange={e =>
+                            this.setState({
+                              praByIad: {
+                                ...this.state.praByIad,
+                                [pra]: {
+                                  ...this.state.praByIad[pra],
+                                  enabled: e.target.checked
+                                }
+                              }
+                            })
+                          }
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+                </React.Fragment>
+              ))}
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex font-24"}>
+                  <FormattedMessage
                     id="localIpAddressing"
                     defaultMessage="Local IP Addressing"
                   />
@@ -936,30 +1068,6 @@ export class AddIAD extends Component {
                     </Col>
                   </Row>
                 )}
-                {/* <Row className={"margin-top-1"}>
-                  <Col md={12} className={"flex align-items-center"}>
-                    <div className={"margin-right-1 flex flex-basis-16"}></div>
-
-                    <div className={"margin-right-1 flex flex-basis-16"}>
-                      <ControlLabel>
-                        <FormattedMessage
-                          id="IPv4Netmask"
-                          defaultMessage="IPv4 netmask"
-                        />
-                      </ControlLabel>
-                    </div>
-                    <div className={"margin-right-1 flex-basis-33"}>
-                      <FormControl
-                        type="text"
-                        value={this.state.ipv4Netmask}
-                        placeholder={"IPv4 netmask"}
-                        onChange={e =>
-                          this.setState({ ipv4Netmask: e.target.value })
-                        }
-                      />
-                    </div>
-                  </Col>
-                </Row> */}
               </React.Fragment>
             )}
             {this.state.ip1mode === "IPv6" && (
@@ -1058,49 +1166,6 @@ export class AddIAD extends Component {
                 )}
               </React.Fragment>
             )}
-            {/* {this.state.ip1mode === "IPv6" && (
-              <Row className={"margin-top-1"}>
-                <Col md={12} className={"flex align-items-center"}>
-                  <div className={"margin-right-1 flex flex-basis-16"}></div>
-                  <div className={"margin-right-1 flex flex-basis-16"}>
-                    <ControlLabel>
-                      <FormattedMessage
-                        id="IPv6Address"
-                        defaultMessage="IPv6 address"
-                      />
-                    </ControlLabel>
-                  </div>
-                  <div className={"margin-right-1 flex-basis-16"}>
-                    <FormControl
-                      type="text"
-                      value={this.state.ipv6Address}
-                      placeholder={"IPv6 address"}
-                      onChange={e =>
-                        this.setState({ ipv6Address: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div className={"margin-right-1 flex flex-basis-16"}>
-                    <ControlLabel>
-                      <FormattedMessage
-                        id="IPv6Netmask"
-                        defaultMessage="IPv6 netmask"
-                      />
-                    </ControlLabel>
-                  </div>
-                  <div className={"margin-right-1 flex-basis-16"}>
-                    <FormControl
-                      type="text"
-                      value={this.state.ipv6Netmask}
-                      placeholder={"IPv6 netmask"}
-                      onChange={e =>
-                        this.setState({ ipv6Netmask: e.target.value })
-                      }
-                    />
-                  </div>
-                </Col>
-              </Row>
-            )} */}
             <Row className={"margin-top-1 "}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
@@ -1183,137 +1248,6 @@ export class AddIAD extends Component {
                   </div>
                 </Col>
               </Row>
-            )}
-            <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex font-24"}>
-                  <FormattedMessage
-                    id="overrideSite"
-                    defaultMessage="Override the default site settings"
-                  />
-                </div>
-              </Col>
-            </Row>
-            <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>
-                  <ControlLabel>
-                    <FormattedMessage id="dtmf" defaultMessage="DTMF" />
-                  </ControlLabel>
-                </div>
-                <div className={"margin-right-1 flex"}>
-                  <FormControl
-                    componentClass="select"
-                    value={this.state.dtmf}
-                    onChange={e =>
-                      this.setState({
-                        dtmf: e.target.value
-                      })
-                    }
-                  >
-                    {this.props.config.tenant.group.iad.dtmfOverride.map(
-                      (el, i) => (
-                        <option key={i} value={el.value}>
-                          {el.label}
-                        </option>
-                      )
-                    )}
-                  </FormControl>
-                </div>
-              </Col>
-            </Row>
-            <Row className={"margin-top-1"}>
-              <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>
-                  <ControlLabel>
-                    <FormattedMessage
-                      id="direction"
-                      defaultMessage="Direction"
-                    />
-                  </ControlLabel>
-                </div>
-                <div className={"margin-right-1 flex"}>
-                  <FormControl
-                    componentClass="select"
-                    value={this.state.direction}
-                    onChange={e =>
-                      this.setState({
-                        direction: e.target.value
-                      })
-                    }
-                  >
-                    {this.props.config.tenant.group.iad.directionOverride.map(
-                      (el, i) => (
-                        <option key={i} value={el.value}>
-                          {el.label}
-                        </option>
-                      )
-                    )}
-                  </FormControl>
-                </div>
-              </Col>
-            </Row>
-            {this.state.direction === "Uni" && (
-              <React.Fragment>
-                <Row className={"margin-top-1"}>
-                  <Col md={12} className={"flex align-items-center"}>
-                    <div className={"margin-right-1 flex flex-basis-16"}>
-                      <ControlLabel>
-                        <FormattedMessage
-                          id="numbersOfChannels"
-                          defaultMessage="Numbers Of Channels"
-                        />
-                      </ControlLabel>
-                      {"\u002a"}
-                    </div>
-                    <React.Fragment>
-                      <div className={"margin-right-1 flex"}>
-                        <ControlLabel className={"margin-0 margin-right-1"}>
-                          <FormattedMessage id="in" defaultMessage="In" />
-                        </ControlLabel>
-                      </div>
-                      <div className={"margin-right-1 flex-basis-11"}>
-                        <FormControl
-                          type="text"
-                          value={this.state.channelsIn}
-                          placeholder={"In"}
-                          onChange={e =>
-                            this.setState({
-                              channelsIn: Number(e.target.value)
-                            })
-                          }
-                        />
-                      </div>
-                      <div className={"margin-right-1 flex"}>
-                        <ControlLabel className={"margin-0 margin-right-1"}>
-                          <FormattedMessage id="out" defaultMessage="Out" />
-                        </ControlLabel>
-                      </div>
-                      <div className={"margin-right-1 flex-basis-11"}>
-                        <FormControl
-                          type="text"
-                          value={this.state.channelsOut}
-                          placeholder={"Out"}
-                          onChange={e =>
-                            this.setState({
-                              channelsOut: Number(e.target.value)
-                            })
-                          }
-                        />
-                      </div>
-                    </React.Fragment>
-                  </Col>
-                </Row>
-                <Row className={"margin-top-1"}>
-                  <Col md={12} className={"flex align-items-center"}>
-                    <div className={"margin-right-1 flex flex-basis-16"} />
-                    <div className={"margin-right-1 flex-basis-33"}>
-                      {/* {"\u002a"}
-                      <FormattedMessage id="nocInfo" defaultMessage="" /> */}
-                    </div>
-                  </Col>
-                </Row>
-              </React.Fragment>
             )}
             <Row>
               <Col md={12}>
