@@ -21,7 +21,11 @@ export const validateInputPhoneNumber = e => {
       event.keyCode === 32) // im middle of the string space
   ) {
     return;
-  } else if (event.keyCode < 48 || event.keyCode > 57) {
-    event.preventDefault(); //only numbers input
+  } else if (
+    (event.keyCode >= 48 && event.keyCode <= 57) ||
+    (event.keyCode >= 96 && event.keyCode <= 105)
+  ) {
+    return; //only numbers input
   }
+  event.preventDefault();
 };
