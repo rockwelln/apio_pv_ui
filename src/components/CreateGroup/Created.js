@@ -13,12 +13,10 @@ export class Created extends Component {
     return (
       <div className={"flex-column text-align-center align-items-center"}>
         <p className={"header margin-1"}>
-          {`Congratulations, group  (id: ) was succussfully created`}
+          {`Congratulations, group ${this.props.createdGroup.groupName} (id: ${this.props.createdGroup.groupId} ) was succussfully created`}
         </p>
         <Link
-          to={`/provisioning/${this.props.match.params.gwName}/tenants/${
-            this.props.match.params.tenantId
-          }`}
+          to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}`}
         >
           <Button className={"margin-1 width-20"}>Return to tenants</Button>
         </Link>
