@@ -50,6 +50,7 @@ import AddPhoneNumberGroup from "./components/AddPhoneNumberGroup";
 import SearchPage from "./components/SearchPage";
 import AddTrunkGroup from "./components/AddTrunkGroup";
 import AddDevicePage from "./components/AddDevicePage";
+import AddTrunkGroupUser from "./components/AddUserToTrunkGroup";
 
 import "./App.css";
 import loading from "./loading.gif";
@@ -523,7 +524,7 @@ class App extends Component {
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/trunkgroup/:trunkGroupName/adduser"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
-                    <AddUser />
+                    <AddTrunkGroupUser />
                   ) : (
                     <NotAllowed />
                   )

@@ -103,9 +103,9 @@ export class AddUserPage extends Component {
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
-          <div className={"header"}>{`Add a new ${
-            this.props.match.params.trunkGroupName ? "user" : "hosted pbx user"
-          } to ${this.props.match.params.groupId}`}</div>
+          <div
+            className={"header"}
+          >{`Add a new hosted pbx user to ${this.props.match.params.groupId}`}</div>
         </div>
         <div className={"panel-body"}>
           <div className="alert alert-info" role="alert">
@@ -322,7 +322,7 @@ export class AddUserPage extends Component {
                       )}
                     </Col>
                   </FormGroup>
-                  {this.props.match.params.trunkGroupName && (
+                  {/* {this.props.match.params.trunkGroupName && (
                     <FormGroup controlId="phonenumber">
                       <Col
                         componentClass={ControlLabel}
@@ -353,7 +353,7 @@ export class AddUserPage extends Component {
                         </FormControl>
                       </Col>
                     </FormGroup>
-                  )}
+                  )} */}
                   <FormGroup controlId="template">
                     <Col
                       componentClass={ControlLabel}
@@ -456,8 +456,8 @@ export class AddUserPage extends Component {
       templateName,
       userId,
       password,
-      language,
-      phoneNumber
+      language
+      //phoneNumber
     } = this.state;
 
     if (emailAddress) {
@@ -502,6 +502,7 @@ export class AddUserPage extends Component {
           isPilotUser: false
         }
       }
+      //phoneNumber
     };
 
     const clearData = removeEmpty(data);
