@@ -25,7 +25,8 @@ const initialState = {
   tenantEnterpriseTrunks: [],
   listOfIads: { main_iads_available: [], other_iads_available: [] },
   numbersByEnterpriseTrunk: { enterprise_trunk_numbers: [], group_numbers: [] },
-  emergencyRouting: []
+  emergencyRouting: [],
+  reconciliationTeams: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -190,6 +191,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         listOfIads: action.data
+      };
+    }
+    case actionType.GET_RECONCILIATION_TEAMS: {
+      return {
+        ...state,
+        reconciliationTeams: action.data.teams
       };
     }
     case actionType.POST_CREATE_IAD: {

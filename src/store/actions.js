@@ -40,51 +40,6 @@ export const getTrunkByGroupID = data => ({
   data
 });
 
-export const postCreateTenant = data => ({
-  type: actionType.POST_CREATE_TENANT,
-  data
-});
-
-export const postCreateGroup = data => ({
-  type: actionType.POST_CREATE_GROUP,
-  data
-});
-
-export const postAssignPhoneNumbersToGroup = data => ({
-  type: actionType.POST_ASSIGN_PHONE_NUMBERS_TO_GROUP,
-  data
-});
-
-export const putUpdateEnterpriseTrunk = data => ({
-  type: actionType.PUT_UPDATE_ENTERPRISE_TRNUK,
-  data
-});
-
-export const putUpdateGroupDetails = data => ({
-  type: actionType.PUT_UPDATE_GROUP_DETAILS,
-  data
-});
-
-export const putUpdateTenantDetails = data => ({
-  type: actionType.PUT_UPDATE_TENANT_DETAILS,
-  data
-});
-
-export const deleteTenant = data => ({
-  type: actionType.DELETE_TENANT,
-  data
-});
-
-export const deleteGroupFromTenant = data => ({
-  type: actionType.DELETE_GROUP_FROM_TENANT,
-  data
-});
-
-export const deleteTrunkGroup = data => ({
-  type: actionType.DELETE_TRUNK_GROUP,
-  data
-});
-//////////////////////
 export const getNumbersByEnterpriseTrunk = data => ({
   type: actionType.GET_NUMBERS_BY_ENTERPRISE_TRUNK,
   data
@@ -135,6 +90,31 @@ export const getListOfIads = data => ({
   data
 });
 
+export const getReconciliationTeams = data => ({
+  type: actionType.GET_RECONCILIATION_TEAMS,
+  data
+});
+
+export const postCreateTenant = data => ({
+  type: actionType.POST_CREATE_TENANT,
+  data
+});
+
+export const postCreateGroup = data => ({
+  type: actionType.POST_CREATE_GROUP,
+  data
+});
+
+export const postAssignPhoneNumbersToGroup = data => ({
+  type: actionType.POST_ASSIGN_PHONE_NUMBERS_TO_GROUP,
+  data
+});
+
+export const putUpdateEnterpriseTrunk = data => ({
+  type: actionType.PUT_UPDATE_ENTERPRISE_TRNUK,
+  data
+});
+
 export const postCreateIAD = data => ({
   type: actionType.POST_CREATE_IAD,
   data
@@ -147,6 +127,16 @@ export const postCreateEnterpriseTrunk = data => ({
 
 export const postEmergencyRouting = data => ({
   type: actionType.POST_EMERGENCY_ROUTING,
+  data
+});
+
+export const putUpdateGroupDetails = data => ({
+  type: actionType.PUT_UPDATE_GROUP_DETAILS,
+  data
+});
+
+export const putUpdateTenantDetails = data => ({
+  type: actionType.PUT_UPDATE_TENANT_DETAILS,
   data
 });
 
@@ -165,6 +155,16 @@ export const putUpdateNumbersByEnterpriseTrunk = data => ({
   data
 });
 
+export const deleteTenant = data => ({
+  type: actionType.DELETE_TENANT,
+  data
+});
+
+export const deleteGroupFromTenant = data => ({
+  type: actionType.DELETE_GROUP_FROM_TENANT,
+  data
+});
+
 export const deletePhoneFromGroup = data => ({
   type: actionType.DELETE_PHONE_FROM_GROUP,
   data
@@ -172,6 +172,11 @@ export const deletePhoneFromGroup = data => ({
 
 export const deleteEnterpriseTrunk = data => ({
   type: actionType.DELETE_ENTERPRISE_TRUNK,
+  data
+});
+
+export const deleteTrunkGroup = data => ({
+  type: actionType.DELETE_TRUNK_GROUP,
   data
 });
 
@@ -468,6 +473,25 @@ export function fetchGetListOfIads(tenantId, groupId) {
           <FormattedMessage
             id="fetch-iads-failed"
             defaultMessage="Failed to fetch iads!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetReconciliationTeams() {
+  /////////////////////////////////
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/system/reconciliation/teams/`
+    )
+      .then(data => dispatch(getReconciliationTeams(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-teams-failed"
+            defaultMessage="Failed to fetch teams!"
           />,
           error.message
         )

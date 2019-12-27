@@ -5,6 +5,7 @@ import Tabs from "react-bootstrap/lib/Tabs";
 import Tab from "react-bootstrap/lib/Tab";
 
 import ZipToRouting from "./Tabs/ZipToRouting";
+import ReconciliationTeams from "./Tabs/ReconciliationTeams";
 
 export class ConfigPage extends Component {
   render() {
@@ -14,9 +15,12 @@ export class ConfigPage extends Component {
           <div className={"header"}>Configs</div>
         </div>
         <div className={"panel-body"}>
-          <Tabs defaultActiveKey={0} id="tenant_tabs">
+          <Tabs defaultActiveKey={1} id="tenant_tabs">
             <Tab eventKey={0} title="ZIP to Routing">
               <ZipToRouting />
+            </Tab>
+            <Tab eventKey={1} title="Reconciliation Teams">
+              <ReconciliationTeams />
             </Tab>
           </Tabs>
         </div>
