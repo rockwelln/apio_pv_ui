@@ -95,6 +95,11 @@ export const getReconciliationTeams = data => ({
   data
 });
 
+export const getTeam = data => ({
+  type: actionType.GET_TEAM,
+  data
+});
+
 export const postCreateTenant = data => ({
   type: actionType.POST_CREATE_TENANT,
   data
@@ -110,8 +115,8 @@ export const postAssignPhoneNumbersToGroup = data => ({
   data
 });
 
-export const putUpdateEnterpriseTrunk = data => ({
-  type: actionType.PUT_UPDATE_ENTERPRISE_TRNUK,
+export const postCreateReconciliationTeams = data => ({
+  type: actionType.POST_CREATE_RECONCILIATION_TEAMS,
   data
 });
 
@@ -127,6 +132,11 @@ export const postCreateEnterpriseTrunk = data => ({
 
 export const postEmergencyRouting = data => ({
   type: actionType.POST_EMERGENCY_ROUTING,
+  data
+});
+
+export const putUpdateEnterpriseTrunk = data => ({
+  type: actionType.PUT_UPDATE_ENTERPRISE_TRNUK,
   data
 });
 
@@ -155,6 +165,11 @@ export const putUpdateNumbersByEnterpriseTrunk = data => ({
   data
 });
 
+export const putUpdateTeam = data => ({
+  type: actionType.PUT_UPDATE_TEAM,
+  data
+});
+
 export const deleteTenant = data => ({
   type: actionType.DELETE_TENANT,
   data
@@ -177,6 +192,11 @@ export const deleteEnterpriseTrunk = data => ({
 
 export const deleteTrunkGroup = data => ({
   type: actionType.DELETE_TRUNK_GROUP,
+  data
+});
+
+export const deleteTeam = data => ({
+  type: actionType.DELETE_TEAM,
   data
 });
 
@@ -499,6 +519,25 @@ export function fetchGetReconciliationTeams() {
   };
 }
 
+export function fetchGetTeam(teamName) {
+  /////////////////////////////////
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/system/reconciliation/teams/${teamName}`
+    )
+      .then(data => dispatch(getTeam(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-team-failed"
+            defaultMessage="Failed to fetch team!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
 export function fetchPostEmergencyRouting(data) {
   /////////////////////////////////////
   return function(dispatch) {
@@ -611,6 +650,30 @@ export function fetchPostAssignPhoneNumbersToGroup(tenantId, groupId, data) {
           <FormattedMessage
             id="failed-to-add-phonenumbers"
             defaultMessage="Failed to add phone numbers!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchPostCreateReconciliationTeams(data) {
+  //////////////////////////////////////////////////
+  return function(dispatch) {
+    return fetch_post(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/system/reconciliation/teams/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => {
+        dispatch(postCreateReconciliationTeams(data));
+        return "success";
+      })
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-create-reconciliation-team"
+            defaultMessage="Failed to create reconciliation team!"
           />,
           error.message
         );
@@ -795,6 +858,36 @@ export function fetchPutUpdateTenantDetails(tenantId, data) {
   };
 }
 
+export function fetchPutUpdateTeam(teamName, data) {
+  //////////////////////////////////////
+  return function(dispatch) {
+    return fetch_put(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/system/reconciliation/teams/${teamName}/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => {
+        dispatch(putUpdateTeam(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="update-team-success"
+            defaultMessage="Successfully updated team!"
+          />,
+          "Successfully updated team!"
+        );
+      })
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="update-tenant-details-failed"
+            defaultMessage="Failed to update tenant details!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
 export function fetchPutUpdateNumbersStatus(tenantId, groupId, data) {
   /////////////////////////////
   return function(dispatch) {
@@ -929,6 +1022,28 @@ export function fetchDeleteEnterpriseTrunk(tenantId, groupId, entTrunk) {
           <FormattedMessage
             id="failed-to-delete-enterprise-trunk"
             defaultMessage="Failed to delete enterprise trunk!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchDeleteTeam(teamName) {
+  /////////////////////////////////
+  return function(dispatch) {
+    return fetch_delete(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/system/reconciliation/teams/${teamName}/`
+    )
+      .then(data => {
+        dispatch(deleteTeam(data));
+        return "deleted";
+      })
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-delete-team"
+            defaultMessage="Failed to delete team!"
           />,
           error.message
         )

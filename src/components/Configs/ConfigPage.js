@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 import Tabs from "react-bootstrap/lib/Tabs";
 import Tab from "react-bootstrap/lib/Tab";
 
-import ZipToRouting from "./Tabs/ZipToRouting";
-import ReconciliationTeams from "./Tabs/ReconciliationTeams";
+import ZipToRouting from "./Tabs/ZTR/ZipToRouting";
+import ReconciliationTeams from "./Tabs/ReconciliationTeams/ReconciliationTeams";
 
 export class ConfigPage extends Component {
   render() {

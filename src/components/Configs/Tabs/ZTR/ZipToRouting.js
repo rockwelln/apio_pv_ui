@@ -12,7 +12,7 @@ import Alert from "react-bootstrap/lib/Alert";
 import { FormattedMessage } from "react-intl";
 import TableZTR from "./TableZTR";
 
-import { fetchPostEmergencyRouting } from "../../../store/actions";
+import { fetchPostEmergencyRouting } from "../../../../store/actions";
 
 export class ZipToRouting extends Component {
   state = {
@@ -136,15 +136,13 @@ export class ZipToRouting extends Component {
         csv: b64,
         has_header: this.state.withHeaders
       };
-      this.props
-        .fetchPostEmergencyRouting(data)
-        .then(() =>
-          this.setState({
-            csvValue: [],
-            theInputKey: new Date(),
-            disabledUpload: true
-          })
-        );
+      this.props.fetchPostEmergencyRouting(data).then(() =>
+        this.setState({
+          csvValue: [],
+          theInputKey: new Date(),
+          disabledUpload: true
+        })
+      );
     });
   };
 

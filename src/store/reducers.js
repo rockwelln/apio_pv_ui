@@ -26,7 +26,9 @@ const initialState = {
   listOfIads: { main_iads_available: [], other_iads_available: [] },
   numbersByEnterpriseTrunk: { enterprise_trunk_numbers: [], group_numbers: [] },
   emergencyRouting: [],
-  reconciliationTeams: []
+  reconciliationTeams: [],
+  createdReconciliationTeam: [],
+  team: { users: [] }
 };
 
 function mainReducer(state = initialState, action) {
@@ -199,6 +201,12 @@ function mainReducer(state = initialState, action) {
         reconciliationTeams: action.data.teams
       };
     }
+    case actionType.GET_TEAM: {
+      return {
+        ...state,
+        team: action.data
+      };
+    }
     case actionType.POST_CREATE_IAD: {
       return {
         ...state,
@@ -243,6 +251,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         emergencyRouting: action.data.results
+      };
+    }
+    case actionType.POST_CREATE_RECONCILIATION_TEAMS: {
+      return {
+        ...state,
+        createdReconciliationTeam: action.data
       };
     }
     case actionType.PUT_UPDATE_IAD: {
@@ -304,6 +318,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         iadsByTrunk: { ...action.data, iadFromSite, iadNotFromSite }
+      };
+    }
+    case actionType.PUT_UPDATE_TEAM: {
+      return {
+        ...state,
+        team: action.data
       };
     }
     case actionType.DELETE_TENANT: {

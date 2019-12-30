@@ -9,8 +9,9 @@ import Panel from "react-bootstrap/lib/Panel";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
-import { fetchPostCreateReconciliationTeams } from "../../store/actions";
+import { fetchGetTeam, fetchPutUpdateTeam } from "../../store/actions";
 import { removeEmpty } from "../remuveEmptyInObject";
+import DeleteModal from "./DeleteModal";
 import { FormattedMessage } from "react-intl";
 
 export class AddReconciliationTeam extends Component {
@@ -18,8 +19,24 @@ export class AddReconciliationTeam extends Component {
     name: "",
     email: "",
     users: [{ username: "", email: "" }],
-    buttonName: "Create"
+    buttonName: "Update",
+    showDelete: false
   };
+  fetchReq() {
+    this.props.fetchGetTeam(this.props.match.params.teamName).then(() =>
+      this.setState({
+        isLoading: false,
+        name: this.props.team.name,
+        email: this.props.team.email,
+        users: this.props.team.users.length
+          ? this.props.team.users
+          : [{ username: "", email: "" }]
+      })
+    );
+  }
+  componentDidMount() {
+    this.fetchReq();
+  }
   render() {
     return (
       <React.Fragment>
@@ -27,8 +44,19 @@ export class AddReconciliationTeam extends Component {
           <Panel.Heading>
             <div className={"header"}>
               <FormattedMessage
-                id="addReconciliationTeam"
-                defaultMessage="ADD RECONCILIATION TEAM"
+                id="reconciliationTeam"
+                defaultMessage={`Reconciliation Team: ${this.props.team.name}`}
+              />
+              <Glyphicon
+                glyph="glyphicon glyphicon-trash"
+                onClick={() => this.setState({ showDelete: true })}
+              />
+              <DeleteModal
+                teamName={this.props.team.name}
+                show={this.state.showDelete}
+                onClose={() => {
+                  this.setState({ showDelete: false });
+                }}
               />
             </div>
           </Panel.Heading>
@@ -136,13 +164,13 @@ export class AddReconciliationTeam extends Component {
                 <div className="button-row">
                   <div className="pull-right">
                     <Button
-                      onClick={this.AddTeam}
+                      onClick={this.addTeam}
                       type="submit"
                       className="btn-primary"
                       disabled={
                         !this.state.email ||
                         !this.state.name ||
-                        this.state.buttonName === "Creating..."
+                        this.state.buttonName === "Updating..."
                       }
                     >
                       <Glyphicon glyph="glyphicon glyphicon-ok" />{" "}
@@ -170,34 +198,28 @@ export class AddReconciliationTeam extends Component {
     this.setState({ users });
   };
 
-  AddTeam = () => {
+  addTeam = () => {
     const { name, email, users } = this.state;
-    const postUsers = [...users];
+    const clearUsers = users.filter(user => user.username || user.email);
     const data = {
       name,
       email,
-      users: postUsers
+      users: clearUsers.length ? clearUsers : []
     };
-    const clearData = removeEmpty(data);
-    this.setState({ buttonName: "Creating..." }, () =>
+    //const clearData = removeEmpty(data);
+    this.setState({ buttonName: "Updating..." }, () =>
       this.props
-        .fetchPostCreateReconciliationTeams(clearData)
-        .then(res =>
-          res === "success"
-            ? this.props.history.push(
-                `/provisioning/${this.props.match.params.gwName}/configs/reconciliationteam/${this.props.createdReconciliationTeam.name}`
-              )
-            : this.setState({ buttonName: "Create" })
-        )
+        .fetchPutUpdateTeam(this.props.team.name, data)
+        .then(() => this.setState({ buttonName: "Update" }))
     );
   };
 }
 
 const mapStateToProps = state => ({
-  createdReconciliationTeam: state.createdReconciliationTeam
+  team: state.team
 });
 
-const mapDispatchToProps = { fetchPostCreateReconciliationTeams };
+const mapDispatchToProps = { fetchPutUpdateTeam, fetchGetTeam };
 
 export default withRouter(
   connect(
