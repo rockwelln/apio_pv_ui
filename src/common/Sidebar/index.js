@@ -57,6 +57,13 @@ export class Sidebar extends Component {
               CONFIGS
             </NavItem>
           </LinkContainer>
+          <LinkContainer
+            to={`/provisioning/${this.props.match.params.gwName}/reconciliations`}
+          >
+            <NavItem eventKey={4} className={"text-align-center"}>
+              RECONCILIATIONS
+            </NavItem>
+          </LinkContainer>
           {/* <LinkContainer
             to={`/provisioning/${this.props.match.params.gwName}/localusers`}
           >

@@ -41,6 +41,7 @@ import AddEntrepriseTrunkPage from "./components/AddEnterpriseTrunkPage";
 import Configs from "./components/Configs";
 import AddReconciliationTeam from "./components/AddReconciliationTeam";
 import ReconciliationTeamPage from "./components/ReconciliationTeamPage";
+import Reconciliations from "./components/Reconciliations";
 
 import GroupPage from "./components/GroupPage";
 
@@ -289,6 +290,17 @@ class App extends Component {
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <Configs />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/provisioning/:gwName/reconciliations"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <Reconciliations />
                   ) : (
                     <NotAllowed />
                   )

@@ -100,6 +100,11 @@ export const getTeam = data => ({
   data
 });
 
+export const getAnomalies = data => ({
+  type: actionType.GET_ANOMALIES,
+  data
+});
+
 export const postCreateTenant = data => ({
   type: actionType.POST_CREATE_TENANT,
   data
@@ -531,6 +536,25 @@ export function fetchGetTeam(teamName) {
           <FormattedMessage
             id="fetch-team-failed"
             defaultMessage="Failed to fetch team!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetAnomalies() {
+  /////////////////////////////////
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/system/reconciliation/anomalies/`
+    )
+      .then(data => dispatch(getAnomalies(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-anomalies-failed"
+            defaultMessage="Failed to fetch anomalies!"
           />,
           error.message
         )

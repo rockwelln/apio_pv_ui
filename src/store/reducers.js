@@ -28,7 +28,8 @@ const initialState = {
   emergencyRouting: [],
   reconciliationTeams: [],
   createdReconciliationTeam: [],
-  team: { users: [] }
+  team: { users: [] },
+  anomalies: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -205,6 +206,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         team: action.data
+      };
+    }
+    case actionType.GET_ANOMALIES: {
+      return {
+        ...state,
+        anomalies: action.data.anomalies
       };
     }
     case actionType.POST_CREATE_IAD: {

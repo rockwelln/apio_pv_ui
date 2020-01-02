@@ -15,7 +15,7 @@ export class ConfigPage extends Component {
           <div className={"header"}>Configs</div>
         </div>
         <div className={"panel-body"}>
-          <Tabs defaultActiveKey={1} id="tenant_tabs">
+          <Tabs defaultActiveKey={0} id="tenant_tabs">
             <Tab eventKey={0} title="ZIP to Routing">
               <ZipToRouting />
             </Tab>
