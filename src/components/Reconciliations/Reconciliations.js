@@ -59,7 +59,10 @@ export class Reconciliations extends Component {
                 <InputGroup.Addon>
                   <Glyphicon glyph="lyphicon glyphicon-search" />
                 </InputGroup.Addon>
-                <FormattedMessage id="search_placeholder" defaultMessage="">
+                <FormattedMessage
+                  id="search_placeholder"
+                  defaultMessage="Enterprise ID, Group ID or IAD ID"
+                >
                   {placeholder => (
                     <FormControl
                       type="text"
@@ -111,17 +114,29 @@ export class Reconciliations extends Component {
                             id="enterprise_id"
                             defaultMessage="Enterprise id"
                           />
+                          <Glyphicon
+                            glyph="glyphicon glyphicon-sort"
+                            onClick={this.sortByEnterprise}
+                          />
                         </th>
                         <th>
                           <FormattedMessage
                             id="group_id"
                             defaultMessage="Group id"
                           />
+                          <Glyphicon
+                            glyph="glyphicon glyphicon-sort"
+                            onClick={this.sortByGroup}
+                          />
                         </th>
                         <th>
                           <FormattedMessage
                             id="iad_id"
                             defaultMessage="IAD id"
+                          />
+                          <Glyphicon
+                            glyph="glyphicon glyphicon-sort"
+                            onClick={this.sortByIad}
                           />
                         </th>
                         <th>
@@ -220,7 +235,7 @@ export class Reconciliations extends Component {
                 </Col>
               </Row>
               <Row>
-                <Col md={11}>
+                <Col md={12}>
                   <div className="flex flex-row flex-end-center">
                     <Pagination className={"indent-top-bottom-1"}>
                       <Pagination.Prev onClick={this.decrementPage} />
@@ -232,7 +247,7 @@ export class Reconciliations extends Component {
               </Row>
             </React.Fragment>
           ) : (
-            <Col mdOffset={1} md={10}>
+            <Col mdOffset={1} md={11}>
               <FormattedMessage
                 id="notFound"
                 defaultMessage="No anomalies were found"
@@ -291,16 +306,75 @@ export class Reconciliations extends Component {
   };
 
   filterBySearchValue = () => {
-    return;
     const { searchValue } = this.state;
-    const SearchArray = this.props.reconciliationTeams
+    const SearchArray = this.props.anomalies
       .filter(
-        team =>
-          team.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-          team.email.toLowerCase().includes(searchValue.toLowerCase())
+        anomalie =>
+          (anomalie.enterprise_id &&
+            anomalie.enterprise_id
+              .toLowerCase()
+              .includes(searchValue.toLowerCase())) ||
+          (anomalie.group_id &&
+            anomalie.group_id
+              .toLowerCase()
+              .includes(searchValue.toLowerCase())) ||
+          (anomalie.iad_id &&
+            anomalie.iad_id.toLowerCase().includes(searchValue.toLowerCase()))
       )
-      .map(team => team);
-    this.setState({ teams: SearchArray }, () => this.pagination());
+      .map(anomalie => anomalie);
+    this.setState({ anomalies: SearchArray }, () => this.pagination());
+  };
+
+  sortByEnterprise = () => {
+    const { anomalies, sortedBy } = this.state;
+    if (sortedBy === "enterprise_id") {
+      const anomaliesSorted = anomalies.reverse();
+      this.setState({ anomalies: anomaliesSorted }, () => this.pagination());
+    } else {
+      const anomaliesSorted = anomalies.sort((a, b) => {
+        if (a.enterprise_id < b.enterprise_id) return -1;
+        if (a.enterprise_id > b.enterprise_id) return 1;
+        return 0;
+      });
+      this.setState(
+        { anomalies: anomaliesSorted, sortedBy: "enterprise_id" },
+        () => this.pagination()
+      );
+    }
+  };
+
+  sortByGroup = () => {
+    const { anomalies, sortedBy } = this.state;
+    if (sortedBy === "group_id") {
+      const anomaliesSorted = anomalies.reverse();
+      this.setState({ anomalies: anomaliesSorted }, () => this.pagination());
+    } else {
+      const anomaliesSorted = anomalies.sort((a, b) => {
+        if (a.group_id < b.group_id) return -1;
+        if (a.group_id > b.group_id) return 1;
+        return 0;
+      });
+      this.setState({ anomalies: anomaliesSorted, sortedBy: "group_id" }, () =>
+        this.pagination()
+      );
+    }
+  };
+
+  sortByIad = () => {
+    const { anomalies, sortedBy } = this.state;
+    if (sortedBy === "iad_id") {
+      const anomaliesSorted = anomalies.reverse();
+      this.setState({ anomalies: anomaliesSorted }, () => this.pagination());
+    } else {
+      const anomaliesSorted = anomalies.sort((a, b) => {
+        if (a.iad_id < b.iad_id) return -1;
+        if (a.iad_id > b.iad_id) return 1;
+        return 0;
+      });
+      this.setState({ anomalies: anomaliesSorted, sortedBy: "iad_id" }, () =>
+        this.pagination()
+      );
+    }
   };
 }
 
