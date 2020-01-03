@@ -145,7 +145,7 @@ export class Reconciliations extends Component {
                             defaultMessage="Anomaly event"
                           />
                         </th>
-                        <th>
+                        {/* <th>
                           <FormattedMessage
                             id="creation_date"
                             defaultMessage="Creation date"
@@ -174,14 +174,14 @@ export class Reconciliations extends Component {
                             id="reconciliation_report"
                             defaultMessage="Reconciliation report"
                           />
-                        </th>
+                        </th> */}
                         <th>
                           <FormattedMessage
                             id="anomaly_status"
                             defaultMessage="Anomaly status"
                           />
                         </th>
-                        <th>
+                        {/* <th>
                           <FormattedMessage
                             id="assigned_team"
                             defaultMessage="Assigned team"
@@ -216,8 +216,8 @@ export class Reconciliations extends Component {
                             id="comments"
                             defaultMessage="Comments"
                           />
-                        </th>
-                        <th />
+                        </th> */}
+                        {/* <th /> */}
                       </tr>
                     </thead>
                     <tbody>

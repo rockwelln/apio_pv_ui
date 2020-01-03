@@ -13,12 +13,19 @@ class Anomalies extends Component {
     const { anomalies, onReload } = this.props;
     const { showDelete } = this.state;
     return (
-      <tr>
+      <tr
+        onClick={() =>
+          this.props.history.push(
+            `/provisioning/${this.props.match.params.gwName}/reconciliations/${anomalies.hash_ref}`
+          )
+        }
+        style={{ cursor: "pointer" }}
+      >
         <td>{anomalies.enterprise_id}</td>
         <td>{anomalies.group_id}</td>
         <td>{anomalies.iad_id}</td>
         <td>{anomalies.anomaly_event}</td>
-        <td>
+        {/* <td>
           {anomalies.creation_date
             ? new Date(anomalies.creation_date).toString()
             : ""}
@@ -26,9 +33,9 @@ class Anomalies extends Component {
         <td>{anomalies.norm_data}</td>
         <td>{anomalies.apio_db_data}</td>
         <td>{anomalies.broadsoft_data}</td>
-        <td>{anomalies.reconciliation_report}</td>
+        <td>{anomalies.reconciliation_report}</td> */}
         <td>{anomalies.anomaly_status}</td>
-        <td>{anomalies.assigned_team}</td>
+        {/* <td>{anomalies.assigned_team}</td>
         <td>{anomalies.assigned_user}</td>
         <td>
           {anomalies.assigned_user_date
@@ -41,15 +48,15 @@ class Anomalies extends Component {
             : ""}
         </td>
         <td>{anomalies.result}</td>
-        <td>{anomalies.comments}</td>
-        <td>
+        <td>{anomalies.comments}</td> */}
+        {/* <td>
           <ButtonToolbar>
             <Glyphicon
               glyph="glyphicon glyphicon-remove"
               onClick={() => this.setState({ showDelete: true })}
             />
           </ButtonToolbar>
-          {/* <DeleteModal
+          <DeleteModal
             teamName={team.name}
             show={showDelete}
             onClose={e => {
@@ -57,8 +64,8 @@ class Anomalies extends Component {
               this.setState({ showDelete: false });
             }}
             {...this.props}
-          /> */}
-        </td>
+          />
+        </td> */}
       </tr>
     );
   }

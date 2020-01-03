@@ -29,7 +29,8 @@ const initialState = {
   reconciliationTeams: [],
   createdReconciliationTeam: [],
   team: { users: [] },
-  anomalies: []
+  anomalies: [],
+  anomaly: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -214,6 +215,12 @@ function mainReducer(state = initialState, action) {
         anomalies: action.data.anomalies
       };
     }
+    case actionType.GET_ANOMALY: {
+      return {
+        ...state,
+        anomaly: action.data
+      };
+    }
     case actionType.POST_CREATE_IAD: {
       return {
         ...state,
@@ -333,6 +340,12 @@ function mainReducer(state = initialState, action) {
         team: action.data
       };
     }
+    case actionType.PUT_UPDATE_ANOMALY: {
+      return {
+        ...state,
+        anomaly: action.data
+      };
+    }
     case actionType.DELETE_TENANT: {
       return {
         ...state
@@ -354,6 +367,11 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.DELETE_ENTERPRISE_TRUNK: {
+      return {
+        ...state
+      };
+    }
+    case actionType.DELETE_ANOMALY: {
       return {
         ...state
       };

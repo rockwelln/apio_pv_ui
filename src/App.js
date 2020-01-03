@@ -47,6 +47,7 @@ import GroupPage from "./components/GroupPage";
 
 import "./App.css";
 import loading from "./loading.gif";
+import AnomaliesPage from "./components/AnomaliesPage";
 
 const Loading = () => (
   <div>
@@ -301,6 +302,17 @@ class App extends Component {
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <Reconciliations />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/provisioning/:gwName/reconciliations/:anomalyHash"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <AnomaliesPage />
                   ) : (
                     <NotAllowed />
                   )

@@ -105,6 +105,11 @@ export const getAnomalies = data => ({
   data
 });
 
+export const getAnomaly = data => ({
+  type: actionType.GET_ANOMALY,
+  data
+});
+
 export const postCreateTenant = data => ({
   type: actionType.POST_CREATE_TENANT,
   data
@@ -175,6 +180,11 @@ export const putUpdateTeam = data => ({
   data
 });
 
+export const putUpdateAnomaly = data => ({
+  type: actionType.PUT_UPDATE_ANOMALY,
+  data
+});
+
 export const deleteTenant = data => ({
   type: actionType.DELETE_TENANT,
   data
@@ -202,6 +212,11 @@ export const deleteTrunkGroup = data => ({
 
 export const deleteTeam = data => ({
   type: actionType.DELETE_TEAM,
+  data
+});
+
+export const deleteAnomaly = data => ({
+  type: actionType.DELETE_ANOMALY,
   data
 });
 
@@ -555,6 +570,25 @@ export function fetchGetAnomalies() {
           <FormattedMessage
             id="fetch-anomalies-failed"
             defaultMessage="Failed to fetch anomalies!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetAnomaly(hash) {
+  /////////////////////////////////
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/system/reconciliation/anomalies/${hash}`
+    )
+      .then(data => dispatch(getAnomaly(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-anomaly-failed"
+            defaultMessage="Failed to fetch anomaly!"
           />,
           error.message
         )
@@ -942,6 +976,36 @@ export function fetchPutUpdateNumbersStatus(tenantId, groupId, data) {
   };
 }
 
+export function fetchPutUpdateAnomaly(hash, data) {
+  /////////////////////////////
+  return function(dispatch) {
+    return fetch_put(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/system/reconciliation/anomalies/${hash}/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => {
+        dispatch(putUpdateAnomaly(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="update-anomaly-success"
+            defaultMessage="Successfully updated anomaly!"
+          />,
+          "Successfully updated anomaly!"
+        );
+      })
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="update-anomaly-failed"
+            defaultMessage="Failed to update anomaly!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
 export function fetchDeleteTenant(ID) {
   ////////////////////////////////////
   return function(dispatch) {
@@ -1068,6 +1132,29 @@ export function fetchDeleteTeam(teamName) {
           <FormattedMessage
             id="failed-to-delete-team"
             defaultMessage="Failed to delete team!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchDeleteAnomaly(hash, data) {
+  /////////////////////////////////
+  return function(dispatch) {
+    return fetch_delete(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra//system/reconciliation/anomalies/${hash}/`,
+      data
+    )
+      .then(data => {
+        dispatch(deleteTeam(data));
+        return "deleted";
+      })
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-delete-anomaly"
+            defaultMessage="Failed to delete anomaly!"
           />,
           error.message
         )

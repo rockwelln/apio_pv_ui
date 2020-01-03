@@ -27,6 +27,13 @@ const linkByCrumb = (item, lastItem, i, path, match) => {
       <Link to={`/provisioning/${match.params.gwName}/configs`}>{crumb}</Link>
     );
   }
+  if (crumb === "reconciliations" && !lastItem.includes(crumb)) {
+    return (
+      <Link to={`/provisioning/${match.params.gwName}/reconciliations`}>
+        {crumb}
+      </Link>
+    );
+  }
   if (path[i - 1] === "tenants" && !lastItem.includes(crumb)) {
     return (
       <Link to={`/provisioning/${match.params.gwName}/tenants/${item}`}>
