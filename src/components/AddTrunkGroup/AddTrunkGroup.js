@@ -31,15 +31,13 @@ export class AddTrunkGroup extends Component {
   componentDidMount() {
     let first = Math.floor(Math.random() * 10);
     let second = Math.floor(Math.random() * 10);
-    this.props
-      .fetchGetPhoneTypes()
-      .then(() =>
-        this.setState({
-          isLoading: false,
-          phoneTypes: this.props.phoneTypes,
-          name: `${this.props.match.params.groupId}_trgp${first}${second}`
-        })
-      );
+    this.props.fetchGetPhoneTypes().then(() =>
+      this.setState({
+        isLoading: false,
+        phoneTypes: this.props.phoneTypes,
+        name: `${this.props.match.params.groupId}_trgp${first}${second}`
+      })
+    );
   }
 
   render() {

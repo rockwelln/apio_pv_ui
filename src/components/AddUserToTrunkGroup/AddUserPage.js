@@ -15,6 +15,7 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import InputGroup from "react-bootstrap/lib/InputGroup";
 
 import { FormattedMessage } from "react-intl";
+import Select from "react-select";
 
 import {
   fetchGetCategoryByName,
@@ -129,20 +130,19 @@ export class AddUserPage extends Component {
                       Phone number{"\u002a"}
                     </Col>
                     <Col md={9}>
-                      <FormControl
-                        componentClass="select"
-                        value={this.state.phoneNumber}
+                      <Select
+                        defaultValue={this.state.phoneNumber}
                         onChange={this.setPhoneNumber}
-                      >
-                        <option value="New number">New number</option>
-                        <option value="">none</option>
-                        {this.props.availableNumbers.map(number => (
-                          <option key={`${number}`} value={number}>
-                            {number}
-                          </option>
-                        ))}
-                        ))}
-                      </FormControl>
+                        isSearchable
+                        options={[
+                          { value: "New number", label: "New number" },
+                          { value: "", label: "none" },
+                          ...this.props.availableNumbers.map(number => ({
+                            value: number,
+                            label: number
+                          }))
+                        ]}
+                      />
                     </Col>
                   </FormGroup>
                   {this.state.phoneNumber === "New number" && (
@@ -520,19 +520,20 @@ export class AddUserPage extends Component {
   };
 
   setPhoneNumber = e => {
-    if (e.target.value === "New number") {
-      this.setState({ phoneNumber: e.target.value });
+    console.log(e);
+    if (e.value === "New number") {
+      this.setState({ phoneNumber: e.value });
       return;
     }
 
     const password = this.generetePassword();
     this.setState({
-      phoneNumber: e.target.value,
-      userId: e.target.value,
-      firstName: e.target.value,
-      lastName: e.target.value,
-      cliFirstName: e.target.value,
-      cliLastName: e.target.value,
+      phoneNumber: e.value,
+      userId: e.value,
+      firstName: e.value,
+      lastName: e.value,
+      cliFirstName: e.value,
+      cliLastName: e.value,
       password
     });
   };
