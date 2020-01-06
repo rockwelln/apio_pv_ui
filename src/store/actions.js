@@ -233,6 +233,10 @@ export const changeObjectIAD = (object, field, value) => ({
   value
 });
 
+export const clearCreatedTenant = () => ({
+  type: actionType.CLEAR_CREATED_TENANT
+});
+
 export function fetchGetNumbersByEnterpriseTrunk(tenantId, groupId, trunkId) {
   ////////////////////
   return function(dispatch) {

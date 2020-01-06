@@ -399,6 +399,13 @@ function mainReducer(state = initialState, action) {
       };
     }
 
+    case actionType.CLEAR_CREATED_TENANT: {
+      return {
+        ...state,
+        createdTenant: {}
+      };
+    }
+
     default:
       return state;
   }
