@@ -26,6 +26,7 @@ export class ZipToRouting extends Component {
     theInputKey: "inputKey"
   };
   render() {
+    console.log(this.state.disabledUpload);
     return (
       <React.Fragment>
         {(this.state.showError || this.state.showWarning) && (
@@ -152,10 +153,16 @@ export class ZipToRouting extends Component {
       this.setState({ csvValue: [] });
       return;
     }
+    console.log(target.files[0]);
     if (target.files[0].type !== "text/csv") {
       let errorHeader = "Invalide type file";
       let errorText = "Available formats for download: csv";
-      this.setState({ showError: true, errorHeader, errorText });
+      this.setState({
+        showError: true,
+        errorHeader,
+        errorText,
+        disabledUpload: true
+      });
       return;
     }
     let csvValue;
@@ -166,7 +173,7 @@ export class ZipToRouting extends Component {
       .then(() =>
         this.setState({
           file: target.files[0],
-          disabledUpload: false,
+          disabledUpload: this.state.showError,
           csvValue
         })
       );
@@ -182,7 +189,12 @@ export class ZipToRouting extends Component {
       if (headers.length > 2) {
         let errorHeader = "Count header error";
         let errorText = "You must have two headers in the file";
-        this.setState({ showError: true, errorHeader, errorText });
+        this.setState({
+          showError: true,
+          errorHeader,
+          errorText,
+          disabledUpload: true
+        });
         return [];
       }
     } else {
@@ -191,7 +203,12 @@ export class ZipToRouting extends Component {
     if (headers.join() !== ["Zip Code", "Routing Profile"].join()) {
       let errorHeader = "Not valide headers";
       let errorText = "Your headers must be Zip Code and Routing Profile";
-      this.setState({ showError: true, errorHeader, errorText });
+      this.setState({
+        showError: true,
+        errorHeader,
+        errorText,
+        disabledUpload: true
+      });
       return [];
     }
 
@@ -202,14 +219,24 @@ export class ZipToRouting extends Component {
         let errorHeader = "Count columns error";
         let errorText = "You must have two columns in the file";
 
-        this.setState({ showError: true, errorHeader, errorText });
+        this.setState({
+          showError: true,
+          errorHeader,
+          errorText,
+          disabledUpload: true
+        });
         return [];
       }
       for (let j = 0; j < headers.length; j++) {
         if (currentline[j].length > 255) {
           let errorHeader = "Value length error";
           let errorText = "Your max length of value must be not more 255";
-          this.setState({ showError: true, errorHeader, errorText });
+          this.setState({
+            showError: true,
+            errorHeader,
+            errorText,
+            disabledUpload: true
+          });
           return [];
         }
         obj[headers[j]] = currentline[j];
