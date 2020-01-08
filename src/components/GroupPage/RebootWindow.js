@@ -100,11 +100,10 @@ class RebootWindow extends Component {
 
   updateIad = () => {
     const { data, onClose } = this.props;
-    const { rebootLater, requestedTime } = this.state;
+    const { requestedTime } = this.state;
     const dataForUpdate = {
       ...data,
       rebootRequest: {
-        scheduled: rebootLater,
         requestedTime
       }
     };
