@@ -19,6 +19,7 @@ class RebootWindow extends Component {
 
   render() {
     const { show, onClose } = this.props;
+    console.log(this.state.rebootLater);
     return (
       <Modal show={show} onHide={() => onClose()}>
         <Modal.Header closeButton>
@@ -47,7 +48,9 @@ class RebootWindow extends Component {
                 <FormControl
                   componentClass="select"
                   value={this.state.rebootLater}
-                  onChange={e => this.setState({ rebootLater: e.target.value })}
+                  onChange={e =>
+                    this.setState({ rebootLater: e.target.value === "true" })
+                  }
                 >
                   <option value={false}>Reboot now</option>
                   <option value={true}>Reboot later</option>
@@ -70,7 +73,7 @@ class RebootWindow extends Component {
                   <FormControl
                     type="time"
                     step={1800}
-                    onKeyDown={e => e.preventDefault()}
+                    //onKeyDown={e => e.preventDefault()}
                     onChange={e =>
                       this.setState({ requestedTime: e.target.value })
                     }

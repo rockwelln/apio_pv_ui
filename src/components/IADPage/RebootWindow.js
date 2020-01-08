@@ -70,7 +70,7 @@ class RebootWindow extends Component {
                   <FormControl
                     type="time"
                     step={1800}
-                    onKeyDown={e => e.preventDefault()}
+                    //onKeyDown={e => e.preventDefault()}
                     onChange={e =>
                       this.setState({ requestedTime: e.target.value })
                     }
