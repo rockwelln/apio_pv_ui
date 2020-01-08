@@ -145,7 +145,7 @@ export class Reconciliations extends Component {
                             defaultMessage="Anomaly event"
                           />
                         </th>
-                        {/* <th>
+                        <th>
                           <FormattedMessage
                             id="creation_date"
                             defaultMessage="Creation date"
@@ -174,14 +174,14 @@ export class Reconciliations extends Component {
                             id="reconciliation_report"
                             defaultMessage="Reconciliation report"
                           />
-                        </th> */}
+                        </th>
                         <th>
                           <FormattedMessage
                             id="anomaly_status"
                             defaultMessage="Anomaly status"
                           />
                         </th>
-                        {/* <th>
+                        <th>
                           <FormattedMessage
                             id="assigned_team"
                             defaultMessage="Assigned team"
@@ -216,7 +216,7 @@ export class Reconciliations extends Component {
                             id="comments"
                             defaultMessage="Comments"
                           />
-                        </th> */}
+                        </th>
                         {/* <th /> */}
                       </tr>
                     </thead>
@@ -309,19 +309,35 @@ export class Reconciliations extends Component {
     const { searchValue } = this.state;
     const SearchArray = this.props.anomalies
       .filter(
-        anomalie =>
-          (anomalie.enterprise_id &&
-            anomalie.enterprise_id
+        anomaly =>
+          (anomaly.enterprise_id &&
+            anomaly.enterprise_id
               .toLowerCase()
               .includes(searchValue.toLowerCase())) ||
-          (anomalie.group_id &&
-            anomalie.group_id
+          (anomaly.group_id &&
+            anomaly.group_id
               .toLowerCase()
               .includes(searchValue.toLowerCase())) ||
-          (anomalie.iad_id &&
-            anomalie.iad_id.toLowerCase().includes(searchValue.toLowerCase()))
+          (anomaly.iad_id &&
+            anomaly.iad_id.toLowerCase().includes(searchValue.toLowerCase())) ||
+          (anomaly.assigned_team &&
+            anomaly.assigned_team
+              .toLowerCase()
+              .includes(searchValue.toLowerCase())) ||
+          (anomaly.assigned_user &&
+            anomaly.assigned_user
+              .toLowerCase()
+              .includes(searchValue.toLowerCase())) ||
+          (anomaly.anomaly_status &&
+            String(anomaly.anomaly_status)
+              .toLowerCase()
+              .includes(searchValue.toLowerCase())) ||
+          (anomaly.creation_date &&
+            anomaly.creation_date
+              .toLowerCase()
+              .includes(searchValue.toLowerCase()))
       )
-      .map(anomalie => anomalie);
+      .map(anomaly => anomaly);
     this.setState({ anomalies: SearchArray }, () => this.pagination());
   };
 
