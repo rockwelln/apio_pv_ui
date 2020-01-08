@@ -165,7 +165,6 @@ export class IADPage extends Component {
       this.setState({ showRebootDialog: true, data: clearData });
       return;
     }
-    console.log(124231241);
     if (Object.keys(clearData).length) {
       this.setState({ disabledButton: true }, () =>
         this.props

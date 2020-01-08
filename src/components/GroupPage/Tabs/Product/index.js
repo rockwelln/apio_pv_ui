@@ -62,7 +62,6 @@ export class Product extends Component {
         </div>
       );
     }
-    console.log(this.state.group);
     return (
       <React.Fragment>
         <Row className={"margin-top-1"}>

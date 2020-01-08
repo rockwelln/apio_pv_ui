@@ -19,7 +19,6 @@ class RebootWindow extends Component {
 
   render() {
     const { show, onClose } = this.props;
-    console.log(this.state.rebootLater);
     return (
       <Modal show={show} onHide={() => onClose()}>
         <Modal.Header closeButton>
