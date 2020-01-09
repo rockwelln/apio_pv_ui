@@ -120,20 +120,6 @@ export class AddDevicePage extends Component {
                       }))
                     ]}
                   />
-                  {/* <FormControl
-                    componentClass="select"
-                    value={this.state.deviceType}
-                    onChange={e =>
-                      this.setState({ deviceType: e.target.value })
-                    }
-                  >
-                    <option value={"Other"}>{"Other"}</option>
-                    {this.props.phoneTypes.map((el, i) => (
-                      <option key={i} value={el.technicalName}>
-                        {el.displayName}
-                      </option>
-                    ))}
-                  </FormControl> */}
                 </div>
               </Col>
             </Row>
