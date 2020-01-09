@@ -47,10 +47,10 @@ export class AddUserPage extends Component {
     userId: "",
     password: "",
     passwordError: null,
-    templateName: "",
+    templateName: { value: "", label: "none" },
     buttonName: "Create",
     isLoadingGroup: true,
-    phoneNumber: "",
+    phoneNumber: { value: "", label: "none" },
     isLoadingLanguages: true,
     showMore: false,
     newPhoneNumber: ""
@@ -59,7 +59,10 @@ export class AddUserPage extends Component {
   componentDidMount = () => {
     this.props.fetchGetLanguages().then(() =>
       this.setState({
-        language: this.props.languages.defaultLangue,
+        language: {
+          value: this.props.languages.defaultLangue,
+          label: this.props.languages.defaultLangue
+        },
         isLoadingLanguages: false
       })
     );
@@ -133,6 +136,7 @@ export class AddUserPage extends Component {
                       <Select
                         defaultValue={this.state.phoneNumber}
                         onChange={this.setPhoneNumber}
+                        placeholder="phone number"
                         isSearchable
                         options={[
                           { value: "New number", label: "New number" },
@@ -173,29 +177,18 @@ export class AddUserPage extends Component {
                       Template
                     </Col>
                     <Col md={9}>
-                      <FormControl
-                        componentClass="select"
-                        placeholder="Template"
+                      <Select
                         defaultValue={templateName}
-                        onChange={e =>
-                          this.setState({
-                            templateName: e.target.value
-                          })
-                        }
-                      >
-                        <option key={"none"} value="">
-                          none
-                        </option>
-                        {this.props.category.templates.map(template => (
-                          <option
-                            key={`${template.name}`}
-                            value={template.name}
-                          >
-                            {template.name}
-                          </option>
-                        ))}
-                        ))}
-                      </FormControl>
+                        onChange={this.setTemplate}
+                        placeholder="Template"
+                        options={[
+                          { value: "", label: "none" },
+                          ...this.props.category.templates.map(template => ({
+                            value: template.name,
+                            label: template.name
+                          }))
+                        ]}
+                      />
                     </Col>
                   </FormGroup>
                   <FormGroup controlId="language">
@@ -207,7 +200,20 @@ export class AddUserPage extends Component {
                       Language{"\u002a"}
                     </Col>
                     <Col md={9}>
-                      <FormControl
+                      <Select
+                        value={language}
+                        onChange={this.setLanguage}
+                        placeholder="Language"
+                        options={[
+                          ...this.props.languages.availableLanguages.map(
+                            lang => ({
+                              value: lang.name,
+                              label: lang.name
+                            })
+                          )
+                        ]}
+                      />
+                      {/* <FormControl
                         componentClass="select"
                         defaultValue={language}
                         onChange={e =>
@@ -221,7 +227,7 @@ export class AddUserPage extends Component {
                             {lang.name}
                           </option>
                         ))}
-                      </FormControl>
+                      </FormControl> */}
                     </Col>
                   </FormGroup>
                   {this.state.showMore && (
@@ -469,8 +475,8 @@ export class AddUserPage extends Component {
                           className="btn-primary"
                           disabled={
                             buttonName === "Creating..." ||
-                            !this.state.phoneNumber ||
-                            (this.state.phoneNumber === "New number" &&
+                            !this.state.phoneNumber.value ||
+                            (this.state.phoneNumber.value === "New number" &&
                               !this.state.newPhoneNumber)
                           }
                         >
@@ -519,22 +525,33 @@ export class AddUserPage extends Component {
     });
   };
 
-  setPhoneNumber = e => {
-    console.log(e);
-    if (e.value === "New number") {
-      this.setState({ phoneNumber: e.value });
+  setPhoneNumber = selected => {
+    if (selected.value === "New number") {
+      this.setState({ phoneNumber: selected });
       return;
     }
 
     const password = this.generetePassword();
     this.setState({
-      phoneNumber: e.value,
-      userId: e.value,
-      firstName: e.value,
-      lastName: e.value,
-      cliFirstName: e.value,
-      cliLastName: e.value,
+      phoneNumber: selected,
+      userId: selected.value,
+      firstName: selected.value,
+      lastName: selected.value,
+      cliFirstName: selected.value,
+      cliLastName: selected.value,
       password
+    });
+  };
+
+  setTemplate = selected => {
+    this.setState({
+      templateName: selected
+    });
+  };
+
+  setLanguage = selected => {
+    this.setState({
+      language: selected
     });
   };
 
@@ -545,7 +562,7 @@ export class AddUserPage extends Component {
 
   addUserCheckLogic = e => {
     e.preventDefault();
-    if (this.state.phoneNumber === "New number") {
+    if (this.state.phoneNumber.value === "New number") {
       this.props
         .fetchPostAssignPhoneNumbersToGroup(
           this.props.match.params.tenantId,
@@ -607,9 +624,9 @@ export class AddUserPage extends Component {
       lastName,
       cliFirstName: useSameName ? firstName : cliFirstName,
       cliLastName: useSameName ? lastName : cliLastName,
-      templateName,
+      templateName: templateName.value,
       password,
-      language,
+      language: language.value,
       trunkEndpoint: {
         trunkGroupDeviceEndpoint: {
           name:
@@ -619,7 +636,8 @@ export class AddUserPage extends Component {
           isPilotUser: false
         }
       },
-      phoneNumber: phoneNumber === "New number" ? newPhoneNumber : phoneNumber
+      phoneNumber:
+        phoneNumber.value === "New number" ? newPhoneNumber : phoneNumber.value
     };
 
     const clearData = removeEmpty(data);
@@ -632,15 +650,17 @@ export class AddUserPage extends Component {
           clearData
         )
         .then(res =>
-          this.setState({ buttonName: "Create" }, () =>
-            res && this.props.match.params.trunkGroupName
-              ? this.props.history.push(
-                  `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/trunkgroup/${this.props.match.params.trunkGroupName}/users/${this.props.createdUserInGroup.userId}`
-                )
-              : this.props.history.push(
-                  `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/users/${this.props.createdUserInGroup.userId}`
-                )
-          )
+          res === "success"
+            ? this.setState({ buttonName: "Create" }, () =>
+                this.props.match.params.trunkGroupName
+                  ? this.props.history.push(
+                      `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/trunkgroup/${this.props.match.params.trunkGroupName}/users/${this.props.createdUserInGroup.userId}`
+                    )
+                  : this.props.history.push(
+                      `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/users/${this.props.createdUserInGroup.userId}`
+                    )
+              )
+            : this.setState({ buttonName: "Create" })
         )
     );
   };

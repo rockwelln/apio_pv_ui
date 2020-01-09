@@ -1454,7 +1454,10 @@ export function fetchPostCreateUserToGroup(tenantId, groupId, data) {
       data
     )
       .then(res => res.json())
-      .then(data => dispatch(postCreateUserToGroup(data)))
+      .then(data => {
+        dispatch(postCreateUserToGroup(data));
+        return "success";
+      })
       .catch(error => {
         NotificationsManager.error(
           <FormattedMessage
