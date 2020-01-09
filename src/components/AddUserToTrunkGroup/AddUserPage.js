@@ -149,7 +149,7 @@ export class AddUserPage extends Component {
                       />
                     </Col>
                   </FormGroup>
-                  {this.state.phoneNumber === "New number" && (
+                  {this.state.phoneNumber.value === "New number" && (
                     <FormGroup controlId="newNumber">
                       <Col
                         componentClass={ControlLabel}
