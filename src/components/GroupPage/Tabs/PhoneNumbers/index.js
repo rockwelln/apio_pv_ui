@@ -433,14 +433,12 @@ export class PhoneNumbersTab extends Component {
       );
       return;
     }
-    const data = {
-      refresh_db: true,
-      only_for_numbers: numbersForRefresh
-    };
-    // const queryString = Object.keys(data)
-    //   .map(key => key + "=" + data[key])
-    //   .join("&");
-    const queryString = `refresh_db=true&only_for_numbers=[${numbersForRefresh}]`;
+    const queryNumbers = numbersForRefresh.reduce(
+      (numbersString, number) =>
+        (numbersString = `${numbersString}&only_for_numbers=${number}`),
+      ""
+    );
+    const queryString = `refresh_db=true${queryNumbers}`;
     this.props.fetchGetPhoneNumbersWithRefreshDB(
       this.props.match.params.tenantId,
       this.props.match.params.groupId,
