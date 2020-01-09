@@ -102,7 +102,7 @@ export class ZipToRouting extends Component {
                 type="file"
                 onChange={this.handleInputChange}
                 disabled={this.state.showWarning || this.state.showError}
-                accept=".csv"
+                accept="text/csv"
               />
             </div>
           </Col>
@@ -215,7 +215,6 @@ export class ZipToRouting extends Component {
     for (let i = withHeaders ? 1 : 0; i < lines.length; i++) {
       let obj = {};
       let currentline = lines[i].split(";");
-      console.log(currentline);
       if (currentline.length > 2) {
         let errorHeader = "Count columns error";
         let errorText = "You must have two columns in the file";
