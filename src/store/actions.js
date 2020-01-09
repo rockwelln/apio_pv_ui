@@ -556,6 +556,10 @@ export const removeSuccesfulValidPhoneTenant = data => ({
   data
 });
 
+export const trunkNotAuthorisedTenant = () => ({
+  type: actionType.TRUNK_NOT_AUTHORISED_TENANT
+});
+
 export function fetchGetTenants(cancelLoad) {
   return function(dispatch) {
     return fetch_get(`${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/`)
@@ -1264,15 +1268,19 @@ export function fetchGetTrunkByTenantID(tenantId) {
       `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/features/trunk_groups/`
     )
       .then(data => dispatch(getTrunkByTenantID(data)))
-      .catch(error =>
+      .catch(error => {
+        if (error.response.status === 404) {
+          dispatch(trunkNotAuthorisedTenant());
+          return;
+        }
         NotificationsManager.error(
           <FormattedMessage
             id="fetch-trunk-failed"
             defaultMessage="Failed to fetch trunks!"
           />,
           error.message
-        )
-      );
+        );
+      });
   };
 }
 

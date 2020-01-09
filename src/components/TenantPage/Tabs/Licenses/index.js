@@ -125,126 +125,136 @@ export class Licenses extends Component {
                   </React.Fragment>
                 )}
               </Panel.Heading>
-              {Object.keys(trunkGroups).length ? (
-                <Panel.Body>
-                  <Row>
-                    <Col md={8} className={"text-left"}>
-                      <FormattedMessage
-                        id="trunking_licenses"
-                        defaultMessage={`Trunking licenses:`}
-                      />
-                    </Col>
-                    {!editTrunkCapacity ? (
-                      <Col
-                        md={4}
-                        className={"text-right"}
-                      >{`${this.props.tenantTrunkGroups.maxActiveCalls.maximum}`}</Col>
-                    ) : (
-                      <Col md={4} className={"text-right"}>
-                        <FormControl
-                          type="number"
-                          defaultValue={
-                            this.props.tenantTrunkGroups.maxActiveCalls.maximum
-                          }
-                          min={0}
-                          onChange={e => {
-                            this.props.clearErrorMassage();
-                            let target = e.currentTarget;
-                            this.setState(prevState => ({
-                              trunkGroups: {
-                                ...prevState.trunkGroups,
-                                maxActiveCalls: {
-                                  ...prevState.trunkGroups.maxActiveCalls,
-                                  maximum: Number(target.value)
-                                }
-                              }
-                            }));
-                          }}
+              {this.props.isAuthorisedTrunkTenant ? (
+                Object.keys(trunkGroups).length ? (
+                  <Panel.Body>
+                    <Row>
+                      <Col md={8} className={"text-left"}>
+                        <FormattedMessage
+                          id="trunking_licenses"
+                          defaultMessage={`Trunking licenses:`}
                         />
                       </Col>
-                    )}
-                  </Row>
-                  <Row>
-                    <Col md={8} className={"text-left"}>
-                      <FormattedMessage
-                        id="max_bursting"
-                        defaultMessage={`Max bursting:`}
-                      />
-                    </Col>
-                    {!editTrunkCapacity ? (
-                      <Col md={4} className={"text-right"}>{`${
-                        this.props.tenantTrunkGroups.burstingMaxActiveCalls
-                          .unlimited
-                          ? String.fromCharCode(INFINITY)
-                          : this.props.tenantTrunkGroups.burstingMaxActiveCalls
-                              .maximum
-                      }`}</Col>
-                    ) : (
-                      <Col md={4} className={"text-right"}>
-                        <Checkbox
-                          defaultChecked={
-                            this.props.tenantTrunkGroups.burstingMaxActiveCalls
-                              .unlimited
-                          }
-                          onChange={() => {
-                            this.props.clearErrorMassage();
-                            this.setState(prevState => ({
-                              trunkGroups: {
-                                ...prevState.trunkGroups,
-                                burstingMaxActiveCalls: {
-                                  ...prevState.trunkGroups
-                                    .burstingMaxActiveCalls,
-                                  unlimited: !prevState.trunkGroups
-                                    .burstingMaxActiveCalls.unlimited
-                                }
-                              }
-                            }));
-                          }}
-                        >
-                          {String.fromCharCode(INFINITY)}
-                        </Checkbox>
-                        {!trunkGroups.burstingMaxActiveCalls.unlimited && (
+                      {!editTrunkCapacity ? (
+                        <Col
+                          md={4}
+                          className={"text-right"}
+                        >{`${this.props.tenantTrunkGroups.maxActiveCalls.maximum}`}</Col>
+                      ) : (
+                        <Col md={4} className={"text-right"}>
                           <FormControl
                             type="number"
-                            min={0}
                             defaultValue={
-                              this.props.tenantTrunkGroups
-                                .burstingMaxActiveCalls.maximum
+                              this.props.tenantTrunkGroups.maxActiveCalls
+                                .maximum
                             }
+                            min={0}
                             onChange={e => {
                               this.props.clearErrorMassage();
                               let target = e.currentTarget;
                               this.setState(prevState => ({
                                 trunkGroups: {
                                   ...prevState.trunkGroups,
-                                  burstingMaxActiveCalls: {
-                                    ...prevState.trunkGroups
-                                      .burstingMaxActiveCalls,
+                                  maxActiveCalls: {
+                                    ...prevState.trunkGroups.maxActiveCalls,
                                     maximum: Number(target.value)
                                   }
                                 }
                               }));
                             }}
                           />
+                        </Col>
+                      )}
+                    </Row>
+                    <Row>
+                      <Col md={8} className={"text-left"}>
+                        <FormattedMessage
+                          id="max_bursting"
+                          defaultMessage={`Max bursting:`}
+                        />
+                      </Col>
+                      {!editTrunkCapacity ? (
+                        <Col md={4} className={"text-right"}>{`${
+                          this.props.tenantTrunkGroups.burstingMaxActiveCalls
+                            .unlimited
+                            ? String.fromCharCode(INFINITY)
+                            : this.props.tenantTrunkGroups
+                                .burstingMaxActiveCalls.maximum
+                        }`}</Col>
+                      ) : (
+                        <Col md={4} className={"text-right"}>
+                          <Checkbox
+                            defaultChecked={
+                              this.props.tenantTrunkGroups
+                                .burstingMaxActiveCalls.unlimited
+                            }
+                            onChange={() => {
+                              this.props.clearErrorMassage();
+                              this.setState(prevState => ({
+                                trunkGroups: {
+                                  ...prevState.trunkGroups,
+                                  burstingMaxActiveCalls: {
+                                    ...prevState.trunkGroups
+                                      .burstingMaxActiveCalls,
+                                    unlimited: !prevState.trunkGroups
+                                      .burstingMaxActiveCalls.unlimited
+                                  }
+                                }
+                              }));
+                            }}
+                          >
+                            {String.fromCharCode(INFINITY)}
+                          </Checkbox>
+                          {!trunkGroups.burstingMaxActiveCalls.unlimited && (
+                            <FormControl
+                              type="number"
+                              min={0}
+                              defaultValue={
+                                this.props.tenantTrunkGroups
+                                  .burstingMaxActiveCalls.maximum
+                              }
+                              onChange={e => {
+                                this.props.clearErrorMassage();
+                                let target = e.currentTarget;
+                                this.setState(prevState => ({
+                                  trunkGroups: {
+                                    ...prevState.trunkGroups,
+                                    burstingMaxActiveCalls: {
+                                      ...prevState.trunkGroups
+                                        .burstingMaxActiveCalls,
+                                      maximum: Number(target.value)
+                                    }
+                                  }
+                                }));
+                              }}
+                            />
+                          )}
+                        </Col>
+                      )}
+                    </Row>
+                    <Row>
+                      <Col md={12}>
+                        {this.props.groupTrunkErrorMassage && (
+                          <HelpBlock bsClass="color-error">
+                            {this.props.groupTrunkErrorMassage}
+                          </HelpBlock>
                         )}
                       </Col>
-                    )}
-                  </Row>
-                  <Row>
-                    <Col md={12}>
-                      {this.props.groupTrunkErrorMassage && (
-                        <HelpBlock bsClass="color-error">
-                          {this.props.groupTrunkErrorMassage}
-                        </HelpBlock>
-                      )}
-                    </Col>
-                  </Row>
-                </Panel.Body>
+                    </Row>
+                  </Panel.Body>
+                ) : (
+                  <Panel.Body>
+                    <FormattedMessage
+                      id="no_trunk_groups"
+                      defaultMessage="No info"
+                    />
+                  </Panel.Body>
+                )
               ) : (
                 <Panel.Body>
                   <FormattedMessage
-                    id="no_trunk_groups"
-                    defaultMessage="No info"
+                    id="trunking_not_authorised"
+                    defaultMessage="Trunking not authorised"
                   />
                 </Panel.Body>
               )}
@@ -622,7 +632,8 @@ export class Licenses extends Component {
 const mapStateToProps = state => ({
   tenantLicenses: state.tenantLicenses,
   tenantTrunkGroups: state.tenantTrunkGroups,
-  userServices: state.userServicesTenant
+  userServices: state.userServicesTenant,
+  isAuthorisedTrunkTenant: state.isAuthorisedTrunkTenant
 });
 
 const mapDispatchToProps = {

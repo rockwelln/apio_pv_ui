@@ -109,7 +109,8 @@ const initialState = {
   createdTrunkGroup: {},
   device: {},
   userServicesGroup: [],
-  userServicesTenant: []
+  userServicesTenant: [],
+  isAuthorisedTrunkTenant: true
 };
 
 function mainReducer(state = initialState, action) {
@@ -514,7 +515,8 @@ function mainReducer(state = initialState, action) {
     case actionType.GET_TRUNK_BY_TENANT_ID: {
       return {
         ...state,
-        tenantTrunkGroups: action.data
+        tenantTrunkGroups: action.data,
+        isAuthorisedTrunkTenant: true
       };
     }
     case actionType.GET_DEVICE: {
@@ -1069,6 +1071,12 @@ function mainReducer(state = initialState, action) {
           ...state.validatedNumbersTenant,
           ok: newArray
         }
+      };
+    }
+    case actionType.TRUNK_NOT_AUTHORISED_TENANT: {
+      return {
+        ...state,
+        isAuthorisedTrunkTenant: false
       };
     }
     default:
