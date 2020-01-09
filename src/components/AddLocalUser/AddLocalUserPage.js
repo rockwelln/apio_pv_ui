@@ -11,6 +11,7 @@ import HelpBlock from "react-bootstrap/lib/HelpBlock";
 import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
+import Select from "react-select";
 
 import {
   fetchPostCreateLocalUser,
@@ -36,19 +37,23 @@ export class AddLocalUserPage extends Component {
     password: "",
     passwordError: null,
     buttonName: "Create",
-    userType: "",
+    userType: { value: "", label: "none" },
     confirmPassword: "",
     confirmPasswordError: null,
     isLoading: true
   };
 
   componentDidMount() {
-    this.props.fetchGetLanguages().then(() =>
+    this.props.fetchGetLanguages().then(() => {
+      console.log(this.props.languages);
       this.setState({
-        isLoading: false,
-        language: this.props.languages.defaultLangue
-      })
-    );
+        language: {
+          value: this.props.languages.defaultLangue,
+          label: this.props.languages.defaultLangue
+        },
+        isLoading: false
+      });
+    });
   }
 
   render() {
@@ -65,12 +70,14 @@ export class AddLocalUserPage extends Component {
       passwordError,
       buttonName,
       confirmPassword,
-      confirmPasswordError
+      confirmPasswordError,
+      language
     } = this.state;
 
     if (this.state.isLoading) {
       return <Loading />;
     }
+    console.log(this.state.language, this.state.userType);
 
     return (
       <React.Fragment>
@@ -268,21 +275,18 @@ export class AddLocalUserPage extends Component {
                       Language{"\u002a"}
                     </Col>
                     <Col md={9}>
-                      <FormControl
-                        componentClass="select"
-                        defaultValue={this.state.language}
-                        onChange={e =>
-                          this.setState({
-                            language: e.target.value
-                          })
+                      <Select
+                        value={language}
+                        onChange={selected =>
+                          this.setState({ language: selected })
                         }
-                      >
-                        {this.props.languages.availableLanguages.map(lang => (
-                          <option key={`${lang.locale}`} value={lang.name}>
-                            {lang.name}
-                          </option>
-                        ))}
-                      </FormControl>
+                        options={this.props.languages.availableLanguages.map(
+                          lang => ({
+                            value: lang.name,
+                            label: lang.name
+                          })
+                        )}
+                      />
                     </Col>
                   </FormGroup>
                   <FormGroup controlId="userType">
@@ -294,21 +298,18 @@ export class AddLocalUserPage extends Component {
                       User type{"\u002a"}
                     </Col>
                     <Col md={9}>
-                      <FormControl
-                        componentClass="select"
+                      <Select
                         defaultValue={this.state.userType}
-                        onChange={e =>
-                          this.setState({
-                            userType: e.target.value
-                          })
+                        onChange={selected =>
+                          this.setState({ userType: selected })
                         }
-                      >
-                        {USERTYPES.map(type => (
-                          <option key={`${type.value}`} value={type.value}>
-                            {type.name}
-                          </option>
-                        ))}
-                      </FormControl>
+                        options={[
+                          ...USERTYPES.map(type => ({
+                            value: type.value,
+                            label: type.name
+                          }))
+                        ]}
+                      />
                     </Col>
                   </FormGroup>
                 </FormGroup>
@@ -386,8 +387,8 @@ export class AddLocalUserPage extends Component {
       username,
       password,
       confirmPassword,
-      language,
-      userType
+      language: language.value,
+      userType: userType.value
     };
 
     const clearData = removeEmpty(data);
