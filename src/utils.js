@@ -101,7 +101,7 @@ export function parseJSON(response) {
   return response.json();
 }
 
-export function fetch_get(url, token) {
+export function fetch_get(url) {
   const full_url = url.href
     ? url
     : url.startsWith("http")

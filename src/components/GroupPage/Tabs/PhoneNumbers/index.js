@@ -437,9 +437,10 @@ export class PhoneNumbersTab extends Component {
       refresh_db: true,
       only_for_numbers: numbersForRefresh
     };
-    const queryString = Object.keys(data)
-      .map(key => key + "=" + data[key])
-      .join("&");
+    // const queryString = Object.keys(data)
+    //   .map(key => key + "=" + data[key])
+    //   .join("&");
+    const queryString = `refresh_db=true&only_for_numbers=[${numbersForRefresh}]`;
     this.props.fetchGetPhoneNumbersWithRefreshDB(
       this.props.match.params.tenantId,
       this.props.match.params.groupId,

@@ -215,6 +215,7 @@ export class ZipToRouting extends Component {
     for (let i = withHeaders ? 1 : 0; i < lines.length; i++) {
       let obj = {};
       let currentline = lines[i].split(";");
+      console.log(currentline);
       if (currentline.length > 2) {
         let errorHeader = "Count columns error";
         let errorText = "You must have two columns in the file";
@@ -228,7 +229,7 @@ export class ZipToRouting extends Component {
         return [];
       }
       for (let j = 0; j < headers.length; j++) {
-        if (currentline[j].length > 255) {
+        if (currentline[j].length && currentline[j].length > 255) {
           let errorHeader = "Value length error";
           let errorText = "Your max length of value must be not more 255";
           this.setState({
