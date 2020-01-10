@@ -20,6 +20,9 @@ export class EnterpriseTrunk extends Component {
           <p className={"header"}>
             {`Enterprise Trunk: ${this.props.match.params.entTrunkId}`}
           </p>
+          <p>
+            {`Select numbers from other ET's and transfer/add them to this ET`}
+          </p>
         </div>
         <div className={"panel-body"}>
           <Tabs
