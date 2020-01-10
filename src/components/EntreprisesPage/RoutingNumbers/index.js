@@ -53,6 +53,7 @@ export class RoutingNumbers extends Component {
     if (isLoading) {
       return <Loading />;
     }
+    console.log(this.props.enterpriseTrunks);
     return (
       <React.Fragment>
         <Row className={"margin-top-2"}>

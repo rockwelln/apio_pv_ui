@@ -166,17 +166,38 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.GET_ENTERPRISE_TRUNKS_BY_TENANT: {
-      const colors = ["#fcece0", "#fff8e4", "#f0f7ed", "e6e3da"];
+      const colors = [
+        "#fcece0",
+        "#fff8e4",
+        "#f0f7ed",
+        "e6e3da",
+        "e612da",
+        "#21f8e4",
+        "#fcece0",
+        "#fff8e4",
+        "#f0f7ed",
+        "e6e3da",
+        "e612da",
+        "#21f8e4"
+      ];
       let tenantEnterpriseTrunks = [];
       Object.keys(action.data.enterpriseTrunks).map((trunk, index) => {
         if (Array.isArray(action.data.enterpriseTrunks[trunk])) {
-          action.data.enterpriseTrunks[trunk].map(el =>
+          if (action.data.enterpriseTrunks[trunk].length) {
+            action.data.enterpriseTrunks[trunk].map(el => {
+              console.log(el);
+              tenantEnterpriseTrunks.push({
+                ...el,
+                color: colors[index],
+                entTrunk: trunk
+              });
+            });
+          } else {
             tenantEnterpriseTrunks.push({
-              ...el,
               color: colors[index],
               entTrunk: trunk
-            })
-          );
+            });
+          }
         }
         return 0;
       });
