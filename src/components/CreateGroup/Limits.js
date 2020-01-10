@@ -98,9 +98,7 @@ export class Licenses extends Component {
               <div className={"header"}>
                 ADD GROUP: usage limits{" "}
                 <Link
-                  to={`/provisioning/${
-                    this.props.match.params.gwName
-                  }/tenants/${this.props.match.params.tenantId}`}
+                  to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}`}
                 >
                   <Button
                     className={"margin-left-1 btn-danger"}
@@ -176,9 +174,10 @@ export class Licenses extends Component {
                         />
                       </Col>
                       {!editTrunkCapacity ? (
-                        <Col md={4} className={"text-right"}>{`${
-                          this.props.trunkGroups.maxActiveCalls
-                        }`}</Col>
+                        <Col
+                          md={4}
+                          className={"text-right"}
+                        >{`${this.props.trunkGroups.maxActiveCalls}`}</Col>
                       ) : (
                         <Col md={4} className={"text-right"}>
                           <FormControl
@@ -640,7 +639,7 @@ export class Licenses extends Component {
       .then(() =>
         this.props.fetchPostAddGroupServicesToGroup(
           this.props.match.params.tenantId,
-          this.props.match.params.groupId,
+          this.props.createdGroup.groupId,
           authorisedServices
         )
       )
