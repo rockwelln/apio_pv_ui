@@ -71,7 +71,10 @@ export class AddIAD extends Component {
     circuitID: "",
     praByIad: {},
     arrayOfPraId: [],
-    selectedID: []
+    selectedID: [],
+    clock_master: false,
+    dual_power: false,
+    isdnTerminationSide: ""
   };
   componentDidMount() {
     this.props
@@ -1293,6 +1296,88 @@ export class AddIAD extends Component {
                 )}
               </React.Fragment>
             )}
+            <React.Fragment>
+              <Row className={"margin-top-1"}>
+                <Col md={12} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex font-24"}>
+                    <FormattedMessage
+                      id="advanced_parameters"
+                      defaultMessage="Advanced Parameters"
+                    />
+                  </div>
+                </Col>
+              </Row>
+              <Row className={"margin-top-1"}>
+                <Col md={12} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex flex-basis-16"}>
+                    <ControlLabel>
+                      <FormattedMessage
+                        id="clockMaster"
+                        defaultMessage="Clock Master"
+                      />
+                    </ControlLabel>
+                  </div>
+                  <div className={"margin-right-1 flex-basis-33"}>
+                    <Checkbox
+                      defaultChecked={this.state.clock_master}
+                      onChange={e =>
+                        this.setState({ clock_master: e.target.checked })
+                      }
+                    />
+                  </div>
+                </Col>
+              </Row>
+              <Row className={"margin-top-1"}>
+                <Col md={12} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex flex-basis-16"}>
+                    <ControlLabel>
+                      <FormattedMessage
+                        id="dualPower"
+                        defaultMessage="Dual Power"
+                      />
+                    </ControlLabel>
+                  </div>
+                  <div className={"margin-right-1 flex-basis-33"}>
+                    <Checkbox
+                      defaultChecked={this.state.dual_power}
+                      onChange={e =>
+                        this.setState({ dual_power: e.target.checked })
+                      }
+                    />
+                  </div>
+                </Col>
+              </Row>
+              <Row className={"margin-top-1"}>
+                <Col md={12} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex flex-basis-16"}>
+                    <ControlLabel>
+                      <FormattedMessage
+                        id="isdnTerminationSide"
+                        defaultMessage="ISDN termination side"
+                      />
+                    </ControlLabel>
+                  </div>
+                  <div className={"margin-right-1 flex-basis-33"}>
+                    <FormControl
+                      componentClass="select"
+                      value={this.state.isdnTerminationSide}
+                      onChange={e =>
+                        this.setState({ isdnTerminationSide: e.target.value })
+                      }
+                    >
+                      <option value={""}>none</option>
+                      {this.props.config.tenant.group.iad.isdnTerminationSide.map(
+                        (el, i) => (
+                          <option key={i} value={el.value}>
+                            {el.label}
+                          </option>
+                        )
+                      )}
+                    </FormControl>
+                  </div>
+                </Col>
+              </Row>
+            </React.Fragment>
             <Row>
               <Col md={12}>
                 <div className="button-row">
@@ -1460,7 +1545,10 @@ export class AddIAD extends Component {
       dtmf,
       direction,
       channelsIn,
-      channelsOut
+      channelsOut,
+      clock_master,
+      dual_power,
+      isdnTerminationSide
     } = this.state;
     let pra_info = {};
     Object.keys(this.state.praByIad).forEach(key => {
@@ -1524,7 +1612,12 @@ export class AddIAD extends Component {
         channelsOut
       },
       virtual: this.props.group.virtual,
-      pra_info
+      pra_info,
+      advanced: {
+        clock_master,
+        dual_power,
+        isdnTerminationSide
+      }
     };
     const clearData = removeEmpty(data);
     this.props
