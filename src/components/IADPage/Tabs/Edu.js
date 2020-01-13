@@ -32,7 +32,9 @@ export class Edu extends Component {
       norm_status_edu: "",
       norm_error_edu: "",
       norm_status_sr: "",
-      norm_error_sr: ""
+      norm_error_sr: "",
+      ip_sr: "",
+      ip_edu: ""
     },
     edu2: {
       name: "",
@@ -46,7 +48,9 @@ export class Edu extends Component {
       norm_status_edu: "",
       norm_error_edu: "",
       norm_status_sr: "",
-      norm_error_sr: ""
+      norm_error_sr: "",
+      ip_sr: "",
+      ip_edu: ""
     },
     disabledButton: false
   };
@@ -483,6 +487,70 @@ export class Edu extends Component {
                 <FormControl
                   type="text"
                   defaultValue={this.state.edu2.norm_error_sr}
+                  disabled
+                />
+              </div>
+            </Col>
+          )}
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={6} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-33"}>
+              <ControlLabel>
+                <FormattedMessage id="ip_sr" defaultMessage="SR WAN IP" />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-66"}>
+              <FormControl
+                type="text"
+                defaultValue={this.state.edu1.ip_sr}
+                disabled
+              />
+            </div>
+          </Col>
+          {this.props.iad.edu2 && (
+            <Col md={6} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-33"}>
+                <ControlLabel>
+                  <FormattedMessage id="ip_sr" defaultMessage="SR WAN IP" />
+                </ControlLabel>
+              </div>
+              <div className={"margin-right-1 flex-basis-66"}>
+                <FormControl
+                  type="text"
+                  defaultValue={this.state.edu2.ip_sr}
+                  disabled
+                />
+              </div>
+            </Col>
+          )}
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={6} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-33"}>
+              <ControlLabel>
+                <FormattedMessage id="ip_edu" defaultMessage="EDU WAN IP" />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-66"}>
+              <FormControl
+                type="text"
+                defaultValue={this.state.edu1.ip_edu}
+                disabled
+              />
+            </div>
+          </Col>
+          {this.props.iad.edu2 && (
+            <Col md={6} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-33"}>
+                <ControlLabel>
+                  <FormattedMessage id="ip_edu" defaultMessage="EDU WAN IP" />
+                </ControlLabel>
+              </div>
+              <div className={"margin-right-1 flex-basis-66"}>
+                <FormControl
+                  type="text"
+                  defaultValue={this.state.edu2.ip_edu}
                   disabled
                 />
               </div>

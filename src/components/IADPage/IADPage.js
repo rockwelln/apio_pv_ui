@@ -15,7 +15,8 @@ import {
   fetchGetIADById,
   fetchGetConfig,
   fetchPutUpdateIAD,
-  fetchGetGroupById
+  fetchGetGroupById,
+  fetchGetTimerForIAD
 } from "../../store/actions";
 
 import { removeEmpty } from "../remuveEmptyInObject";
@@ -38,6 +39,7 @@ export class IADPage extends Component {
     showRebootDialog: false
   };
   componentDidMount() {
+    this.props.fetchGetTimerForIAD(this.props.match.params.iadId);
     this.props.fetchGetGroupById(
       this.props.match.params.tenantId,
       this.props.match.params.groupId
@@ -194,7 +196,8 @@ const mapDispatchToProps = {
   fetchGetIADById,
   fetchGetConfig,
   fetchPutUpdateIAD,
-  fetchGetGroupById
+  fetchGetGroupById,
+  fetchGetTimerForIAD
 };
 
 export default withRouter(

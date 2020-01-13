@@ -30,7 +30,8 @@ const initialState = {
   createdReconciliationTeam: [],
   team: { users: [] },
   anomalies: [],
-  anomaly: {}
+  anomaly: {},
+  iadTimer: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -240,6 +241,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         anomaly: action.data
+      };
+    }
+    case actionType.GET_TIMER_FOR_IAD: {
+      return {
+        ...state,
+        iadTimer: action.data
       };
     }
     case actionType.POST_CREATE_IAD: {

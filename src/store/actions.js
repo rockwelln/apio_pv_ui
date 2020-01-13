@@ -110,6 +110,11 @@ export const getAnomaly = data => ({
   data
 });
 
+export const getTimerForIAD = data => ({
+  type: actionType.GET_TIMER_FOR_IAD,
+  data
+});
+
 export const postCreateTenant = data => ({
   type: actionType.POST_CREATE_TENANT,
   data
@@ -593,6 +598,25 @@ export function fetchGetAnomaly(hash) {
           <FormattedMessage
             id="fetch-anomaly-failed"
             defaultMessage="Failed to fetch anomaly!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchGetTimerForIAD(iadId) {
+  /////////////////////////////////
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/timers/search?filter=[{value: ${iadId}}]`
+    )
+      .then(data => dispatch(getTimerForIAD(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-timer-failed"
+            defaultMessage="Failed to fetch timer!"
           />,
           error.message
         )

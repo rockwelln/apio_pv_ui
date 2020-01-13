@@ -171,6 +171,10 @@ export class GroupService extends Component {
     const { services } = this.state;
     const data = { services };
     const clearData = removeEmpty(data);
+    if (!this.props.iad.services && services.dtmf) {
+      this.setState({ showRebootDialog: true, data: clearData });
+      return;
+    }
     if (services.dtmf !== this.props.iad.services.dtmf) {
       this.setState({ showRebootDialog: true, data: clearData });
       return;
