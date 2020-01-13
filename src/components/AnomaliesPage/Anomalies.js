@@ -111,8 +111,16 @@ export class Anomalies extends Component {
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
                     type="text"
-                    disabled
+                    disabled={this.state.isDisabled}
                     value={this.state.anomaly.anomaly_event}
+                    onChange={e =>
+                      this.setState({
+                        anomaly: {
+                          ...this.state.anomaly,
+                          anomaly_event: Number(e.target.value)
+                        }
+                      })
+                    }
                   />
                 </div>
               </Col>
@@ -385,10 +393,9 @@ export class Anomalies extends Component {
       comments
     };
     const clearData = removeEmpty(data);
-    this.props.fetchPutUpdateAnomaly(
-      this.props.match.params.anomalyHash,
-      clearData
-    );
+    this.props
+      .fetchPutUpdateAnomaly(this.props.match.params.anomalyHash, clearData)
+      .then(res => res === "success" && this.setState({ isDisabled: true }));
   };
 }
 

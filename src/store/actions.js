@@ -1025,6 +1025,7 @@ export function fetchPutUpdateAnomaly(hash, data) {
           />,
           "Successfully updated anomaly!"
         );
+        return "success";
       })
       .catch(error =>
         NotificationsManager.error(
