@@ -238,6 +238,10 @@ export const changeObjectIAD = (object, field, value) => ({
   value
 });
 
+export const clearIad = () => ({
+  type: actionType.CLEAR_IAD
+});
+
 export const clearCreatedTenant = () => ({
   type: actionType.CLEAR_CREATED_TENANT
 });

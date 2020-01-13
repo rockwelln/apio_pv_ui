@@ -16,7 +16,8 @@ import {
   fetchGetConfig,
   fetchPutUpdateIAD,
   fetchGetGroupById,
-  fetchGetTimerForIAD
+  fetchGetTimerForIAD,
+  clearIad
 } from "../../store/actions";
 
 import { removeEmpty } from "../remuveEmptyInObject";
@@ -55,6 +56,9 @@ export class IADPage extends Component {
           .fetchGetConfig()
           .then(() => this.setState({ isLoading: false }))
       );
+  }
+  componentWillUnmount() {
+    this.props.clearIad();
   }
   render() {
     if (this.state.isLoading) {
@@ -197,7 +201,8 @@ const mapDispatchToProps = {
   fetchGetConfig,
   fetchPutUpdateIAD,
   fetchGetGroupById,
-  fetchGetTimerForIAD
+  fetchGetTimerForIAD,
+  clearIad
 };
 
 export default withRouter(

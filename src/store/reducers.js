@@ -434,6 +434,13 @@ function mainReducer(state = initialState, action) {
       };
     }
 
+    case actionType.CLEAR_IAD: {
+      return {
+        ...state,
+        iad: {}
+      };
+    }
+
     default:
       return state;
   }

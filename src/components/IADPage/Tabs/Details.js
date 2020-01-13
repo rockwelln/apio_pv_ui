@@ -24,6 +24,12 @@ export class Details extends Component {
     disabledButton: false,
     isDisabled: true
   };
+  componentDidMount() {
+    this.setState({
+      macAddress: this.props.iad.macAddress,
+      pilotNumber: this.props.iad.pilotNumber
+    });
+  }
   render() {
     const iadType = this.props.config.tenant.group.iad.iadType.filter(
       el => el.value === this.props.iad.iadType
@@ -156,7 +162,7 @@ export class Details extends Component {
                 </div>
                 <div className="pull-right margin-right-1">
                   <Button
-                    onClick={() => this.setState({ isDisabled: true })}
+                    onClick={this.cancelClick}
                     type="submit"
                     className="btn-danger"
                   >
@@ -170,6 +176,15 @@ export class Details extends Component {
       </React.Fragment>
     );
   }
+
+  cancelClick = () => {
+    this.setState({
+      isDisabled: true,
+      macAddress: this.props.iad.macAddress,
+      pilotNumber: this.props.iad.pilotNumber,
+      errorMacAddress: null
+    });
+  };
 
   updateIAD = () => {
     const { macAddress, pilotNumber } = this.state;
