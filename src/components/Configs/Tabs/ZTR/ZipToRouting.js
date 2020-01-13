@@ -26,7 +26,6 @@ export class ZipToRouting extends Component {
     theInputKey: "inputKey"
   };
   render() {
-    console.log(this.state.disabledUpload);
     return (
       <React.Fragment>
         {(this.state.showError || this.state.showWarning) && (
@@ -153,7 +152,6 @@ export class ZipToRouting extends Component {
       this.setState({ csvValue: [] });
       return;
     }
-    console.log(target.files[0]);
     if (target.files[0].type !== "text/csv") {
       let errorHeader = "Invalide type file";
       let errorText = "Available formats for download: csv";

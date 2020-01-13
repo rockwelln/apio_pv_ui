@@ -184,21 +184,20 @@ function mainReducer(state = initialState, action) {
       let tenantEnterpriseTrunks = [];
       Object.keys(action.data.enterpriseTrunks).map((trunk, index) => {
         if (Array.isArray(action.data.enterpriseTrunks[trunk])) {
-          if (action.data.enterpriseTrunks[trunk].length) {
-            action.data.enterpriseTrunks[trunk].map(el => {
-              console.log(el);
-              tenantEnterpriseTrunks.push({
-                ...el,
-                color: colors[index],
-                entTrunk: trunk
-              });
-            });
-          } else {
+          //if (action.data.enterpriseTrunks[trunk].length) {
+          action.data.enterpriseTrunks[trunk].map(el => {
             tenantEnterpriseTrunks.push({
+              ...el,
               color: colors[index],
               entTrunk: trunk
             });
-          }
+          });
+          // } else {
+          //   tenantEnterpriseTrunks.push({
+          //     color: colors[index],
+          //     entTrunk: trunk
+          //   });
+          //}
         }
         return 0;
       });
