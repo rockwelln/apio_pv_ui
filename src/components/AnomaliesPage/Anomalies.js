@@ -9,15 +9,28 @@ import Panel from "react-bootstrap/lib/Panel";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
-import { fetchGetAnomaly, fetchPutUpdateAnomaly } from "../../store/actions";
+import {
+  fetchGetAnomaly,
+  fetchPutUpdateAnomaly,
+  fetchGetConfig
+} from "../../store/actions";
 import { removeEmpty } from "../remuveEmptyInObject";
 import DeleteModal from "./DeleteModal";
 import { FormattedMessage } from "react-intl";
 import Loading from "../../common/Loading";
 
 export class Anomalies extends Component {
-  state = { showDelete: false, isDisabled: true, anomaly: {}, isLoading: true };
+  state = {
+    showDelete: false,
+    isDisabled: true,
+    anomaly: {},
+    isLoading: true,
+    isLoadingConfig: true
+  };
   componentDidMount() {
+    this.props
+      .fetchGetConfig()
+      .then(() => this.setState({ isLoadingConfig: false }));
     this.props
       .fetchGetAnomaly(this.props.match.params.anomalyHash)
       .then(() =>
@@ -25,7 +38,7 @@ export class Anomalies extends Component {
       );
   }
   render() {
-    if (this.state.isLoading) {
+    if (this.state.isLoading || this.state.isLoadingConfig) {
       return <Loading />;
     }
     return (
@@ -110,9 +123,8 @@ export class Anomalies extends Component {
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
-                    type="text"
-                    disabled={this.state.isDisabled}
-                    value={this.state.anomaly.anomaly_event}
+                    componentClass="select"
+                    defaultValue={this.state.anomaly.anomaly_event}
                     onChange={e =>
                       this.setState({
                         anomaly: {
@@ -121,7 +133,17 @@ export class Anomalies extends Component {
                         }
                       })
                     }
-                  />
+                    disabled={this.state.isDisabled}
+                  >
+                    <option value="">none</option>
+                    {this.props.config.reconciliation.anomaly.event.map(
+                      (type, i) => (
+                        <option key={i} value={type.value}>
+                          {type.label}
+                        </option>
+                      )
+                    )}
+                  </FormControl>
                 </div>
               </Col>
             </Row>
@@ -200,9 +222,8 @@ export class Anomalies extends Component {
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
-                    type="number"
-                    disabled={this.state.isDisabled}
-                    value={this.state.anomaly.anomaly_status}
+                    componentClass="select"
+                    defaultValue={this.state.anomaly.anomaly_status}
                     onChange={e =>
                       this.setState({
                         anomaly: {
@@ -211,7 +232,17 @@ export class Anomalies extends Component {
                         }
                       })
                     }
-                  />
+                    disabled={this.state.isDisabled}
+                  >
+                    <option value="">none</option>
+                    {this.props.config.reconciliation.anomaly.status.map(
+                      (type, i) => (
+                        <option key={i} value={type.value}>
+                          {type.label}
+                        </option>
+                      )
+                    )}
+                  </FormControl>
                 </div>
               </Col>
             </Row>
@@ -306,8 +337,7 @@ export class Anomalies extends Component {
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
-                    type="number"
-                    disabled={this.state.isDisabled}
+                    componentClass="select"
                     value={this.state.anomaly.result}
                     onChange={e =>
                       this.setState({
@@ -317,7 +347,17 @@ export class Anomalies extends Component {
                         }
                       })
                     }
-                  />
+                    disabled={this.state.isDisabled}
+                  >
+                    <option value="">none</option>
+                    {this.props.config.reconciliation.anomaly.result.map(
+                      (type, i) => (
+                        <option key={i} value={type.value}>
+                          {type.label}
+                        </option>
+                      )
+                    )}
+                  </FormControl>
                 </div>
               </Col>
             </Row>
@@ -400,10 +440,15 @@ export class Anomalies extends Component {
 }
 
 const mapStateToProps = state => ({
-  anomaly: state.anomaly
+  anomaly: state.anomaly,
+  config: state.config
 });
 
-const mapDispatchToProps = { fetchGetAnomaly, fetchPutUpdateAnomaly };
+const mapDispatchToProps = {
+  fetchGetAnomaly,
+  fetchPutUpdateAnomaly,
+  fetchGetConfig
+};
 
 export default withRouter(
   connect(

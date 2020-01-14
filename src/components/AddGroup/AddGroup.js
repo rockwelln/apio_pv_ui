@@ -20,6 +20,8 @@ import { removeEmpty } from "../remuveEmptyInObject";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import Checkbox from "react-bootstrap/lib/Checkbox";
 
+import { validateInputPhoneNumber } from "../validateInputPhoneNumber";
+
 export class AddGroup extends Component {
   state = {
     siteName: "",
@@ -33,7 +35,8 @@ export class AddGroup extends Component {
     //cliName: "",
     isLoading: true,
     channelHunting: "",
-    np1Redundancy: false
+    np1Redundancy: false,
+    mainNumber: ""
   };
 
   componentDidMount = () => {
@@ -179,6 +182,29 @@ export class AddGroup extends Component {
                       </div>
                     </Radio>
                   </FormGroup>
+                </div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  <FormattedMessage
+                    id="mainNumber"
+                    defaultMessage="Main number"
+                  />
+                  {"\u002a"}
+                </div>
+                <div className={"margin-right-1 flex-basis-33"}>
+                  <FormControl
+                    className={"hide-arrows"}
+                    type="number"
+                    value={this.state.mainNumber}
+                    placeholder={"Main number"}
+                    onKeyDown={validateInputPhoneNumber}
+                    onChange={e => {
+                      this.setState({ mainNumber: e.target.value });
+                    }}
+                  />
                 </div>
               </Col>
             </Row>
