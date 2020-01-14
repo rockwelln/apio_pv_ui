@@ -613,18 +613,21 @@ export function fetchGetTimerForIAD(iadId) {
   /////////////////////////////////
   return function(dispatch) {
     return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/timers/search?filter=[{value: ${iadId}}]`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/timers/search?filter=[{value:${iadId}}]`
     )
       .then(data => dispatch(getTimerForIAD(data)))
-      .catch(error =>
+      .catch(error => {
+        if (error.response.status === 404) {
+          return;
+        }
         NotificationsManager.error(
           <FormattedMessage
             id="fetch-timer-failed"
             defaultMessage="Failed to fetch timer!"
           />,
           error.message
-        )
-      );
+        );
+      });
   };
 }
 

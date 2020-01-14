@@ -74,15 +74,19 @@ export function checkStatus(response) {
   } else if (response.status === 401) {
     console.log("the request was *not* authorized!");
   }
-
   const contentType = response.headers.get("content-type");
   if (contentType && contentType.indexOf("application/json") !== -1) {
     return response.json().then(function(json) {
-      const message = json.errors[0].details.reason
-        ? `${json.errors[0].details.reason}. Status Code: ${response.status}`
-        : json.errors[0].message
-        ? `${json.errors[0].message}. Status Code: ${response.status}`
-        : response.statusText; //Task - [PROV GUI] Provide more clear error codes
+      let message;
+      if (response.status !== 404) {
+        message = json.errors[0].details.reason
+          ? `${json.errors[0].details.reason}. Status Code: ${response.status}`
+          : json.errors[0].message
+          ? `${json.errors[0].message}. Status Code: ${response.status}`
+          : response.statusText;
+      } else {
+        message = `Status Code: ${response.status}. Status Text: ${response.statusText}.`;
+      } //Task - [PROV GUI] Provide more clear error codes
       let error = new Error(message);
       error.response = response;
       if (json.errors) {
