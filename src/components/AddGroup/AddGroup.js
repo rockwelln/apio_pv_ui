@@ -440,7 +440,8 @@ export class AddGroup extends Component {
       //cliName,
       virtual,
       channelHunting,
-      np1Redundancy
+      np1Redundancy,
+      mainNumber
     } = this.state;
 
     const data = {
@@ -453,7 +454,8 @@ export class AddGroup extends Component {
       serviceType,
       virtual,
       channelHunting,
-      np1Redundancy
+      np1Redundancy,
+      cliPhoneNumber: mainNumber
     };
     const clearData = removeEmpty(data);
     this.setState({ buttonName: "Creating..." }, () =>
