@@ -11,7 +11,7 @@ import Pagination from "react-bootstrap/lib/Pagination";
 
 import { FormattedMessage } from "react-intl";
 
-import { fetchGetAnomalies } from "../../store/actions";
+import { fetchGetAnomalies, fetchGetConfig } from "../../store/actions";
 import Loading from "../../common/Loading";
 import Anomalies from "./Anomalies";
 
@@ -31,12 +31,16 @@ export class Reconciliations extends Component {
   };
   fetchReq() {
     this.props
-      .fetchGetAnomalies()
+      .fetchGetConfig()
       .then(() =>
-        this.setState(
-          { isLoading: false, anomalies: this.props.anomalies },
-          () => this.pagination()
-        )
+        this.props
+          .fetchGetAnomalies()
+          .then(() =>
+            this.setState(
+              { isLoading: false, anomalies: this.props.anomalies },
+              () => this.pagination()
+            )
+          )
       );
   }
   componentDidMount() {
@@ -153,30 +157,6 @@ export class Reconciliations extends Component {
                         </th>
                         <th>
                           <FormattedMessage
-                            id="norm_data"
-                            defaultMessage="Norm data"
-                          />
-                        </th>
-                        <th>
-                          <FormattedMessage
-                            id="apio_db_data"
-                            defaultMessage="APIO DB data"
-                          />
-                        </th>
-                        <th>
-                          <FormattedMessage
-                            id="broadsoft_data"
-                            defaultMessage="Broadsoft data"
-                          />
-                        </th>
-                        <th>
-                          <FormattedMessage
-                            id="reconciliation_report"
-                            defaultMessage="Reconciliation report"
-                          />
-                        </th>
-                        <th>
-                          <FormattedMessage
                             id="anomaly_status"
                             defaultMessage="Anomaly status"
                           />
@@ -195,12 +175,6 @@ export class Reconciliations extends Component {
                         </th>
                         <th>
                           <FormattedMessage
-                            id="assigned_user_date"
-                            defaultMessage="Assigned user date"
-                          />
-                        </th>
-                        <th>
-                          <FormattedMessage
                             id="last_update_date"
                             defaultMessage="Last update date"
                           />
@@ -209,12 +183,6 @@ export class Reconciliations extends Component {
                           <FormattedMessage
                             id="result"
                             defaultMessage="Result"
-                          />
-                        </th>
-                        <th>
-                          <FormattedMessage
-                            id="comments"
-                            defaultMessage="Comments"
                           />
                         </th>
                         {/* <th /> */}
@@ -396,7 +364,7 @@ export class Reconciliations extends Component {
 
 const mapStateToProps = state => ({ anomalies: state.anomalies });
 
-const mapDispatchToProps = { fetchGetAnomalies };
+const mapDispatchToProps = { fetchGetAnomalies, fetchGetConfig };
 
 export default connect(
   mapStateToProps,

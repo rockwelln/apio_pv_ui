@@ -67,20 +67,20 @@ class Anomalies extends Component {
             ? new Date(anomalies.creation_date).toString()
             : ""}
         </td>
-        <td>{anomalies.norm_data}</td>
+        {/* <td>{anomalies.norm_data}</td>
         <td>{anomalies.apio_db_data}</td>
         <td>{anomalies.broadsoft_data}</td>
-        <td>{anomalies.reconciliation_report}</td>
+        <td>{anomalies.reconciliation_report}</td> */}
         <td>
           {typeof this.state.status === "object" ? this.state.status.label : ""}
         </td>
         <td>{anomalies.assigned_team}</td>
         <td>{anomalies.assigned_user}</td>
-        <td>
+        {/* <td>
           {anomalies.assigned_user_date
             ? new Date(anomalies.assigned_user_date).toString()
             : ""}
-        </td>
+        </td> */}
         <td>
           {anomalies.last_update_date
             ? new Date(anomalies.last_update_date).toString()
@@ -89,7 +89,7 @@ class Anomalies extends Component {
         <td>
           {typeof this.state.result === "object" ? this.state.result.label : ""}
         </td>
-        <td>{anomalies.comments}</td>
+        {/* <td>{anomalies.comments}</td> */}
         {/* <td>
           <ButtonToolbar>
             <Glyphicon
