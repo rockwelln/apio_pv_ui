@@ -152,8 +152,12 @@ export class ZipToRouting extends Component {
       this.setState({ csvValue: [] });
       return;
     }
-    console.log("MIME type ", target.files[0].type);
-    if (!target.files[0].type.includes("csv")) {
+    if (
+      !(
+        target.files[0].type === "application/vnd.ms-excel" ||
+        target.files[0].type === "text/csv"
+      )
+    ) {
       let errorHeader = "Invalide type file";
       let errorText = "Available formats for download: csv";
       this.setState({

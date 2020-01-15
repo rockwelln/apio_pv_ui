@@ -44,7 +44,6 @@ class Anomalies extends Component {
   render() {
     const { anomalies, onReload } = this.props;
     const { showDelete } = this.state;
-    console.log(this.props.config);
     if (this.state.isLoading) {
       return <Loading />;
     }
