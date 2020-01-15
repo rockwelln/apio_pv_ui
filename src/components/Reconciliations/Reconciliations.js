@@ -113,7 +113,7 @@ export class Reconciliations extends Component {
                   <Table responsive hover>
                     <thead>
                       <tr>
-                        <th>
+                        <th className={"no-wrap"}>
                           <FormattedMessage
                             id="enterprise_id"
                             defaultMessage="Enterprise id"
@@ -123,7 +123,7 @@ export class Reconciliations extends Component {
                             onClick={this.sortByEnterprise}
                           />
                         </th>
-                        <th>
+                        <th className={"no-wrap"}>
                           <FormattedMessage
                             id="group_id"
                             defaultMessage="Group id"
@@ -133,7 +133,7 @@ export class Reconciliations extends Component {
                             onClick={this.sortByGroup}
                           />
                         </th>
-                        <th>
+                        <th className={"no-wrap"}>
                           <FormattedMessage
                             id="iad_id"
                             defaultMessage="IAD id"
@@ -143,46 +143,74 @@ export class Reconciliations extends Component {
                             onClick={this.sortByIad}
                           />
                         </th>
-                        <th>
+                        <th className={"no-wrap"}>
                           <FormattedMessage
                             id="anomaly_event"
                             defaultMessage="Anomaly event"
                           />
+                          <Glyphicon
+                            glyph="glyphicon glyphicon-sort"
+                            onClick={this.sortByEvent}
+                          />
                         </th>
-                        <th>
+                        <th className={"no-wrap"}>
                           <FormattedMessage
                             id="creation_date"
                             defaultMessage="Creation date"
                           />
+                          <Glyphicon
+                            glyph="glyphicon glyphicon-sort"
+                            onClick={this.sortByCreatinonDate}
+                          />
                         </th>
-                        <th>
+                        <th className={"no-wrap"}>
                           <FormattedMessage
                             id="anomaly_status"
                             defaultMessage="Anomaly status"
                           />
+                          <Glyphicon
+                            glyph="glyphicon glyphicon-sort"
+                            onClick={this.sortByStatus}
+                          />
                         </th>
-                        <th>
+                        <th className={"no-wrap"}>
                           <FormattedMessage
                             id="assigned_team"
                             defaultMessage="Assigned team"
                           />
+                          <Glyphicon
+                            glyph="glyphicon glyphicon-sort"
+                            onClick={this.sortByAssignedTeam}
+                          />
                         </th>
-                        <th>
+                        <th className={"no-wrap"}>
                           <FormattedMessage
                             id="assigned_user"
                             defaultMessage="Assigned user"
                           />
+                          <Glyphicon
+                            glyph="glyphicon glyphicon-sort"
+                            onClick={this.sortByAssignedUser}
+                          />
                         </th>
-                        <th>
+                        <th className={"no-wrap"}>
                           <FormattedMessage
                             id="last_update_date"
                             defaultMessage="Last update date"
                           />
+                          <Glyphicon
+                            glyph="glyphicon glyphicon-sort"
+                            onClick={this.sortByLastUpdate}
+                          />
                         </th>
-                        <th>
+                        <th className={"no-wrap"}>
                           <FormattedMessage
                             id="result"
                             defaultMessage="Result"
+                          />
+                          <Glyphicon
+                            glyph="glyphicon glyphicon-sort"
+                            onClick={this.sortByResult}
                           />
                         </th>
                         {/* <th /> */}
@@ -289,19 +317,18 @@ export class Reconciliations extends Component {
           (anomaly.iad_id &&
             anomaly.iad_id.toLowerCase().includes(searchValue.toLowerCase())) ||
           (anomaly.assigned_team &&
-            anomaly.assigned_team
+            String(anomaly.assigned_team)
               .toLowerCase()
               .includes(searchValue.toLowerCase())) ||
           (anomaly.assigned_user &&
             anomaly.assigned_user
               .toLowerCase()
               .includes(searchValue.toLowerCase())) ||
-          (anomaly.anomaly_status &&
-            String(anomaly.anomaly_status)
-              .toLowerCase()
-              .includes(searchValue.toLowerCase())) ||
+          (anomaly.status &&
+            anomaly.status.toLowerCase().includes(searchValue.toLowerCase())) ||
           (anomaly.creation_date &&
-            anomaly.creation_date
+            new Date(anomaly.creation_date)
+              .toString()
               .toLowerCase()
               .includes(searchValue.toLowerCase()))
       )
@@ -356,6 +383,145 @@ export class Reconciliations extends Component {
         return 0;
       });
       this.setState({ anomalies: anomaliesSorted, sortedBy: "iad_id" }, () =>
+        this.pagination()
+      );
+    }
+  };
+
+  sortByEvent = () => {
+    const { anomalies, sortedBy } = this.state;
+    if (sortedBy === "event") {
+      const anomaliesSorted = anomalies.reverse();
+      this.setState({ anomalies: anomaliesSorted }, () => this.pagination());
+    } else {
+      const anomaliesSorted = anomalies.sort((a, b) => {
+        if (a.event < b.event) return -1;
+        if (a.event > b.event) return 1;
+        return 0;
+      });
+      this.setState({ anomalies: anomaliesSorted, sortedBy: "event" }, () =>
+        this.pagination()
+      );
+    }
+  };
+
+  sortByCreatinonDate = () => {
+    const { anomalies, sortedBy } = this.state;
+    if (sortedBy === "creationDate") {
+      const anomaliesSorted = anomalies.reverse();
+      this.setState({ anomalies: anomaliesSorted }, () => this.pagination());
+    } else {
+      const anomaliesSorted = anomalies.sort((a, b) => {
+        if (
+          new Date(a.creation_date).getTime() <
+          new Date(b.creation_date).getTime()
+        )
+          return -1;
+        if (
+          new Date(a.creation_date).getTime() >
+          new Date(b.creation_date).getTime()
+        )
+          return 1;
+        return 0;
+      });
+      this.setState(
+        { anomalies: anomaliesSorted, sortedBy: "creationDate" },
+        () => this.pagination()
+      );
+    }
+  };
+
+  sortByStatus = () => {
+    const { anomalies, sortedBy } = this.state;
+    if (sortedBy === "status") {
+      const anomaliesSorted = anomalies.reverse();
+      this.setState({ anomalies: anomaliesSorted }, () => this.pagination());
+    } else {
+      const anomaliesSorted = anomalies.sort((a, b) => {
+        if (a.status < b.status) return -1;
+        if (a.status > b.status) return 1;
+        return 0;
+      });
+      this.setState({ anomalies: anomaliesSorted, sortedBy: "status" }, () =>
+        this.pagination()
+      );
+    }
+  };
+
+  sortByAssignedTeam = () => {
+    const { anomalies, sortedBy } = this.state;
+    if (sortedBy === "assigned_team") {
+      const anomaliesSorted = anomalies.reverse();
+      this.setState({ anomalies: anomaliesSorted }, () => this.pagination());
+    } else {
+      const anomaliesSorted = anomalies.sort((a, b) => {
+        if (a.assigned_team < b.assigned_team) return -1;
+        if (a.assigned_team > b.assigned_team) return 1;
+        return 0;
+      });
+      this.setState(
+        { anomalies: anomaliesSorted, sortedBy: "assigned_team" },
+        () => this.pagination()
+      );
+    }
+  };
+
+  sortByAssignedUser = () => {
+    const { anomalies, sortedBy } = this.state;
+    if (sortedBy === "assigned_user") {
+      const anomaliesSorted = anomalies.reverse();
+      this.setState({ anomalies: anomaliesSorted }, () => this.pagination());
+    } else {
+      const anomaliesSorted = anomalies.sort((a, b) => {
+        if (a.assigned_user < b.assigned_user) return -1;
+        if (a.assigned_user > b.assigned_user) return 1;
+        return 0;
+      });
+      this.setState(
+        { anomalies: anomaliesSorted, sortedBy: "assigned_user" },
+        () => this.pagination()
+      );
+    }
+  };
+
+  sortByLastUpdate = () => {
+    const { anomalies, sortedBy } = this.state;
+    if (sortedBy === "last_update_date") {
+      const anomaliesSorted = anomalies.reverse();
+      this.setState({ anomalies: anomaliesSorted }, () => this.pagination());
+    } else {
+      const anomaliesSorted = anomalies.sort((a, b) => {
+        if (
+          new Date(a.last_update_date).getTime() <
+          new Date(b.last_update_date).getTime()
+        )
+          return -1;
+        if (
+          new Date(a.last_update_date).getTime() >
+          new Date(b.last_update_date).getTime()
+        )
+          return 1;
+        return 0;
+      });
+      this.setState(
+        { anomalies: anomaliesSorted, sortedBy: "last_update_date" },
+        () => this.pagination()
+      );
+    }
+  };
+
+  sortByResult = () => {
+    const { anomalies, sortedBy } = this.state;
+    if (sortedBy === "result") {
+      const anomaliesSorted = anomalies.reverse();
+      this.setState({ anomalies: anomaliesSorted }, () => this.pagination());
+    } else {
+      const anomaliesSorted = anomalies.sort((a, b) => {
+        if (a.resultText < b.resultText) return -1;
+        if (a.resultText > b.resultText) return 1;
+        return 0;
+      });
+      this.setState({ anomalies: anomaliesSorted, sortedBy: "result" }, () =>
         this.pagination()
       );
     }

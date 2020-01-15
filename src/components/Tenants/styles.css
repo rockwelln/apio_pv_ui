@@ -310,3 +310,7 @@ textarea {
   align-items: center;
   margin: 0;
 }
+
+.no-wrap {
+  white-space: nowrap;
+}

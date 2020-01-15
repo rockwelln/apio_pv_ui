@@ -231,9 +231,37 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.GET_ANOMALIES: {
+      // const event = state.config.reconciliation.anomaly.event.find(
+      //   evnt => evnt.value === this.props.anomalies.anomaly_event
+      // );
+      // const status = state.config.reconciliation.anomaly.status.find(
+      //   evnt => evnt.value === this.props.anomalies.anomaly_status
+      // );
+      // const result = state.config.reconciliation.anomaly.result.find(
+      //   evnt => evnt.value === this.props.anomalies.result
+      // );
+      let anomalies = [];
+      action.data.anomalies.forEach(anomaly => {
+        const event = state.config.reconciliation.anomaly.event.find(
+          evnt => evnt.value === anomaly.anomaly_event
+        );
+        const status = state.config.reconciliation.anomaly.status.find(
+          evnt => evnt.value === anomaly.anomaly_status
+        );
+        const result = state.config.reconciliation.anomaly.result.find(
+          evnt => evnt.value === anomaly.result
+        );
+        const newAnomaly = {
+          ...anomaly,
+          event: typeof event === "object" ? event.label : "",
+          status: typeof status === "object" ? status.label : "",
+          resultText: typeof result === "object" ? result.label : ""
+        };
+        anomalies.push(newAnomaly);
+      });
       return {
         ...state,
-        anomalies: action.data.anomalies
+        anomalies
       };
     }
     case actionType.GET_ANOMALY: {
