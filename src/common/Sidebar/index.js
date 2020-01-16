@@ -64,6 +64,14 @@ export class Sidebar extends Component {
               RECONCILIATIONS
             </NavItem>
           </LinkContainer>
+          <LinkContainer
+            to={`/provisioning/${this.props.match.params.gwName}/iadreboot`}
+          >
+            <NavItem eventKey={4} className={"text-align-center"}>
+              Mass IAD Reboot
+            </NavItem>
+          </LinkContainer>
+
           {/* <LinkContainer
             to={`/provisioning/${this.props.match.params.gwName}/localusers`}
           >

@@ -177,15 +177,7 @@ export class AddEntrepriseTrunk extends Component {
                     {this.state.mainIadsAvalible.length
                       ? this.state.mainIadsAvalible.map((iad, i) => (
                           <tr key={i}>
-                            <td>
-                              <Checkbox
-                                className={"table-checkbox margin-left-08"}
-                                checked={iad.checked}
-                                onChange={e =>
-                                  this.changeStatusOfMainIadsAvalible(e, i)
-                                }
-                              />
-                            </td>
+                            <td></td>
                             <td
                               className={
                                 "flex space-between align-items-center"

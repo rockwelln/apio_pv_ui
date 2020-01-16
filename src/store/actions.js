@@ -110,6 +110,11 @@ export const getAnomaly = data => ({
   data
 });
 
+export const getSearchIADs = data => ({
+  type: actionType.GET_SEARCH_IADS,
+  data
+});
+
 export const getTimerForIAD = data => ({
   type: actionType.GET_TIMER_FOR_IAD,
   data
@@ -244,6 +249,10 @@ export const clearIad = () => ({
 
 export const clearCreatedTenant = () => ({
   type: actionType.CLEAR_CREATED_TENANT
+});
+
+export const clearSearchedIADs = () => ({
+  type: actionType.CLEAR_SEARCHED_IADS
 });
 
 export function fetchGetNumbersByEnterpriseTrunk(tenantId, groupId, trunkId) {
@@ -624,6 +633,25 @@ export function fetchGetTimerForIAD(iadId) {
           <FormattedMessage
             id="fetch-timer-failed"
             defaultMessage="Failed to fetch timer!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchGetSearchIADs(data) {
+  /////////////////////////////////
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/search/iads?${data}`
+    )
+      .then(data => dispatch(getSearchIADs(data)))
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-iads-failed"
+            defaultMessage="Failed to fetch iads!"
           />,
           error.message
         );

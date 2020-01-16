@@ -52,6 +52,9 @@ const linkByCrumb = (item, lastItem, i, path, match) => {
       </Link>
     );
   }
+  if (crumb === "iadreboot") {
+    return "Mass IAD reboot";
+  }
   if (crumb === "addadmin") {
     return "Add admin";
   }

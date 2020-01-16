@@ -31,7 +31,8 @@ const initialState = {
   team: { users: [] },
   anomalies: [],
   anomaly: {},
-  iadTimer: {}
+  iadTimer: {},
+  searchedIADs: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -276,6 +277,16 @@ function mainReducer(state = initialState, action) {
         iadTimer: action.data
       };
     }
+    case actionType.GET_SEARCH_IADS: {
+      const searchedIADs = action.data.results.map(iad => ({
+        iad: iad,
+        checked: true
+      }));
+      return {
+        ...state,
+        searchedIADs
+      };
+    }
     case actionType.POST_CREATE_IAD: {
       return {
         ...state,
@@ -465,6 +476,13 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         iad: {}
+      };
+    }
+
+    case actionType.CLEAR_SEARCHED_IADS: {
+      return {
+        ...state,
+        searchedIADs: []
       };
     }
 
