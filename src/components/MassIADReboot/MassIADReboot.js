@@ -56,7 +56,6 @@ const MassIADReboot = props => {
     setDisableSearchButton(false);
   }, [propsSearchedIADs.length]);
 
-  console.log(IADs);
   return (
     <Panel.Body>
       <Row>
