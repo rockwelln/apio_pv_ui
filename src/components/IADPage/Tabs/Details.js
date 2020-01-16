@@ -10,6 +10,7 @@ import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import HelpBlock from "react-bootstrap/lib/HelpBlock";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
+import Alert from "react-bootstrap/lib/Alert";
 
 import { FormattedMessage } from "react-intl";
 
@@ -39,6 +40,11 @@ export class Details extends Component {
         <Row>
           <Col md={12} className={"flex align-items-center"}>
             <React.Fragment>
+              {this.props.iadTimer.at && (
+                <Alert bsStyle="warning">
+                  {`Reboot scheduled at ${this.props.iadTimer.at}`}
+                </Alert>
+              )}
               <div className={"header margin-right-2"}>
                 <FormattedMessage id="details" defaultMessage="Details" />
               </div>
@@ -236,7 +242,11 @@ export class Details extends Component {
   };
 }
 
-const mapStateToProps = state => ({ iad: state.iad, config: state.config });
+const mapStateToProps = state => ({
+  iad: state.iad,
+  config: state.config,
+  iadTimer: state.iadTimer
+});
 
 const mapDispatchToProps = { changeIAD, fetchPutUpdateIAD };
 
