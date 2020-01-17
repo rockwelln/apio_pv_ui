@@ -158,7 +158,7 @@ export class ZipToRouting extends Component {
         target.files[0].type === "text/csv"
       )
     ) {
-      let errorHeader = "Invalide type file";
+      let errorHeader = "Invalid type file";
       let errorText = "Accepted file formats: csv ";
       this.setState({
         showError: true,
