@@ -255,6 +255,15 @@ export const clearSearchedIADs = () => ({
   type: actionType.CLEAR_SEARCHED_IADS
 });
 
+export const setTransferedIADs = data => ({
+  type: actionType.SET_TRANSFERED_IADS,
+  data
+});
+
+export const clearTransferedIADs = () => ({
+  type: actionType.CLEAR_TRANSFERED_IADS
+});
+
 export function fetchGetNumbersByEnterpriseTrunk(tenantId, groupId, trunkId) {
   ////////////////////
   return function(dispatch) {

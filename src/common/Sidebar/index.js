@@ -68,7 +68,7 @@ export class Sidebar extends Component {
             to={`/provisioning/${this.props.match.params.gwName}/iadreboot`}
           >
             <NavItem eventKey={4} className={"text-align-center"}>
-              Mass IAD Reboot
+              MASS IAD REBOOT
             </NavItem>
           </LinkContainer>
 

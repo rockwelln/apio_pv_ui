@@ -204,7 +204,7 @@ export class ZipToRouting extends Component {
       headers = ["Zip Code", "Routing Profile"];
     }
     if (headers.join() !== ["Zip Code", "Routing Profile"].join()) {
-      let errorHeader = "Not valide headers";
+      let errorHeader = "Invalid headers";
       let errorText = "Your headers must be Zip Code and Routing Profile";
       this.setState({
         showError: true,

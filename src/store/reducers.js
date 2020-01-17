@@ -32,7 +32,8 @@ const initialState = {
   anomalies: [],
   anomaly: {},
   iadTimer: {},
-  searchedIADs: []
+  searchedIADs: [],
+  transferedIADs: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -483,6 +484,20 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         searchedIADs: []
+      };
+    }
+
+    case actionType.SET_TRANSFERED_IADS: {
+      return {
+        ...state,
+        transferedIADs: action.data
+      };
+    }
+
+    case actionType.CLEAR_TRANSFERED_IADS: {
+      return {
+        ...state,
+        transferedIADs: []
       };
     }
 
