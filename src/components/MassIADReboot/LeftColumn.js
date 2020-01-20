@@ -36,6 +36,7 @@ const LeftColumn = () => {
   const [selectAll, setSelectAll] = useState(true);
   const [searchValue, setSearchValue] = useState("");
   const [sortedBy, setSortedBy] = useState("");
+  const [notFound, setNotFound] = useState("");
 
   const propsSearchedIADs = useSelector(state => state.searchedIADs);
   const dispatch = useDispatch();
@@ -43,7 +44,11 @@ const LeftColumn = () => {
   useEffect(() => {
     setIADs(propsSearchedIADs);
     setDisableSearchButton(false);
-  }, [propsSearchedIADs.length]);
+    if (propsSearchedIADs.length === 0 && buttonName === "Clear") {
+      setButtonName("Search");
+      setNotFound("IADs not found");
+    }
+  }, [propsSearchedIADs]);
 
   useEffect(() => {
     const searchArray = propsSearchedIADs.filter(iad =>
@@ -61,6 +66,7 @@ const LeftColumn = () => {
 
   const handleSearchButton = newButtomName => {
     if (buttonName === "Search") {
+      setNotFound("");
       const data = {
         allIADs: allIads ? allIads : "",
         insensitiveTenantIdEquals: enterpriseId,
@@ -72,6 +78,9 @@ const LeftColumn = () => {
         (query, key) => (query = `${query}${key}=${clearData[key]}`),
         ""
       );
+      if (!querySearch.length) {
+        return;
+      }
       dispatch(fetchGetSearchIADs(querySearch));
       setButtonName(newButtomName);
       setDisableSearchButton(true);
@@ -218,7 +227,7 @@ const LeftColumn = () => {
           </div>
         </Col>
       </Row>
-      {!!propsSearchedIADs.length && (
+      {!!propsSearchedIADs.length ? (
         <React.Fragment>
           <Row className={"margin-top-1"}>
             <Col md={12}>
@@ -298,6 +307,8 @@ const LeftColumn = () => {
             </Col>
           </Row>
         </React.Fragment>
+      ) : (
+        <React.Fragment>{notFound}</React.Fragment>
       )}
     </React.Fragment>
   );
