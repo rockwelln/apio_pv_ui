@@ -15,6 +15,7 @@ import FormGroup from "react-bootstrap/lib/FormGroup";
 import HelpBlock from "react-bootstrap/lib/HelpBlock";
 
 import TableOfTransferedIADs from "./TableOfTransferedIADs";
+import RebootWindow from "./RebootWindow";
 
 import { FormattedMessage } from "react-intl";
 
@@ -63,6 +64,10 @@ const RightColumn = () => {
       return;
     }
     setErrorIAD("error");
+  };
+
+  const closeRebootWindow = () => {
+    setShowRebootWindow(false);
   };
 
   return (
@@ -174,6 +179,11 @@ const RightColumn = () => {
           </Row>
         </React.Fragment>
       )}
+      <RebootWindow
+        show={showRebootWindow}
+        iads={IADs}
+        onClose={closeRebootWindow}
+      />
     </React.Fragment>
   );
 };

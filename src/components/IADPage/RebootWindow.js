@@ -47,7 +47,9 @@ class RebootWindow extends Component {
                 <FormControl
                   componentClass="select"
                   value={this.state.rebootLater}
-                  onChange={e => this.setState({ rebootLater: e.target.value })}
+                  onChange={e =>
+                    this.setState({ rebootLater: e.target.value === "true" })
+                  }
                 >
                   <option value={false}>Reboot now</option>
                   <option value={true}>Reboot later</option>

@@ -195,6 +195,10 @@ export const putUpdateAnomaly = data => ({
   data
 });
 
+export const putMassIADsReboot = () => ({
+  type: actionType.PUT_MASS_IADS_REBOOT
+});
+
 export const deleteTenant = data => ({
   type: actionType.DELETE_TENANT,
   data
@@ -1072,6 +1076,37 @@ export function fetchPutUpdateAnomaly(hash, data) {
           <FormattedMessage
             id="update-anomaly-failed"
             defaultMessage="Failed to update anomaly!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchPutMassIADsReboot(iadsForUpdate) {
+  /////////////////////////////
+  const { tenantId, groupId, ...data } = iadsForUpdate;
+  return function(dispatch) {
+    return fetch_put(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/trunk_groups/reboot/`,
+      data
+    )
+      .then(res => res.json())
+      .then(() => {
+        dispatch(putMassIADsReboot());
+        NotificationsManager.success(
+          <FormattedMessage
+            id="reboot-iads-success"
+            defaultMessage="Successfully rebooted iads!"
+          />,
+          "Successfully rebooted iads!"
+        );
+      })
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="reboot-iads-failed"
+            defaultMessage="Failed to reboote iads!"
           />,
           error.message
         )
