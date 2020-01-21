@@ -100,7 +100,7 @@ class TenantPage extends Component {
               />
             </Tab>
             {this.props.fetchTrunksGroupsFail && (
-              <Tab eventKey={2} title="TRUNKS GROUP">
+              <Tab eventKey={2} title="TRUNKING">
                 <TrunksGroup />
               </Tab>
             )}

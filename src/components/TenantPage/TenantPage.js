@@ -13,6 +13,7 @@ import Admins from "./Tabs/Admins";
 import Details from "./Tabs/Details";
 import DeleteModal from "./DeleteModal";
 import Licenses from "./Tabs/Licenses";
+import Trunking from "./Tabs/Trunking";
 
 import {
   fetchGetTenantById,
@@ -62,7 +63,7 @@ class TenantPage extends Component {
           </div>
         </div>
         <div className={"panel-body"}>
-          <Tabs defaultActiveKey={0} id="tenant_tabs">
+          <Tabs defaultActiveKey={6} id="tenant_tabs">
             <Tab eventKey={0} title="LICENSES">
               <Licenses />
             </Tab>
@@ -76,9 +77,7 @@ class TenantPage extends Component {
               <PhoneNumbersTab tenantId={this.props.match.params.tenantId} />
             </Tab>
             <Tab eventKey={4} title="ADMINISTRATORS">
-              <Admins
-                tenantId={this.props.match.params.tenantId}
-              />
+              <Admins tenantId={this.props.match.params.tenantId} />
             </Tab>
             <Tab eventKey={5} title="DETAILS">
               <Details
@@ -86,6 +85,11 @@ class TenantPage extends Component {
                 isLoading={isLoading}
               />
             </Tab>
+            {this.props.isAuthorisedTrunkTenant && (
+              <Tab eventKey={6} title="TRUNKING">
+                <Trunking />
+              </Tab>
+            )}
           </Tabs>
         </div>
       </React.Fragment>
@@ -100,7 +104,8 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = state => ({
-  tenant: state.tenant
+  tenant: state.tenant,
+  isAuthorisedTrunkTenant: state.isAuthorisedTrunkTenant
 });
 
 export default withRouter(

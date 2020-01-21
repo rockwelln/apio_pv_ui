@@ -286,7 +286,7 @@ export class Trunks extends Component {
       }
       counter = counter + countPerPage;
     }
-
+    console.log(paginationItems);
     this.setState({
       paginationTrunks: paginationItems,
       pagination: false,

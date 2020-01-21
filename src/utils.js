@@ -68,6 +68,19 @@ class NotificationsHandler {
 
 export const NotificationsManager = new NotificationsHandler();
 
+const getErrorMessage = (errorsArray, response) => {
+  if (!errorsArray || !errorsArray.length) {
+    return response.statusText;
+  }
+
+  /* only 1st error is important */
+  const actualError = errorsArray[0];
+
+  return `${actualError.details.reason || actualError.message}. Status Code: ${
+    response.status
+  }`;
+};
+
 export function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
@@ -78,11 +91,7 @@ export function checkStatus(response) {
   const contentType = response.headers.get("content-type");
   if (contentType && contentType.indexOf("application/json") !== -1) {
     return response.json().then(function(json) {
-      const message = json.errors[0].details.reason
-        ? `${json.errors[0].details.reason}. Status Code: ${response.status}`
-        : json.errors[0].message
-        ? `${json.errors[0].message}. Status Code: ${response.status}`
-        : response.statusText; //Task - [PROV GUI] Provide more clear error codes
+      const message = getErrorMessage(json.errors, response); //Task - [PROV GUI] Provide more clear error codes
       let error = new Error(message);
       error.response = response;
       if (json.errors) {

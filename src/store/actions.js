@@ -220,6 +220,11 @@ export const getDevice = data => ({
   data
 });
 
+export const getTrunkGroupByTenant = data => ({
+  type: actionType.GET_TENANT_TRUNK_GROUP,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -1299,6 +1304,28 @@ export function fetchGetDevice(tenantId, groupId, deviceName) {
           error.message
         )
       );
+  };
+}
+
+export function fetchGetTrunkGroupByTenant(tenantId) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/services/trunk_groups/`
+    )
+      .then(data => dispatch(getTrunkGroupByTenant(data)))
+      .catch(error => {
+        if (error.response.status === 404) {
+          dispatch(trunkNotAuthorisedTenant());
+          return;
+        }
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-trunk-groups-failed"
+            defaultMessage="Failed to fetch trunk groups!"
+          />,
+          error.message
+        );
+      });
   };
 }
 
