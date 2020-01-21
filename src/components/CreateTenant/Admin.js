@@ -15,6 +15,8 @@ import Checkbox from "react-bootstrap/lib/Checkbox";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import HelpBlock from "react-bootstrap/lib/HelpBlock";
 
+import { FormattedMessage } from "react-intl";
+
 import {
   refuseCreateTenant,
   fetchPostCreateTenantAdmin,
@@ -44,7 +46,12 @@ export class Admin extends Component {
         <div className={"panel-heading"}>
           <Row>
             <Col md={12}>
-              <div className={"header"}>Add admin to tenant</div>
+              <div className={"header"}>
+                <FormattedMessage
+                  id="add-admin-header-tenant"
+                  defaultMessage="Add admin to tenant"
+                />
+              </div>
             </Col>
           </Row>
         </div>
@@ -54,7 +61,12 @@ export class Admin extends Component {
           {/* EXPLANATION */}
           <Row>
             <Col md={12}>
-              <p>Add an administrator who can manage this tenant</p>
+              <p>
+                <FormattedMessage
+                  id="add-admin-header-tenant"
+                  defaultMessage="Add an administrator who can manage this tenant"
+                />
+              </p>
             </Col>
           </Row>
 
@@ -85,9 +97,7 @@ export class Admin extends Component {
                       });
                     }}
                   />
-                  <InputGroup.Addon>{`@${
-                    this.props.createdTenant.defaultDomain
-                  }`}</InputGroup.Addon>
+                  <InputGroup.Addon>{`@${this.props.createdTenant.defaultDomain}`}</InputGroup.Addon>
                 </InputGroup>
                 {this.state.userIdError && (
                   <HelpBlock>
@@ -272,9 +282,7 @@ export class Admin extends Component {
               <div class="button-row">
                 <div class="pull-right">
                   <Link
-                    to={`/provisioning/${
-                      this.props.match.params.gwName
-                    }/tenants/${this.props.createdTenant.tenantId}`}
+                    to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.createdTenant.tenantId}`}
                   >
                     {/* SKIP & FINISH */}
                     <Button
