@@ -9,9 +9,6 @@ import DeleteModal from "./DeleteModal";
 
 const TrunkGroup = props => {
   const [showDelete, setShowDelete] = useState(false);
-  //state = { showDelete: false };
-  // const { trunkGroup, onReload } = this.props;
-  // const { showDelete } = this.state;
   return (
     <tr>
       <td>
