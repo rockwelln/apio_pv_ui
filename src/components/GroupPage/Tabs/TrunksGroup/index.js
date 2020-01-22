@@ -19,7 +19,7 @@ import Loading from "../../../../common/Loading";
 import { fetchGetTrunksGroupsByGroup } from "../../../../store/actions";
 import { countsPerPages } from "../../../../constants";
 
-import TrunkGrup from "./TrunkGrup";
+import TrunkGroup from "./TrunkGroup";
 
 export class Trunks extends Component {
   state = {
@@ -200,10 +200,10 @@ export class Trunks extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {paginationTrunks[page].map((trunkGrup, i) => (
-                      <TrunkGrup
+                    {paginationTrunks[page].map((trunkGroup, i) => (
+                      <TrunkGroup
                         key={i}
-                        trunkGrup={trunkGrup}
+                        trunkGroup={trunkGroup}
                         onReload={() => this.fetchTrunks()}
                       />
                     ))}
@@ -286,7 +286,6 @@ export class Trunks extends Component {
       }
       counter = counter + countPerPage;
     }
-    console.log(paginationItems);
     this.setState({
       paginationTrunks: paginationItems,
       pagination: false,

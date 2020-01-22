@@ -63,7 +63,7 @@ class TenantPage extends Component {
           </div>
         </div>
         <div className={"panel-body"}>
-          <Tabs defaultActiveKey={6} id="tenant_tabs">
+          <Tabs defaultActiveKey={0} id="tenant_tabs">
             <Tab eventKey={0} title="LICENSES">
               <Licenses />
             </Tab>

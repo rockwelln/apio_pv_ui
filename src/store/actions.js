@@ -440,6 +440,10 @@ export const deletePhoneFromGroup = data => ({
   data
 });
 
+export const deleteTrunkGroupFromTenant = () => ({
+  type: actionType.DELETE_TRUNK_GROUP_FROM_TENANT
+});
+
 export const clearErrorMassage = () => ({
   type: actionType.CLEAR_ERROR_MASSAGE
 });
@@ -2259,6 +2263,27 @@ export function fetchDeletePhoneFromGroup(tenantId, groupId, data) {
           <FormattedMessage
             id="failed-to-delete-user"
             defaultMessage="Failed to delete user!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchDeleteTrunkGroupFromTenant(tenantId, trunkName) {
+  return function(dispatch) {
+    return fetch_delete(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/services/trunk_groups/${trunkName}`
+    )
+      .then(res => res.json())
+      .then(() => {
+        dispatch(deleteTrunkGroupFromTenant());
+      })
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-delete-trunk-group"
+            defaultMessage="Failed to delete trunk group!"
           />,
           error.message
         )

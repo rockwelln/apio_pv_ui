@@ -7,28 +7,24 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import DeleteModal from "./DeleteModal";
 
-class TrunkGrup extends Component {
+class TrunkGroup extends Component {
   state = { showDelete: false };
   render() {
-    const { trunkGrup, onReload } = this.props;
+    const { trunkGroup, onReload } = this.props;
     const { showDelete } = this.state;
     return (
       <tr>
         <td>
           <Link
-            to={`/provisioning/${this.props.match.params.gwName}/tenants/${
-              this.props.match.params.tenantId
-            }/groups/${this.props.match.params.groupId}/trunkgroup/${
-              trunkGrup.name
-            }`}
+            to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/trunkgroup/${trunkGroup.name}`}
           >
-            {trunkGrup.name}
+            {trunkGroup.name}
           </Link>
         </td>
-        <td>{trunkGrup.groupId}</td>
-        <td>{trunkGrup.deviceName}</td>
-        <td>{trunkGrup.deviceLevel}</td>
-        <td>{trunkGrup.department}</td>
+        <td>{trunkGroup.groupId}</td>
+        <td>{trunkGroup.deviceName}</td>
+        <td>{trunkGroup.deviceLevel}</td>
+        <td>{trunkGroup.department}</td>
         <td>
           <ButtonToolbar>
             <Glyphicon
@@ -37,7 +33,7 @@ class TrunkGrup extends Component {
             />
           </ButtonToolbar>
           <DeleteModal
-            trunkName={trunkGrup.name}
+            trunkName={trunkGroup.name}
             show={showDelete}
             onClose={e => {
               onReload && onReload();
@@ -51,4 +47,4 @@ class TrunkGrup extends Component {
   }
 }
 
-export default withRouter(TrunkGrup);
+export default withRouter(TrunkGroup);

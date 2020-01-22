@@ -807,6 +807,11 @@ function mainReducer(state = initialState, action) {
         ...state
       };
     }
+    case actionType.DELETE_TRUNK_GROUP_FROM_TENANT: {
+      return {
+        ...state
+      };
+    }
     case actionType.CLEAR_ERROR_MASSAGE: {
       return {
         ...state,
