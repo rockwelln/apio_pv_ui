@@ -26,18 +26,6 @@ const DeleteModal = props => {
       setDeleting(false);
       props.onClose();
     });
-    // const { onClose, trunkName } = this.props;
-    // this.setState({ deleting: true });
-    // this.props
-    //   .fetchDeleteTrunkGroup(
-    //     this.props.match.params.tenantId,
-    //     this.props.match.params.groupId,
-    //     trunkName
-    //   )
-    //   .then(() => {
-    //     this.setState({ deleting: false });
-    //     onClose && onClose(true);
-    //   });
   };
   return (
     <Modal show={props.show} onHide={() => props.onClose()} backdrop={false}>

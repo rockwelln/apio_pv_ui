@@ -29,6 +29,7 @@ const Trunking = props => {
   const [page, setPage] = useState(0);
   const [searchValue, setSearchValue] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [sortedBy, setSortedBy] = useState("");
 
   const propsTrunkGroup = useSelector(state => state.trunkGroupsByTenant);
 
@@ -94,6 +95,42 @@ const Trunking = props => {
       return;
     }
     setPage(page - 1);
+  };
+
+  const sortByName = () => {
+    if (sortedBy === "name") {
+      const trunksSorted = [...trunkGroups];
+      trunksSorted.reverse();
+      setTrunkGroups(trunksSorted);
+    } else {
+      const trunksSorted = [...propsTrunkGroup];
+
+      trunksSorted.sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      });
+      setTrunkGroups(trunksSorted);
+      setSortedBy("name");
+    }
+  };
+
+  const sortByRoutingMode = () => {
+    if (sortedBy === "routingMode") {
+      const trunksSorted = [...trunkGroups];
+      trunksSorted.reverse();
+      setTrunkGroups(trunksSorted);
+    } else {
+      const trunksSorted = [...propsTrunkGroup];
+
+      trunksSorted.sort((a, b) => {
+        if (a.routingMode < b.routingMode) return -1;
+        if (a.routingMode > b.routingMode) return 1;
+        return 0;
+      });
+      setTrunkGroups(trunksSorted);
+      setSortedBy("routingMode");
+    }
   };
 
   if (isLoading) {
@@ -176,7 +213,7 @@ const Trunking = props => {
                       <FormattedMessage id="Name" defaultMessage="Name" />
                       <Glyphicon
                         glyph="glyphicon glyphicon-sort"
-                        //onClick={this.sortByName}
+                        onClick={sortByName}
                       />
                     </th>
                     <th className={"nowrap"}>
@@ -186,7 +223,7 @@ const Trunking = props => {
                       />
                       <Glyphicon
                         glyph="glyphicon glyphicon-sort"
-                        //onClick={this.sortByGroupId}
+                        onClick={sortByRoutingMode}
                       />
                     </th>
                     <th className={"nowrap"} />
