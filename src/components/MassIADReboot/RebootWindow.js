@@ -13,18 +13,25 @@ import { FormattedMessage } from "react-intl";
 import { removeEmpty } from "../remuveEmptyInObject";
 
 import { fetchPutMassIADsReboot } from "../../store/actions";
+import { resolve } from "dns";
 
 const RebootWindow = props => {
   const [rebootLater, setRebootLater] = useState(false);
   const [requestedTime, setRequestedTime] = useState("");
 
   const dispatch = useDispatch();
+  const promiseArray = [];
+
+  const fillPromisArray = data => {
+    promiseArray.push(dispatch(fetchPutMassIADsReboot(data)));
+  };
 
   const rebootIads = () => {
     const iads = [...props.iads];
 
     const objIads = iads.reduce((objIads, iad) => {
-      let iadEntGr = iad.slice(0, 18); // TG_ENTxxxxxxxGRPyy-IADzz
+      const indexStartGRP = iad.indexOf("GRP");
+      let iadEntGr = iad.slice(0, indexStartGRP); // TG_ENTxxxxxxxGRPyy-IADzz
       objIads = {
         ...objIads,
         [iadEntGr]: objIads[iadEntGr] ? [...objIads[iadEntGr], iad] : [iad]
@@ -32,16 +39,23 @@ const RebootWindow = props => {
       return objIads;
     }, {});
     Object.values(objIads).forEach(iads => {
+      const indexStartEntID = iads[0].indexOf("ENT");
+      const indexStartGRP = iads[0].indexOf("GRP");
+      const indexEndGRP = iads[0].indexOf("-");
       const dataForUpdate = {
-        tenantId: iads[0].slice(3, 13),
-        groupId: iads[0].slice(3, 18),
+        tenantId: iads[0].slice(indexStartEntID, indexStartGRP),
+        groupId: iads[0].slice(indexStartEntID, indexEndGRP),
         iads,
         rebootRequest: {
           requestedTime
         }
       };
+
       const clearData = removeEmpty(dataForUpdate);
-      dispatch(fetchPutMassIADsReboot(clearData));
+      fillPromisArray(clearData);
+    });
+    Promise.all(promiseArray).then(() => {
+      props.onClose();
     });
   };
 
