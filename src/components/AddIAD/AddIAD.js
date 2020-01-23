@@ -27,6 +27,8 @@ import { validateInputPhoneNumber } from "../validateInputPhoneNumber";
 import { TRANSPORTMODE, IP1MODE } from "../../constants";
 import Loading from "../../common/Loading";
 
+import { isAllowed, pages } from "../../utils/user";
+
 export class AddIAD extends Component {
   state = {
     isLoadingConfig: true,
@@ -1322,6 +1324,12 @@ export class AddIAD extends Component {
                       defaultChecked={this.state.clock_master}
                       onChange={e =>
                         this.setState({ clock_master: e.target.checked })
+                      }
+                      disabled={
+                        !isAllowed(
+                          localStorage.getItem("userProfile"),
+                          pages.edit_group_iad_advanced_clock_master
+                        )
                       }
                     />
                   </div>

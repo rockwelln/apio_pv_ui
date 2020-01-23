@@ -191,7 +191,16 @@ export class IADs extends Component {
                           onClick={this.sortByMacAddress}
                         />
                       </th>
-
+                      <th>
+                        <FormattedMessage
+                          id="rebootPlanned"
+                          defaultMessage="Reboot planned"
+                        />
+                        {/* <Glyphicon
+                          glyph="glyphicon glyphicon-sort"
+                          onClick={this.sortByMacAddress}
+                        /> */}
+                      </th>
                       <th />
                     </tr>
                   </thead>

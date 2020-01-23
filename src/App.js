@@ -104,6 +104,8 @@ class App extends Component {
     fetch_get("/api/v01/system/users/local")
       .then(data => {
         this.setState({ user_info: data });
+        localStorage.setItem("userProfile", data.ui_profile);
+        //localStorage.setItem("userProfile", "VoiceOps");
         this.props.onLanguageUpdate(data.language);
       })
       .catch(error => {
@@ -162,6 +164,7 @@ class App extends Component {
 
   logout() {
     this.setState({ auth_token: undefined, user_info: undefined });
+    localStorage.removeItem("userProfile");
     console.log("logout");
     this.props.cookies.remove("auth_token", { path: "/" });
     this.props.cookies.remove("auth_sso", { path: "/" });

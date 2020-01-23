@@ -10,7 +10,8 @@ export const pages = Object.freeze({
   system_config: 14,
   system_gateways: 15,
   system_databases: 16,
-  system_reporting: 17
+  system_reporting: 17,
+  edit_group_iad_advanced_clock_master: 100
 });
 
 export const privileges = Object.freeze({});
@@ -31,6 +32,22 @@ const definition = {
     [pages.data]: true,
     [pages.requests]: true,
     [pages.requests_nprequests]: true
+  },
+
+  CPM: {},
+
+  HelpDesk1: {},
+
+  HelpDesk2: {},
+
+  HelpDesk3: {},
+
+  VoiceOps: {
+    [pages.edit_group_iad_advanced_clock_master]: true
+  },
+
+  VoiceEng: {
+    [pages.edit_group_iad_advanced_clock_master]: true
   }
 };
 
@@ -43,7 +60,8 @@ export function isAllowed(profile, page, requested_level, requested_privilege) {
   if (definition[profile][page] === undefined) return false;
 
   const page_access = definition[profile][page];
-  if (page_access === true) return true;
+
+  if (page_access) return true;
 
   if (requested_level === undefined && requested_privilege === undefined)
     return page_access.level >= access_levels.read;
