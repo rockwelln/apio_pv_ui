@@ -12,6 +12,7 @@ const initialState = {
   licensesByGroup: [],
   servicePacks: [],
   groupServices: [],
+  tenantServicePacks: [],
   devices: [],
   user: {},
   trunkGroups: {},
@@ -510,7 +511,8 @@ function mainReducer(state = initialState, action) {
           groups: groupServices,
           countShown: groupServicesShown.length
         },
-        userServicesTenant: action.data.userServices
+        userServicesTenant: action.data.userServices,
+        tenantServicePacks: action.data.servicePacks
       };
     }
     case actionType.GET_TRUNK_BY_TENANT_ID: {

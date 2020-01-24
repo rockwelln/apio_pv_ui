@@ -382,6 +382,10 @@ export const putUpdateDevice = data => ({
   data
 });
 
+export const putUpdateTenantServicePacks = () => ({
+  type: actionType.PUT_UPDATE_TENANT_SERVICE_PACKS
+});
+
 export const deleteTenant = data => ({
   type: actionType.DELETE_TENANT,
   data
@@ -1256,7 +1260,7 @@ export function fetchGetLanguages() {
 export function fetchGetTenantLicenses(tenantId) {
   return function(dispatch) {
     return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/licenses`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/licenses?includeServicePacks=true`
     )
       .then(data => dispatch(getTenantLicenses(data)))
       .catch(error =>
@@ -1972,6 +1976,26 @@ export function fetchPutUpdateDevice(tenantId, groupId, deviceName, data) {
           <FormattedMessage
             id="update-device-failed"
             defaultMessage="Failed to update device!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchPutUpdateTenantServicePacks(tenantId, servicePack, data) {
+  return function(dispatch) {
+    return fetch_put(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/service_packs/${servicePack}/`,
+      data
+    )
+      .then(res => res.json())
+      .then(() => dispatch(putUpdateTenantServicePacks()))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="update-trunk-failed"
+            defaultMessage="Failed to update trunk!"
           />,
           error.message
         )
