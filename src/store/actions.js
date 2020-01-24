@@ -635,9 +635,12 @@ export function fetchGetTimerForIAD(iadId) {
   /////////////////////////////////
   return function(dispatch) {
     return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/timers/search?filter=[{value:${iadId}}]`
+      `https://yaoh1.bxl.netaxis.be/api/v01/timers/search?filter=[{"field":"key","op":"like","value":"${iadId}"}]`
     )
-      .then(data => dispatch(getTimerForIAD(data)))
+      .then(data => {
+        dispatch(getTimerForIAD(data));
+        return data;
+      })
       .catch(error => {
         if (error.response.status === 404) {
           return;

@@ -11,10 +11,12 @@ import DeleteModal from "./DeleteModal";
 import { fetchGetTimerForIAD } from "../../../../store/actions";
 
 class IAD extends Component {
-  state = { showDelete: false };
+  state = { showDelete: false, timers: [] };
 
   componentDidMount() {
-    this.props.fetchGetTimerForIAD(this.props.iad.iadId);
+    this.props
+      .fetchGetTimerForIAD(this.props.iad.iadId)
+      .then(data => this.setState({ timers: data.timers }));
   }
   render() {
     const { onReload, iad } = this.props;
@@ -30,7 +32,15 @@ class IAD extends Component {
         </td>
         <td>{iad.type}</td>
         <td>{iad.macAddress}</td>
-        <td>{this.props.iadTimer.at ? this.props.iadTimer.at : "-"}</td>
+        {this.props.iadTimer.length ? (
+          <td>
+            {this.state.timers.map(timer => (
+              <p>{timer.at}</p>
+            ))}
+          </td>
+        ) : (
+          <td>-</td>
+        )}
         <td>
           <ButtonToolbar>
             <Glyphicon

@@ -38,13 +38,19 @@ export class Details extends Component {
     return (
       <React.Fragment>
         <Row>
+          <Col md={12}>
+            {!!this.props.iadTimer.length && (
+              <Alert bsStyle="warning">
+                {this.props.iadTimer.map(timer => (
+                  <p>{`Reboot scheduled at ${timer.at}`}</p>
+                ))}
+              </Alert>
+            )}
+          </Col>
+        </Row>
+        <Row>
           <Col md={12} className={"flex align-items-center"}>
             <React.Fragment>
-              {this.props.iadTimer.at && (
-                <Alert bsStyle="warning">
-                  {`Reboot scheduled at ${this.props.iadTimer.at}`}
-                </Alert>
-              )}
               <div className={"header margin-right-2"}>
                 <FormattedMessage id="details" defaultMessage="Details" />
               </div>

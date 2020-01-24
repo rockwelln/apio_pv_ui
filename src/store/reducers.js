@@ -31,7 +31,7 @@ const initialState = {
   team: { users: [] },
   anomalies: [],
   anomaly: {},
-  iadTimer: {},
+  iadTimer: [],
   searchedIADs: [],
   transferedIADs: []
 };
@@ -275,7 +275,7 @@ function mainReducer(state = initialState, action) {
     case actionType.GET_TIMER_FOR_IAD: {
       return {
         ...state,
-        iadTimer: action.data
+        iadTimer: action.data.timers
       };
     }
     case actionType.GET_SEARCH_IADS: {
