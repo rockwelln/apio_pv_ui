@@ -1614,7 +1614,14 @@ export class AddIAD extends Component {
         port
       },
       services: {
-        dtmf: dtmf === "useGroupSettings" ? null : dtmf,
+        dtmf:
+          this.props.group.pbxType === "SIP" ||
+          this.props.group.pbxType === "PRA_SIP" ||
+          this.props.group.pbxType === "SIP_PRA"
+            ? dtmf === "useGroupSettings"
+              ? null
+              : dtmf
+            : "",
         direction: direction === "useGroupSettings" ? null : direction,
         channelsIn,
         channelsOut
