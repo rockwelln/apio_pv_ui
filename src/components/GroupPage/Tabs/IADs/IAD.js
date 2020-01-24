@@ -14,10 +14,15 @@ class IAD extends Component {
   state = { showDelete: false, timers: [] };
 
   componentDidMount() {
-    this.props
-      .fetchGetTimerForIAD(this.props.iad.iadId)
-      .then(data => this.setState({ timers: data.timers }));
+    this.props.fetchGetTimerForIAD(this.props.iad.iadId).then(data =>
+      this.setState({
+        timers: data.timers.filter(
+          timer => new Date(timer.at).getTime() > new Date().getTime()
+        )
+      })
+    );
   }
+
   render() {
     const { onReload, iad } = this.props;
     const { showDelete } = this.state;
@@ -32,10 +37,10 @@ class IAD extends Component {
         </td>
         <td>{iad.type}</td>
         <td>{iad.macAddress}</td>
-        {this.props.iadTimer.length ? (
+        {this.state.timers.length ? (
           <td>
             {this.state.timers.map(timer => (
-              <p>{timer.at}</p>
+              <p key={timer.id}>{timer.at}</p>
             ))}
           </td>
         ) : (

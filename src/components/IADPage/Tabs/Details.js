@@ -23,12 +23,16 @@ export class Details extends Component {
     macAddress: "",
     pilotNumber: "",
     disabledButton: false,
-    isDisabled: true
+    isDisabled: true,
+    timers: []
   };
   componentDidMount() {
     this.setState({
       macAddress: this.props.iad.macAddress,
-      pilotNumber: this.props.iad.pilotNumber
+      pilotNumber: this.props.iad.pilotNumber,
+      timers: this.props.iadTimer.filter(
+        timer => new Date(timer.at).getTime() > new Date().getTime()
+      )
     });
   }
   render() {
@@ -39,10 +43,10 @@ export class Details extends Component {
       <React.Fragment>
         <Row>
           <Col md={12}>
-            {!!this.props.iadTimer.length && (
+            {!!this.state.timers.length && (
               <Alert bsStyle="warning">
-                {this.props.iadTimer.map(timer => (
-                  <p>{`Reboot scheduled at ${timer.at}`}</p>
+                {this.state.timers.map(timer => (
+                  <p key={timer.id}>{`Reboot scheduled at ${timer.at}`}</p>
                 ))}
               </Alert>
             )}

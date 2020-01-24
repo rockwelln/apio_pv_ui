@@ -206,7 +206,7 @@ export class IADs extends Component {
                   </thead>
                   <tbody>
                     {paginationIads[page].map(
-                      iad =>
+                      (iad, i) =>
                         this.props.config.tenant && (
                           <IAD
                             key={iad.iadId}
