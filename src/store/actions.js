@@ -1100,16 +1100,18 @@ export function fetchPutMassIADsReboot(iadsForUpdate) {
         NotificationsManager.success(
           <FormattedMessage
             id="reboot-iads-success"
-            defaultMessage="Successfully rebooted iads!"
+            defaultMessage="Reboot request(s) recorded"
           />,
-          "Successfully rebooted iads!"
+          data.rebootRequest
+            ? "Reboot request(s) planned"
+            : "Reboot request(s) initiated"
         );
       })
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage
             id="reboot-iads-failed"
-            defaultMessage="Failed to reboote iads!"
+            defaultMessage="Reboot request failed"
           />,
           error.message
         )
