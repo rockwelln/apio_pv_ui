@@ -22,7 +22,7 @@ const RebootWindow = props => {
   const dispatch = useDispatch();
   const promiseArray = [];
 
-  const fillPromisArray = data => {
+  const fillPromiseArray = data => {
     promiseArray.push(dispatch(fetchPutMassIADsReboot(data)));
   };
 
@@ -52,7 +52,7 @@ const RebootWindow = props => {
       };
 
       const clearData = removeEmpty(dataForUpdate);
-      fillPromisArray(clearData);
+      fillPromiseArray(clearData);
     });
     Promise.all(promiseArray).then(() => {
       props.onClose();
