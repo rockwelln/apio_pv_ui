@@ -12,7 +12,6 @@ export const pages = Object.freeze({
   system_databases: 16,
   system_reporting: 17,
   /////////////////////////////////////////
-  common_page_access: 200,
   edit_group_iad_advanced_clock_master: 100,
   edit_group_iad_pra_info_tpid: 101,
   edit_group_iad_pra_info_circuit_id: 102,
@@ -38,7 +37,10 @@ export const pages = Object.freeze({
   edit_group_iad_advanced_sysLogEnabled: 122,
   edit_group_iad_advanced_isdnTerminationSide: 123,
   edit_group_iad_advanced_dual_power: 124,
-  edit_group_iad_transportMode: 125
+  edit_group_iad_transportMode: 125,
+  //////////////////////////////////////////////////
+  common_page_access: 200,
+  add_access: 201
 });
 
 export const privileges = Object.freeze({});
@@ -85,7 +87,8 @@ const definition = {
     [pages.edit_group_iad_services_dtmf]: true,
     [pages.edit_group_iad_advanced_isdnTerminationSide]: true,
     [pages.edit_group_iad_advanced_dual_power]: true,
-    [pages.edit_group_iad_transportMode]: true
+    [pages.edit_group_iad_transportMode]: true,
+    [pages.add_access]: true
   },
 
   HelpDesk1: { [pages.common_page_access]: true },
@@ -135,7 +138,8 @@ const definition = {
     [pages.edit_group_iad_services_dtmf]: true,
     [pages.edit_group_iad_advanced_isdnTerminationSide]: true,
     [pages.edit_group_iad_advanced_dual_power]: true,
-    [pages.edit_group_iad_transportMode]: true
+    [pages.edit_group_iad_transportMode]: true,
+    [pages.add_access]: true
   },
 
   VoiceOps: {
@@ -165,7 +169,8 @@ const definition = {
     [pages.edit_group_iad_advanced_sysLogEnabled]: true,
     [pages.edit_group_iad_advanced_isdnTerminationSide]: true,
     [pages.edit_group_iad_advanced_dual_power]: true,
-    [pages.edit_group_iad_transportMode]: true
+    [pages.edit_group_iad_transportMode]: true,
+    [pages.add_access]: true
   },
 
   VoiceEng: {
@@ -195,7 +200,8 @@ const definition = {
     [pages.edit_group_iad_advanced_sysLogEnabled]: true,
     [pages.edit_group_iad_advanced_isdnTerminationSide]: true,
     [pages.edit_group_iad_advanced_dual_power]: true,
-    [pages.edit_group_iad_transportMode]: true
+    [pages.edit_group_iad_transportMode]: true,
+    [pages.add_access]: true
   }
 };
 

@@ -31,6 +31,8 @@ import PhoneNumber from "./PhoneNumber";
 import DeleteModal from "./DeleteMultipleNumbers";
 import { countsPerPages } from "../../../../constants";
 
+import { isAllowed, pages } from "../../../../utils/user";
+
 import "./styles.css";
 
 export class PhoneNumbersTab extends Component {
@@ -140,16 +142,18 @@ export class PhoneNumbersTab extends Component {
               </FormattedMessage>
             </InputGroup>
           </Col>
-          <Col md={1}>
-            <Link
-              to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.tenantId}/groups/${this.props.groupId}/addphone`}
-            >
-              <Glyphicon
-                className={"x-large"}
-                glyph="glyphicon glyphicon-plus-sign"
-              />
-            </Link>
-          </Col>
+          {isAllowed(localStorage.getItem("userProfile"), pages.add_access) && (
+            <Col md={1}>
+              <Link
+                to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.tenantId}/groups/${this.props.groupId}/addphone`}
+              >
+                <Glyphicon
+                  className={"x-large"}
+                  glyph="glyphicon glyphicon-plus-sign"
+                />
+              </Link>
+            </Col>
+          )}
         </Row>
         {/* {paginationPhoneNumbers.length ? ( */}
         <React.Fragment>

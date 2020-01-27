@@ -18,6 +18,8 @@ import { fetchGetGroupsByTenantId } from "../../../store/actions";
 import Group from "./Group";
 import { countsPerPages } from "../../../constants";
 
+import { isAllowed, pages } from "../../../utils/user";
+
 export class GroupsTab extends Component {
   state = {
     searchValue: "",
@@ -103,16 +105,18 @@ export class GroupsTab extends Component {
               </FormattedMessage>
             </InputGroup>
           </Col>
-          <Col md={1}>
-            <Link
-              to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/addgroup`}
-            >
-              <Glyphicon
-                className={"x-large"}
-                glyph="glyphicon glyphicon-plus-sign"
-              />
-            </Link>
-          </Col>
+          {isAllowed(localStorage.getItem("userProfile"), pages.add_access) && (
+            <Col md={1}>
+              <Link
+                to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/addgroup`}
+              >
+                <Glyphicon
+                  className={"x-large"}
+                  glyph="glyphicon glyphicon-plus-sign"
+                />
+              </Link>
+            </Col>
+          )}
         </Row>
         <Row>
           <Col md={11}>

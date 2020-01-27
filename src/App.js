@@ -337,7 +337,7 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/configs/addteam"
                 component={props =>
-                  isAllowed(ui_profile, pages.common_page_access) ? (
+                  isAllowed(ui_profile, pages.add_access) ? (
                     <AddReconciliationTeam />
                   ) : (
                     <NotAllowed />
@@ -359,7 +359,7 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/add"
                 component={props =>
-                  isAllowed(ui_profile, pages.common_page_access) ? (
+                  isAllowed(ui_profile, pages.add_access) ? (
                     <AddEntreprises />
                   ) : (
                     <NotAllowed />
@@ -381,7 +381,7 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/addgroup"
                 component={props =>
-                  isAllowed(ui_profile, pages.common_page_access) ? (
+                  isAllowed(ui_profile, pages.add_access) ? (
                     <AddGroup />
                   ) : (
                     <NotAllowed />
@@ -403,7 +403,7 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/addiad"
                 component={props =>
-                  isAllowed(ui_profile, pages.common_page_access) ? (
+                  isAllowed(ui_profile, pages.add_access) ? (
                     <AddIAD />
                   ) : (
                     <NotAllowed />
@@ -414,7 +414,7 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/addphone"
                 component={props =>
-                  isAllowed(ui_profile, pages.common_page_access) ? (
+                  isAllowed(ui_profile, pages.add_access) ? (
                     <AddPhoneToGroup />
                   ) : (
                     <NotAllowed />
@@ -425,7 +425,7 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/addenterprisetrunk"
                 component={props =>
-                  isAllowed(ui_profile, pages.common_page_access) ? (
+                  isAllowed(ui_profile, pages.add_access) ? (
                     <AddEntrepriseTrunkPage />
                   ) : (
                     <NotAllowed />
@@ -449,17 +449,6 @@ class App extends Component {
                 component={props =>
                   isAllowed(ui_profile, pages.common_page_access) ? (
                     <EnterpriseTrunkPage />
-                  ) : (
-                    <NotAllowed />
-                  )
-                }
-                exact
-              />
-              <Route
-                path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/modifyphone"
-                component={props =>
-                  isAllowed(ui_profile, pages.common_page_access) ? (
-                    <AddPhoneToGroup />
                   ) : (
                     <NotAllowed />
                   )

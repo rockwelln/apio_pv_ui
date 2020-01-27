@@ -19,6 +19,8 @@ import Loading from "../../../../common/Loading";
 
 import { countsPerPages } from "../../../../constants";
 
+import { isAllowed, pages } from "../../../../utils/user";
+
 export class RoutingNumber extends Component {
   state = {
     paginationTrunks: [],
@@ -91,16 +93,18 @@ export class RoutingNumber extends Component {
               </FormattedMessage>
             </InputGroup>
           </Col>
-          <Col md={1}>
-            <Link
-              to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/addenterprisetrunk`}
-            >
-              <Glyphicon
-                className={"x-large"}
-                glyph="glyphicon glyphicon-plus-sign"
-              />
-            </Link>
-          </Col>
+          {isAllowed(localStorage.getItem("userProfile"), pages.add_access) && (
+            <Col md={1}>
+              <Link
+                to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/addenterprisetrunk`}
+              >
+                <Glyphicon
+                  className={"x-large"}
+                  glyph="glyphicon glyphicon-plus-sign"
+                />
+              </Link>
+            </Col>
+          )}
         </Row>
         <Row>
           <Col md={11}>

@@ -19,6 +19,8 @@ import Loading from "../../common/Loading";
 import Tenant from "./Tenant";
 import { countsPerPages } from "../../constants";
 
+import { isAllowed, pages } from "../../utils/user";
+
 class Tenants extends Component {
   constructor(props) {
     super(props);
@@ -129,16 +131,21 @@ class Tenants extends Component {
                 </FormattedMessage>
               </InputGroup>
             </Col>
-            <Col md={1}>
-              <Link
-                to={`/provisioning/${this.props.match.params.gwName}/tenants/add`}
-              >
-                <Glyphicon
-                  className={"x-large"}
-                  glyph="glyphicon glyphicon-plus-sign"
-                />
-              </Link>
-            </Col>
+            {isAllowed(
+              localStorage.getItem("userProfile"),
+              pages.add_access
+            ) && (
+              <Col md={1}>
+                <Link
+                  to={`/provisioning/${this.props.match.params.gwName}/tenants/add`}
+                >
+                  <Glyphicon
+                    className={"x-large"}
+                    glyph="glyphicon glyphicon-plus-sign"
+                  />
+                </Link>
+              </Col>
+            )}
           </Row>
           <Row>
             <Col md={11}>

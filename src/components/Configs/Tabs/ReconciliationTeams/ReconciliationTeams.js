@@ -19,6 +19,8 @@ import Loading from "../../../../common/Loading";
 import { countsPerPages } from "../../../../constants";
 import Team from "./Team";
 
+import { isAllowed, pages } from "../../../../utils/user";
+
 export class ReconciliationTeams extends Component {
   state = {
     searchValue: "",
@@ -84,16 +86,18 @@ export class ReconciliationTeams extends Component {
               </FormattedMessage>
             </InputGroup>
           </Col>
-          <Col md={1}>
-            <Link
-              to={`/provisioning/${this.props.match.params.gwName}/configs/addteam`}
-            >
-              <Glyphicon
-                className={"x-large"}
-                glyph="glyphicon glyphicon-plus-sign"
-              />
-            </Link>
-          </Col>
+          {isAllowed(localStorage.getItem("userProfile"), pages.add_access) && (
+            <Col md={1}>
+              <Link
+                to={`/provisioning/${this.props.match.params.gwName}/configs/addteam`}
+              >
+                <Glyphicon
+                  className={"x-large"}
+                  glyph="glyphicon glyphicon-plus-sign"
+                />
+              </Link>
+            </Col>
+          )}
         </Row>
         <Row>
           <Col md={11}>
