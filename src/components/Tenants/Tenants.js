@@ -63,7 +63,10 @@ class Tenants extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.tenants.length !== this.props.tenants.length) {
+    if (
+      prevProps.tenants.length !== this.props.tenants.length ||
+      prevProps.match.params.gwName !== this.props.match.params.gwName
+    ) {
       this.fetchRequsts();
     }
   }
