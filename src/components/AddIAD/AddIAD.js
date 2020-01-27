@@ -631,6 +631,12 @@ export class AddIAD extends Component {
                           dtmf: e.target.value
                         })
                       }
+                      disabled={
+                        !isAllowed(
+                          localStorage.getItem("userProfile"),
+                          pages.edit_group_iad_services_dtmf
+                        )
+                      }
                     >
                       {this.props.config.tenant.group.iad.dtmfOverride.map(
                         (el, i) => (
@@ -806,6 +812,12 @@ export class AddIAD extends Component {
                               }
                             });
                           }}
+                          disabled={
+                            !isAllowed(
+                              localStorage.getItem("userProfile"),
+                              pages.edit_group_iad_pra_info_pra_port
+                            )
+                          }
                         >
                           {this.state.arrayOfPraId.map((el, i) => (
                             <option
@@ -836,7 +848,13 @@ export class AddIAD extends Component {
                         <FormControl
                           type="text"
                           placeholder={"Tina Product ID"}
-                          disabled={!this.state.praByIad[pra].praID}
+                          disabled={
+                            !this.state.praByIad[pra].praID ||
+                            !isAllowed(
+                              localStorage.getItem("userProfile"),
+                              pages.edit_group_iad_pra_info_tpid
+                            )
+                          }
                           onChange={e =>
                             this.setState({
                               praByIad: {
@@ -868,7 +886,13 @@ export class AddIAD extends Component {
                           placeholder={
                             "Prefix followed by national phone number"
                           }
-                          disabled={!this.state.praByIad[pra].praID}
+                          disabled={
+                            !this.state.praByIad[pra].praID ||
+                            !isAllowed(
+                              localStorage.getItem("userProfile"),
+                              pages.edit_group_iad_pra_info_circuit_id
+                            )
+                          }
                           onChange={e =>
                             this.setState({
                               praByIad: {
@@ -897,7 +921,13 @@ export class AddIAD extends Component {
                       <div className={"margin-right-1 flex-basis-33"}>
                         <Checkbox
                           className={"table-checkbox"}
-                          disabled={!this.state.praByIad[pra].praID}
+                          disabled={
+                            !this.state.praByIad[pra].praID ||
+                            !isAllowed(
+                              localStorage.getItem("userProfile"),
+                              pages.edit_group_iad_pra_info_enabled
+                            )
+                          }
                           onChange={e =>
                             this.setState({
                               praByIad: {
@@ -956,6 +986,12 @@ export class AddIAD extends Component {
                               transportMode: e.target.value
                             })
                           }
+                          disabled={
+                            !isAllowed(
+                              localStorage.getItem("userProfile"),
+                              pages.edit_group_iad_transportMode
+                            )
+                          }
                         >
                           <div className="font-weight-bold flex">
                             {type.name}
@@ -994,6 +1030,12 @@ export class AddIAD extends Component {
                               this.setState({
                                 ip1mode: e.target.value
                               })
+                            }
+                            disabled={
+                              !isAllowed(
+                                localStorage.getItem("userProfile"),
+                                pages.edit_group_iad_ip1_mode
+                              )
                             }
                           >
                             <div className="font-weight-bold flex">
@@ -1034,6 +1076,12 @@ export class AddIAD extends Component {
                               })
                             }
                             onBlur={this.validateIPAddressV4}
+                            disabled={
+                              !isAllowed(
+                                localStorage.getItem("userProfile"),
+                                pages.edit_group_iad_ip1_ipv4Address
+                              )
+                            }
                           />
                         </FormGroup>
                       </Col>
@@ -1082,6 +1130,12 @@ export class AddIAD extends Component {
                               })
                             }
                             onBlur={this.validateNetMaskV4}
+                            disabled={
+                              !isAllowed(
+                                localStorage.getItem("userProfile"),
+                                pages.edit_group_iad_ip1_ipv4Netmask
+                              )
+                            }
                           />
                         </FormGroup>
                       </Col>
@@ -1134,6 +1188,12 @@ export class AddIAD extends Component {
                             }
                             type="text"
                             onBlur={this.validateIPAddressV6}
+                            disabled={
+                              !isAllowed(
+                                localStorage.getItem("userProfile"),
+                                pages.edit_group_iad_ip1_ipv6Address
+                              )
+                            }
                           />
                         </FormGroup>
                       </Col>
@@ -1182,6 +1242,12 @@ export class AddIAD extends Component {
                               })
                             }
                             onBlur={this.validateNetMaskV6}
+                            disabled={
+                              !isAllowed(
+                                localStorage.getItem("userProfile"),
+                                pages.edit_group_iad_ip1_ipv6Netmask
+                              )
+                            }
                           />
                         </FormGroup>
                       </Col>
@@ -1249,6 +1315,12 @@ export class AddIAD extends Component {
                               })
                             }
                             onBlur={this.validatePbxIPAddress}
+                            disabled={
+                              !isAllowed(
+                                localStorage.getItem("userProfile"),
+                                pages.edit_group_iad_pbx_IPAddress
+                              )
+                            }
                           />
                         </div>
                       </FormGroup>
@@ -1271,6 +1343,12 @@ export class AddIAD extends Component {
                           }
                           this.setState({ port: e.target.value });
                         }}
+                        disabled={
+                          !isAllowed(
+                            localStorage.getItem("userProfile"),
+                            pages.edit_group_iad_pbx_port
+                          )
+                        }
                       />
                     </div>
                   </Col>
@@ -1347,9 +1425,15 @@ export class AddIAD extends Component {
                   </div>
                   <div className={"margin-right-1 flex-basis-33"}>
                     <Checkbox
-                      defaultChecked={this.state.dual_power}
+                      checked={this.state.dual_power}
                       onChange={e =>
                         this.setState({ dual_power: e.target.checked })
+                      }
+                      disabled={
+                        !isAllowed(
+                          localStorage.getItem("userProfile"),
+                          pages.edit_group_iad_advanced_dual_power
+                        )
                       }
                     />
                   </div>
@@ -1371,6 +1455,12 @@ export class AddIAD extends Component {
                       value={this.state.isdnTerminationSide}
                       onChange={e =>
                         this.setState({ isdnTerminationSide: e.target.value })
+                      }
+                      disabled={
+                        !isAllowed(
+                          localStorage.getItem("userProfile"),
+                          pages.edit_group_iad_advanced_isdnTerminationSide
+                        )
                       }
                     >
                       <option value={""}>none</option>

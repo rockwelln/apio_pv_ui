@@ -12,6 +12,8 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import { FormattedMessage } from "react-intl";
 
+import { isAllowed, pages } from "../../../../../utils/user";
+
 import {
   changeObjectIAD,
   fetchPutUpdateIAD
@@ -51,8 +53,14 @@ export class Options extends Component {
             </div>
             <div className={"margin-right-1 flex-basis-33"}>
               <Checkbox
-                defaultChecked={this.state.advanced.clock_master}
+                checked={this.state.advanced.clock_master}
                 onChange={this.changeClockMaster}
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_group_iad_advanced_clock_master
+                  )
+                }
               />
             </div>
           </Col>
@@ -66,8 +74,14 @@ export class Options extends Component {
             </div>
             <div className={"margin-right-1 flex-basis-33"}>
               <Checkbox
-                defaultChecked={this.state.advanced.dual_power}
+                checked={this.state.advanced.dual_power}
                 onChange={this.changeDualPower}
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_group_iad_advanced_dual_power
+                  )
+                }
               />
             </div>
           </Col>
@@ -87,6 +101,12 @@ export class Options extends Component {
                 componentClass="select"
                 value={this.state.advanced.isdnTerminationSide}
                 onChange={this.changeIsdnTerminationSide}
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_group_iad_advanced_isdnTerminationSide
+                  )
+                }
               >
                 {this.props.config.tenant.group.iad.isdnTerminationSide.map(
                   (el, i) => (
@@ -111,8 +131,14 @@ export class Options extends Component {
             </div>
             <div className={"margin-right-1 flex-basis-33"}>
               <Checkbox
-                defaultChecked={this.state.advanced.sysLogEnabled}
+                checked={this.state.advanced.sysLogEnabled}
                 onChange={this.changeSysLogEnabled}
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_group_iad_advanced_sysLogEnabled
+                  )
+                }
               />
             </div>
           </Col>
@@ -130,9 +156,15 @@ export class Options extends Component {
             <div className={"margin-right-1 flex-basis-16"}>
               <FormControl
                 type="text"
-                defaultValue={this.state.advanced.sysLogIp}
+                value={this.state.advanced.sysLogIp}
                 placeholder={"IPv4 address"}
                 onChange={this.changeSysLogIp}
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_group_iad_advanced_sysLogIp
+                  )
+                }
               />
             </div>
           </Col>

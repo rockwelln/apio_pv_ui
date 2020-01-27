@@ -23,6 +23,8 @@ import { removeEmpty } from "../../remuveEmptyInObject";
 
 import { TRANSPORTMODE, IP1MODE } from "../../../constants";
 
+import { isAllowed, pages } from "../../../utils/user";
+
 export class IPAddress extends Component {
   state = {
     ip1: {},
@@ -80,6 +82,12 @@ export class IPAddress extends Component {
                       value={type.value}
                       checked={type.value === this.state.transportMode}
                       onChange={this.changeTransportMode}
+                      disabled={
+                        !isAllowed(
+                          localStorage.getItem("userProfile"),
+                          pages.edit_group_iad_transportMode
+                        )
+                      }
                     >
                       <div className="font-weight-bold flex">{type.name}</div>
                     </Radio>
@@ -111,11 +119,17 @@ export class IPAddress extends Component {
                         key={i + ""}
                         name="ip1mode"
                         value={type.value}
-                        checked={type.value === this.state.ip1mode}
+                        checked={type.value === this.state.ip1.mode}
                         onChange={e =>
                           this.setState({
-                            ip1mode: e.target.value
+                            ip1: { ...this.state.ip1, mode: e.target.value }
                           })
+                        }
+                        disabled={
+                          !isAllowed(
+                            localStorage.getItem("userProfile"),
+                            pages.edit_group_iad_ip1_mode
+                          )
                         }
                       >
                         <div className="font-weight-bold flex">{type.name}</div>
@@ -125,7 +139,7 @@ export class IPAddress extends Component {
                 </div>
               </Col>
             </Row>
-            {this.state.ip1mode === "IPv4" && (
+            {this.state.ip1.mode === "IPv4" && (
               <React.Fragment>
                 <Row className={"margin-top-1"}>
                   <Col md={6}>
@@ -143,15 +157,24 @@ export class IPAddress extends Component {
                       <FormControl
                         className={"flex-basis-66"}
                         type="text"
-                        value={this.state.ipv4Address}
+                        value={this.state.ip1.ipv4Address}
                         placeholder={"IPv4 address"}
                         onChange={e =>
                           this.setState({
-                            ipv4Address: e.target.value,
+                            ip1: {
+                              ...this.state.ip1,
+                              ipv4Address: e.target.value
+                            },
                             errorIpAdressV4: null
                           })
                         }
                         onBlur={this.validateIPAddressV4}
+                        disabled={
+                          !isAllowed(
+                            localStorage.getItem("userProfile"),
+                            pages.edit_group_iad_ip1_ipv4Address
+                          )
+                        }
                       />
                     </FormGroup>
                   </Col>
@@ -189,15 +212,24 @@ export class IPAddress extends Component {
                       <FormControl
                         className={"flex-basis-66"}
                         type="text"
-                        value={this.state.ipv4Netmask}
+                        value={this.state.ip1.ipv4Netmask}
                         placeholder={"IPv4 netmask"}
                         onChange={e =>
                           this.setState({
-                            ipv4Netmask: e.target.value,
+                            ip1: {
+                              ...this.state.ip1,
+                              ipv4Netmask: e.target.value
+                            },
                             errorNetMaskV4: null
                           })
                         }
                         onBlur={this.validateNetMaskV4}
+                        disabled={
+                          !isAllowed(
+                            localStorage.getItem("userProfile"),
+                            pages.edit_group_iad_ip1_ipv4Netmask
+                          )
+                        }
                       />
                     </FormGroup>
                   </Col>
@@ -221,7 +253,7 @@ export class IPAddress extends Component {
                 )}
               </React.Fragment>
             )}
-            {this.state.ip1mode === "IPv6" && (
+            {this.state.ip1.mode === "IPv6" && (
               <React.Fragment>
                 <Row className={"margin-top-1"}>
                   <Col md={6}>
@@ -238,16 +270,25 @@ export class IPAddress extends Component {
                       </ControlLabel>
                       <FormControl
                         className={"flex-basis-66"}
-                        value={this.state.ipv6Address}
+                        value={this.state.ip1.ipv6Address}
                         placeholder={"IPv6 address"}
                         onChange={e =>
                           this.setState({
-                            ipv6Address: e.target.value,
+                            ip1: {
+                              ...this.state.ip1,
+                              ipv6Address: e.target.value
+                            },
                             errorIpAdressV6: null
                           })
                         }
                         type="text"
                         onBlur={this.validateIPAddressV6}
+                        disabled={
+                          !isAllowed(
+                            localStorage.getItem("userProfile"),
+                            pages.edit_group_iad_ip1_ipv6Address
+                          )
+                        }
                       />
                     </FormGroup>
                   </Col>
@@ -285,15 +326,24 @@ export class IPAddress extends Component {
                       <FormControl
                         className={"flex-basis-66"}
                         type="text"
-                        value={this.state.ipv6Netmask}
+                        value={this.state.ip1.ipv6Netmask}
                         placeholder={"IPv6 netmask"}
                         onChange={e =>
                           this.setState({
-                            ipv6Netmask: e.target.value,
+                            ip1: {
+                              ...this.state.ip1,
+                              ipv6Netmask: e.target.value
+                            },
                             errorNetMaskV6: null
                           })
                         }
                         onBlur={this.validateNetMaskV6}
+                        disabled={
+                          !isAllowed(
+                            localStorage.getItem("userProfile"),
+                            pages.edit_group_iad_ip1_ipv6Netmask
+                          )
+                        }
                       />
                     </FormGroup>
                   </Col>
@@ -352,15 +402,24 @@ export class IPAddress extends Component {
                       </ControlLabel>
                       <FormControl
                         type="text"
-                        value={this.state.IPAddress}
+                        value={this.state.pbx.IPAddress}
                         placeholder={"IP Address"}
                         onChange={e =>
                           this.setState({
-                            IPAddress: e.target.value,
+                            pbx: {
+                              ...this.state.pbx,
+                              IPAddress: e.target.value
+                            },
                             errorPbxIpAdress: null
                           })
                         }
                         onBlur={this.validatePbxIPAddress}
+                        disabled={
+                          !isAllowed(
+                            localStorage.getItem("userProfile"),
+                            pages.edit_group_iad_pbx_IPAddress
+                          )
+                        }
                       />
                     </div>
                   </FormGroup>
@@ -375,14 +434,22 @@ export class IPAddress extends Component {
                   </ControlLabel>
                   <FormControl
                     type="text"
-                    value={this.state.port}
+                    value={this.state.pbx.port}
                     placeholder={"Port"}
                     onChange={e => {
                       if (isNaN(e.target.value)) {
                         return;
                       }
-                      this.setState({ port: e.target.value });
+                      this.setState({
+                        pbx: { ...this.state.pbx, port: e.target.value }
+                      });
                     }}
+                    disabled={
+                      !isAllowed(
+                        localStorage.getItem("userProfile"),
+                        pages.edit_group_iad_pbx_port
+                      )
+                    }
                   />
                 </div>
               </Col>

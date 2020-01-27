@@ -20,6 +20,8 @@ import {
 
 import RebootWindow from "../../RebootWindow";
 
+import { isAllowed, pages } from "../../../../utils/user";
+
 export class NumberFormatting extends Component {
   state = {
     isLoading: true,
@@ -105,6 +107,12 @@ export class NumberFormatting extends Component {
                         }
                       })
                     }
+                    disabled={
+                      !isAllowed(
+                        localStorage.getItem("userProfile"),
+                        pages.edit_pra_nat_dst
+                      )
+                    }
                   >
                     {this.props.config.tenant.group.pra_nat_dst.map((el, i) => (
                       <option key={i} value={el.value}>
@@ -137,6 +145,12 @@ export class NumberFormatting extends Component {
                         }
                       })
                     }
+                    disabled={
+                      !isAllowed(
+                        localStorage.getItem("userProfile"),
+                        pages.edit_pra_nat_src
+                      )
+                    }
                   >
                     {this.props.config.tenant.group.pra_nat_src.map((el, i) => (
                       <option key={i} value={el.value}>
@@ -168,6 +182,12 @@ export class NumberFormatting extends Component {
                           pra_int_src: e.target.value
                         }
                       })
+                    }
+                    disabled={
+                      !isAllowed(
+                        localStorage.getItem("userProfile"),
+                        pages.edit_pra_int_src
+                      )
                     }
                   >
                     {this.props.config.tenant.group.pra_int_src.map((el, i) => (
@@ -212,6 +232,12 @@ export class NumberFormatting extends Component {
                         }
                       })
                     }
+                    disabled={
+                      !isAllowed(
+                        localStorage.getItem("userProfile"),
+                        pages.edit_sip_nat_dst
+                      )
+                    }
                   >
                     {this.props.config.tenant.group.sip_nat_dst.map((el, i) => (
                       <option key={i} value={el.value}>
@@ -244,6 +270,12 @@ export class NumberFormatting extends Component {
                         }
                       })
                     }
+                    disabled={
+                      !isAllowed(
+                        localStorage.getItem("userProfile"),
+                        pages.edit_sip_nat_src
+                      )
+                    }
                   >
                     {this.props.config.tenant.group.sip_nat_src.map((el, i) => (
                       <option key={i} value={el.value}>
@@ -275,6 +307,12 @@ export class NumberFormatting extends Component {
                           sip_int_src: e.target.value
                         }
                       })
+                    }
+                    disabled={
+                      !isAllowed(
+                        localStorage.getItem("userProfile"),
+                        pages.edit_group_iad_ip1_mode
+                      )
                     }
                   >
                     {this.props.config.tenant.group.sip_int_src.map((el, i) => (

@@ -17,6 +17,8 @@ import { removeEmpty } from "../../remuveEmptyInObject";
 
 import RebootWindow from "../RebootWindow";
 
+import { isAllowed, pages } from "../../../utils/user";
+
 export class GroupService extends Component {
   state = {
     services: { dtmf: "", direction: "", channelsIn: "", channelsOut: "" },
@@ -48,6 +50,12 @@ export class GroupService extends Component {
                   componentClass="select"
                   value={this.state.services.dtmf}
                   onChange={this.changeDtmf}
+                  disabled={
+                    !isAllowed(
+                      localStorage.getItem("userProfile"),
+                      pages.edit_group_iad_services_dtmf
+                    )
+                  }
                 >
                   {this.props.config.tenant.group.iad.dtmfOverride.map(
                     (el, i) => (

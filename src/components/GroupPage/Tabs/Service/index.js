@@ -19,6 +19,8 @@ import {
   fetchPutUpdateGroupDetails
 } from "../../../../store/actions";
 
+import { isAllowed, pages } from "../../../../utils/user";
+
 export class Service extends Component {
   state = {
     isLoading: true,
@@ -310,7 +312,13 @@ export class Service extends Component {
                       }
                     })
                   }
-                  disabled={this.state.isDisabled}
+                  disabled={
+                    this.state.isDisabled ||
+                    !isAllowed(
+                      localStorage.getItem("userProfile"),
+                      pages.edit_group_dtmf
+                    )
+                  }
                 >
                   {this.props.config.tenant.group.dtmf.map((el, i) => (
                     <option key={i} value={el.value}>
