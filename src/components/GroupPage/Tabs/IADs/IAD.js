@@ -10,6 +10,8 @@ import DeleteModal from "./DeleteModal";
 
 import { fetchGetTimerForIAD } from "../../../../store/actions";
 
+import { isAllowed, pages } from "../../../../utils/user";
+
 class IAD extends Component {
   state = { showDelete: false, timers: [] };
 
@@ -46,26 +48,31 @@ class IAD extends Component {
         ) : (
           <td>-</td>
         )}
-        <td>
-          <ButtonToolbar>
-            <Glyphicon
-              glyph="glyphicon glyphicon-remove"
-              onClick={() => this.setState({ showDelete: true })}
+        {isAllowed(
+          localStorage.getItem("userProfile"),
+          pages.delete_access
+        ) && (
+          <td>
+            <ButtonToolbar>
+              <Glyphicon
+                glyph="glyphicon glyphicon-remove"
+                onClick={() => this.setState({ showDelete: true })}
+              />
+            </ButtonToolbar>
+            <DeleteModal
+              notifications={this.props.notifications}
+              iadId={iad.iadId}
+              tenantId={this.props.match.params.tenantId}
+              groupId={this.props.match.params.groupId}
+              show={showDelete}
+              onClose={e => {
+                onReload && onReload();
+                this.setState({ showDelete: false });
+              }}
+              {...this.props}
             />
-          </ButtonToolbar>
-          <DeleteModal
-            notifications={this.props.notifications}
-            iadId={iad.iadId}
-            tenantId={this.props.match.params.tenantId}
-            groupId={this.props.match.params.groupId}
-            show={showDelete}
-            onClose={e => {
-              onReload && onReload();
-              this.setState({ showDelete: false });
-            }}
-            {...this.props}
-          />
-        </td>
+          </td>
+        )}
       </tr>
     );
   }

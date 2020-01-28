@@ -32,6 +32,8 @@ import Loading from "../../common/Loading";
 import DeleteModal from "./DeleteModal";
 import RebootWindow from "./RebootWindow";
 
+import { isAllowed, pages } from "../../utils/user";
+
 export class IADPage extends Component {
   state = {
     isLoading: true,
@@ -72,10 +74,15 @@ export class IADPage extends Component {
               <div className="button-row">
                 <div className="pull-left">
                   {`IAD: ${this.props.match.params.iadId}`}
-                  <Glyphicon
-                    glyph="glyphicon glyphicon-trash"
-                    onClick={() => this.setState({ showDelete: true })}
-                  />
+                  {isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.delete_access
+                  ) && (
+                    <Glyphicon
+                      glyph="glyphicon glyphicon-trash"
+                      onClick={() => this.setState({ showDelete: true })}
+                    />
+                  )}
                   <DeleteModal
                     iadId={this.props.match.params.iadId}
                     show={this.state.showDelete}

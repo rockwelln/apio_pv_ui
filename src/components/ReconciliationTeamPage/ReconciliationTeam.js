@@ -13,6 +13,7 @@ import { fetchGetTeam, fetchPutUpdateTeam } from "../../store/actions";
 import { removeEmpty } from "../remuveEmptyInObject";
 import DeleteModal from "./DeleteModal";
 import { FormattedMessage } from "react-intl";
+import { isAllowed, pages } from "../../utils/user";
 
 export class AddReconciliationTeam extends Component {
   state = {
@@ -47,10 +48,15 @@ export class AddReconciliationTeam extends Component {
                 id="reconciliationTeam"
                 defaultMessage={`Reconciliation Team: ${this.props.team.name}`}
               />
-              <Glyphicon
-                glyph="glyphicon glyphicon-trash"
-                onClick={() => this.setState({ showDelete: true })}
-              />
+              {isAllowed(
+                localStorage.getItem("userProfile"),
+                pages.delete_access
+              ) && (
+                <Glyphicon
+                  glyph="glyphicon glyphicon-trash"
+                  onClick={() => this.setState({ showDelete: true })}
+                />
+              )}
               <DeleteModal
                 teamName={this.props.team.name}
                 show={this.state.showDelete}

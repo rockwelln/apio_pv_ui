@@ -168,19 +168,24 @@ export class PhoneNumbersTab extends Component {
                     >
                       (Un)select all shown numbers
                     </Checkbox> */}
-                  <div
-                    onClick={this.deleteSlectedNumbers}
-                    className={
-                      "cursor-pointer padding-left-05 flex text-align-center align-items-center margin-right-1"
-                    }
-                  >
-                    <Glyphicon
-                      glyph="glyphicon glyphicon-trash"
-                      className={"margin-right-1"}
+                  {isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.delete_access
+                  ) && (
+                    <div
                       onClick={this.deleteSlectedNumbers}
-                    />
-                    <div>Delete selected numbers</div>
-                  </div>
+                      className={
+                        "cursor-pointer padding-left-05 flex text-align-center align-items-center margin-right-1"
+                      }
+                    >
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-trash"
+                        className={"margin-right-1"}
+                        onClick={this.deleteSlectedNumbers}
+                      />
+                      <div>Delete selected numbers</div>
+                    </div>
+                  )}
                   <DeleteModal
                     rangeStart={numbersForDelete.map(
                       number => number.phoneNumbers || number.phoneNumber

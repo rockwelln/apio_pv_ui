@@ -7,6 +7,8 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import DeleteModal from "./DeleteModal";
 
+import { isAllowed, pages } from "../../../../utils/user";
+
 class Group extends Component {
   state = { showDelete: false };
   render() {
@@ -22,23 +24,28 @@ class Group extends Component {
           </Link>
         </td>
         <td>{team.email}</td>
-        <td>
-          <ButtonToolbar>
-            <Glyphicon
-              glyph="glyphicon glyphicon-remove"
-              onClick={() => this.setState({ showDelete: true })}
+        {isAllowed(
+          localStorage.getItem("userProfile"),
+          pages.delete_access
+        ) && (
+          <td>
+            <ButtonToolbar>
+              <Glyphicon
+                glyph="glyphicon glyphicon-remove"
+                onClick={() => this.setState({ showDelete: true })}
+              />
+            </ButtonToolbar>
+            <DeleteModal
+              teamName={team.name}
+              show={showDelete}
+              onClose={e => {
+                onReload && onReload();
+                this.setState({ showDelete: false });
+              }}
+              {...this.props}
             />
-          </ButtonToolbar>
-          <DeleteModal
-            teamName={team.name}
-            show={showDelete}
-            onClose={e => {
-              onReload && onReload();
-              this.setState({ showDelete: false });
-            }}
-            {...this.props}
-          />
-        </td>
+          </td>
+        )}
       </tr>
     );
   }

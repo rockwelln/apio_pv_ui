@@ -21,6 +21,8 @@ import { fetchGetTenantById, fetchGetGroupById } from "../../store/actions";
 import DeleteModal from "./DeleteModal";
 import Product from "./Tabs/Product";
 
+import { isAllowed, pages } from "../../utils/user";
+
 class TenantPage extends Component {
   tabsIdSuffix = Math.random()
     .toString(36)
@@ -67,10 +69,15 @@ class TenantPage extends Component {
         <div className={"panel-heading"}>
           <p className={"header"}>
             {`Site: ${group.groupName} (${this.props.match.params.groupId}) of customer ${tenant.name} (${tenant.tenantId})`}
-            <Glyphicon
-              glyph="glyphicon glyphicon-trash"
-              onClick={() => this.setState({ showDelete: true })}
-            />
+            {isAllowed(
+              localStorage.getItem("userProfile"),
+              pages.delete_access
+            ) && (
+              <Glyphicon
+                glyph="glyphicon glyphicon-trash"
+                onClick={() => this.setState({ showDelete: true })}
+              />
+            )}
             <DeleteModal
               groupId={this.props.match.params.groupId}
               show={showDelete}

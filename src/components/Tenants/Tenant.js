@@ -7,6 +7,8 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import DeleteModal from "./DeleteModal";
 
+import { isAllowed, pages } from "../../utils/user";
+
 import "./styles.css";
 
 class Tenant extends Component {
@@ -32,23 +34,28 @@ class Tenant extends Component {
         </td>
         <td>{t.name}</td>
         <td>{t.tina_id}</td>
-        <td>
-          <ButtonToolbar>
-            <Glyphicon
-              glyph="glyphicon glyphicon-remove"
-              onClick={() => this.setState({ showDelete: true })}
+        {isAllowed(
+          localStorage.getItem("userProfile"),
+          pages.delete_access
+        ) && (
+          <td>
+            <ButtonToolbar>
+              <Glyphicon
+                glyph="glyphicon glyphicon-remove"
+                onClick={() => this.setState({ showDelete: true })}
+              />
+            </ButtonToolbar>
+            <DeleteModal
+              tenantId={t.tenantId}
+              show={showDelete}
+              onClose={e => {
+                e && onReload && onReload();
+                this.setState({ showDelete: false });
+              }}
+              {...this.props}
             />
-          </ButtonToolbar>
-          <DeleteModal
-            tenantId={t.tenantId}
-            show={showDelete}
-            onClose={e => {
-              e && onReload && onReload();
-              this.setState({ showDelete: false });
-            }}
-            {...this.props}
-          />
-        </td>
+          </td>
+        )}
       </tr>
     );
   }

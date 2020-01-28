@@ -40,7 +40,8 @@ export const pages = Object.freeze({
   edit_group_iad_transportMode: 125,
   //////////////////////////////////////////////////
   common_page_access: 200,
-  add_access: 201
+  add_access: 201,
+  delete_access: 202
 });
 
 export const privileges = Object.freeze({});
@@ -88,7 +89,8 @@ const definition = {
     [pages.edit_group_iad_advanced_isdnTerminationSide]: true,
     [pages.edit_group_iad_advanced_dual_power]: true,
     [pages.edit_group_iad_transportMode]: true,
-    [pages.add_access]: true
+    [pages.add_access]: true,
+    [pages.delete_access]: true
   },
 
   HelpDesk1: { [pages.common_page_access]: true },
@@ -139,7 +141,8 @@ const definition = {
     [pages.edit_group_iad_advanced_isdnTerminationSide]: true,
     [pages.edit_group_iad_advanced_dual_power]: true,
     [pages.edit_group_iad_transportMode]: true,
-    [pages.add_access]: true
+    [pages.add_access]: true,
+    [pages.delete_access]: true
   },
 
   VoiceOps: {
@@ -170,7 +173,8 @@ const definition = {
     [pages.edit_group_iad_advanced_isdnTerminationSide]: true,
     [pages.edit_group_iad_advanced_dual_power]: true,
     [pages.edit_group_iad_transportMode]: true,
-    [pages.add_access]: true
+    [pages.add_access]: true,
+    [pages.delete_access]: true
   },
 
   VoiceEng: {
@@ -201,7 +205,8 @@ const definition = {
     [pages.edit_group_iad_advanced_isdnTerminationSide]: true,
     [pages.edit_group_iad_advanced_dual_power]: true,
     [pages.edit_group_iad_transportMode]: true,
-    [pages.add_access]: true
+    [pages.add_access]: true,
+    [pages.delete_access]: true
   }
 };
 

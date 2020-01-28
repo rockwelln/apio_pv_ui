@@ -19,6 +19,8 @@ import DeleteModal from "./DeleteModal";
 import { FormattedMessage } from "react-intl";
 import Loading from "../../common/Loading";
 
+import { isAllowed, pages } from "../../utils/user";
+
 export class Anomalies extends Component {
   state = {
     showDelete: false,
@@ -54,10 +56,15 @@ export class Anomalies extends Component {
                   onClick={() => this.setState({ isDisabled: false })}
                 ></Glyphicon>
               )}
-              <Glyphicon
-                glyph="glyphicon glyphicon-trash"
-                onClick={() => this.setState({ showDelete: true })}
-              />
+              {isAllowed(
+                localStorage.getItem("userProfile"),
+                pages.delete_access
+              ) && (
+                <Glyphicon
+                  glyph="glyphicon glyphicon-trash"
+                  onClick={() => this.setState({ showDelete: true })}
+                />
+              )}
               <DeleteModal
                 anomalyHash={this.props.match.params.anomalyHash}
                 show={this.state.showDelete}

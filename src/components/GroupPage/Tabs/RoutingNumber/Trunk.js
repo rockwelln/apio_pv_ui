@@ -7,6 +7,8 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import DeleteModal from "./DeleteModal";
 
+import { isAllowed, pages } from "../../../../utils/user";
+
 class Trunk extends Component {
   state = { showDelete: false };
 
@@ -23,26 +25,27 @@ class Trunk extends Component {
           </Link>
         </td>
         <td>{trunk.routingMode}</td>
-        {trunk.name.slice(-2) !== "01" ? (
-          <td>
-            <ButtonToolbar>
-              <Glyphicon
-                glyph="glyphicon glyphicon-remove"
-                onClick={() => this.setState({ showDelete: true })}
+        {isAllowed(localStorage.getItem("userProfile"), pages.delete_access) &&
+          (trunk.name.slice(-2) !== "01" ? (
+            <td>
+              <ButtonToolbar>
+                <Glyphicon
+                  glyph="glyphicon glyphicon-remove"
+                  onClick={() => this.setState({ showDelete: true })}
+                />
+              </ButtonToolbar>
+              <DeleteModal
+                trunk={trunk}
+                show={showDelete}
+                onClose={e => {
+                  onReload && onReload();
+                  this.setState({ showDelete: false });
+                }}
               />
-            </ButtonToolbar>
-            <DeleteModal
-              trunk={trunk}
-              show={showDelete}
-              onClose={e => {
-                onReload && onReload();
-                this.setState({ showDelete: false });
-              }}
-            />
-          </td>
-        ) : (
-          <td />
-        )}
+            </td>
+          ) : (
+            <td />
+          ))}
       </tr>
     );
   }

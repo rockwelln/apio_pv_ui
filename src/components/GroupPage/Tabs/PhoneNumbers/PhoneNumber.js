@@ -8,6 +8,8 @@ import DeleteModal from "./DeleteModal";
 
 import "./styles.css";
 
+import { isAllowed, pages } from "../../../../utils/user";
+
 export default class PhoneNumber extends Component {
   state = { showDelete: false };
 
@@ -49,26 +51,31 @@ export default class PhoneNumber extends Component {
         <td>{number.rangeEnd}</td>
         <td>{number.main_number ? "Yes" : "No"}</td>
         <td>{number.maintenance_number ? "Yes" : "No"}</td>
-        <td>
-          <React.Fragment>
-            <ButtonToolbar>
-              <Glyphicon
-                glyph="glyphicon glyphicon-remove"
-                onClick={() => this.setState({ showDelete: true })}
+        {isAllowed(
+          localStorage.getItem("userProfile"),
+          pages.delete_access
+        ) && (
+          <td>
+            <React.Fragment>
+              <ButtonToolbar>
+                <Glyphicon
+                  glyph="glyphicon glyphicon-remove"
+                  onClick={() => this.setState({ showDelete: true })}
+                />
+              </ButtonToolbar>
+              <DeleteModal
+                number={number}
+                show={showDelete}
+                tenantId={this.props.tenantId}
+                onClose={e => {
+                  onReload && onReload(number.rangeStart);
+                  this.setState({ showDelete: false });
+                }}
+                {...this.props}
               />
-            </ButtonToolbar>
-            <DeleteModal
-              number={number}
-              show={showDelete}
-              tenantId={this.props.tenantId}
-              onClose={e => {
-                onReload && onReload(number.rangeStart);
-                this.setState({ showDelete: false });
-              }}
-              {...this.props}
-            />
-          </React.Fragment>
-        </td>
+            </React.Fragment>
+          </td>
+        )}
       </tr>
     );
   }
