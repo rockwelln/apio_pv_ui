@@ -26,7 +26,7 @@ export class Sidebar extends Component {
             to={`/provisioning/${this.props.match.params.gwName}/tenants`}
           >
             <NavItem eventKey={0} className={"text-align-center"}>
-              ENTREPRISES
+              ENTERPRISES
             </NavItem>
           </LinkContainer>
           {/* <LinkContainer

@@ -111,7 +111,7 @@ class Tenants extends Component {
                 </InputGroup.Addon>
                 <FormattedMessage
                   id="search_placeholder"
-                  defaultMessage="Entreprise ID or Entreprise Name or Customer ID"
+                  defaultMessage="Enterprise ID or Enterprise Name or Customer ID"
                 >
                   {placeholder => (
                     <FormControl
@@ -183,7 +183,7 @@ class Tenants extends Component {
                         <th>
                           <FormattedMessage
                             id="tenant-id"
-                            defaultMessage="Entreprise id"
+                            defaultMessage="Enterprise id"
                           />
                           <Glyphicon
                             glyph="glyphicon glyphicon-sort"
@@ -193,7 +193,7 @@ class Tenants extends Component {
                         <th>
                           <FormattedMessage
                             id="tenant-id"
-                            defaultMessage="Entreprise name"
+                            defaultMessage="Enterprise name"
                           />
                           <Glyphicon
                             glyph="glyphicon glyphicon-sort"

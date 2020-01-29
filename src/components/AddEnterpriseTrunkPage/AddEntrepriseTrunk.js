@@ -72,7 +72,7 @@ export class AddEntrepriseTrunk extends Component {
             <div className={"header"}>
               <FormattedMessage
                 id="addEnterprises"
-                defaultMessage="ADD ENTREPRISES TRUNK"
+                defaultMessage="ADD ENTERPRISES TRUNK"
               />
 
               <Button

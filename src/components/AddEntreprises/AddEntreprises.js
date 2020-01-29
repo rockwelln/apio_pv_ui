@@ -56,7 +56,7 @@ const AddEntreprises = props => {
           <div className={"header"}>
             <FormattedMessage
               id="addEnterprises"
-              defaultMessage="ADD ENTREPRISES"
+              defaultMessage="ADD ENTERPRISES"
             />
 
             <Button

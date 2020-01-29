@@ -68,7 +68,7 @@ class TenantPage extends Component {
                   <div className={"margin-right-1 flex-basis-33"}>
                     <FormControl
                       type="text"
-                      placeholder={"ENTREPRISES NAME"}
+                      placeholder={"ENTERPRISES NAME"}
                       value={this.state.tenant.name}
                       disabled={this.state.isDisabled}
                       className={"header flex-basis-50 margin-right-2"}
