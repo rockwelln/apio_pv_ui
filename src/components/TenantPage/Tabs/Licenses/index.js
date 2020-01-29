@@ -684,7 +684,6 @@ export class Licenses extends Component {
         )
       );
     });
-    console.log(arrayOfPromise);
     Promise.all(arrayOfPromise)
       .then(() => this.fetchData())
       .then(() => this.setState({ editServicePacks: false }));

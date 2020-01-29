@@ -25,7 +25,8 @@ const initialState = {
   userServices: [],
   userServicePacks: [],
   groupTrunkErrorMassage: "",
-  createTenantStep: "Basic",
+  createTenantStep: "Limits",
+  //createTenantStep: "Basic",
   createTenant: {
     tenantId: "",
     type: "",
