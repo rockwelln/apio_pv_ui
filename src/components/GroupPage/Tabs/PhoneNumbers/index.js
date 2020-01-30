@@ -342,7 +342,7 @@ export class PhoneNumbersTab extends Component {
                       />
                       <Glyphicon
                         glyph="glyphicon glyphicon-sort"
-                        //onClick={this.sortByAssignedToGroup}
+                        onClick={this.sortByMainNumber}
                       />
                     </th>
                     <th>
@@ -352,7 +352,7 @@ export class PhoneNumbersTab extends Component {
                       />
                       <Glyphicon
                         glyph="glyphicon glyphicon-sort"
-                        //onClick={this.sortByAssignedToGroup}
+                        onClick={this.sortByMaintenanceNumber}
                       />
                     </th>
                     <th />
@@ -619,42 +619,42 @@ export class PhoneNumbersTab extends Component {
     }
   };
 
-  sortByAssignedToGroup = () => {
+  sortByMainNumber = () => {
     const { phoneNumbers, sortedBy } = this.state;
-    if (sortedBy === "assignedToGroup") {
+    if (sortedBy === "main_number") {
       const phonesSorted = phoneNumbers.reverse();
       this.setState({ phoneNumbers: phonesSorted }, () => this.pagination());
     } else {
       const phonesSorted = phoneNumbers.sort((a, b) => {
-        if (a.userId < b.userId) return -1;
-        if (a.userId > b.userId) return 1;
+        if (a.main_number > b.main_number) return -1;
+        if (a.main_number < b.main_number) return 1;
         return 0;
       });
       this.setState(
         {
           phoneNumbers: phonesSorted,
-          sortedBy: "assignedToGroup"
+          sortedBy: "main_number"
         },
         () => this.pagination()
       );
     }
   };
 
-  sortByAssignedToGroup = () => {
+  sortByMaintenanceNumber = () => {
     const { phoneNumbers, sortedBy } = this.state;
-    if (sortedBy === "userType") {
+    if (sortedBy === "maintenance_number") {
       const phonesSorted = phoneNumbers.reverse();
       this.setState({ phoneNumbers: phonesSorted }, () => this.pagination());
     } else {
       const phonesSorted = phoneNumbers.sort((a, b) => {
-        if (a.userType < b.userType) return -1;
-        if (a.userType > b.userType) return 1;
+        if (a.maintenance_number > b.maintenance_number) return -1;
+        if (a.maintenance_number < b.maintenance_number) return 1;
         return 0;
       });
       this.setState(
         {
           phoneNumbers: phonesSorted,
-          sortedBy: "userType"
+          sortedBy: "maintenance_number"
         },
         () => this.pagination()
       );
