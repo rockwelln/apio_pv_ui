@@ -345,10 +345,17 @@ export class AddGroup extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  <FormattedMessage
-                    id="numbersOfChannels"
-                    defaultMessage="Numbers of Channels"
-                  />
+                  {this.state.typeOfIad === "PRA" ? (
+                    <FormattedMessage
+                      id="numberOfPRA"
+                      defaultMessage="Number of PRA"
+                    />
+                  ) : (
+                    <FormattedMessage
+                      id="numbersOfChannels"
+                      defaultMessage="Numbers of Channels"
+                    />
+                  )}
                   {"\u002a"}
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
