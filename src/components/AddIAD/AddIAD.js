@@ -31,6 +31,7 @@ import { isAllowed, pages } from "../../utils/user";
 
 export class AddIAD extends Component {
   state = {
+    disabledButton: false,
     isLoadingConfig: true,
     errorMacAddress: null,
     errorPbxIpAdress: null,
@@ -76,7 +77,7 @@ export class AddIAD extends Component {
     selectedID: [],
     clock_master: true,
     dual_power: false,
-    isdnTerminationSide: ""
+    isdnTerminationSide: "Network"
   };
   componentDidMount() {
     this.props
@@ -118,6 +119,7 @@ export class AddIAD extends Component {
 
   render() {
     const {
+      disabledButton,
       nameEDUA,
       lanPortA,
       wanPortA,
@@ -1463,7 +1465,6 @@ export class AddIAD extends Component {
                         )
                       }
                     >
-                      <option value={""}>none</option>
                       {this.props.config.tenant.group.iad.isdnTerminationSide.map(
                         (el, i) => (
                           <option key={i} value={el.value}>
@@ -1486,8 +1487,9 @@ export class AddIAD extends Component {
                       className="btn-primary"
                       disabled={
                         this.props.group.virtual
-                          ? !iadType || !pilotNumber
-                          : errorMacAddress ||
+                          ? !iadType || !pilotNumber || disabledButton
+                          : disabledButton ||
+                            errorMacAddress ||
                             errorPbxIpAdress ||
                             errorIpAdressV4 ||
                             errorNetMaskV4 ||
@@ -1725,20 +1727,24 @@ export class AddIAD extends Component {
       }
     };
     const clearData = removeEmpty(data);
+    this.setState({ disabledButton: true, buttonName: "Creating..." });
     this.props
       .fetchPostCreateIAD(
         this.props.match.params.tenantId,
         this.props.match.params.groupId,
         clearData
       )
-      .then(res =>
-        res === "created"
-          ? this.props.history.push(
-              `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}`,
-              { defaultTab: 3 }
-            )
-          : this.props.group.pbxType === "PRA" && this.setPraByIad()
-      );
+      .then(res => {
+        if (res === "created") {
+          this.props.history.push(
+            `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}`,
+            { defaultTab: 3 }
+          );
+        } else {
+          this.props.group.pbxType === "PRA" && this.setPraByIad();
+          this.setState({ disabledButton: false, buttonName: "Create" });
+        }
+      });
   };
 }
 
