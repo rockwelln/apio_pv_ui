@@ -23,7 +23,7 @@ export class AddPhoneNumber extends Component {
     arrayFrom: "",
     arrayTo: "",
     buttonName: "Add",
-    status: "",
+    status: "preActive",
     numbers: [{ phoneNumber: "" }]
   };
   render() {
