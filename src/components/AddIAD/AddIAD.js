@@ -74,7 +74,7 @@ export class AddIAD extends Component {
     praByIad: {},
     arrayOfPraId: [],
     selectedID: [],
-    clock_master: false,
+    clock_master: true,
     dual_power: false,
     isdnTerminationSide: ""
   };
