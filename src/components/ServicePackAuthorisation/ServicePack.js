@@ -16,21 +16,31 @@ class SericePack extends Component {
         <td>
           <Radio
             name={`allocated${userService.name}`}
-            defaultChecked={this.props.userService.allocated.unlimited === true}
+            checked={this.props.userService.allocated.unlimited === true}
+            onChange={() =>
+              this.props.changeUserServicesUnlimeted(userService.name, true)
+            }
           >
             <div className="font-weight-bold flex">unlimited</div>
           </Radio>
           <Radio
             name={`allocated${userService.name}`}
-            defaultChecked={
-              this.props.userService.allocated.unlimited === false
+            checked={this.props.userService.allocated.unlimited === false}
+            onChange={() =>
+              this.props.changeUserServicesUnlimeted(userService.name, false)
             }
           >
             <div className="font-weight-bold flex">
               <FormControl
                 type="number"
-                disabled
-                defaultValue={this.props.userService.allocated.maximum}
+                disabled={this.props.userService.allocated.unlimited}
+                value={this.props.userService.allocated.maximum}
+                onChange={e =>
+                  this.props.changeUserServicesMaximum(
+                    userService.name,
+                    Number(e.target.value)
+                  )
+                }
                 min={0}
               />
             </div>

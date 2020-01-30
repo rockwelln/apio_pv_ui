@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
 import Modal from "react-bootstrap/lib/Modal";
 import Row from "react-bootstrap/lib/Row";
@@ -9,6 +10,8 @@ import Table from "react-bootstrap/lib/Table";
 import Button from "react-bootstrap/lib/Button";
 
 import { FormattedMessage } from "react-intl";
+
+import { fetchPutUpdateGroupServicesByTenantId } from "../../store/actions";
 
 import ServicePack from "./ServicePack";
 
@@ -25,6 +28,7 @@ export class ServicePackAuthorisation extends Component {
     );
   }
   render() {
+    console.log(this.state.userServices);
     return (
       <Modal show={this.props.isOpen} onHide={this.props.handleHide}>
         <Modal.Header closeButton>
@@ -62,7 +66,16 @@ export class ServicePackAuthorisation extends Component {
                   <tbody>
                     {this.state.paginationServices[this.state.page].map(
                       (el, i) => (
-                        <ServicePack key={i + ""} userService={el} />
+                        <ServicePack
+                          key={i + ""}
+                          userService={el}
+                          changeUserServicesUnlimeted={
+                            this.changeUserServicesUnlimeted
+                          }
+                          changeUserServicesMaximum={
+                            this.changeUserServicesMaximum
+                          }
+                        />
                       )
                     )}
                   </tbody>
@@ -89,6 +102,7 @@ export class ServicePackAuthorisation extends Component {
                     //onClick={this.addDevice}
                     type="submit"
                     className="btn-primary"
+                    onClick={this.update}
                   >
                     <FormattedMessage id="update" defaultMessage="Update" />
                   </Button>
@@ -100,6 +114,58 @@ export class ServicePackAuthorisation extends Component {
       </Modal>
     );
   }
+
+  update = () => {
+    const { userServices } = this.state;
+    const data = {
+      userServices
+    };
+    this.props.fetchPutUpdateGroupServicesByTenantId(
+      this.props.match.params.tenantId,
+      data
+    );
+  };
+
+  changeUserServicesUnlimeted = (service, checked) => {
+    const index = this.state.userServices.findIndex(el => el.name === service);
+    this.setState(
+      prevState => ({
+        userServices: [
+          ...prevState.userServices.slice(0, index),
+          {
+            ...prevState.userServices[index],
+            allocated: {
+              ...prevState.userServices[index].allocated,
+              unlimited: checked
+            }
+          },
+          ...prevState.userServices.slice(index + 1)
+        ]
+      }),
+      () => this.pagination()
+    );
+  };
+
+  changeUserServicesMaximum = (service, max) => {
+    const index = this.state.userServices.findIndex(el => el.name === service);
+    this.setState(
+      prevState => ({
+        userServices: [
+          ...prevState.userServices.slice(0, index),
+          {
+            ...prevState.userServices[index],
+            allocated: {
+              ...prevState.userServices[index].allocated,
+              maximum: max
+            }
+          },
+          ...prevState.userServices.slice(index + 1)
+        ]
+      }),
+      () => this.pagination()
+    );
+  };
+
   incrementPage = () => {
     if (this.state.page >= this.state.countPages - 1) {
       return;
@@ -143,9 +209,11 @@ export class ServicePackAuthorisation extends Component {
 
 const mapStateToProps = state => ({});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { fetchPutUpdateGroupServicesByTenantId };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ServicePackAuthorisation);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ServicePackAuthorisation)
+);

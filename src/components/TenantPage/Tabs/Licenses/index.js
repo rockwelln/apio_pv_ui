@@ -549,7 +549,10 @@ export class Licenses extends Component {
                 bsStyle="link"
                 onClick={() => this.setState({ showModal: true })}
               >
-                Edit service pack authorisation
+                <FormattedMessage
+                  id="edit_end_user_service_authorisation"
+                  defaultMessage="Edit end user service authorisation"
+                />
               </Button>
             </Col>
             <ServicePackAuthorisation
