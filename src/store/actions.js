@@ -635,7 +635,7 @@ export function fetchGetTimerForIAD(iadId) {
   /////////////////////////////////
   return function(dispatch) {
     return fetch_get(
-      `https://yaoh1.bxl.netaxis.be/api/v01/timers/search?filter=[{"field":"key","op":"like","value":"${iadId}"}]`
+      `/api/v01/timers/search?filter=[{"field":"key","op":"like","value":"${iadId}"}]`
     )
       .then(data => {
         dispatch(getTimerForIAD(data));
