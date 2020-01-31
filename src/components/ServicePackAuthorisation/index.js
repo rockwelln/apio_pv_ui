@@ -11,24 +11,30 @@ import Button from "react-bootstrap/lib/Button";
 
 import { FormattedMessage } from "react-intl";
 
-import { fetchPutUpdateGroupServicesByTenantId } from "../../store/actions";
+import {
+  fetchPutUpdateGroupServicesByTenantId,
+  fetchPutUpdateServicePacksByGroupId
+} from "../../store/actions";
 
 import ServicePack from "./ServicePack";
+
+import equal from "../deepEqual";
 
 export class ServicePackAuthorisation extends Component {
   state = {
     countPerPage: 25,
     userServices: [],
     page: 0,
-    paginationServices: []
+    paginationServices: [],
+    disabledButton: false
   };
   componentDidMount() {
     this.setState({ userServices: this.props.userServices }, () =>
       this.pagination()
     );
   }
+
   render() {
-    console.log(this.state.userServices);
     return (
       <Modal show={this.props.isOpen} onHide={this.props.handleHide}>
         <Modal.Header closeButton>
@@ -99,10 +105,10 @@ export class ServicePackAuthorisation extends Component {
               <div className="button-row">
                 <div className="pull-right">
                   <Button
-                    //onClick={this.addDevice}
                     type="submit"
                     className="btn-primary"
                     onClick={this.update}
+                    disabled={this.state.disabledButton}
                   >
                     <FormattedMessage id="update" defaultMessage="Update" />
                   </Button>
@@ -120,10 +126,40 @@ export class ServicePackAuthorisation extends Component {
     const data = {
       userServices
     };
-    this.props.fetchPutUpdateGroupServicesByTenantId(
-      this.props.match.params.tenantId,
-      data
-    );
+    this.setState({ disabledButton: true }, () => {
+      if (this.props.level === "tenant") {
+        this.props
+          .fetchPutUpdateGroupServicesByTenantId(
+            this.props.match.params.tenantId,
+            data
+          )
+          .then(res => {
+            if (res === "updated") {
+              this.setState({ disabledButton: false });
+              this.props.handleHide();
+            } else {
+              this.setState({ disabledButton: false });
+            }
+          });
+      } else if (this.props.level === "group") {
+        this.props
+          .fetchPutUpdateServicePacksByGroupId(
+            this.props.match.params.tenantId,
+            this.props.match.params.groupId,
+            data
+          )
+          .then(res => {
+            if (res === "updated") {
+              this.setState({ disabledButton: false });
+              this.props.handleHide();
+            } else {
+              this.setState({ disabledButton: false });
+            }
+          });
+      } else {
+        this.setState({ disabledButton: false });
+      }
+    });
   };
 
   changeUserServicesUnlimeted = (service, checked) => {
@@ -209,7 +245,10 @@ export class ServicePackAuthorisation extends Component {
 
 const mapStateToProps = state => ({});
 
-const mapDispatchToProps = { fetchPutUpdateGroupServicesByTenantId };
+const mapDispatchToProps = {
+  fetchPutUpdateGroupServicesByTenantId,
+  fetchPutUpdateServicePacksByGroupId
+};
 
 export default withRouter(
   connect(

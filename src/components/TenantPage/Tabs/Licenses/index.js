@@ -556,6 +556,7 @@ export class Licenses extends Component {
               </Button>
             </Col>
             <ServicePackAuthorisation
+              level={"tenant"}
               isOpen={this.state.showModal}
               handleHide={this.handleHide}
               userServices={this.props.userServices}
@@ -568,6 +569,7 @@ export class Licenses extends Component {
 
   handleHide = () => {
     this.setState({ showModal: false });
+    this.fetchData();
   };
 
   changeServicePacksUnlimeted = (i, checked) => {

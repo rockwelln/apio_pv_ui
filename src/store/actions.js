@@ -1753,7 +1753,10 @@ export function fetchPutUpdateServicePacksByGroupId(tenantId, groupId, data) {
       data
     )
       .then(res => res.json())
-      .then(data => dispatch(putUpdateServicePacksByGroupId(data)))
+      .then(data => {
+        dispatch(putUpdateServicePacksByGroupId(data));
+        return "updated";
+      })
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage
@@ -1941,7 +1944,10 @@ export function fetchPutUpdateGroupServicesByTenantId(tenantId, data) {
       data
     )
       .then(res => res.json())
-      .then(data => dispatch(putUpdateGroupServicesByTenantId(data)))
+      .then(data => {
+        dispatch(putUpdateGroupServicesByTenantId(data));
+        return "updated";
+      })
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage
