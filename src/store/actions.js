@@ -635,7 +635,7 @@ export function fetchGetTimerForIAD(iadId) {
   /////////////////////////////////
   return function(dispatch) {
     return fetch_get(
-      `/api/v01/timers/search?filter=[{"field":"key","op":"like","value":"${iadId}"}]`
+      `/api/v01/timers/search?filter=[{"field":"key","op":"eq","value":"${iadId}"}]`
     )
       .then(data => {
         dispatch(getTimerForIAD(data));

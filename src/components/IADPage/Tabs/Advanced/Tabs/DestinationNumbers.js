@@ -16,6 +16,7 @@ import {
   fetchPutUpdateIAD
 } from "../../../../../store/actions";
 import { removeEmpty } from "../../../../remuveEmptyInObject";
+import { get } from "../../../../get";
 
 export class TrunkId extends Component {
   state = {
@@ -159,11 +160,12 @@ export class TrunkId extends Component {
                 value={this.state.advanced.destnr5}
                 onChange={this.chageDestnr5}
               >
-                {this.props.config.tenant.group.iad.destnr5.map((el, i) => (
-                  <option key={i} value={el.value}>
-                    {el.label}
-                  </option>
-                ))}
+                {get(this.props, "config.tenant.group.iad.destnr5") &&
+                  this.props.config.tenant.group.iad.destnr5.map((el, i) => (
+                    <option key={i} value={el.value}>
+                      {el.label}
+                    </option>
+                  ))}
               </FormControl>
             </div>
           </Col>
@@ -184,11 +186,12 @@ export class TrunkId extends Component {
                 value={this.state.advanced.destnr6}
                 onChange={this.chageDestnr6}
               >
-                {this.props.config.tenant.group.iad.destnr.map((el, i) => (
-                  <option key={i} value={el.value}>
-                    {el.label}
-                  </option>
-                ))}
+                {get(this.props, "config.tenant.group.iad.destnr") &&
+                  this.props.config.tenant.group.iad.destnr.map((el, i) => (
+                    <option key={i} value={el.value}>
+                      {el.label}
+                    </option>
+                  ))}
               </FormControl>
             </div>
           </Col>
@@ -209,11 +212,12 @@ export class TrunkId extends Component {
                 value={this.state.advanced.destnr7}
                 onChange={this.chageDestnr7}
               >
-                {this.props.config.tenant.group.iad.destnr.map((el, i) => (
-                  <option key={i} value={el.value}>
-                    {el.label}
-                  </option>
-                ))}
+                {get(this.props, "config.tenant.group.iad.destnr") &&
+                  this.props.config.tenant.group.iad.destnr.map((el, i) => (
+                    <option key={i} value={el.value}>
+                      {el.label}
+                    </option>
+                  ))}
               </FormControl>
             </div>
           </Col>
@@ -234,11 +238,12 @@ export class TrunkId extends Component {
                 value={this.state.advanced.destnr8}
                 onChange={this.chageDestnr8}
               >
-                {this.props.config.tenant.group.iad.destnr.map((el, i) => (
-                  <option key={i} value={el.value}>
-                    {el.label}
-                  </option>
-                ))}
+                {get(this.props, "config.tenant.group.iad.destnr") &&
+                  this.props.config.tenant.group.iad.destnr.map((el, i) => (
+                    <option key={i} value={el.value}>
+                      {el.label}
+                    </option>
+                  ))}
               </FormControl>
             </div>
           </Col>
@@ -259,11 +264,12 @@ export class TrunkId extends Component {
                 value={this.state.advanced.destnr9}
                 onChange={this.chageDestnr9}
               >
-                {this.props.config.tenant.group.iad.destnr.map((el, i) => (
-                  <option key={i} value={el.value}>
-                    {el.label}
-                  </option>
-                ))}
+                {get(this.props, "config.tenant.group.iad.destnr") &&
+                  this.props.config.tenant.group.iad.destnr.map((el, i) => (
+                    <option key={i} value={el.value}>
+                      {el.label}
+                    </option>
+                  ))}
               </FormControl>
             </div>
           </Col>
@@ -284,11 +290,12 @@ export class TrunkId extends Component {
                 value={this.state.advanced.destnr10}
                 onChange={this.chageDestnr10}
               >
-                {this.props.config.tenant.group.iad.destnr.map((el, i) => (
-                  <option key={i} value={el.value}>
-                    {el.label}
-                  </option>
-                ))}
+                {get(this.props, "config.tenant.group.iad.destnr") &&
+                  this.props.config.tenant.group.iad.destnr.map((el, i) => (
+                    <option key={i} value={el.value}>
+                      {el.label}
+                    </option>
+                  ))}
               </FormControl>
             </div>
           </Col>

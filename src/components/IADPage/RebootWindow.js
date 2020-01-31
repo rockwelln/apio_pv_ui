@@ -20,7 +20,14 @@ class RebootWindow extends Component {
   render() {
     const { show, onClose } = this.props;
     return (
-      <Modal show={show} onHide={() => onClose()}>
+      <Modal
+        show={show}
+        onHide={() =>
+          this.setState({ requestedTime: "", rebootLater: false }, () =>
+            onClose()
+          )
+        }
+      >
         <Modal.Header closeButton>
           <Modal.Title>
             {/* <FormattedMessage
@@ -89,7 +96,13 @@ class RebootWindow extends Component {
           >
             <FormattedMessage id="ok" defaultMessage="Ok" />
           </Button>
-          <Button onClick={() => onClose()}>
+          <Button
+            onClick={() =>
+              this.setState({ requestedTime: "", rebootLater: false }, () =>
+                onClose()
+              )
+            }
+          >
             <FormattedMessage id="cancel" defaultMessage="Cancel" />
           </Button>
         </Modal.Footer>
@@ -99,22 +112,28 @@ class RebootWindow extends Component {
 
   updateIad = () => {
     const { data, onClose } = this.props;
-    const { requestedTime } = this.state;
+    const { requestedTime, rebootLater } = this.state;
     const dataForUpdate = {
       ...data,
       rebootRequest: {
-        requestedTime
+        requestedTime: rebootLater ? requestedTime : ""
       }
     };
-    const clearData = removeEmpty(dataForUpdate);
+    //const clearData = removeEmpty(dataForUpdate);
     this.props
       .fetchPutUpdateIAD(
         this.props.match.params.tenantId,
         this.props.match.params.groupId,
         this.props.match.params.iadId,
-        clearData
+        dataForUpdate
       )
-      .then(res => res === "successful" && onClose());
+      .then(
+        res =>
+          res === "successful" &&
+          this.setState({ requestedTime: "", rebootLater: false }, () =>
+            onClose()
+          )
+      );
   };
 }
 

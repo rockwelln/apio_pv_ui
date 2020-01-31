@@ -201,8 +201,15 @@ class TenantPage extends Component {
               </Row>
               <Row className={"margin-top-1"}>
                 <Col md={12}>
-                  <Tabs defaultActiveKey={0} id="enterprice_tabs">
+                  <Tabs
+                    defaultActiveKey={this.returnActiveKey()}
+                    id="enterprice_tabs"
+                    onSelect={key => this.tabRouting(key)}
+                  >
                     <Tab
+                      onClick={() =>
+                        (this.props.history.location.hash = "#sites")
+                      }
                       eventKey={0}
                       title={
                         <FormattedMessage id="sites" defaultMessage="Sites" />
@@ -231,6 +238,29 @@ class TenantPage extends Component {
       </React.Fragment>
     );
   }
+
+  tabRouting = key => {
+    switch (key) {
+      case 0:
+        this.props.history.push("#sites");
+        break;
+      case 1:
+        this.props.history.push("#routingNumbers");
+        break;
+    }
+  };
+
+  returnActiveKey = () => {
+    switch (this.props.location.hash) {
+      case "#sites":
+        return 0;
+
+      case "#routingNumbers":
+        return 1;
+      default:
+        return 0;
+    }
+  };
 
   tenantUpdate = () => {
     const data = {
