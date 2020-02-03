@@ -70,10 +70,17 @@ export class Channels extends Component {
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>
               <ControlLabel>
-                <FormattedMessage
-                  id="numberOfChannels"
-                  defaultMessage="Number of Channels"
-                />
+                {this.state.group.pbxType === "PRA" ? (
+                  <FormattedMessage
+                    id="numberOfPRA"
+                    defaultMessage="Number of PRA"
+                  />
+                ) : (
+                  <FormattedMessage
+                    id="numberOfChannels"
+                    defaultMessage="Number of Channels"
+                  />
+                )}
               </ControlLabel>
             </div>
             <div className={"margin-right-1 flex-basis-33"}>
