@@ -529,7 +529,7 @@ export class Edu extends Component {
           <Col md={6} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-33"}>
               <ControlLabel>
-                <FormattedMessage id="ip_edu" defaultMessage="EDU WAN IP" />
+                <FormattedMessage id="ip_edu" defaultMessage="IAD WAN IP" />
               </ControlLabel>
             </div>
             <div className={"margin-right-1 flex-basis-66"}>
@@ -544,7 +544,7 @@ export class Edu extends Component {
             <Col md={6} className={"flex align-items-center"}>
               <div className={"margin-right-1 flex flex-basis-33"}>
                 <ControlLabel>
-                  <FormattedMessage id="ip_edu" defaultMessage="EDU WAN IP" />
+                  <FormattedMessage id="ip_edu" defaultMessage="IAD WAN IP" />
                 </ControlLabel>
               </div>
               <div className={"margin-right-1 flex-basis-66"}>
