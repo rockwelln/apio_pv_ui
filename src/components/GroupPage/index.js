@@ -20,9 +20,9 @@ const GroupComponent = notifications => {
         </Col>
         <Col md={10}>
           <Row>
-            <Breadcrumb />
+            <Breadcrumb hash={"#sites"} />
           </Row>
-          <Row  className={"panel panel-default"}>
+          <Row className={"panel panel-default"}>
             <GroupPage notifications={notifications} />
           </Row>
         </Col>

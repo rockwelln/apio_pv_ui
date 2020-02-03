@@ -92,12 +92,13 @@ class TenantPage extends Component {
           <Details />
           <Tabs
             className={"margin-top-1"}
-            defaultActiveKey={
+            activeKey={
               this.props.location.state && this.props.location.state.defaultTab
                 ? this.props.location.state.defaultTab
-                : 0
+                : this.returnActiveKey()
             }
             id={`group_tabs${this.tabsIdSuffix}`}
+            onSelect={key => this.tabRouting(key)}
           >
             <Tab eventKey={0} title="Product type">
               <Product />
@@ -128,6 +129,53 @@ class TenantPage extends Component {
       </React.Fragment>
     );
   }
+
+  tabRouting = key => {
+    switch (key) {
+      case 0:
+        this.props.history.push("#productType");
+        break;
+      case 1:
+        this.props.history.push("#channels");
+        break;
+      case 2:
+        this.props.history.push("#services");
+        break;
+      case 3:
+        this.props.history.push("#iads");
+        break;
+      case 4:
+        this.props.history.push("#numbers");
+        break;
+      case 5:
+        this.props.history.push("#numberFormatting");
+        break;
+      case 6:
+        this.props.history.push("#routingNumbers");
+        break;
+    }
+  };
+
+  returnActiveKey = () => {
+    switch (this.props.location.hash) {
+      case "#productType":
+        return 0;
+      case "#channels":
+        return 1;
+      case "#services":
+        return 2;
+      case "#iads":
+        return 3;
+      case "#numbers":
+        return 4;
+      case "#numberFormatting":
+        return 5;
+      case "#routingNumbers":
+        return 6;
+      default:
+        return 0;
+    }
+  };
 }
 
 const mapDispatchToProps = {

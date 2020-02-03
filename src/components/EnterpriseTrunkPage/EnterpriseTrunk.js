@@ -27,11 +27,12 @@ export class EnterpriseTrunk extends Component {
         <div className={"panel-body"}>
           <Tabs
             className={"margin-top-1"}
-            defaultActiveKey={
+            activeKey={
               this.props.location.state && this.props.location.state.defaultTab
                 ? this.props.location.state.defaultTab
-                : 0
+                : this.returnActiveKey()
             }
+            onSelect={key => this.tabRouting(key)}
             id={`group_tabs${this.tabsIdSuffix}`}
           >
             <Tab eventKey={0} title="Main Config">
@@ -45,6 +46,28 @@ export class EnterpriseTrunk extends Component {
       </React.Fragment>
     );
   }
+  tabRouting = key => {
+    switch (key) {
+      case 0:
+        this.props.history.push("#mainConfig");
+        break;
+      case 1:
+        this.props.history.push("#numbers");
+        break;
+    }
+  };
+
+  returnActiveKey = () => {
+    switch (this.props.location.hash) {
+      case "#mainConfig":
+        return 0;
+
+      case "#numbers":
+        return 1;
+      default:
+        return 0;
+    }
+  };
 }
 
 const mapStateToProps = state => ({

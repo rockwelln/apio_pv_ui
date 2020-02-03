@@ -15,7 +15,7 @@ const convertCrumb = crumb => {
 };
 
 //Links and rename path for crumb
-const linkByCrumb = (item, lastItem, i, path, match) => {
+const linkByCrumb = (item, lastItem, i, path, match, hash) => {
   const crumb = convertCrumb(item);
   if (crumb === "tenants" && !lastItem.includes(crumb)) {
     return (
@@ -36,7 +36,11 @@ const linkByCrumb = (item, lastItem, i, path, match) => {
   }
   if (path[i - 1] === "tenants" && !lastItem.includes(crumb)) {
     return (
-      <Link to={`/provisioning/${match.params.gwName}/tenants/${item}`}>
+      <Link
+        to={`/provisioning/${match.params.gwName}/tenants/${item}${
+          hash ? hash : ""
+        }`}
+      >
         {crumb}
       </Link>
     );
@@ -46,7 +50,7 @@ const linkByCrumb = (item, lastItem, i, path, match) => {
       <Link
         to={`/provisioning/${match.params.gwName}/tenants/${
           path[i - 1]
-        }/groups/${crumb}`}
+        }/groups/${crumb}${hash ? hash : ""}`}
       >
         {crumb}
       </Link>
@@ -78,7 +82,7 @@ const linkByCrumb = (item, lastItem, i, path, match) => {
 };
 
 //parsing and render breadcrumb
-const BreadcrumbComponent = ({ location, match }) => {
+const BreadcrumbComponent = ({ location, match, hash }) => {
   const indexForTrunkUsersLevel = 6;
   const indexForGroupLevel = 4;
   const indexForTenantLevel = 2;
@@ -112,7 +116,7 @@ const BreadcrumbComponent = ({ location, match }) => {
     <Breadcrumb>
       {path.map((item, i) => (
         <Breadcrumb.Item active key={String(i)}>
-          {linkByCrumb(item, lastItem, i, path, match)}
+          {linkByCrumb(item, lastItem, i, path, match, hash)}
         </Breadcrumb.Item>
       ))}
     </Breadcrumb>

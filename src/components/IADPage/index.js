@@ -20,7 +20,7 @@ const GroupComponent = notifications => {
         </Col>
         <Col md={10}>
           <Row>
-            <Breadcrumb />
+            <Breadcrumb hash={"#iads"} />
           </Row>
           <Row className={"panel panel-default"}>
             <IADPage />

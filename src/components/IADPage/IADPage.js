@@ -112,7 +112,13 @@ export class IADPage extends Component {
         </div>
         <div className={"panel-body"}>
           <Details />
-          <Tabs defaultActiveKey={1} id="iads_tabs" className={"margin-top-1"}>
+          <Tabs
+            activeKey={1}
+            id="iads_tabs"
+            className={"margin-top-1"}
+            activeKey={this.returnActiveKey()}
+            onSelect={key => this.tabRouting(key)}
+          >
             {/* <Tab eventKey={0} title="Details">
               <Details />
             </Tab> */}
@@ -135,7 +141,10 @@ export class IADPage extends Component {
             {(this.props.iad.protocolMode === "PRA" ||
               this.props.iad.protocolMode === "PRA_SIP") && (
               <Tab eventKey={5} title="PRA lines configuration">
-                <PraInfo isLoading={this.state.isLoading} />
+                <PraInfo
+                  isLoading={this.state.isLoading}
+                  setKey={this.setAdvancedSettingsKey}
+                />
               </Tab>
             )}
           </Tabs>
@@ -148,6 +157,43 @@ export class IADPage extends Component {
       </React.Fragment>
     );
   }
+
+  tabRouting = key => {
+    switch (key) {
+      case 1:
+        this.props.history.push("#edus");
+        break;
+      case 2:
+        this.props.history.push("#ipAddressing");
+        break;
+      case 3:
+        this.props.history.push("#siteServicesOverride");
+        break;
+      case 4:
+        this.props.history.push("#advancedSettings");
+        break;
+      case 5:
+        this.props.history.push("#praLinesConfiguration");
+        break;
+    }
+  };
+
+  returnActiveKey = () => {
+    switch (this.props.location.hash) {
+      case "#edus":
+        return 1;
+      case "#ipAddressing":
+        return 2;
+      case "#siteServicesOverride":
+        return 3;
+      case "#advancedSettings":
+        return 4;
+      case "#praLinesConfiguration":
+        return 5;
+      default:
+        return 1;
+    }
+  };
 
   updateIAD = () => {
     const { iadForUpdate } = this.props;

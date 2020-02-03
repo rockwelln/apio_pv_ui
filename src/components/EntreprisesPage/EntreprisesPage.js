@@ -202,14 +202,11 @@ class TenantPage extends Component {
               <Row className={"margin-top-1"}>
                 <Col md={12}>
                   <Tabs
-                    defaultActiveKey={this.returnActiveKey()}
+                    activeKey={this.returnActiveKey()}
                     id="enterprice_tabs"
                     onSelect={key => this.tabRouting(key)}
                   >
                     <Tab
-                      onClick={() =>
-                        (this.props.history.location.hash = "#sites")
-                      }
                       eventKey={0}
                       title={
                         <FormattedMessage id="sites" defaultMessage="Sites" />
