@@ -13,7 +13,8 @@ import Button from "react-bootstrap/lib/Button";
 import {
   fetchGetConfig,
   fetchGetGroupById,
-  fetchPutUpdateGroupDetails
+  fetchPutUpdateGroupDetails,
+  fetchGetIADs
 } from "../../../../store/actions";
 import { FormattedMessage } from "react-intl";
 import { removeEmpty } from "../../../remuveEmptyInObject";
@@ -334,7 +335,13 @@ export class Channels extends Component {
         this.props.match.params.groupId,
         clearData
       )
-      .then(() => this.setState({ disableButton: false }));
+      .then(() => {
+        this.props.fetchGetIADs(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId
+        );
+        this.setState({ disableButton: false });
+      });
   };
 
   changeChannelsIn = e => {
@@ -391,7 +398,8 @@ const mapStateToProps = state => ({ group: state.group, config: state.config });
 const mapDispatchToProps = {
   fetchGetConfig,
   fetchGetGroupById,
-  fetchPutUpdateGroupDetails
+  fetchPutUpdateGroupDetails,
+  fetchGetIADs
 };
 
 export default withRouter(
