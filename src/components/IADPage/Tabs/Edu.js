@@ -8,6 +8,7 @@ import FormControl from "react-bootstrap/lib/FormControl";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
+import Checkbox from "react-bootstrap/lib/Checkbox";
 
 import { FormattedMessage } from "react-intl";
 
@@ -20,6 +21,7 @@ import { removeEmpty } from "../../remuveEmptyInObject";
 
 export class Edu extends Component {
   state = {
+    normLocalUpdate: false,
     edu1: {
       name: "",
       lanPort: "",
@@ -64,6 +66,26 @@ export class Edu extends Component {
   render() {
     return (
       <React.Fragment>
+        <Row className={"margin-top-1"}>
+          <Col md={12} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-16"}>
+              <ControlLabel>
+                <FormattedMessage
+                  id="updateOnlyLocally"
+                  defaultMessage="Update only locally"
+                />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-33"}>
+              <Checkbox
+                checked={this.state.normLocalUpdate}
+                onChange={e =>
+                  this.setState({ normLocalUpdate: e.target.checked })
+                }
+              />
+            </div>
+          </Col>
+        </Row>
         <Row className={"margin-top-1"}>
           <Col md={6} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-33"}>
@@ -579,8 +601,8 @@ export class Edu extends Component {
   }
 
   updateIAD = () => {
-    const { edu1, edu2 } = this.state;
-    const data = { edu1, edu2 };
+    const { edu1, edu2, normLocalUpdate } = this.state;
+    const data = { edu1, edu2, normLocalUpdate };
     const clearData = removeEmpty(data);
     if (Object.keys(clearData).length) {
       this.setState({ disabledButton: true }, () =>

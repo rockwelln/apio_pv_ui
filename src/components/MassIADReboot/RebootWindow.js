@@ -13,10 +13,9 @@ import { FormattedMessage } from "react-intl";
 import { removeEmpty } from "../remuveEmptyInObject";
 
 import { fetchPutMassIADsReboot } from "../../store/actions";
-import { resolve } from "dns";
 
 const RebootWindow = props => {
-  const [rebootLater, setRebootLater] = useState(false);
+  const [rebootLater, setRebootLater] = useState("now");
   const [requestedTime, setRequestedTime] = useState("");
 
   const dispatch = useDispatch();
@@ -38,6 +37,12 @@ const RebootWindow = props => {
       };
       return objIads;
     }, {});
+    const time =
+      rebootLater === "later"
+        ? requestedTime
+        : rebootLater === "now"
+        ? Date.now()
+        : "";
     Object.values(objIads).forEach(iads => {
       const indexStartEntID = iads[0].indexOf("ENT");
       const indexStartGRP = iads[0].indexOf("GRP");
@@ -47,7 +52,7 @@ const RebootWindow = props => {
         groupId: iads[0].slice(indexStartEntID, indexEndGRP),
         iads,
         rebootRequest: {
-          requestedTime
+          requestedTime: time
         }
       };
 
@@ -82,15 +87,18 @@ const RebootWindow = props => {
               <FormControl
                 componentClass="select"
                 value={rebootLater}
-                onChange={e => setRebootLater(e.target.value === "true")}
+                onChange={e => {
+                  setRebootLater(e.target.value);
+                }}
               >
-                <option value={false}>Reboot now</option>
-                <option value={true}>Reboot later</option>
+                <option value={"now"}>Reboot now</option>
+                <option value={"later"}>Reboot later</option>
+                <option value={"notReboot"}>Do not reboot</option>
               </FormControl>
             </div>
           </Col>
         </Row>
-        {rebootLater && (
+        {rebootLater === "later" && (
           <Row className={"margin-top-1"}>
             <Col md={12} className={"flex align-items-center"}>
               <div className={"margin-right-1 flex flex-basis-16"}>

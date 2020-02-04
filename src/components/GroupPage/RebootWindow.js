@@ -15,12 +15,19 @@ import { FormattedMessage } from "react-intl";
 import { removeEmpty } from "../remuveEmptyInObject";
 
 class RebootWindow extends Component {
-  state = { rebootLater: false, requestedTime: "" };
+  state = { rebootLater: "now", requestedTime: "" };
 
   render() {
     const { show, onClose } = this.props;
     return (
-      <Modal show={show} onHide={() => onClose()}>
+      <Modal
+        show={show}
+        onHide={() =>
+          this.setState({ requestedTime: "", rebootLater: "now" }, () =>
+            onClose()
+          )
+        }
+      >
         <Modal.Header closeButton>
           <Modal.Title>
             {/* <FormattedMessage
@@ -48,16 +55,19 @@ class RebootWindow extends Component {
                   componentClass="select"
                   value={this.state.rebootLater}
                   onChange={e =>
-                    this.setState({ rebootLater: e.target.value === "true" })
+                    this.setState({
+                      rebootLater: e.target.value
+                    })
                   }
                 >
-                  <option value={false}>Reboot now</option>
-                  <option value={true}>Reboot later</option>
+                  <option value={"now"}>Reboot now</option>
+                  <option value={"later"}>Reboot later</option>
+                  <option value={"notReboot"}>Do not reboot</option>
                 </FormControl>
               </div>
             </Col>
           </Row>
-          {this.state.rebootLater && (
+          {this.state.rebootLater === "later" && (
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
@@ -85,7 +95,9 @@ class RebootWindow extends Component {
         <Modal.Footer>
           <Button
             onClick={this.updateIad}
-            disabled={this.state.rebootLater && !this.state.requestedTime}
+            disabled={
+              this.state.rebootLater === "later" && !this.state.requestedTime
+            }
           >
             <FormattedMessage id="ok" defaultMessage="Ok" />
           </Button>
@@ -99,11 +111,17 @@ class RebootWindow extends Component {
 
   updateIad = () => {
     const { data, onClose } = this.props;
-    const { requestedTime } = this.state;
+    const { requestedTime, rebootLater } = this.state;
+    const time =
+      rebootLater === "later"
+        ? requestedTime
+        : rebootLater === "now"
+        ? Date.now()
+        : "";
     const dataForUpdate = {
       ...data,
       rebootRequest: {
-        requestedTime
+        requestedTime: time
       }
     };
     const clearData = removeEmpty(dataForUpdate);
