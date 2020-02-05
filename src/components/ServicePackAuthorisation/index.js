@@ -8,6 +8,7 @@ import Col from "react-bootstrap/lib/Col";
 import Pagination from "react-bootstrap/lib/Pagination";
 import Table from "react-bootstrap/lib/Table";
 import Button from "react-bootstrap/lib/Button";
+import FormControl from "react-bootstrap/lib/FormControl";
 
 import { FormattedMessage } from "react-intl";
 
@@ -52,7 +53,16 @@ export class ServicePackAuthorisation extends Component {
                 <thead>
                   <tr>
                     <th>
-                      <FormattedMessage id="name" defaultMessage="Name" />
+                      <FormControl
+                        type="text"
+                        placeholder={"Name"}
+                        value={this.state.searchValue}
+                        onChange={e =>
+                          this.setState({ searchValue: e.target.value }, () =>
+                            this.filterBySearchValue()
+                          )
+                        }
+                      />
                     </th>
                     <th>
                       <FormattedMessage
@@ -120,6 +130,16 @@ export class ServicePackAuthorisation extends Component {
       </Modal>
     );
   }
+
+  filterBySearchValue = () => {
+    const { searchValue } = this.state;
+    const SearchArray = this.props.userServices
+      .filter(service =>
+        service.name.toLowerCase().includes(searchValue.toLowerCase())
+      )
+      .map(service => service);
+    this.setState({ userServices: SearchArray }, () => this.pagination());
+  };
 
   update = () => {
     const { userServices } = this.state;
