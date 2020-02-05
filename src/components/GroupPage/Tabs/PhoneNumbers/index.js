@@ -456,8 +456,13 @@ export class PhoneNumbersTab extends Component {
   };
 
   updateStatus = () => {
-    const activeNumbers = this.state.phoneNumbers.filter(el => el.active);
-    const preActiveNumbers = this.state.phoneNumbers.filter(el => el.preActive);
+    const activeNumbers = this.state.phoneNumbers.filter(
+      el => el.active && el.isChanged
+    );
+    const preActiveNumbers = this.state.phoneNumbers.filter(
+      el => el.preActive && el.isChanged
+    );
+    console.log(activeNumbers, preActiveNumbers);
     const allActiveNumbers = [];
     const allPreActiveNumbers = [];
     activeNumbers.map(el => {
@@ -674,7 +679,8 @@ export class PhoneNumbersTab extends Component {
     const newArr = this.state.phoneNumbers.map(el => ({
       ...el,
       preActive: isChecked,
-      active: !isChecked
+      active: !isChecked,
+      isChanged: !el.isChanged
     }));
     this.setState(
       {
@@ -691,7 +697,8 @@ export class PhoneNumbersTab extends Component {
     const newArr = this.state.phoneNumbers.map(el => ({
       ...el,
       active: isChecked,
-      preActive: !isChecked
+      preActive: !isChecked,
+      isChanged: !el.isChanged
     }));
     this.setState(
       {
@@ -728,7 +735,8 @@ export class PhoneNumbersTab extends Component {
     const newArr = this.state.phoneNumbers.map((el, i) => ({
       ...el,
       active: index === i ? !el.active : el.active,
-      preActive: index === i ? !el.preActive : el.preActive
+      preActive: index === i ? !el.preActive : el.preActive,
+      isChanged: index === i ? !el.isChanged : el.isChanged
     }));
     this.setState({ phoneNumbers: newArr, selectAllActive: false }, () =>
       this.pagination()
@@ -739,7 +747,8 @@ export class PhoneNumbersTab extends Component {
     const newArr = this.state.phoneNumbers.map((el, i) => ({
       ...el,
       preActive: index === i ? !el.preActive : el.preActive,
-      active: index === i ? !el.active : el.active
+      active: index === i ? !el.active : el.active,
+      isChanged: index === i ? !el.isChanged : el.isChanged
     }));
     this.setState({ phoneNumbers: newArr, selectAllPreActive: false }, () =>
       this.pagination()

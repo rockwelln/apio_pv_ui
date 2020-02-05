@@ -87,7 +87,8 @@ function mainReducer(state = initialState, action) {
           : "",
         phoneChecked: false,
         preActive: phone.status === "preActive" ? true : false,
-        active: phone.status === "active" ? true : false
+        active: phone.status === "active" ? true : false,
+        isChanged: false
       }));
       return {
         ...state,
