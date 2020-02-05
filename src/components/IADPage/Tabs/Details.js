@@ -14,8 +14,13 @@ import Alert from "react-bootstrap/lib/Alert";
 
 import { FormattedMessage } from "react-intl";
 
-import { changeIAD, fetchPutUpdateIAD } from "../../../store/actions";
+import {
+  changeIAD,
+  fetchPutUpdateIAD,
+  fetchGetPhoneNumbersByGroupNotTP
+} from "../../../store/actions";
 import { removeEmpty } from "../../remuveEmptyInObject";
+import Loading from "../../../common/Loading";
 
 export class Details extends Component {
   state = {
@@ -24,7 +29,9 @@ export class Details extends Component {
     pilotNumber: "",
     disabledButton: false,
     isDisabled: true,
-    timers: []
+    timers: [],
+    cliPhoneNumber: "",
+    isLoadingPN: true
   };
   componentDidMount() {
     this.setState({
@@ -32,13 +39,24 @@ export class Details extends Component {
       pilotNumber: this.props.iad.pilotNumber,
       timers: this.props.iadTimer.filter(
         timer => new Date(timer.at).getTime() > new Date().getTime()
-      )
+      ),
+      cliPhoneNumber: this.props.iad.cliPhoneNumber
     });
+    this.props
+      .fetchGetPhoneNumbersByGroupNotTP(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId
+      )
+      .then(() => this.setState({ isLoadingPN: false }));
   }
   render() {
     const iadType = this.props.config.tenant.group.iad.iadType.filter(
       el => el.value === this.props.iad.iadType
     );
+
+    if (this.state.isLoadingPN) {
+      return <Loading />;
+    }
     return (
       <React.Fragment>
         <Row>
@@ -159,6 +177,43 @@ export class Details extends Component {
             </div>
           </Col>
         </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={12} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-16"}>
+              <ControlLabel>
+                <FormattedMessage
+                  id="mainNumber"
+                  defaultMessage="Main Number"
+                />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-33"}>
+              <FormControl
+                componentClass="select"
+                value={this.state.cliPhoneNumber}
+                onChange={e =>
+                  this.setState({
+                    group: {
+                      ...this.state.group,
+                      cliPhoneNumber: e.target.value
+                    }
+                  })
+                }
+                disabled={this.state.isDisabled}
+                onChange={this.upadateCliPhoneNumber}
+              >
+                {!this.state.cliPhoneNumber && (
+                  <option key={"empty"} value={""}></option>
+                )}
+                {this.props.phoneNumbersByGroupNotTP.map((el, i) => (
+                  <option key={i} value={el}>
+                    {el}
+                  </option>
+                ))}
+              </FormControl>
+            </div>
+          </Col>
+        </Row>
         {!this.state.isDisabled && (
           <Row>
             <Col md={12}>
@@ -237,6 +292,11 @@ export class Details extends Component {
     this.setState({ pilotNumber: e.target.value });
   };
 
+  upadateCliPhoneNumber = e => {
+    this.props.changeIAD("cliPhoneNumber", e.target.value);
+    this.setState({ cliPhoneNumber: e.target.value });
+  };
+
   validateMacAddress = e => {
     let regDots = /^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$/;
     let reg = /^([0-9A-Fa-f]{2}){5}([0-9A-Fa-f]{2})$/;
@@ -253,12 +313,17 @@ export class Details extends Component {
 }
 
 const mapStateToProps = state => ({
+  phoneNumbersByGroupNotTP: state.phoneNumbersByGroupNotTP,
   iad: state.iad,
   config: state.config,
   iadTimer: state.iadTimer
 });
 
-const mapDispatchToProps = { changeIAD, fetchPutUpdateIAD };
+const mapDispatchToProps = {
+  changeIAD,
+  fetchPutUpdateIAD,
+  fetchGetPhoneNumbersByGroupNotTP
+};
 
 export default withRouter(
   connect(

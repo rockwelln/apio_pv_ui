@@ -45,6 +45,7 @@ export class AddIAD extends Component {
     iadType: "",
     macAddress: "",
     pilotNumber: "",
+    cliPhoneNumber: "",
     nameEDUA: "",
     lanPortA: "",
     wanPortA: "",
@@ -86,20 +87,25 @@ export class AddIAD extends Component {
         this.props.match.params.groupId
       )
       .then(() =>
-        this.setState({ isLoadingGroup: false }, () =>
-          this.props.fetchGetConfig().then(() =>
-            this.setState({
-              isLoadingConfig: false,
-              iadType: this.props.config.tenant.group.iad.iadType[0].value,
-              dtmf: this.props.config.tenant.group.iad.dtmfOverride[0].value,
-              direction: this.props.config.tenant.group.iad.directionOverride[0]
-                .value,
-              secondEDU:
-                this.props.config.tenant.group.iad[
-                  "2EDUsForServiceTypes"
-                ].indexOf(this.props.group.serviceType) !== -1
-            })
-          )
+        this.setState(
+          {
+            cliPhoneNumber: this.props.group.cliPhoneNumber,
+            isLoadingGroup: false
+          },
+          () =>
+            this.props.fetchGetConfig().then(() =>
+              this.setState({
+                isLoadingConfig: false,
+                iadType: this.props.config.tenant.group.iad.iadType[0].value,
+                dtmf: this.props.config.tenant.group.iad.dtmfOverride[0].value,
+                direction: this.props.config.tenant.group.iad
+                  .directionOverride[0].value,
+                secondEDU:
+                  this.props.config.tenant.group.iad[
+                    "2EDUsForServiceTypes"
+                  ].indexOf(this.props.group.serviceType) !== -1
+              })
+            )
         )
       )
       .then(() =>
@@ -140,7 +146,8 @@ export class AddIAD extends Component {
       errorIpAdressV4,
       errorNetMaskV4,
       errorIpAdressV6,
-      errorNetMaskV6
+      errorNetMaskV6,
+      cliPhoneNumber
     } = this.state;
     if (
       this.state.isLoadingConfig ||
@@ -317,6 +324,30 @@ export class AddIAD extends Component {
                     onKeyDown={validateInputPhoneNumber}
                     onChange={e =>
                       this.setState({ pilotNumber: e.target.value })
+                    }
+                  />
+                </div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  <ControlLabel>
+                    <FormattedMessage
+                      id="mainNumber"
+                      defaultMessage="Main Number"
+                    />
+                    {"\u002a"}
+                  </ControlLabel>
+                </div>
+                <div className={"margin-right-1 flex-basis-33"}>
+                  <FormControl
+                    type="text"
+                    value={this.state.cliPhoneNumber}
+                    placeholder={"Maintenance number"}
+                    onKeyDown={validateInputPhoneNumber}
+                    onChange={e =>
+                      this.setState({ cliPhoneNumber: e.target.value })
                     }
                   />
                 </div>
@@ -1497,6 +1528,7 @@ export class AddIAD extends Component {
                             errorNetMaskV6 ||
                             !iadType ||
                             !pilotNumber ||
+                            !cliPhoneNumber ||
                             !nameEDUA ||
                             !lanPortA ||
                             !wanPortA ||
@@ -1648,7 +1680,8 @@ export class AddIAD extends Component {
       channelsOut,
       clock_master,
       dual_power,
-      isdnTerminationSide
+      isdnTerminationSide,
+      cliPhoneNumber
     } = this.state;
     let pra_info = {};
     Object.keys(this.state.praByIad).forEach(key => {
@@ -1667,6 +1700,7 @@ export class AddIAD extends Component {
     const data = {
       iadType,
       pilotNumber,
+      cliPhoneNumber,
       macAddress,
       edu1: {
         name: nameEDUA,
