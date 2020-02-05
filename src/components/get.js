@@ -16,3 +16,13 @@ export const get = (obj, path) => {
   }
   return result;
 };
+
+const has = (obj, path) => {
+  const arrPath = path.split(".");
+  for (let i = 0; i < arrPath.length; i++) {
+    if (obj.hasOwnProperty(arrPath[i])) {
+      obj = obj[arrPath[i]];
+    } else return false;
+  }
+  return true;
+};
