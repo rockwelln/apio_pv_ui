@@ -253,13 +253,14 @@ export class Details extends Component {
       isDisabled: true,
       macAddress: this.props.iad.macAddress,
       pilotNumber: this.props.iad.pilotNumber,
+      cliPhoneNumber: this.props.iad.cliPhoneNumber,
       errorMacAddress: null
     });
   };
 
   updateIAD = () => {
-    const { macAddress, pilotNumber } = this.state;
-    const data = { macAddress, pilotNumber };
+    const { macAddress, pilotNumber, cliPhoneNumber } = this.state;
+    const data = { macAddress, pilotNumber, cliPhoneNumber };
     const clearData = removeEmpty(data);
     if (Object.keys(clearData).length) {
       this.setState({ disabledButton: true }, () =>

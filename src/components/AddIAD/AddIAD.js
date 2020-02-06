@@ -19,7 +19,8 @@ import {
   fetchGetConfig,
   fetchGetGroupById,
   fetchPostCreateIAD,
-  fetchGetIADs
+  fetchGetIADs,
+  fetchGetPhoneNumbersByGroupNotTP
 } from "../../store/actions";
 import { removeEmpty } from "../remuveEmptyInObject";
 import { validateInputPhoneNumber } from "../validateInputPhoneNumber";
@@ -78,7 +79,8 @@ export class AddIAD extends Component {
     selectedID: [],
     clock_master: true,
     dual_power: false,
-    isdnTerminationSide: "Network"
+    isdnTerminationSide: "Network",
+    isLoadingPN: true
   };
   componentDidMount() {
     this.props
@@ -121,6 +123,17 @@ export class AddIAD extends Component {
               : this.setState({ isloadingIADs: false })
           )
       );
+    this.props
+      .fetchGetPhoneNumbersByGroupNotTP(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId
+      )
+      .then(() =>
+        this.setState({
+          isLoadingPN: false,
+          cliPhoneNumber: this.props.phoneNumbersByGroupNotTP[0]
+        })
+      );
   }
 
   render() {
@@ -152,7 +165,8 @@ export class AddIAD extends Component {
     if (
       this.state.isLoadingConfig ||
       this.state.isLoadingGroup ||
-      this.state.isloadingIADs
+      this.state.isloadingIADs ||
+      this.state.isLoadingPN
     ) {
       return <Loading />;
     }
@@ -342,17 +356,27 @@ export class AddIAD extends Component {
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
-                    type="text"
+                    componentClass="select"
                     value={this.state.cliPhoneNumber}
-                    placeholder={"Maintenance number"}
-                    onKeyDown={validateInputPhoneNumber}
                     onChange={e =>
-                      this.setState({ cliPhoneNumber: e.target.value })
+                      this.setState({
+                        group: {
+                          ...this.state.group,
+                          cliPhoneNumber: e.target.value
+                        }
+                      })
                     }
-                  />
+                  >
+                    {this.props.phoneNumbersByGroupNotTP.map((el, i) => (
+                      <option key={i} value={el}>
+                        {el}
+                      </option>
+                    ))}
+                  </FormControl>
                 </div>
               </Col>
             </Row>
+
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex font-24"}>
@@ -1785,14 +1809,16 @@ export class AddIAD extends Component {
 const mapStateToProps = state => ({
   config: state.config,
   group: state.group,
-  iads: state.iads
+  iads: state.iads,
+  phoneNumbersByGroupNotTP: state.phoneNumbersByGroupNotTP
 });
 
 const mapDispatchToProps = {
   fetchGetConfig,
   fetchGetGroupById,
   fetchPostCreateIAD,
-  fetchGetIADs
+  fetchGetIADs,
+  fetchGetPhoneNumbersByGroupNotTP
 };
 
 export default withRouter(
