@@ -177,7 +177,15 @@ export class AddEntrepriseTrunk extends Component {
                     {this.state.mainIadsAvalible.length
                       ? this.state.mainIadsAvalible.map((iad, i) => (
                           <tr key={i}>
-                            <td></td>
+                            <td>
+                              <Checkbox
+                                className={"table-checkbox margin-left-08"}
+                                checked={iad.checked}
+                                onChange={e =>
+                                  this.changeStatusOfMainIadsAvalible(e, i)
+                                }
+                              />
+                            </td>
                             <td
                               className={
                                 "flex space-between align-items-center"
@@ -307,7 +315,7 @@ export class AddEntrepriseTrunk extends Component {
     const checkedMainIadsAvalible = mainIadsAvalible.filter(el => el.checked);
     const data = {
       iads_from_other_sites: checkedOtherIadsAvalible,
-      main_iads_available: checkedMainIadsAvalible,
+      iads_from_main_site: checkedMainIadsAvalible,
       routeExhaustionAction,
       routeExhaustionDestination,
       channelHunting: routingMode === "weighted" ? "Loadbalanced" : ""
