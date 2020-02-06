@@ -8,6 +8,8 @@ import FormControl from "react-bootstrap/lib/FormControl";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import Checkbox from "react-bootstrap/lib/Checkbox";
 import Button from "react-bootstrap/lib/Button";
+import FormGroup from "react-bootstrap/lib/FormGroup";
+import HelpBlock from "react-bootstrap/lib/HelpBlock";
 
 import { FormattedMessage } from "react-intl";
 import Loading from "../../../../common/Loading";
@@ -16,14 +18,17 @@ import { removeEmpty } from "../../../remuveEmptyInObject";
 import {
   fetchGetConfig,
   fetchGetGroupById,
-  fetchPutUpdateGroupDetails
+  fetchPutUpdateGroupDetails,
+  fetchGetIADs
 } from "../../../../store/actions";
 
 export class Product extends Component {
   state = {
     isLoading: true,
     group: {},
-    disableButton: false
+    disableButton: false,
+    seviceTypeError: null,
+    textSerivceTypeError: ""
   };
   componentDidMount() {
     this.props
@@ -48,7 +53,12 @@ export class Product extends Component {
                   this.state.group.serviceType ||
                   this.props.config.tenant.group.serviceType[0].value,
                 np1Redundancy: this.state.group.np1Redundancy || false
-              }
+              },
+              isRedundant: ~this.props.config.tenant.group.iad[
+                "2EDUsForServiceTypes"
+              ].indexOf(this.state.group.serviceType)
+                ? "redundant"
+                : "nonRedundant"
             })
           )
         )
@@ -127,39 +137,46 @@ export class Product extends Component {
             </div>
           </Col>
         </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="serviceType"
-                  defaultMessage="Service Type"
-                />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.group.serviceType}
-                onChange={e =>
-                  this.setState({
-                    group: {
-                      ...this.state.group,
-                      serviceType: e.target.value
-                    }
-                  })
-                }
-                disabled
-              >
-                {this.props.config.tenant.group.serviceType.map((el, i) => (
-                  <option key={i} value={el.value}>
-                    {el.label}
-                  </option>
-                ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
+        <FormGroup
+          controlId="channelIn"
+          validationState={this.state.seviceTypeError}
+        >
+          <Row className={"margin-top-1"}>
+            <Col md={12} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-16"}>
+                <ControlLabel>
+                  <FormattedMessage
+                    id="serviceType"
+                    defaultMessage="Service Type"
+                  />
+                </ControlLabel>
+              </div>
+              <div className={"margin-right-1 flex-basis-33"}>
+                <FormControl
+                  componentClass="select"
+                  value={this.state.group.serviceType}
+                  onChange={this.updateServiceType}
+                >
+                  {this.props.config.tenant.group.serviceType.map((el, i) => (
+                    <option key={i} value={el.value}>
+                      {el.label}
+                    </option>
+                  ))}
+                </FormControl>
+              </div>
+            </Col>
+          </Row>
+          {this.state.seviceTypeError && (
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}></div>
+                <div className={"margin-right-1 flex-basis-33"}>
+                  <HelpBlock>{this.state.textSerivceTypeError}</HelpBlock>
+                </div>
+              </Col>
+            </Row>
+          )}
+        </FormGroup>
         {(this.state.group.pbxType === "SIP" ||
           this.state.group.pbxType === "SIP_PRA") && (
           <Row className={"margin-top-1"}>
@@ -195,7 +212,10 @@ export class Product extends Component {
               <Button
                 onClick={this.updateProduct}
                 className={"btn-primary"}
-                disabled
+                disabled={
+                  this.state.disableButton ||
+                  this.state.seviceTypeError === "error"
+                }
               >
                 {this.state.disableButton ? (
                   <FormattedMessage
@@ -212,6 +232,49 @@ export class Product extends Component {
       </React.Fragment>
     );
   }
+
+  updateServiceType = e => {
+    const targetValue = e.target.value;
+    if (
+      ~this.props.config.tenant.group.iad["2EDUsForServiceTypes"].indexOf(
+        targetValue
+      ) &&
+      this.state.isRedundant === "nonRedundant"
+    ) {
+      this.setState({
+        group: {
+          ...this.state.group,
+          serviceType: targetValue
+        },
+        seviceTypeError: "warning",
+        textSerivceTypeError:
+          "You will have to configure an extra EDU for each IAD"
+      });
+      return;
+    } else if (
+      !~this.props.config.tenant.group.iad["2EDUsForServiceTypes"].indexOf(
+        targetValue
+      ) &&
+      this.state.isRedundant === "redundant"
+    ) {
+      this.setState({
+        seviceTypeError: "error",
+        textSerivceTypeError:
+          "It is not allowed to move from a Redundant Service Type to a Non-Redundant one"
+      });
+      return;
+    }
+
+    this.setState({
+      group: {
+        ...this.state.group,
+        serviceType: targetValue
+      },
+      seviceTypeError: null,
+      textSerivceTypeError: ""
+    });
+  };
+
   updateProduct = () => {
     const {
       pbxType,
@@ -220,10 +283,10 @@ export class Product extends Component {
       np1Redundancy
     } = this.state.group;
     const data = {
-      pbxType,
-      accessType,
-      serviceType,
-      np1Redundancy
+      //pbxType,
+      //accessType,
+      serviceType
+      //np1Redundancy
     };
     this.setState({ disableButton: true });
     const clearData = removeEmpty(data);
@@ -233,7 +296,13 @@ export class Product extends Component {
         this.props.match.params.groupId,
         clearData
       )
-      .then(() => this.setState({ disableButton: false }));
+      .then(() => {
+        this.props.fetchGetIADs(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId
+        );
+        this.setState({ disableButton: false });
+      });
   };
 }
 
@@ -242,7 +311,8 @@ const mapStateToProps = state => ({ group: state.group, config: state.config });
 const mapDispatchToProps = {
   fetchGetConfig,
   fetchGetGroupById,
-  fetchPutUpdateGroupDetails
+  fetchPutUpdateGroupDetails,
+  fetchGetIADs
 };
 
 export default withRouter(
