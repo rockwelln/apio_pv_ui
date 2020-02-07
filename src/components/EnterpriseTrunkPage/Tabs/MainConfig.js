@@ -21,7 +21,7 @@ import Loading from "../../../common/Loading";
 
 export class MainConfig extends Component {
   state = {
-    isLoading: false,
+    isLoading: true,
     iadFromSite: [],
     iadNotFromSite: [],
     routeExhaustionAction: "",
