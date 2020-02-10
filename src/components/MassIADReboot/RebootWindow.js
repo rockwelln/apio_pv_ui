@@ -121,7 +121,10 @@ const RebootWindow = props => {
         )}
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={rebootIads} disabled={rebootLater && !requestedTime}>
+        <Button
+          onClick={rebootIads}
+          disabled={rebootLater === "later" && !requestedTime}
+        >
           <FormattedMessage id="ok" defaultMessage="Ok" />
         </Button>
         <Button onClick={() => props.onClose()}>
