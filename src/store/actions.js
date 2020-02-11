@@ -559,7 +559,7 @@ export function fetchGetReconciliationTeams() {
   /////////////////////////////////
   return function(dispatch) {
     return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/system/reconciliation/teams/`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/reconciliation/teams/`
     )
       .then(data => dispatch(getReconciliationTeams(data)))
       .catch(error =>
@@ -578,7 +578,7 @@ export function fetchGetTeam(teamName) {
   /////////////////////////////////
   return function(dispatch) {
     return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/system/reconciliation/teams/${teamName}`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/reconciliation/teams/${teamName}`
     )
       .then(data => dispatch(getTeam(data)))
       .catch(error =>
@@ -597,7 +597,7 @@ export function fetchGetAnomalies() {
   /////////////////////////////////
   return function(dispatch) {
     return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/system/reconciliation/anomalies/`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/reconciliation/anomalies/`
     )
       .then(data => dispatch(getAnomalies(data)))
       .catch(error =>
@@ -616,7 +616,7 @@ export function fetchGetAnomaly(hash) {
   /////////////////////////////////
   return function(dispatch) {
     return fetch_get(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/system/reconciliation/anomalies/${hash}`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/reconciliation/anomalies/${hash}`
     )
       .then(data => dispatch(getAnomaly(data)))
       .catch(error =>
@@ -798,7 +798,7 @@ export function fetchPostCreateReconciliationTeams(data) {
   //////////////////////////////////////////////////
   return function(dispatch) {
     return fetch_post(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/system/reconciliation/teams/`,
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/reconciliation/teams/`,
       data
     )
       .then(res => res.json())
@@ -999,7 +999,7 @@ export function fetchPutUpdateTeam(teamName, data) {
   //////////////////////////////////////
   return function(dispatch) {
     return fetch_put(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/system/reconciliation/teams/${teamName}/`,
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/reconciliation/teams/${teamName}/`,
       data
     )
       .then(res => res.json())
@@ -1059,7 +1059,7 @@ export function fetchPutUpdateAnomaly(hash, data) {
   /////////////////////////////
   return function(dispatch) {
     return fetch_put(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/system/reconciliation/anomalies/${hash}/`,
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/reconciliation/anomalies/${hash}/`,
       data
     )
       .then(res => res.json())
@@ -1234,7 +1234,7 @@ export function fetchDeleteTeam(teamName) {
   /////////////////////////////////
   return function(dispatch) {
     return fetch_delete(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/system/reconciliation/teams/${teamName}/`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/reconciliation/teams/${teamName}/`
     )
       .then(data => {
         dispatch(deleteTeam(data));
@@ -1256,7 +1256,7 @@ export function fetchDeleteAnomaly(hash, data) {
   /////////////////////////////////
   return function(dispatch) {
     return fetch_delete(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra//system/reconciliation/anomalies/${hash}/`,
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/reconciliation/anomalies/${hash}/`,
       data
     )
       .then(data => {
