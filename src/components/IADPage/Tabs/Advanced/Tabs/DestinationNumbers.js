@@ -209,7 +209,7 @@ export class TrunkId extends Component {
     newDestNum.splice(index, 0, updatedElArr);
     this.setState({ destinationNumbers: newDestNum });
     const clearDestinationNumbers = newDestNum.filter(
-      el => el.number && ~el.praSelected
+      el => el.number && !isNaN(el.praSelected)
     );
     this.props.changeIAD("destinationNumbers", clearDestinationNumbers);
   };
@@ -226,7 +226,7 @@ export class TrunkId extends Component {
     newDestNum.splice(index, 0, updatedElArr);
     this.setState({ destinationNumbers: newDestNum });
     const clearDestinationNumbers = newDestNum.filter(
-      el => el.number && ~el.praSelected
+      el => el.number && !isNaN(el.praSelected)
     );
     this.props.changeIAD("destinationNumbers", clearDestinationNumbers);
   };
@@ -234,7 +234,7 @@ export class TrunkId extends Component {
   updateIAD = () => {
     const { destinationNumbers } = this.state;
     const clearDestinationNumbers = [...destinationNumbers].filter(
-      el => el.number && ~el.praSelected
+      el => el.number && !isNaN(el.praSelected)
     );
     const data = { destinationNumbers: clearDestinationNumbers };
     const clearData = removeEmpty(data);
