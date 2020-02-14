@@ -19,12 +19,15 @@ export class AdvancedTab extends Component {
             <Tab eventKey={0} title="Options">
               <Options />
             </Tab>
-            <Tab eventKey={1} title="Trunk Id">
+            {/* <Tab eventKey={1} title="Trunk Id">
               <TrunlId />
-            </Tab>
-            <Tab eventKey={2} title="Destination Number">
-              <DestinationNumbers />
-            </Tab>
+            </Tab> */}
+            {(this.props.iad.protocolMode === "PRA" ||
+              this.props.iad.protocolMode === "PRA_SIP") && (
+              <Tab eventKey={2} title="Destination Number">
+                <DestinationNumbers />
+              </Tab>
+            )}
           </Tabs>
         </Col>
       </Row>
@@ -32,7 +35,9 @@ export class AdvancedTab extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  iad: state.iad
+});
 
 const mapDispatchToProps = {};
 

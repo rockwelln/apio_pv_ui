@@ -11,295 +11,171 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import { FormattedMessage } from "react-intl";
 
-import {
-  changeObjectIAD,
-  fetchPutUpdateIAD
-} from "../../../../../store/actions";
+import { changeIAD, fetchPutUpdateIAD } from "../../../../../store/actions";
 import { removeEmpty } from "../../../../remuveEmptyInObject";
 import { get } from "../../../../get";
 
+const DESTINATIONNUMBERS = [
+  {
+    id: 5,
+    number: null,
+    praSelected: null
+  },
+  {
+    id: 6,
+    number: null,
+    praSelected: null
+  },
+  {
+    id: 7,
+    number: null,
+    praSelected: null
+  },
+  {
+    id: 8,
+    number: null,
+    praSelected: null
+  },
+  {
+    id: 9,
+    number: null,
+    praSelected: null
+  },
+  {
+    id: 10,
+    number: null,
+    praSelected: null
+  }
+];
+
 export class TrunkId extends Component {
   state = {
-    advanced: {},
-    disabledButton: false
+    disabledButton: false,
+    destinationNumbers: [],
+    arrayOfNumbers: []
   };
   componentDidMount() {
+    const arrayOfNumbers = this.props.phoneNumbersByGroupNotTP
+      .filter(
+        el =>
+          el !== this.props.iad.cliPhoneNumber ||
+          el !== this.props.iad.pilotNumber
+      )
+      .map(el => ({
+        value: el,
+        label: el
+      }));
+    console.log(this.props.iad);
     this.setState({
-      advanced: this.props.iad.advanced
-        ? {
-            // destnr1: this.props.iad.advanced.destnr1,
-            // destnr2: this.props.iad.advanced.destnr2,
-            // destnr3: this.props.iad.advanced.destnr3,
-            // destnr4: this.props.iad.advanced.destnr4,
-            destnr5: this.props.iad.advanced.destnr5,
-            destnr6: this.props.iad.advanced.destnr6,
-            destnr7: this.props.iad.advanced.destnr7,
-            destnr8: this.props.iad.advanced.destnr8,
-            destnr9: this.props.iad.advanced.destnr9,
-            destnr10: this.props.iad.advanced.destnr10
-          }
-        : {}
+      destinationNumbers: this.merge(
+        DESTINATIONNUMBERS,
+        this.props.iad.destinationNumbers
+      ),
+      arrayOfNumbers
     });
   }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.phoneNumbersByGroupNotTP.length !==
+      this.props.phoneNumbersByGroupNotTP.length
+    ) {
+      const arrayOfNumbers = this.props.phoneNumbersByGroupNotTP
+        .filter(
+          el =>
+            el !== this.props.iad.cliPhoneNumber &&
+            el !== this.props.iad.pilotNumber
+        )
+        .map(el => ({
+          value: el,
+          label: el
+        }));
+      this.setState({ arrayOfNumbers });
+    }
+  }
+
+  merge() {
+    let hash = {}; // временный хэш объектов по свойству id
+    for (let l = 0; l < arguments.length; l++) {
+      let arr = arguments[l];
+      if (!arr.length) continue;
+      for (let i = 0; i < arr.length; i++) {
+        let el = arr[i];
+        if (!("id" in el)) continue;
+        let id = el.id;
+        if (!hash[id]) hash[id] = {};
+        for (let key in el) {
+          if (el.hasOwnProperty(key)) hash[id][key] = el[key];
+        }
+      }
+    }
+    let result = [];
+    for (let id in hash) {
+      if (hash.hasOwnProperty(id)) result.push(hash[id]);
+    }
+    return result;
+  }
+
   render() {
     return (
       <React.Fragment>
-        {/* <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="destnr1"
-                  defaultMessage="Destination numbers 1"
-                />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.advanced.destnr1}
-                onChange={this.chageDestnr1}
-              >
-                {this.props.config.tenant.group.iad.destnr1.map((el, i) => (
-                  <option key={i} value={el.value}>
-                    {el.label}
-                  </option>
-                ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="destnr2"
-                  defaultMessage="Destination numbers 2"
-                />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.advanced.destnr2}
-                onChange={this.chageDestnr2}
-              >
-                {this.props.config.tenant.group.iad.destnr.map((el, i) => (
-                  <option key={i} value={el.value}>
-                    {el.label}
-                  </option>
-                ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="destnr3"
-                  defaultMessage="Destination numbers 3"
-                />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.advanced.destnr3}
-                onChange={this.chageDestnr3}
-              >
-                {this.props.config.tenant.group.iad.destnr.map((el, i) => (
-                  <option key={i} value={el.value}>
-                    {el.label}
-                  </option>
-                ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="destnr4"
-                  defaultMessage="Destination numbers 4"
-                />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.advanced.destnr4}
-                onChange={this.chageDestnr4}
-              >
-                {this.props.config.tenant.group.iad.destnr.map((el, i) => (
-                  <option key={i} value={el.value}>
-                    {el.label}
-                  </option>
-                ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row> */}
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="destnr5"
-                  defaultMessage="Destination numbers 5"
-                />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.advanced.destnr5}
-                onChange={this.chageDestnr5}
-              >
-                {get(this.props, "config.tenant.group.iad.destnr5") &&
-                  this.props.config.tenant.group.iad.destnr5.map((el, i) => (
-                    <option key={i} value={el.value}>
-                      {el.label}
-                    </option>
-                  ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="destnr6"
-                  defaultMessage="Destination numbers 6"
-                />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.advanced.destnr6}
-                onChange={this.chageDestnr6}
-              >
-                {get(this.props, "config.tenant.group.iad.destnr") &&
-                  this.props.config.tenant.group.iad.destnr.map((el, i) => (
-                    <option key={i} value={el.value}>
-                      {el.label}
-                    </option>
-                  ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="destnr7"
-                  defaultMessage="Destination numbers 7"
-                />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.advanced.destnr7}
-                onChange={this.chageDestnr7}
-              >
-                {get(this.props, "config.tenant.group.iad.destnr") &&
-                  this.props.config.tenant.group.iad.destnr.map((el, i) => (
-                    <option key={i} value={el.value}>
-                      {el.label}
-                    </option>
-                  ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="destnr8"
-                  defaultMessage="Destination numbers 8"
-                />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.advanced.destnr8}
-                onChange={this.chageDestnr8}
-              >
-                {get(this.props, "config.tenant.group.iad.destnr") &&
-                  this.props.config.tenant.group.iad.destnr.map((el, i) => (
-                    <option key={i} value={el.value}>
-                      {el.label}
-                    </option>
-                  ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="destnr9"
-                  defaultMessage="Destination numbers 9"
-                />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.advanced.destnr9}
-                onChange={this.chageDestnr9}
-              >
-                {get(this.props, "config.tenant.group.iad.destnr") &&
-                  this.props.config.tenant.group.iad.destnr.map((el, i) => (
-                    <option key={i} value={el.value}>
-                      {el.label}
-                    </option>
-                  ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="destnr10"
-                  defaultMessage="Destination numbers 10"
-                />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.advanced.destnr10}
-                onChange={this.chageDestnr10}
-              >
-                {get(this.props, "config.tenant.group.iad.destnr") &&
-                  this.props.config.tenant.group.iad.destnr.map((el, i) => (
-                    <option key={i} value={el.value}>
-                      {el.label}
-                    </option>
-                  ))}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
+        {this.state.destinationNumbers.map(el => (
+          <Row className={"margin-top-1 flex align-items-center"}>
+            <Col md={6} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-33"}>
+                <ControlLabel>
+                  <FormattedMessage
+                    id="destnr"
+                    defaultMessage={`Destination numbers ${el.id}`}
+                  />
+                </ControlLabel>
+              </div>
+              <div className={"margin-right-1 flex-basis-66"}>
+                <FormControl
+                  componentClass="select"
+                  value={el.number}
+                  onChange={e => this.changeDestination(e, el.id)}
+                >
+                  {get(this.props, "config.tenant.group.iad.destnr") &&
+                    this.props.config.tenant.group.iad.destnr.map((el, i) => (
+                      <option key={i} value={el.value}>
+                        {el.label}
+                      </option>
+                    ))}
+                  {!!this.state.arrayOfNumbers.length &&
+                    this.state.arrayOfNumbers.map((el, i) => (
+                      <option key={i} value={el.value}>
+                        {el.label}
+                      </option>
+                    ))}
+                </FormControl>
+              </div>
+            </Col>
+            <Col md={6} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-33"}>
+                <ControlLabel>
+                  <FormattedMessage id="praLine" defaultMessage="PRA line" />
+                </ControlLabel>
+              </div>
+              <div className={"margin-right-1 flex-basis-66"}>
+                <FormControl
+                  componentClass="select"
+                  value={el.praSelected}
+                  onChange={e => this.changePra(e, el.id)}
+                >
+                  {get(this.props, "config.tenant.group.iad.praSelected") &&
+                    this.props.config.tenant.group.iad.praSelected.map(
+                      (el, i) => (
+                        <option key={i} value={el.value}>
+                          {el.label}
+                        </option>
+                      )
+                    )}
+                </FormControl>
+              </div>
+            </Col>
+          </Row>
+        ))}
         <Row>
           <Col md={12}>
             <div className="button-row">
@@ -321,9 +197,46 @@ export class TrunkId extends Component {
     );
   }
 
+  changeDestination = (e, id) => {
+    const index = this.state.destinationNumbers.findIndex(el => el.id === id);
+    const newDestNum = [...this.state.destinationNumbers];
+    const elArr = newDestNum.splice(index, 1);
+    const updatedElArr = {
+      ...elArr[0],
+      number: e.target.value,
+      praSelected: elArr[0].praSelected ? elArr[0].praSelected : 0
+    };
+    newDestNum.splice(index, 0, updatedElArr);
+    this.setState({ destinationNumbers: newDestNum });
+    const clearDestinationNumbers = newDestNum.filter(
+      el => el.number && ~el.praSelected
+    );
+    this.props.changeIAD("destinationNumbers", clearDestinationNumbers);
+  };
+
+  changePra = (e, id) => {
+    const index = this.state.destinationNumbers.findIndex(el => el.id === id);
+    const newDestNum = [...this.state.destinationNumbers];
+    const elArr = newDestNum.splice(index, 1);
+    const updatedElArr = {
+      ...elArr[0],
+      number: elArr[0].number ? elArr[0].number : "None",
+      praSelected: Number(e.target.value)
+    };
+    newDestNum.splice(index, 0, updatedElArr);
+    this.setState({ destinationNumbers: newDestNum });
+    const clearDestinationNumbers = newDestNum.filter(
+      el => el.number && ~el.praSelected
+    );
+    this.props.changeIAD("destinationNumbers", clearDestinationNumbers);
+  };
+
   updateIAD = () => {
-    const { advanced } = this.state;
-    const data = { advanced };
+    const { destinationNumbers } = this.state;
+    const clearDestinationNumbers = [...destinationNumbers].filter(
+      el => el.number && ~el.praSelected
+    );
+    const data = { destinationNumbers: clearDestinationNumbers };
     const clearData = removeEmpty(data);
     if (Object.keys(clearData).length) {
       this.setState({ disabledButton: true }, () =>
@@ -342,114 +255,15 @@ export class TrunkId extends Component {
       );
     }
   };
-
-  // chageDestnr1 = e => {
-  //   this.setState({
-  //     advanced: {
-  //       ...this.state.advanced,
-  //       destnr1: e.target.value
-  //     }
-  //   });
-  //   this.props.changeObjectIAD("advanced", "destnr1", e.target.value);
-  // };
-
-  // chageDestnr2 = e => {
-  //   this.setState({
-  //     advanced: {
-  //       ...this.state.advanced,
-  //       destnr2: e.target.value
-  //     }
-  //   });
-  //   this.props.changeObjectIAD("advanced", "destnr2", e.target.value);
-  // };
-
-  // chageDestnr3 = e => {
-  //   this.setState({
-  //     advanced: {
-  //       ...this.state.advanced,
-  //       destnr3: e.target.value
-  //     }
-  //   });
-  //   this.props.changeObjectIAD("advanced", "destnr3", e.target.value);
-  // };
-
-  // chageDestnr4 = e => {
-  //   this.setState({
-  //     advanced: {
-  //       ...this.state.advanced,
-  //       destnr4: e.target.value
-  //     }
-  //   });
-  //   this.props.changeObjectIAD("advanced", "destnr4", e.target.value);
-  // };
-
-  chageDestnr5 = e => {
-    this.setState({
-      advanced: {
-        ...this.state.advanced,
-        destnr5: e.target.value
-      }
-    });
-    this.props.changeObjectIAD("advanced", "destnr5", e.target.value);
-  };
-
-  chageDestnr6 = e => {
-    this.setState({
-      advanced: {
-        ...this.state.advanced,
-        destnr6: e.target.value
-      }
-    });
-    this.props.changeObjectIAD("advanced", "destnr6", e.target.value);
-  };
-
-  chageDestnr7 = e => {
-    this.setState({
-      advanced: {
-        ...this.state.advanced,
-        destnr7: e.target.value
-      }
-    });
-    this.props.changeObjectIAD("advanced", "destnr7", e.target.value);
-  };
-
-  chageDestnr8 = e => {
-    this.setState({
-      advanced: {
-        ...this.state.advanced,
-        destnr8: e.target.value
-      }
-    });
-    this.props.changeObjectIAD("advanced", "destnr8", e.target.value);
-  };
-
-  chageDestnr9 = e => {
-    this.setState({
-      advanced: {
-        ...this.state.advanced,
-        destnr9: e.target.value
-      }
-    });
-    this.props.changeObjectIAD("advanced", "destnr9", e.target.value);
-  };
-
-  chageDestnr10 = e => {
-    this.setState({
-      advanced: {
-        ...this.state.advanced,
-        destnr10: e.target.value
-      }
-    });
-    this.props.changeObjectIAD("advanced", "destnr10", e.target.value);
-  };
 }
 
 const mapStateToProps = state => ({
   iad: state.iad,
-  config: state.config
+  config: state.config,
+  phoneNumbersByGroupNotTP: state.phoneNumbersByGroupNotTP
 });
 
-const mapDispatchToProps = { changeObjectIAD, fetchPutUpdateIAD };
+const mapDispatchToProps = { changeIAD, fetchPutUpdateIAD };
 
 export default withRouter(
   connect(

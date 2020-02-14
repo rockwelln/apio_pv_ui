@@ -8,7 +8,7 @@ import Sidebar from "../../common/Sidebar";
 import Title from "../../common/Title";
 import IADPage from "./IADPage";
 
-const GroupComponent = notifications => {
+const GroupComponent = () => {
   return (
     <React.Fragment>
       <Row className={"margin-bottom-4"}>

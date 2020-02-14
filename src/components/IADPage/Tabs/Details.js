@@ -193,10 +193,7 @@ export class Details extends Component {
                 value={this.state.cliPhoneNumber}
                 onChange={e =>
                   this.setState({
-                    group: {
-                      ...this.state.group,
-                      cliPhoneNumber: e.target.value
-                    }
+                    cliPhoneNumber: e.target.value
                   })
                 }
                 disabled={this.state.isDisabled}
