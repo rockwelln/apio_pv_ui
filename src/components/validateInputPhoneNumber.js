@@ -6,7 +6,8 @@ export const validateInputPhoneNumber = e => {
     (event.keyCode >= 37 && event.keyCode <= 40) || //arrows
     ((event.ctrlKey || event.metaKey) && event.keyCode === 65) || //ctrl+a, cmd+a
     ((event.ctrlKey || event.metaKey) && event.keyCode === 86) || //ctrl+v, cmd+v
-    ((event.ctrlKey || event.metaKey) && event.keyCode === 67) //ctrl+c, cmd+c
+    ((event.ctrlKey || event.metaKey) && event.keyCode === 67) || //ctrl+c, cmd+c
+    ((event.ctrlKey || event.metaKey) && event.keyCode === 88) //ctrl+x, cmd+x
   ) {
     return;
   } else if (

@@ -117,7 +117,11 @@ export class GroupService extends Component {
                   <div className={"margin-right-1 flex-basis-11"}>
                     <FormControl
                       type="text"
-                      value={this.state.services.channelsIn}
+                      value={
+                        this.state.services.channelsIn === "groupValue"
+                          ? this.state.services.channelsIn_group_value
+                          : this.state.services.channelsIn
+                      }
                       placeholder={"In"}
                       onChange={this.changeChannelsIn}
                     />
@@ -130,7 +134,11 @@ export class GroupService extends Component {
                   <div className={"margin-right-1 flex-basis-11"}>
                     <FormControl
                       type="text"
-                      value={this.state.services.channelsOut}
+                      value={
+                        this.state.services.channelsOut === "groupValue"
+                          ? this.state.services.channelsOut_group_value
+                          : this.state.services.channelsOut
+                      }
                       placeholder={"Out"}
                       onChange={this.changeChannelsOut}
                     />
@@ -176,14 +184,27 @@ export class GroupService extends Component {
   }
 
   updateIAD = () => {
-    const { services } = this.state;
-    const data = { services };
+    const {
+      channelHunting,
+      channelsIn,
+      channelsOut,
+      direction,
+      dtmf
+    } = this.state.services;
+    const data = {
+      services: {
+        channelHunting,
+        channelsIn: channelsIn === "groupValue" ? null : channelsIn,
+        channelsOut: channelsOut === "groupValue" ? null : channelsOut,
+        direction
+      }
+    };
     const clearData = removeEmpty(data);
-    if (!this.props.iad.services && services.dtmf) {
+    if (!this.props.iad.services && dtmf) {
       this.setState({ showRebootDialog: true, data: clearData });
       return;
     }
-    if (services.dtmf !== this.props.iad.services.dtmf) {
+    if (dtmf !== this.props.iad.services.dtmf) {
       this.setState({ showRebootDialog: true, data: clearData });
       return;
     }
