@@ -55,7 +55,10 @@ const AsyncApioNavBar = ({
           <FormattedMessage id="dashboard" defaultMessage="Dashboard" />
         </ListItemLink>
 
-        {isAllowed(user_group, pages.data) && (
+        {isAllowed(
+          localStorage.getItem("userProfile"),
+          pages.common_page_access
+        ) && (
           <NavDropdown
             eventKey={4}
             title={
