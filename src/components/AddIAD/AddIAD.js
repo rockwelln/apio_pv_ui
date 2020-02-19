@@ -548,9 +548,16 @@ export class AddIAD extends Component {
                     type="text"
                     value={this.state.eduVLANIDA}
                     placeholder={"EDU VLAN ID"}
-                    onChange={e =>
-                      this.setState({ eduVLANIDA: e.target.value })
-                    }
+                    onChange={e => {
+                      if (
+                        isNaN(e.target.value) ||
+                        e.target.value < 0 ||
+                        e.target.value > 4096
+                      ) {
+                        return;
+                      }
+                      this.setState({ eduVLANIDA: e.target.value });
+                    }}
                     disabled={this.props.group.virtual}
                   />
                 </div>
@@ -571,9 +578,16 @@ export class AddIAD extends Component {
                       type="text"
                       value={this.state.eduVLANIDB}
                       placeholder={"EDU VLAN ID"}
-                      onChange={e =>
-                        this.setState({ eduVLANIDB: e.target.value })
-                      }
+                      onChange={e => {
+                        if (
+                          isNaN(e.target.value) ||
+                          e.target.value < 0 ||
+                          e.target.value > 4096
+                        ) {
+                          return;
+                        }
+                        this.setState({ eduVLANIDB: e.target.value });
+                      }}
                       disabled={this.props.group.virtual}
                     />
                   </div>

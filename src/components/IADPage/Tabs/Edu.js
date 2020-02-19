@@ -132,7 +132,12 @@ export class Edu extends Component {
                 type="text"
                 value={this.state.edu1.lanPort}
                 placeholder={"LAN port"}
-                onChange={this.changeEdu1Lan}
+                onChange={e => {
+                  if (isNaN(e.target.value)) {
+                    return;
+                  }
+                  this.changeEdu1Lan(e);
+                }}
               />
             </div>
           </Col>
@@ -148,7 +153,12 @@ export class Edu extends Component {
                   type="text"
                   value={this.state.edu2.lanPort}
                   placeholder={"LAN port"}
-                  onChange={this.changeEdu2Lan}
+                  onChange={e => {
+                    if (isNaN(e.target.value)) {
+                      return;
+                    }
+                    this.changeEdu2Lan(e);
+                  }}
                 />
               </div>
             </Col>
@@ -166,7 +176,12 @@ export class Edu extends Component {
                 type="text"
                 value={this.state.edu1.wanPort}
                 placeholder={"WAN port"}
-                onChange={this.changeEdu1Wan}
+                onChange={e => {
+                  if (isNaN(e.target.value)) {
+                    return;
+                  }
+                  this.changeEdu1Wan(e);
+                }}
               />
             </div>
           </Col>
@@ -182,7 +197,12 @@ export class Edu extends Component {
                   type="text"
                   value={this.state.edu2.wanPort}
                   placeholder={"WAN port"}
-                  onChange={this.changeEdu2Wan}
+                  onChange={e => {
+                    if (isNaN(e.target.value)) {
+                      return;
+                    }
+                    this.changeEdu2Wan(e);
+                  }}
                 />
               </div>
             </Col>
@@ -200,7 +220,16 @@ export class Edu extends Component {
                 type="text"
                 value={this.state.edu1.vlan}
                 placeholder={"EDU VLAN ID"}
-                onChange={this.changeEdu1Vlan}
+                onChange={e => {
+                  if (
+                    isNaN(e.target.value) ||
+                    e.target.value < 0 ||
+                    e.target.value > 4096
+                  ) {
+                    return;
+                  }
+                  this.changeEdu1Vlan(e);
+                }}
               />
             </div>
           </Col>
@@ -219,7 +248,16 @@ export class Edu extends Component {
                   type="text"
                   value={this.state.edu2.vlan}
                   placeholder={"EDU VLAN ID"}
-                  onChange={this.changeEdu2Vlan}
+                  onChange={e => {
+                    if (
+                      isNaN(e.target.value) ||
+                      e.target.value < 0 ||
+                      e.target.value > 4096
+                    ) {
+                      return;
+                    }
+                    this.changeEdu2Vlan(e);
+                  }}
                 />
               </div>
             </Col>
