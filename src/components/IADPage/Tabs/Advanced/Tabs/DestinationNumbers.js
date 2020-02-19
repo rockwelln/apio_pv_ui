@@ -58,7 +58,7 @@ export class TrunkId extends Component {
     const arrayOfNumbers = this.props.phoneNumbersByGroupNotTP
       .filter(
         el =>
-          el !== this.props.iad.cliPhoneNumber ||
+          el !== this.props.iad.cliPhoneNumber &&
           el !== this.props.iad.pilotNumber
       )
       .map(el => ({
