@@ -19,7 +19,9 @@ const linkByCrumb = (item, lastItem, i, path, match, hash) => {
   const crumb = convertCrumb(item);
   if (crumb === "tenants" && !lastItem.includes(crumb)) {
     return (
-      <Link to={`/provisioning/${match.params.gwName}/tenants`}>{crumb}</Link>
+      <Link to={`/provisioning/${match.params.gwName}/tenants`}>
+        {"Enterprises"}
+      </Link>
     );
   }
   if (crumb === "configs" && !lastItem.includes(crumb)) {
