@@ -74,6 +74,7 @@ export class AddReconciliationTeam extends Component {
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
+                    placeholder="Name"
                     type="text"
                     value={this.state.name}
                     onChange={e => this.setState({ name: e.target.value })}
@@ -88,6 +89,7 @@ export class AddReconciliationTeam extends Component {
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
+                    placeholder="Email"
                     type="email"
                     value={this.state.email}
                     onChange={e => this.setState({ email: e.target.value })}
@@ -107,6 +109,7 @@ export class AddReconciliationTeam extends Component {
                       className={"flex align-items-center margin-bottom-1"}
                     >
                       <FormControl
+                        placeholder="User name"
                         type="text"
                         value={user.username}
                         onChange={e => {
@@ -123,6 +126,7 @@ export class AddReconciliationTeam extends Component {
                         className={"flex flex-basis-33 margin-right-1"}
                       />
                       <FormControl
+                        placeholder="User email"
                         type="text"
                         value={user.email}
                         onChange={e => {
