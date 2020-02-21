@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
 import Tabs from "react-bootstrap/lib/Tabs";
 import Tab from "react-bootstrap/lib/Tab";
@@ -15,7 +16,12 @@ export class ConfigPage extends Component {
           <div className={"header"}>Configs</div>
         </div>
         <div className={"panel-body"}>
-          <Tabs defaultActiveKey={0} id="tenant_tabs">
+          <Tabs
+            id="tenant_tabs"
+            activeKey={this.returnActiveKey()}
+            id="enterprice_tabs"
+            onSelect={key => this.tabRouting(key)}
+          >
             <Tab eventKey={0} title="ZIP to Routing">
               <ZipToRouting />
             </Tab>
@@ -27,13 +33,37 @@ export class ConfigPage extends Component {
       </React.Fragment>
     );
   }
+
+  tabRouting = key => {
+    switch (key) {
+      case 0:
+        this.props.history.push("#zipToRouting");
+        break;
+      case 1:
+        this.props.history.push("#reconciliationTeams");
+        break;
+    }
+  };
+
+  returnActiveKey = () => {
+    switch (this.props.location.hash) {
+      case "#zipToRouting":
+        return 0;
+      case "#reconciliationTeams":
+        return 1;
+      default:
+        return 0;
+    }
+  };
 }
 
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = {};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ConfigPage);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ConfigPage)
+);

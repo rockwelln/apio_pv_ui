@@ -30,6 +30,12 @@ export class AddReconciliationTeam extends Component {
                 id="addReconciliationTeam"
                 defaultMessage="ADD RECONCILIATION TEAM"
               />
+              <Button
+                className={"margin-left-1 btn-danger"}
+                onClick={() => this.cancelClick()}
+              >
+                <FormattedMessage id="cancel" defaultMessage="Cancel" />
+              </Button>
             </div>
           </Panel.Heading>
           <Panel.Body>
@@ -161,6 +167,12 @@ export class AddReconciliationTeam extends Component {
       </React.Fragment>
     );
   }
+
+  cancelClick = () => {
+    this.props.history.push(
+      `/provisioning/${this.props.match.params.gwName}/configs#reconciliationTeams`
+    );
+  };
 
   addUserToArray = () => {
     const users = this.state.users;
