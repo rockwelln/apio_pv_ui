@@ -67,7 +67,7 @@ export class Numbers extends Component {
                 defaultMessage="Enterprise trunk numbers"
               />
             </ControlLabel>
-            <InputGroup>
+            <InputGroup className={"margin-bottom-2"}>
               <InputGroup.Addon>
                 <Glyphicon glyph="lyphicon glyphicon-search" />
               </InputGroup.Addon>
@@ -113,7 +113,7 @@ export class Numbers extends Component {
                 defaultMessage="Numbers from other enterprise trunks"
               />
             </ControlLabel>
-            <InputGroup>
+            <InputGroup className={"margin-bottom-2"}>
               <InputGroup.Addon>
                 <Glyphicon glyph="lyphicon glyphicon-search" />
               </InputGroup.Addon>
