@@ -11,9 +11,14 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import { FormattedMessage } from "react-intl";
 
-import { changeIAD, fetchPutUpdateIAD } from "../../../../../store/actions";
+import {
+  changeIAD,
+  fetchPutUpdateIAD,
+  fetchGetPhoneNumbersByGroupId
+} from "../../../../../store/actions";
 import { removeEmpty } from "../../../../remuveEmptyInObject";
 import { get } from "../../../../get";
+import Loading from "../../../../../common/Loading";
 
 const DESTINATIONNUMBERS = [
   {
@@ -52,50 +57,49 @@ export class TrunkId extends Component {
   state = {
     disabledButton: false,
     destinationNumbers: [],
-    arrayOfNumbers: []
+    arrayOfNumbers: [],
+    isLoading: true
   };
-  componentDidMount() {
-    const arrayOfNumbers = this.props.phoneNumbersByGroupNotTP
-      .filter(
-        el =>
-          el !== this.props.iad.cliPhoneNumber &&
-          el !== this.props.iad.pilotNumber
+
+  fetchNumbers = () => {
+    this.props
+      .fetchGetPhoneNumbersByGroupId(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        true
       )
-      .map(el => ({
-        value: el,
-        label: el
-      }));
-    console.log(this.props.iad);
+      .then(() => {
+        const arrayOfNumbers = this.props.phoneNumbers
+          .filter(el => !el.maintenance_number)
+          .map(el => ({
+            value: el.phoneNumber,
+            label: el.phoneNumber
+          }));
+        this.setState({
+          arrayOfNumbers,
+          isLoading: false
+        });
+      });
+  };
+
+  componentDidMount() {
+    this.fetchNumbers();
     this.setState({
       destinationNumbers: this.merge(
         DESTINATIONNUMBERS,
         this.props.iad.destinationNumbers
-      ),
-      arrayOfNumbers
+      )
     });
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      prevProps.phoneNumbersByGroupNotTP.length !==
-      this.props.phoneNumbersByGroupNotTP.length
-    ) {
-      const arrayOfNumbers = this.props.phoneNumbersByGroupNotTP
-        .filter(
-          el =>
-            el !== this.props.iad.cliPhoneNumber &&
-            el !== this.props.iad.pilotNumber
-        )
-        .map(el => ({
-          value: el,
-          label: el
-        }));
-      this.setState({ arrayOfNumbers });
+    if (prevProps.phoneNumbers.length !== this.props.phoneNumbers.length) {
+      this.fetchNumbers();
     }
   }
 
   merge() {
-    let hash = {}; // временный хэш объектов по свойству id
+    let hash = {};
     for (let l = 0; l < arguments.length; l++) {
       let arr = arguments[l];
       if (!arr.length) continue;
@@ -117,10 +121,14 @@ export class TrunkId extends Component {
   }
 
   render() {
+    if (this.state.isLoading) {
+      return <Loading />;
+    }
+
     return (
       <React.Fragment>
         {this.state.destinationNumbers.map(el => (
-          <Row className={"margin-top-1 flex align-items-center"}>
+          <Row className={"margin-top-1 flex align-items-center"} key={el.id}>
             <Col md={6} className={"flex align-items-center"}>
               <div className={"margin-right-1 flex flex-basis-33"}>
                 <ControlLabel>
@@ -260,10 +268,14 @@ export class TrunkId extends Component {
 const mapStateToProps = state => ({
   iad: state.iad,
   config: state.config,
-  phoneNumbersByGroupNotTP: state.phoneNumbersByGroupNotTP
+  phoneNumbers: state.phoneNumbersByGroup
 });
 
-const mapDispatchToProps = { changeIAD, fetchPutUpdateIAD };
+const mapDispatchToProps = {
+  changeIAD,
+  fetchPutUpdateIAD,
+  fetchGetPhoneNumbersByGroupId
+};
 
 export default withRouter(
   connect(
