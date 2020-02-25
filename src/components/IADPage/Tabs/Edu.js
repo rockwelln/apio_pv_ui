@@ -589,13 +589,13 @@ export class Edu extends Component {
           <Col md={6} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-33"}>
               <ControlLabel>
-                <FormattedMessage id="ip_edu" defaultMessage="IAD WAN IP" />
+                <FormattedMessage id="ip_iad" defaultMessage="IAD WAN IP" />
               </ControlLabel>
             </div>
             <div className={"margin-right-1 flex-basis-66"}>
               <FormControl
                 type="text"
-                defaultValue={this.state.edu1.ip_edu}
+                defaultValue={this.state.edu1.ip_iad}
                 disabled
               />
             </div>
@@ -604,13 +604,13 @@ export class Edu extends Component {
             <Col md={6} className={"flex align-items-center"}>
               <div className={"margin-right-1 flex flex-basis-33"}>
                 <ControlLabel>
-                  <FormattedMessage id="ip_edu" defaultMessage="IAD WAN IP" />
+                  <FormattedMessage id="ip_iad" defaultMessage="IAD WAN IP" />
                 </ControlLabel>
               </div>
               <div className={"margin-right-1 flex-basis-66"}>
                 <FormControl
                   type="text"
-                  defaultValue={this.state.edu2.ip_edu}
+                  defaultValue={this.state.edu2.ip_iad}
                   disabled
                 />
               </div>
