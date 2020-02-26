@@ -60,7 +60,9 @@ export class Edu extends Component {
   componentDidMount() {
     this.setState({
       edu1: this.props.iad.edu1 ? this.props.iad.edu1 : this.state.edu1,
-      edu2: this.props.iad.edu2 ? this.props.iad.edu2 : this.state.edu2
+      edu2: Object.keys(this.props.iad.edu2).length
+        ? this.props.iad.edu2
+        : this.state.edu2
     });
   }
   render() {
@@ -82,6 +84,26 @@ export class Edu extends Component {
                 onChange={e =>
                   this.setState({ normLocalUpdate: e.target.checked })
                 }
+              />
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={6} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-33"}>
+              <ControlLabel>
+                <FormattedMessage
+                  id="iadLoopbackIP"
+                  defaultMessage="IAD Loopback IP"
+                />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-66"}>
+              <FormControl
+                type="text"
+                defaultValue={this.props.iad.norm.loopback}
+                placeholder={"Loopback"}
+                disabled
               />
             </div>
           </Col>
