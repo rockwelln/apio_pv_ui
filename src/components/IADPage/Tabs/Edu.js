@@ -10,6 +10,8 @@ import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Checkbox from "react-bootstrap/lib/Checkbox";
 
+import { get } from "../../get";
+
 import { FormattedMessage } from "react-intl";
 
 import {
@@ -101,7 +103,11 @@ export class Edu extends Component {
             <div className={"margin-right-1 flex-basis-66"}>
               <FormControl
                 type="text"
-                defaultValue={this.props.iad.norm.loopback}
+                defaultValue={
+                  get(this.props, "iad.norm.loopback")
+                    ? this.props.iad.norm.loopback
+                    : ""
+                }
                 placeholder={"Loopback"}
                 disabled
               />
