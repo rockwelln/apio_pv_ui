@@ -62,9 +62,7 @@ export class Edu extends Component {
   componentDidMount() {
     this.setState({
       edu1: this.props.iad.edu1 ? this.props.iad.edu1 : this.state.edu1,
-      edu2: Object.keys(this.props.iad.edu2).length
-        ? this.props.iad.edu2
-        : this.state.edu2
+      edu2: this.props.iad.edu2 ? this.props.iad.edu2 : this.state.edu2
     });
   }
   render() {
