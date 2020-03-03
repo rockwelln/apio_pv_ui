@@ -93,7 +93,10 @@ export class TrunkId extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.phoneNumbers.length !== this.props.phoneNumbers.length) {
+    if (
+      prevProps.phoneNumbers &&
+      prevProps.phoneNumbers.length !== this.props.phoneNumbers.length
+    ) {
       this.fetchNumbers();
     }
   }
@@ -268,7 +271,7 @@ export class TrunkId extends Component {
 const mapStateToProps = state => ({
   iad: state.iad,
   config: state.config,
-  phoneNumbers: state.phoneNumbersByGroup
+  phoneNumbers: state.destinationNumbers
 });
 
 const mapDispatchToProps = {

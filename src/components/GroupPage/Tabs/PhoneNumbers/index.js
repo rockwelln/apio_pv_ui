@@ -85,11 +85,7 @@ export class PhoneNumbersTab extends Component {
     if (!deepEqual(prevProps.phoneNumbers, this.props.phoneNumbers)) {
       this.setState(
         {
-          phoneNumbers: this.props.phoneNumbers.sort((a, b) => {
-            if (a.rangeStart < b.rangeStart) return -1;
-            if (a.rangeStart > b.rangeStart) return 1;
-            return 0;
-          }),
+          phoneNumbers: this.props.phoneNumbers,
           isLoading: false,
           sortedBy: "rangeStart"
         },
@@ -192,8 +188,8 @@ export class PhoneNumbersTab extends Component {
                     )}
                     show={showDelete}
                     onClose={e => {
-                      this.fetchGetNumbers();
-                      this.setState({ showDelete: false, selectAll: false });
+                      //this.fetchGetNumbers();
+                      this.setState({ showDelete: false });
                     }}
                     {...this.props}
                   />
@@ -356,6 +352,7 @@ export class PhoneNumbersTab extends Component {
                       />
                     </th>
                     <th />
+                    <th />
                   </tr>
                 </thead>
                 <tbody>
@@ -374,6 +371,9 @@ export class PhoneNumbersTab extends Component {
                         }
                         handleSingleCheckboxClickPreActive={
                           this.handleSingleCheckboxClickPreActive
+                        }
+                        handleSingleCheckboxClickInRange={
+                          this.handleSingleCheckboxClickInRange
                         }
                         onReload={() => this.fetchGetNumbers()}
                       />
@@ -426,12 +426,26 @@ export class PhoneNumbersTab extends Component {
   refreshInformation = () => {
     const { phoneNumbers } = this.state;
     const numbersForRefresh = [];
-    phoneNumbers.map(phone => {
-      if (!!phone.phoneChecked) {
-        numbersForRefresh.push(phone.phoneNumber);
+
+    phoneNumbers.forEach(phone => {
+      if (phone.phoneNumbers) {
+        phone.phoneNumbers.forEach(number => {
+          if (number.phoneChecked) {
+            numbersForRefresh.push(number.phoneNumber);
+          }
+        });
+      } else {
+        if (phone.phoneChecked) {
+          numbersForRefresh.push(phone.phoneNumber);
+        }
       }
-      return 0;
     });
+    // phoneNumbers.map(phone => {
+    //   if (!!phone.phoneChecked) {
+    //     numbersForRefresh.push(phone.phoneNumber);
+    //   }
+    //   return 0;
+    // });
     if (!numbersForRefresh.length) {
       NotificationsManager.error(
         <FormattedMessage
@@ -456,13 +470,40 @@ export class PhoneNumbersTab extends Component {
   };
 
   updateStatus = () => {
-    const activeNumbers = this.state.phoneNumbers.filter(
-      el => el.active && el.isChanged
-    );
-    const preActiveNumbers = this.state.phoneNumbers.filter(
-      el => el.preActive && el.isChanged
-    );
-    console.log(activeNumbers, preActiveNumbers);
+    const activeNumbers = [];
+    const preActiveNumbers = [];
+    this.state.phoneNumbers.forEach(phone => {
+      if (phone.phoneNumbers) {
+        phone.phoneNumbers.forEach(number => {
+          if (number.active && number.isChanged) {
+            activeNumbers.push(number);
+          }
+        });
+      } else {
+        if (phone.active && phone.isChanged) {
+          activeNumbers.push(phone);
+        }
+      }
+    });
+    // const activeNumbers = this.state.phoneNumbers.filter(
+    //   el => el.active && el.isChanged
+    // );
+    this.state.phoneNumbers.forEach(phone => {
+      if (phone.phoneNumbers) {
+        phone.phoneNumbers.forEach(number => {
+          if (number.preActive && number.isChanged) {
+            preActiveNumbers.push(number);
+          }
+        });
+      } else {
+        if (phone.preActive && phone.isChanged) {
+          preActiveNumbers.push(phone);
+        }
+      }
+    });
+    // const preActiveNumbers = this.state.phoneNumbers.filter(
+    //   el => el.preActive && el.isChanged
+    // );
     const allActiveNumbers = [];
     const allPreActiveNumbers = [];
     activeNumbers.map(el => {
@@ -668,20 +709,49 @@ export class PhoneNumbersTab extends Component {
 
   deleteSlectedNumbers = () => {
     const { phoneNumbers } = this.state;
-    const numbersForDelete = phoneNumbers.filter(phone => {
-      return !!phone.phoneChecked;
+    const numbersForDelete = [];
+
+    phoneNumbers.forEach(phone => {
+      if (phone.phoneNumbers) {
+        phone.phoneNumbers.forEach(el => {
+          if (el.phoneChecked) {
+            numbersForDelete.push(el);
+          }
+        });
+      } else {
+        if (phone.phoneChecked) {
+          numbersForDelete.push(phone);
+        }
+      }
     });
     this.setState({ numbersForDelete, showDelete: true });
   };
 
   handleSelectAllClickPreActive = e => {
     const isChecked = e.target.checked;
-    const newArr = this.state.phoneNumbers.map(el => ({
-      ...el,
-      preActive: isChecked,
-      active: !isChecked,
-      isChanged: !el.isChanged
-    }));
+    const newArr = this.state.phoneNumbers.map(el => {
+      if (el.phoneNumbers) {
+        const arrayOfPhones = el.phoneNumbers.map(phone => ({
+          ...phone,
+          preActive: isChecked,
+          active: !isChecked,
+          isChanged: !el.isChanged
+        }));
+        return {
+          ...el,
+          preActive: isChecked,
+          active: !isChecked,
+          isChanged: !el.isChanged,
+          phoneNumbers: arrayOfPhones
+        };
+      }
+      return {
+        ...el,
+        preActive: isChecked,
+        active: !isChecked,
+        isChanged: !el.isChanged
+      };
+    });
     this.setState(
       {
         phoneNumbers: newArr,
@@ -694,12 +764,29 @@ export class PhoneNumbersTab extends Component {
 
   handleSelectAllClickActive = e => {
     const isChecked = e.target.checked;
-    const newArr = this.state.phoneNumbers.map(el => ({
-      ...el,
-      active: isChecked,
-      preActive: !isChecked,
-      isChanged: !el.isChanged
-    }));
+    const newArr = this.state.phoneNumbers.map(el => {
+      if (el.phoneNumbers) {
+        const arrayOfPhones = el.phoneNumbers.map(phone => ({
+          ...phone,
+          active: isChecked,
+          preActive: !isChecked,
+          isChanged: !el.isChanged
+        }));
+        return {
+          ...el,
+          active: isChecked,
+          preActive: !isChecked,
+          isChanged: !el.isChanged,
+          phoneNumbers: arrayOfPhones
+        };
+      }
+      return {
+        ...el,
+        active: isChecked,
+        preActive: !isChecked,
+        isChanged: !el.isChanged
+      };
+    });
     this.setState(
       {
         phoneNumbers: newArr,
@@ -712,45 +799,162 @@ export class PhoneNumbersTab extends Component {
 
   handleSelectAllClick = e => {
     const isChecked = e.target.checked;
-    const newArr = this.state.phoneNumbers.map(el => ({
-      ...el,
-      phoneChecked: isChecked
-    }));
+    const newArr = this.state.phoneNumbers.map(el => {
+      if (el.phoneNumbers) {
+        const arrayOfPhones = el.phoneNumbers.map(phone => ({
+          ...phone,
+          phoneChecked: isChecked
+        }));
+        return {
+          ...el,
+          phoneChecked: isChecked,
+          phoneNumbers: arrayOfPhones
+        };
+      }
+      return {
+        ...el,
+        phoneChecked: isChecked
+      };
+    });
     this.setState(
       { phoneNumbers: newArr, selectAll: !this.state.selectAll },
       () => this.pagination()
     );
   };
 
-  handleSingleCheckboxClick = index => {
-    const newArr = this.state.phoneNumbers.map((el, i) => ({
-      ...el,
-      phoneChecked: index === i ? !el.phoneChecked : el.phoneChecked
-    }));
+  handleSingleCheckboxClick = (index, phone, inRange) => {
+    let newArr = [];
+    if (inRange) {
+      newArr = this.state.phoneNumbers.map(number => {
+        if (number.rangeStart <= phone && phone <= number.rangeEnd) {
+          return {
+            ...number,
+            phoneNumbers: number.phoneNumbers.map(el => ({
+              ...el,
+              phoneChecked:
+                el.phoneNumber === phone ? !el.phoneChecked : el.phoneChecked
+            }))
+          };
+        } else {
+          return number;
+        }
+      });
+    } else {
+      newArr = this.state.phoneNumbers.map((el, i) => {
+        if (index === i && el.phoneNumbers) {
+          return {
+            ...el,
+            phoneChecked: !el.phoneChecked,
+            phoneNumbers: el.phoneNumbers.map(phone => ({
+              ...phone,
+              phoneChecked:
+                index === i ? !phone.phoneChecked : phone.phoneChecked
+            }))
+          };
+        }
+        return {
+          ...el,
+          phoneChecked: index === i ? !el.phoneChecked : el.phoneChecked
+        };
+      });
+    }
     this.setState({ phoneNumbers: newArr, selectAll: false }, () =>
       this.pagination()
     );
   };
-  handleSingleCheckboxClickActive = index => {
-    const newArr = this.state.phoneNumbers.map((el, i) => ({
-      ...el,
-      active: index === i ? !el.active : el.active,
-      preActive: index === i ? !el.preActive : el.preActive,
-      isChanged: index === i ? !el.isChanged : el.isChanged
-    }));
-    this.setState({ phoneNumbers: newArr, selectAllActive: false }, () =>
+
+  handleSingleCheckboxClickActive = (index, phone, inRange) => {
+    let newArr = [];
+    if (inRange) {
+      newArr = this.state.phoneNumbers.map(number => {
+        if (number.rangeStart <= phone && phone <= number.rangeEnd) {
+          return {
+            ...number,
+            phoneNumbers: number.phoneNumbers.map(el => ({
+              ...el,
+              active: el.phoneNumber === phone ? !el.active : el.active,
+              preActive:
+                el.phoneNumber === phone ? !el.preActive : el.preActive,
+              isChanged: el.phoneNumber === phone ? !el.isChanged : el.isChanged
+            }))
+          };
+        } else {
+          return number;
+        }
+      });
+    } else {
+      newArr = this.state.phoneNumbers.map((el, i) => {
+        if (index === i && el.phoneNumbers) {
+          return {
+            ...el,
+            active: !el.active,
+            preActive: !el.preActive,
+            isChanged: !el.isChanged,
+            phoneNumbers: el.phoneNumbers.map(phone => ({
+              ...phone,
+              active: index === i ? !el.active : el.active,
+              preActive: index === i ? !el.preActive : el.preActive,
+              isChanged: index === i ? !el.isChanged : el.isChanged
+            }))
+          };
+        }
+        return {
+          ...el,
+          active: index === i ? !el.active : el.active,
+          preActive: index === i ? !el.preActive : el.preActive,
+          isChanged: index === i ? !el.isChanged : el.isChanged
+        };
+      });
+    }
+    this.setState({ phoneNumbers: newArr, selectAllPreActive: false }, () =>
       this.pagination()
     );
   };
 
-  handleSingleCheckboxClickPreActive = index => {
-    const newArr = this.state.phoneNumbers.map((el, i) => ({
-      ...el,
-      preActive: index === i ? !el.preActive : el.preActive,
-      active: index === i ? !el.active : el.active,
-      isChanged: index === i ? !el.isChanged : el.isChanged
-    }));
-    this.setState({ phoneNumbers: newArr, selectAllPreActive: false }, () =>
+  handleSingleCheckboxClickPreActive = (index, phone, inRange) => {
+    let newArr = [];
+    if (inRange) {
+      newArr = this.state.phoneNumbers.map(number => {
+        if (number.rangeStart <= phone && phone <= number.rangeEnd) {
+          return {
+            ...number,
+            phoneNumbers: number.phoneNumbers.map(el => ({
+              ...el,
+              active: el.phoneNumber === phone ? !el.active : el.active,
+              preActive:
+                el.phoneNumber === phone ? !el.preActive : el.preActive,
+              isChanged: el.phoneNumber === phone ? !el.isChanged : el.isChanged
+            }))
+          };
+        } else {
+          return number;
+        }
+      });
+    } else {
+      newArr = this.state.phoneNumbers.map((el, i) => {
+        if (index === i && el.phoneNumbers) {
+          return {
+            ...el,
+            active: !el.active,
+            preActive: !el.preActive,
+            isChanged: !el.isChanged,
+            phoneNumbers: el.phoneNumbers.map(phone => ({
+              ...phone,
+              preActive: index === i ? !el.preActive : el.preActive,
+              active: index === i ? !el.active : el.active,
+              isChanged: index === i ? !el.isChanged : el.isChanged
+            }))
+          };
+        }
+        return {
+          ...el,
+          preActive: index === i ? !el.preActive : el.preActive,
+          active: index === i ? !el.active : el.active,
+          isChanged: index === i ? !el.isChanged : el.isChanged
+        };
+      });
+    }
+    this.setState({ phoneNumbers: newArr, selectAllActive: false }, () =>
       this.pagination()
     );
   };

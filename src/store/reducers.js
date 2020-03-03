@@ -77,40 +77,151 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.GET_PHONE_NUMBERS_BY_GROUP_ID: {
-      const phoneNumbers = action.data.numbers.map(phone => ({
-        ...phone,
-        rangeStart: phone.phoneNumber.includes("-")
-          ? phone.phoneNumber.split(" - ").slice(0)[0]
-          : phone.phoneNumber,
-        rangeEnd: phone.phoneNumber.includes("-")
-          ? phone.phoneNumber.split(" - ").slice(-1)[0]
-          : "",
-        phoneChecked: false,
-        preActive: phone.status === "preActive" ? true : false,
-        active: phone.status === "active" ? true : false,
-        isChanged: false
-      }));
+      const phoneNumbers = action.data.numbers
+        .map(phone => ({
+          ...phone,
+          rangeStart: phone.phoneNumber.includes("-")
+            ? phone.phoneNumber.split(" - ").slice(0)[0]
+            : phone.phoneNumber,
+          phoneChecked: false,
+          preActive: phone.status === "preActive" ? true : false,
+          active: phone.status === "active" ? true : false,
+          isChanged: false
+        }))
+        .sort((a, b) => {
+          if (a.rangeStart < b.rangeStart) return -1;
+          if (a.rangeStart > b.rangeStart) return 1;
+          return 0;
+        });
+      let count = 1;
+      const phoneNumbersWithRange = phoneNumbers.reduce(
+        (arrPN, phone, index) => {
+          if (
+            arrPN.length &&
+            arrPN[arrPN.length - 1].prevNum - phone.phoneNumber === -1 &&
+            arrPN[arrPN.length - 1].main_number === phone.main_number &&
+            arrPN[arrPN.length - 1].maintenance_number ===
+              phone.maintenance_number &&
+            arrPN[arrPN.length - 1].preActive === phone.preActive &&
+            arrPN[arrPN.length - 1].active === phone.active
+          ) {
+            if (count === 1) {
+              arrPN[arrPN.length - 1] = {
+                ...phone,
+                rangeStart: phoneNumbers[index - 1].rangeStart,
+                rangeEnd: phone.phoneNumber,
+                prevNum: phone.phoneNumber,
+                phoneNumbers: []
+              };
+
+              arrPN[arrPN.length - 1].phoneNumbers.unshift({
+                ...phoneNumbers[index - 1],
+                inRange: true
+              });
+
+              arrPN[arrPN.length - 1].phoneNumbers.push({
+                ...phone,
+                inRange: true
+              });
+            } else {
+              arrPN[arrPN.length - 1] = {
+                ...arrPN[arrPN.length - 1],
+                prevNum: phone.phoneNumber,
+                rangeEnd: phone.phoneNumber
+              };
+              arrPN[arrPN.length - 1].phoneNumbers.push({
+                ...phone,
+                inRange: true
+              });
+            }
+            count++;
+            arrPN = [...arrPN];
+          } else {
+            count = 1;
+            arrPN = [...arrPN, { ...phone, prevNum: phone.phoneNumber }];
+          }
+          return arrPN;
+        },
+        []
+      );
+      console.log(phoneNumbersWithRange);
       return {
         ...state,
-        phoneNumbersByGroup: phoneNumbers
+        phoneNumbersByGroup: phoneNumbersWithRange,
+        destinationNumbers: phoneNumbers
       };
     }
     case actionType.GET_PHONE_NUMBERS_WITH_REFRESH_DB: {
-      const phoneNumbers = action.data.numbers.map(phone => ({
-        ...phone,
-        rangeStart: phone.phoneNumber.includes("-")
-          ? phone.phoneNumber.split(" - ").slice(0)[0]
-          : phone.phoneNumber,
-        rangeEnd: phone.phoneNumber.includes("-")
-          ? phone.phoneNumber.split(" - ").slice(-1)[0]
-          : "",
-        phoneChecked: false,
-        preActive: phone.status === "preActive" ? true : false,
-        active: phone.status === "active" ? true : false
-      }));
+      const phoneNumbers = action.data.numbers
+        .map(phone => ({
+          ...phone,
+          rangeStart: phone.phoneNumber.includes("-")
+            ? phone.phoneNumber.split(" - ").slice(0)[0]
+            : phone.phoneNumber,
+          phoneChecked: false,
+          preActive: phone.status === "preActive" ? true : false,
+          active: phone.status === "active" ? true : false,
+          isChanged: false
+        }))
+        .sort((a, b) => {
+          if (a.rangeStart < b.rangeStart) return -1;
+          if (a.rangeStart > b.rangeStart) return 1;
+          return 0;
+        });
+      let count = 1;
+      const phoneNumbersWithRange = phoneNumbers.reduce(
+        (arrPN, phone, index) => {
+          if (
+            arrPN.length &&
+            arrPN[arrPN.length - 1].prevNum - phone.phoneNumber === -1 &&
+            arrPN[arrPN.length - 1].main_number === phone.main_number &&
+            arrPN[arrPN.length - 1].maintenance_number ===
+              phone.maintenance_number &&
+            arrPN[arrPN.length - 1].preActive === phone.preActive &&
+            arrPN[arrPN.length - 1].active === phone.active
+          ) {
+            if (count === 1) {
+              arrPN[arrPN.length - 1] = {
+                ...phone,
+                rangeStart: phoneNumbers[index - 1].rangeStart,
+                rangeEnd: phone.phoneNumber,
+                prevNum: phone.phoneNumber,
+                phoneNumbers: []
+              };
+
+              arrPN[arrPN.length - 1].phoneNumbers.unshift({
+                ...phoneNumbers[index - 1],
+                inRange: true
+              });
+
+              arrPN[arrPN.length - 1].phoneNumbers.push({
+                ...phone,
+                inRange: true
+              });
+            } else {
+              arrPN[arrPN.length - 1] = {
+                ...arrPN[arrPN.length - 1],
+                prevNum: phone.phoneNumber,
+                rangeEnd: phone.phoneNumber
+              };
+              arrPN[arrPN.length - 1].phoneNumbers.push({
+                ...phone,
+                inRange: true
+              });
+            }
+            count++;
+            arrPN = [...arrPN];
+          } else {
+            count = 1;
+            arrPN = [...arrPN, { ...phone, prevNum: phone.phoneNumber }];
+          }
+          return arrPN;
+        },
+        []
+      );
       return {
         ...state,
-        phoneNumbersByGroup: phoneNumbers
+        phoneNumbersByGroup: phoneNumbersWithRange
       };
     }
     case actionType.GET_TRUNK_BY_GROUP_ID: {
@@ -359,21 +470,76 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.PUT_UPDATE_NUMBERS_STATUS: {
-      const phoneNumbers = action.data.numbers.map(phone => ({
-        ...phone,
-        rangeStart: phone.phoneNumber.includes("-")
-          ? phone.phoneNumber.split(" - ").slice(0)[0]
-          : phone.phoneNumber,
-        rangeEnd: phone.phoneNumber.includes("-")
-          ? phone.phoneNumber.split(" - ").slice(-1)[0]
-          : "",
-        phoneChecked: false,
-        preActive: phone.status === "preActive" ? true : false,
-        active: phone.status === "active" ? true : false
-      }));
+      const phoneNumbers = action.data.numbers
+        .map(phone => ({
+          ...phone,
+          rangeStart: phone.phoneNumber.includes("-")
+            ? phone.phoneNumber.split(" - ").slice(0)[0]
+            : phone.phoneNumber,
+          phoneChecked: false,
+          preActive: phone.status === "preActive" ? true : false,
+          active: phone.status === "active" ? true : false,
+          isChanged: false
+        }))
+        .sort((a, b) => {
+          if (a.rangeStart < b.rangeStart) return -1;
+          if (a.rangeStart > b.rangeStart) return 1;
+          return 0;
+        });
+      let count = 1;
+      const phoneNumbersWithRange = phoneNumbers.reduce(
+        (arrPN, phone, index) => {
+          if (
+            arrPN.length &&
+            arrPN[arrPN.length - 1].prevNum - phone.phoneNumber === -1 &&
+            arrPN[arrPN.length - 1].main_number === phone.main_number &&
+            arrPN[arrPN.length - 1].maintenance_number ===
+              phone.maintenance_number &&
+            arrPN[arrPN.length - 1].preActive === phone.preActive &&
+            arrPN[arrPN.length - 1].active === phone.active
+          ) {
+            if (count === 1) {
+              arrPN[arrPN.length - 1] = {
+                ...phone,
+                rangeStart: phoneNumbers[index - 1].rangeStart,
+                rangeEnd: phone.phoneNumber,
+                prevNum: phone.phoneNumber,
+                phoneNumbers: []
+              };
+
+              arrPN[arrPN.length - 1].phoneNumbers.unshift({
+                ...phoneNumbers[index - 1],
+                inRange: true
+              });
+
+              arrPN[arrPN.length - 1].phoneNumbers.push({
+                ...phone,
+                inRange: true
+              });
+            } else {
+              arrPN[arrPN.length - 1] = {
+                ...arrPN[arrPN.length - 1],
+                prevNum: phone.phoneNumber,
+                rangeEnd: phone.phoneNumber
+              };
+              arrPN[arrPN.length - 1].phoneNumbers.push({
+                ...phone,
+                inRange: true
+              });
+            }
+            count++;
+            arrPN = [...arrPN];
+          } else {
+            count = 1;
+            arrPN = [...arrPN, { ...phone, prevNum: phone.phoneNumber }];
+          }
+          return arrPN;
+        },
+        []
+      );
       return {
         ...state,
-        phoneNumbersByGroup: phoneNumbers
+        phoneNumbersByGroup: phoneNumbersWithRange
       };
     }
     case actionType.PUT_UPDATE_ENTERPRISE_TRNUK: {

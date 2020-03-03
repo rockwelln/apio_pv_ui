@@ -80,7 +80,7 @@ class DeleteModal extends Component {
                   this.props.number.rangeStart
                 }${
                   this.props.number.rangeEnd
-                    ? ` ${this.props.number.rangeEnd}`
+                    ? ` to ${this.props.number.rangeEnd}`
                     : ""
                 }!`}
               />
