@@ -65,6 +65,7 @@ export class Edu extends Component {
       edu2: this.props.iad.edu2 ? this.props.iad.edu2 : this.state.edu2
     });
   }
+
   render() {
     return (
       <React.Fragment>
@@ -677,7 +678,13 @@ export class Edu extends Component {
             this.props.match.params.iadId,
             clearData
           )
-          .then(() => this.setState({ disabledButton: false }))
+          .then(() =>
+            this.setState({
+              disabledButton: false,
+              edu1: this.props.iad.edu1 ? this.props.iad.edu1 : this.state.edu1,
+              edu2: this.props.iad.edu2 ? this.props.iad.edu2 : this.state.edu2
+            })
+          )
       );
     } else {
       this.setState({ disabledButton: true }, () =>

@@ -42,12 +42,8 @@ export class PraInfo extends Component {
         [key]: { ...this.props.iad.pra_info[key], praID: key }
       };
     });
-    if (Object.keys(praByIad).length < this.props.iad.pra_needed) {
-      for (
-        let i = 0;
-        i <= this.props.iad.pra_needed - Object.keys(praByIad).length;
-        i++
-      ) {
+    for (let i = 0; i < this.props.iad.pra_needed; i++) {
+      if (Object.keys(praByIad).length < this.props.iad.pra_needed) {
         praByIad = {
           ...praByIad,
           [i + 5]: { tpid: "", circuit_id: "", praID: "", enabled: "" }

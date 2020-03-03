@@ -144,7 +144,6 @@ function mainReducer(state = initialState, action) {
         },
         []
       );
-      console.log(phoneNumbersWithRange);
       return {
         ...state,
         phoneNumbersByGroup: phoneNumbersWithRange,
