@@ -92,30 +92,6 @@ export class Edu extends Component {
           <Col md={6} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-33"}>
               <ControlLabel>
-                <FormattedMessage
-                  id="iadLoopbackIP"
-                  defaultMessage="IAD Loopback IP"
-                />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-66"}>
-              <FormControl
-                type="text"
-                defaultValue={
-                  get(this.props, "iad.norm.loopback")
-                    ? this.props.iad.norm.loopback
-                    : ""
-                }
-                placeholder={"Loopback"}
-                disabled
-              />
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={6} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-33"}>
-              <ControlLabel>
                 <FormattedMessage id="eduAName" defaultMessage="EDU A Name" />
               </ControlLabel>
             </div>
@@ -642,6 +618,30 @@ export class Edu extends Component {
               </div>
             </Col>
           )}
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={6} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-33"}>
+              <ControlLabel>
+                <FormattedMessage
+                  id="iadLoopbackIP"
+                  defaultMessage="IAD Loopback IP"
+                />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-66"}>
+              <FormControl
+                type="text"
+                defaultValue={
+                  get(this.props, "iad.norm.loopback")
+                    ? this.props.iad.norm.loopback
+                    : ""
+                }
+                placeholder={"Loopback"}
+                disabled
+              />
+            </div>
+          </Col>
         </Row>
         <Row>
           <Col md={12}>
