@@ -9,15 +9,20 @@ import HelpBlock from "react-bootstrap/lib/HelpBlock";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import Button from "react-bootstrap/lib/Button";
+import Alert from "react-bootstrap/lib/Alert";
 
 import {
   fetchGetConfig,
   fetchGetGroupById,
   fetchPutUpdateGroupDetails,
-  fetchGetIADs
+  fetchGetIADs,
+  fetchGetValidateGroupUpdate,
+  clearValidationGroup
 } from "../../../../store/actions";
+
 import { FormattedMessage } from "react-intl";
 import { removeEmpty } from "../../../remuveEmptyInObject";
+import { get } from "../../../get";
 
 import Loading from "../../../../common/Loading";
 
@@ -32,7 +37,8 @@ export class Channels extends Component {
     channelsIn: 0,
     numberOfChannelsError: null
   };
-  componentDidMount() {
+
+  fetchReq = () => {
     this.props
       .fetchGetGroupById(
         this.props.match.params.tenantId,
@@ -59,6 +65,10 @@ export class Channels extends Component {
           )
         )
       );
+  };
+
+  componentDidMount() {
+    this.fetchReq();
   }
   render() {
     if (this.state.isLoading) {
@@ -67,6 +77,31 @@ export class Channels extends Component {
 
     return (
       <React.Fragment>
+        {((get(this.props, "validationGroup.warnings") &&
+          !!this.props.validationGroup.warnings.length) ||
+          this.props.validationGroupError) && (
+          <Row className={"margin-top-1"}>
+            <Col md={12}>
+              <Alert
+                bsStyle={this.props.validationGroupError ? "danger" : "warning"}
+                className={"flex-column"}
+              >
+                {this.props.validationGroupError
+                  ? this.props.validationGroupError
+                  : this.props.validationGroup.warnings.map(el => (
+                      <p key={el}>{el}</p>
+                    ))}
+                <div className="button-row">
+                  <div className="pull-right">
+                    <Button onClick={this.hideAlert}>
+                      <FormattedMessage id="ok" defaultMessage="Ok" />
+                    </Button>
+                  </div>
+                </div>
+              </Alert>
+            </Col>
+          </Row>
+        )}
         <FormGroup
           controlId="channelIn"
           validationState={this.state.numberOfChannelsError}
@@ -93,6 +128,11 @@ export class Channels extends Component {
                   componentClass="select"
                   value={this.state.group.numberOfChannels}
                   onChange={this.changeNumberOfChannels}
+                  disabled={
+                    (get(this.props, "validationGroup.warnings") &&
+                      !!this.props.validationGroup.warnings.length) ||
+                    this.props.validationGroupError
+                  }
                 >
                   {this.state.group.pbxType === "PRA"
                     ? ~this.props.config.tenant.group.iad[
@@ -167,6 +207,11 @@ export class Channels extends Component {
                     group: { ...this.state.group, direction: e.target.value }
                   })
                 }
+                disabled={
+                  (get(this.props, "validationGroup.warnings") &&
+                    !!this.props.validationGroup.warnings.length) ||
+                  this.props.validationGroupError
+                }
               >
                 {this.props.config.tenant.group.direction.map((type, i) => (
                   <option key={i} value={type.value}>
@@ -203,6 +248,11 @@ export class Channels extends Component {
                       max={
                         this.state.group.numberOfChannels -
                         this.state.group.channelsOut
+                      }
+                      disabled={
+                        (get(this.props, "validationGroup.warnings") &&
+                          !!this.props.validationGroup.warnings.length) ||
+                        this.props.validationGroupError
                       }
                     />
                   </div>
@@ -249,6 +299,11 @@ export class Channels extends Component {
                         this.state.group.numberOfChannels -
                         this.state.group.channelsIn
                       }
+                      disabled={
+                        (get(this.props, "validationGroup.warnings") &&
+                          !!this.props.validationGroup.warnings.length) ||
+                        this.props.validationGroupError
+                      }
                     />
                   </div>
                 </Col>
@@ -293,6 +348,11 @@ export class Channels extends Component {
                     }
                   })
                 }
+                disabled={
+                  (get(this.props, "validationGroup.warnings") &&
+                    !!this.props.validationGroup.warnings.length) ||
+                  this.props.validationGroupError
+                }
               >
                 {this.props.config.tenant.group.channelHunting.map(
                   (type, i) => (
@@ -315,10 +375,12 @@ export class Channels extends Component {
                   !!this.state.channelsOutError ||
                   !!this.state.channelsInError ||
                   this.state.disableButton ||
-                  this.state.numberOfChannelsError === "error"
+                  ((get(this.props, "validationGroup.warnings") &&
+                    !!this.props.validationGroup.warnings.length) ||
+                    this.props.validationGroupError)
                 }
               >
-                {this.state.disableButton ? (
+                {this.state.updatingButton ? (
                   <FormattedMessage
                     id="updating"
                     defaultMessage="Updating..."
@@ -334,12 +396,25 @@ export class Channels extends Component {
     );
   }
 
+  hideAlert = () => {
+    if (this.props.validationGroupError) {
+      this.fetchReq();
+      this.props.clearValidationGroup();
+    }
+    this.props.clearValidationGroup();
+  };
+
   changeNumberOfChannels = e => {
     const targetValue = e.target.value;
-    if (this.props.group.numberOfChannels > Number(targetValue)) {
-      this.setState({ numberOfChannelsError: "error" });
-      return;
-    }
+    this.setState({ disableButton: true }, () =>
+      this.props
+        .fetchGetValidateGroupUpdate(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          `numberOfChannels=${Number(targetValue)}`
+        )
+        .then(() => this.setState({ disableButton: false }))
+    );
 
     this.setState({
       group: {
@@ -365,7 +440,7 @@ export class Channels extends Component {
       channelsIn,
       channelsOut
     };
-    this.setState({ disableButton: true });
+    this.setState({ updatingButton: true });
     const clearData = removeEmpty(data);
     this.props
       .fetchPutUpdateGroupDetails(
@@ -378,7 +453,7 @@ export class Channels extends Component {
           this.props.match.params.tenantId,
           this.props.match.params.groupId
         );
-        this.setState({ disableButton: false });
+        this.setState({ updatingButton: false });
       });
   };
 
@@ -431,13 +506,20 @@ export class Channels extends Component {
   };
 }
 
-const mapStateToProps = state => ({ group: state.group, config: state.config });
+const mapStateToProps = state => ({
+  group: state.group,
+  config: state.config,
+  validationGroup: state.validationGroup,
+  validationGroupError: state.validationGroupError
+});
 
 const mapDispatchToProps = {
   fetchGetConfig,
   fetchGetGroupById,
   fetchPutUpdateGroupDetails,
-  fetchGetIADs
+  fetchGetIADs,
+  fetchGetValidateGroupUpdate,
+  clearValidationGroup
 };
 
 export default withRouter(

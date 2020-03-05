@@ -33,7 +33,9 @@ const initialState = {
   anomaly: {},
   iadTimer: [],
   searchedIADs: [],
-  transferedIADs: []
+  transferedIADs: [],
+  validationGroup: {},
+  validationGroupError: ""
 };
 
 function mainReducer(state = initialState, action) {
@@ -399,6 +401,18 @@ function mainReducer(state = initialState, action) {
         searchedIADs
       };
     }
+    case actionType.GET_VALIDATE_GROUP_UPDATE_SUCCESS: {
+      return {
+        ...state,
+        validationGroup: action.data
+      };
+    }
+    case actionType.GET_VALIDATE_GROUP_UPDATE_ERROR: {
+      return {
+        ...state,
+        validationGroupError: action.data.errors[0].details.reason
+      };
+    }
     case actionType.POST_CREATE_IAD: {
       return {
         ...state,
@@ -664,6 +678,14 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         transferedIADs: []
+      };
+    }
+
+    case actionType.CLEAR_VALIDATION_GROUP: {
+      return {
+        ...state,
+        validationGroup: {},
+        validationGroupError: ""
       };
     }
 

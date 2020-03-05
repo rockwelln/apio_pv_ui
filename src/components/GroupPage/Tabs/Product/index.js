@@ -10,16 +10,20 @@ import Checkbox from "react-bootstrap/lib/Checkbox";
 import Button from "react-bootstrap/lib/Button";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import HelpBlock from "react-bootstrap/lib/HelpBlock";
+import Alert from "react-bootstrap/lib/Alert";
 
 import { FormattedMessage } from "react-intl";
 import Loading from "../../../../common/Loading";
 import { removeEmpty } from "../../../remuveEmptyInObject";
+import { get } from "../../../get";
 
 import {
   fetchGetConfig,
   fetchGetGroupById,
   fetchPutUpdateGroupDetails,
-  fetchGetIADs
+  fetchGetIADs,
+  fetchGetValidateGroupUpdate,
+  clearValidationGroup
 } from "../../../../store/actions";
 
 export class Product extends Component {
@@ -28,9 +32,11 @@ export class Product extends Component {
     group: {},
     disableButton: false,
     seviceTypeError: null,
-    textSerivceTypeError: ""
+    textSerivceTypeError: "",
+    updatingButton: false
   };
-  componentDidMount() {
+
+  fetchReq = () => {
     this.props
       .fetchGetGroupById(
         this.props.match.params.tenantId,
@@ -63,6 +69,10 @@ export class Product extends Component {
           )
         )
       );
+  };
+
+  componentDidMount() {
+    this.fetchReq();
   }
   render() {
     if (this.state.isLoading) {
@@ -74,6 +84,31 @@ export class Product extends Component {
     }
     return (
       <React.Fragment>
+        {((get(this.props, "validationGroup.warnings") &&
+          !!this.props.validationGroup.warnings.length) ||
+          this.props.validationGroupError) && (
+          <Row className={"margin-top-1"}>
+            <Col md={12}>
+              <Alert
+                bsStyle={this.props.validationGroupError ? "danger" : "warning"}
+                className={"flex-column"}
+              >
+                {this.props.validationGroupError
+                  ? this.props.validationGroupError
+                  : this.props.validationGroup.warnings.map(el => (
+                      <p key={el}>{el}</p>
+                    ))}
+                <div className="button-row">
+                  <div className="pull-right">
+                    <Button onClick={this.hideAlert}>
+                      <FormattedMessage id="ok" defaultMessage="Ok" />
+                    </Button>
+                  </div>
+                </div>
+              </Alert>
+            </Col>
+          </Row>
+        )}
         <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>
@@ -156,6 +191,11 @@ export class Product extends Component {
                   componentClass="select"
                   value={this.state.group.serviceType}
                   onChange={this.updateServiceType}
+                  disabled={
+                    (get(this.props, "validationGroup.warnings") &&
+                      !!this.props.validationGroup.warnings.length) ||
+                    this.props.validationGroupError
+                  }
                 >
                   {this.props.config.tenant.group.serviceType.map((el, i) => (
                     <option key={i} value={el.value}>
@@ -214,10 +254,12 @@ export class Product extends Component {
                 className={"btn-primary"}
                 disabled={
                   this.state.disableButton ||
-                  this.state.seviceTypeError === "error"
+                  ((get(this.props, "validationGroup.warnings") &&
+                    !!this.props.validationGroup.warnings.length) ||
+                    this.props.validationGroupError)
                 }
               >
-                {this.state.disableButton ? (
+                {this.state.updatingButton ? (
                   <FormattedMessage
                     id="updating"
                     defaultMessage="Updating..."
@@ -233,37 +275,25 @@ export class Product extends Component {
     );
   }
 
+  hideAlert = () => {
+    if (this.props.validationGroupError) {
+      this.fetchReq();
+      this.props.clearValidationGroup();
+    }
+    this.props.clearValidationGroup();
+  };
+
   updateServiceType = e => {
     const targetValue = e.target.value;
-    if (
-      ~this.props.config.tenant.group.iad["2EDUsForServiceTypes"].indexOf(
-        targetValue
-      ) &&
-      this.state.isRedundant === "nonRedundant"
-    ) {
-      this.setState({
-        group: {
-          ...this.state.group,
-          serviceType: targetValue
-        },
-        seviceTypeError: "warning",
-        textSerivceTypeError:
-          "You will have to configure an extra EDU for each IAD"
-      });
-      return;
-    } else if (
-      !~this.props.config.tenant.group.iad["2EDUsForServiceTypes"].indexOf(
-        targetValue
-      ) &&
-      this.state.isRedundant === "redundant"
-    ) {
-      this.setState({
-        seviceTypeError: "error",
-        textSerivceTypeError:
-          "It is not allowed to move from a Redundant Service Type to a Non-Redundant one"
-      });
-      return;
-    }
+    this.setState({ disableButton: true }, () =>
+      this.props
+        .fetchGetValidateGroupUpdate(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          `serviceType=${targetValue}`
+        )
+        .then(() => this.setState({ disableButton: false }))
+    );
 
     this.setState({
       group: {
@@ -288,7 +318,7 @@ export class Product extends Component {
       serviceType
       //np1Redundancy
     };
-    this.setState({ disableButton: true });
+    this.setState({ updatingButton: true });
     const clearData = removeEmpty(data);
     this.props
       .fetchPutUpdateGroupDetails(
@@ -301,18 +331,25 @@ export class Product extends Component {
           this.props.match.params.tenantId,
           this.props.match.params.groupId
         );
-        this.setState({ disableButton: false });
+        this.setState({ updatingButton: false });
       });
   };
 }
 
-const mapStateToProps = state => ({ group: state.group, config: state.config });
+const mapStateToProps = state => ({
+  group: state.group,
+  config: state.config,
+  validationGroup: state.validationGroup,
+  validationGroupError: state.validationGroupError
+});
 
 const mapDispatchToProps = {
   fetchGetConfig,
   fetchGetGroupById,
   fetchPutUpdateGroupDetails,
-  fetchGetIADs
+  fetchGetIADs,
+  fetchGetValidateGroupUpdate,
+  clearValidationGroup
 };
 
 export default withRouter(

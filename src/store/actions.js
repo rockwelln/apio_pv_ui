@@ -120,6 +120,16 @@ export const getTimerForIAD = data => ({
   data
 });
 
+export const getValidateGroupUpdateSuccess = data => ({
+  type: actionType.GET_VALIDATE_GROUP_UPDATE_SUCCESS,
+  data
+});
+
+export const getValidateGroupUpdateError = data => ({
+  type: actionType.GET_VALIDATE_GROUP_UPDATE_ERROR,
+  data
+});
+
 export const postCreateTenant = data => ({
   type: actionType.POST_CREATE_TENANT,
   data
@@ -257,6 +267,10 @@ export const clearCreatedTenant = () => ({
 
 export const clearSearchedIADs = () => ({
   type: actionType.CLEAR_SEARCHED_IADS
+});
+
+export const clearValidationGroup = () => ({
+  type: actionType.CLEAR_VALIDATION_GROUP
 });
 
 export const setTransferedIADs = data => ({
@@ -671,6 +685,19 @@ export function fetchGetSearchIADs(data) {
           />,
           error.message
         );
+      });
+  };
+}
+
+export function fetchGetValidateGroupUpdate(tenantId, groupId, validateData) {
+  /////////////////////////////////
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/validate_modification?${validateData}`
+    )
+      .then(data => dispatch(getValidateGroupUpdateSuccess(data)))
+      .catch(error => {
+        dispatch(getValidateGroupUpdateError(error));
       });
   };
 }
