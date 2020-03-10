@@ -292,7 +292,7 @@ export class AddGroup extends Component {
                 </div>
               </Col>
             </Row>
-            {(this.state.typeOfIad === "SIP" ||
+            {/* {(this.state.typeOfIad === "SIP" ||
               this.state.typeOfIad === "SIP_PRA") && (
               <Row className={"margin-top-1"}>
                 <Col md={12} className={"flex align-items-center"}>
@@ -314,7 +314,7 @@ export class AddGroup extends Component {
                   </div>
                 </Col>
               </Row>
-            )}
+            )} */}
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
@@ -461,7 +461,7 @@ export class AddGroup extends Component {
       serviceType,
       virtual,
       channelHunting,
-      np1Redundancy,
+      //np1Redundancy,
       cliPhoneNumber: mainNumber
     };
     const clearData = removeEmpty(data);
