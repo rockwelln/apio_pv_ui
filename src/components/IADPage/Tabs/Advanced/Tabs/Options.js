@@ -86,39 +86,43 @@ export class Options extends Component {
             </div>
           </Col>
         </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="isdnTerminationSide"
-                  defaultMessage="ISDN termination side"
-                />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                value={this.state.advanced.isdnTerminationSide}
-                onChange={this.changeIsdnTerminationSide}
-                disabled={
-                  !isAllowed(
-                    localStorage.getItem("userProfile"),
-                    pages.edit_group_iad_advanced_isdnTerminationSide
-                  )
-                }
-              >
-                {this.props.config.tenant.group.iad.isdnTerminationSide.map(
-                  (el, i) => (
-                    <option key={i} value={el.value}>
-                      {el.label}
-                    </option>
-                  )
-                )}
-              </FormControl>
-            </div>
-          </Col>
-        </Row>
+        {(this.props.iad.protocolMode === "PRA" ||
+          this.props.iad.protocolMode === "PRA_SIP" ||
+          this.props.iad.protocolMode === "SIP_PRA") && (
+          <Row className={"margin-top-1"}>
+            <Col md={12} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-16"}>
+                <ControlLabel>
+                  <FormattedMessage
+                    id="isdnTerminationSide"
+                    defaultMessage="ISDN termination side"
+                  />
+                </ControlLabel>
+              </div>
+              <div className={"margin-right-1 flex-basis-33"}>
+                <FormControl
+                  componentClass="select"
+                  value={this.state.advanced.isdnTerminationSide}
+                  onChange={this.changeIsdnTerminationSide}
+                  disabled={
+                    !isAllowed(
+                      localStorage.getItem("userProfile"),
+                      pages.edit_group_iad_advanced_isdnTerminationSide
+                    )
+                  }
+                >
+                  {this.props.config.tenant.group.iad.isdnTerminationSide.map(
+                    (el, i) => (
+                      <option key={i} value={el.value}>
+                        {el.label}
+                      </option>
+                    )
+                  )}
+                </FormControl>
+              </div>
+            </Col>
+          </Row>
+        )}
         <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>
