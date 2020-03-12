@@ -105,7 +105,8 @@ export class PraInfo extends Component {
                             ...this.state.praByIad,
                             [pra]: {
                               ...this.state.praByIad[pra],
-                              praID: Number(e.target.value)
+                              praID: Number(e.target.value),
+                              enabled: Number(e.target.value) ? true : false
                             }
                           }
                         },
