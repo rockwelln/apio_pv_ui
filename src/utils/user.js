@@ -41,7 +41,8 @@ export const pages = Object.freeze({
   //////////////////////////////////////////////////
   common_page_access: 200,
   add_access: 201,
-  delete_access: 202
+  delete_access: 202,
+  refresh_info_phonenumbers: 203
 });
 
 export const privileges = Object.freeze({});
@@ -174,7 +175,8 @@ const definition = {
     [pages.edit_group_iad_advanced_dual_power]: true,
     [pages.edit_group_iad_transportMode]: true,
     [pages.add_access]: true,
-    [pages.delete_access]: true
+    [pages.delete_access]: true,
+    [pages.refresh_info_phonenumbers]: true
   },
 
   VoiceEng: {
@@ -206,7 +208,8 @@ const definition = {
     [pages.edit_group_iad_advanced_dual_power]: true,
     [pages.edit_group_iad_transportMode]: true,
     [pages.add_access]: true,
-    [pages.delete_access]: true
+    [pages.delete_access]: true,
+    [pages.refresh_info_phonenumbers]: true
   }
 };
 

@@ -206,15 +206,20 @@ export class PhoneNumbersTab extends Component {
                       defaultMessage="Update Status"
                     />
                   </Button>
-                  <Button
-                    onClick={this.refreshInformation}
-                    className={"btn-primary margin-right-1"}
-                  >
-                    <FormattedMessage
-                      id="refreshInformation"
-                      defaultMessage="Refresh information"
-                    />
-                  </Button>
+                  {isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.refresh_info_phonenumbers
+                  ) && (
+                    <Button
+                      onClick={this.refreshInformation}
+                      className={"btn-primary margin-right-1"}
+                    >
+                      <FormattedMessage
+                        id="refreshInformation"
+                        defaultMessage="Refresh information"
+                      />
+                    </Button>
+                  )}
                   <Button
                     onClick={() =>
                       this.setState({ showRefreshAllDialog: true })
