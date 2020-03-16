@@ -62,8 +62,6 @@ export default class PhoneNumber extends Component {
           </React.Fragment>
           <td>{number.rangeStart}</td>
           <td>{number.rangeEnd}</td>
-          <td>{number.main_number ? "Yes" : "No"}</td>
-          <td>{number.maintenance_number ? "Yes" : "No"}</td>
           {number.rangeEnd ? (
             <td>
               {showRange ? (
@@ -81,6 +79,8 @@ export default class PhoneNumber extends Component {
           ) : (
             <td />
           )}
+          <td>{number.main_number ? "Yes" : "No"}</td>
+          <td>{number.maintenance_number ? "Yes" : "No"}</td>
           {isAllowed(
             localStorage.getItem("userProfile"),
             pages.delete_access

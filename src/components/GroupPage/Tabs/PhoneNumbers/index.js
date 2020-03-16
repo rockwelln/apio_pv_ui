@@ -336,6 +336,7 @@ export class PhoneNumbersTab extends Component {
                         onClick={this.sortByRangeEnd}
                       />
                     </th>
+                    <th />
                     <th>
                       <FormattedMessage
                         id="mainNumber"
@@ -356,7 +357,7 @@ export class PhoneNumbersTab extends Component {
                         onClick={this.sortByMaintenanceNumber}
                       />
                     </th>
-                    <th />
+
                     <th />
                   </tr>
                 </thead>
