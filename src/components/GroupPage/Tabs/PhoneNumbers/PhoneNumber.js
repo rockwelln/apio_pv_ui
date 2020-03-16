@@ -98,7 +98,7 @@ export default class PhoneNumber extends Component {
                   show={showDelete}
                   tenantId={this.props.tenantId}
                   onClose={e => {
-                    //onReload && onReload(number.rangeStart);
+                    onReload && onReload(number.rangeStart);
                     this.setState({ showDelete: false });
                   }}
                   {...this.props}
