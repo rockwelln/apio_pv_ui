@@ -100,7 +100,7 @@ class CreateAdmin extends Component {
       isLoadingLanguages
     } = this.state;
 
-    if (isLoadingLevel && isLoadingAdmin && isLoadingLanguages) {
+    if (isLoadingLevel || isLoadingAdmin || isLoadingLanguages) {
       return <Loading />;
     }
 

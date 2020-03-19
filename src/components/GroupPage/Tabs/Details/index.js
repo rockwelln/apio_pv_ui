@@ -67,12 +67,6 @@ class Details extends Component {
     return (
       <Col md={8}>
         <Form horizontal className={"margin-1"}>
-          <FormGroup controlId="resellerSelect">
-            <ControlLabel className={"margin-1"}>RESELLER</ControlLabel>
-            <FormControl componentClass="select" placeholder="select">
-              <option value="select">None</option>
-            </FormControl>
-          </FormGroup>
           <FormGroup controlId="Details">
             <ControlLabel className={"margin-1"}>DETAILS</ControlLabel>
             <FormGroup controlId="groupID">
@@ -111,9 +105,7 @@ class Details extends Component {
                 <FormControl
                   type="text"
                   placeholder="Street"
-                  defaultValue={`${addressInformation.addressLine1} ${
-                    addressInformation.addressLine2
-                  }`}
+                  defaultValue={`${addressInformation.addressLine1} ${addressInformation.addressLine2}`}
                   onChange={e => {
                     this.setState({
                       addressInformation: {

@@ -557,6 +557,7 @@ export class Licenses extends Component {
             </Col>
             <ServicePackAuthorisation
               level={"tenant"}
+              tenantId={this.props.match.params.tenantId}
               isOpen={this.state.showModal}
               handleHide={this.handleHide}
               userServices={this.props.userServices}

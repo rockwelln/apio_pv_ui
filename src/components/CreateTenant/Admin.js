@@ -147,29 +147,6 @@ export class Admin extends Component {
             </Col>
           </Row>
 
-          {/* E-MAIL */}
-          <Row className={"margin-1"}>
-            <Col componentClass={ControlLabel} md={2}>
-              E-mail{"\u002a"}
-            </Col>
-            <Col md={10}>
-              <FormControl type="text" placeholder="E-mail" />
-            </Col>
-          </Row>
-          <Row className={"margin-1"}>
-            <Col componentClass={ControlLabel} md={2} className={"text-left"}>
-              Language
-            </Col>
-            <Col md={10}>
-              <FormControl
-                type="text"
-                placeholder="Language"
-                defaultValue={this.state.createAdminData.language}
-                disabled
-              />
-            </Col>
-          </Row>
-
           {/* PASSWORD */}
           <Row className={"margin-1"}>
             <FormGroup

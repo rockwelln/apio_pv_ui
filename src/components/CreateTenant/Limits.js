@@ -32,7 +32,7 @@ const INFINITY = 8734;
 
 export class Limits extends Component {
   state = {
-    isLoading: true,
+    isLoadingLicenses: true,
     isLoadingTrunk: true,
     groupServices: [],
     showMore: false,
@@ -51,7 +51,7 @@ export class Limits extends Component {
       .fetchGetTenantLicenses(this.props.createdTenant.tenantId)
       .then(() =>
         this.setState({
-          isLoading: false,
+          isLoadingLicenses: false,
           groupServices: this.props.tenantLicenses.groups,
           servicePacks: this.props.tenantServicePacks
         })
@@ -595,6 +595,8 @@ export class Limits extends Component {
                         </Button>
                       </Col>
                       <ServicePackAuthorisation
+                        level={"tenant"}
+                        tenantId={this.props.createdTenant.tenantId}
                         isOpen={this.state.showModal}
                         handleHide={this.handleHide}
                         userServices={this.props.userServices}
@@ -620,6 +622,9 @@ export class Limits extends Component {
                 <Button
                   onClick={() => this.props.changeStepOfCreateTenant("Admin")}
                   className={"btn-primary"}
+                  disabled={
+                    editTrunkCapacity || editServicePacks || editGroupServices
+                  }
                 >
                   <Glyphicon glyph="glyphicon glyphicon-forward" />
                   &nbsp; Assign licenses

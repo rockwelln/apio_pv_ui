@@ -78,7 +78,7 @@ export class ServicePackAuthorisation extends Component {
                     </th>
                   </tr>
                 </thead>
-                {this.state.paginationServices.length && (
+                {!!this.state.paginationServices.length && (
                   <tbody>
                     {this.state.paginationServices[this.state.page].map(
                       (el, i) => (
@@ -149,10 +149,7 @@ export class ServicePackAuthorisation extends Component {
     this.setState({ disabledButton: true }, () => {
       if (this.props.level === "tenant") {
         this.props
-          .fetchPutUpdateGroupServicesByTenantId(
-            this.props.match.params.tenantId,
-            data
-          )
+          .fetchPutUpdateGroupServicesByTenantId(this.props.tenantId, data)
           .then(res => {
             if (res === "updated") {
               this.setState({ disabledButton: false });

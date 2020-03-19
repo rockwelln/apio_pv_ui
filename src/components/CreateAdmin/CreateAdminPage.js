@@ -35,12 +35,14 @@ class CreateAdmin extends Component {
     },
     passwordConfirmation: "",
     passwordNotMatch: null,
-    isLoading: true
+    isLoading: true,
+    isLoadingLang: true
   };
 
   componentDidMount() {
     this.props.fetchGetLanguages().then(() =>
       this.setState({
+        isLoadingLang: false,
         createAdminData: {
           ...this.state.createAdminData,
           language: this.props.languages.defaultLangue
@@ -76,10 +78,11 @@ class CreateAdmin extends Component {
       createAdminData,
       passwordConfirmation,
       passwordNotMatch,
-      isLoading
+      isLoading,
+      isLoadingLang
     } = this.state;
 
-    if (isLoading) {
+    if (isLoading || isLoadingLang) {
       return <Loading />;
     }
 
