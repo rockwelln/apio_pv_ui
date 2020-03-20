@@ -210,20 +210,6 @@ export class Admin extends Component {
             </FormGroup>
           </Row>
 
-          {/* SEND WELCOME EMAIL FLAG */}
-          <Row className={"margin-1"}>
-            <Col md={12}>
-              <Checkbox>Send welcome email</Checkbox>
-            </Col>
-          </Row>
-          {this.state.emptyFieldError && (
-            <Row className={"margin-1 color-error"}>
-              <Col md={12}>
-                <p>{this.state.emptyFieldError}</p>
-              </Col>
-            </Row>
-          )}
-
           {/* BUTTONS */}
           <Row>
             <Col md={12}>
@@ -262,12 +248,7 @@ export class Admin extends Component {
                     to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.createdTenant.tenantId}`}
                   >
                     {/* SKIP & FINISH */}
-                    <Button
-                      onClick={() =>
-                        this.props.changeStepOfCreateTenant("Admin")
-                      }
-                      className={"btn-warning"}
-                    >
+                    <Button className={"btn-warning"}>
                       <Glyphicon glyph="glyphicon glyphicon-stop" />
                       &nbsp; Skip
                     </Button>
@@ -316,7 +297,7 @@ export class Admin extends Component {
       )
       .then(() => {
         this.props.history.push(
-          `/provisioning/${this.props.match.params.gwName}/tenants/`
+          `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.createdTenant.tenantId}`
         );
         this.props.refuseCreateTenant();
       });

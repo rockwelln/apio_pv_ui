@@ -211,20 +211,6 @@ export class Admin extends Component {
             </FormGroup>
           </Row>
 
-          {/* SEND WELCOME EMAIL FLAG */}
-          <Row className={"margin-1"}>
-            <Col md={12}>
-              <Checkbox>Send welcome email</Checkbox>
-            </Col>
-          </Row>
-          {this.state.emptyFieldError && (
-            <Row className={"margin-1 color-error"}>
-              <Col md={12}>
-                <p>{this.state.emptyFieldError}</p>
-              </Col>
-            </Row>
-          )}
-
           {/* BUTTONS */}
           <Row>
             <Col md={12}>
