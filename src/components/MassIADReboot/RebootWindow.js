@@ -41,7 +41,7 @@ const RebootWindow = props => {
       rebootLater === "later"
         ? requestedTime
         : rebootLater === "now"
-        ? Date.now()
+        ? new Date().getUTCHours() + ":" + new Date().getUTCMinutes()
         : "";
     Object.values(objIads).forEach(iads => {
       const indexStartEntID = iads[0].indexOf("ENT");

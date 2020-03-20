@@ -32,7 +32,9 @@ export class GroupService extends Component {
         : this.state.services
     });
   }
+
   render() {
+    ``;
     return (
       <React.Fragment>
         {(this.props.iad.protocolMode === "SIP" ||
@@ -193,6 +195,7 @@ export class GroupService extends Component {
     } = this.state.services;
     const data = {
       services: {
+        dtmf,
         channelHunting,
         channelsIn: channelsIn === "groupValue" ? null : channelsIn,
         channelsOut: channelsOut === "groupValue" ? null : channelsOut,

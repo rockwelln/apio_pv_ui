@@ -116,7 +116,7 @@ class RebootWindow extends Component {
       rebootLater === "later"
         ? requestedTime
         : rebootLater === "now"
-        ? Date.now()
+        ? new Date().getUTCHours() + ":" + new Date().getUTCMinutes()
         : "";
     const dataForUpdate = {
       ...data,
