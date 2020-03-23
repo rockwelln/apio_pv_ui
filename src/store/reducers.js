@@ -219,8 +219,8 @@ function mainReducer(state = initialState, action) {
           return 0;
         });
       const groupServicesHide = action.data.groupServices
-        .filter(
-          group =>
+        .filter(group => {
+          if (
             group.name !== "Auto Attendant" &&
             group.name !== "Auto Attendant - Standard" &&
             group.name !== "Call Pickup" &&
@@ -228,7 +228,10 @@ function mainReducer(state = initialState, action) {
             group.name !== "Group Paging" &&
             group.name !== "Meet-me Conferencing" &&
             group.name !== "Trunk Group"
-        )
+          ) {
+            return { ...group, hide: true, additional: true };
+          }
+        })
         .sort((a, b) => {
           if (a.name < b.name) return -1;
           if (a.name > b.name) return 1;
@@ -489,22 +492,25 @@ function mainReducer(state = initialState, action) {
           if (a.name > b.name) return 1;
           return 0;
         });
-      const groupServicesHide = action.data.groupServices
-        .filter(
-          group =>
-            group.name !== "Auto Attendant" &&
-            group.name !== "Auto Attendant - Standard" &&
-            group.name !== "Call Pickup" &&
-            group.name !== "Hunt Group" &&
-            group.name !== "Group Paging" &&
-            group.name !== "Meet-me Conferencing" &&
-            group.name !== "Trunk Group"
-        )
-        .sort((a, b) => {
-          if (a.name < b.name) return -1;
-          if (a.name > b.name) return 1;
-          return 0;
-        });
+      const groupServicesHide = [];
+      action.data.groupServices.forEach(group => {
+        if (
+          group.name !== "Auto Attendant" &&
+          group.name !== "Auto Attendant - Standard" &&
+          group.name !== "Call Pickup" &&
+          group.name !== "Hunt Group" &&
+          group.name !== "Group Paging" &&
+          group.name !== "Meet-me Conferencing" &&
+          group.name !== "Trunk Group"
+        ) {
+          groupServicesHide.push({ ...group, hide: true, additional: true });
+        }
+      });
+      groupServicesHide.sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      });
       const groupServices = [...groupServicesShown, ...groupServicesHide];
       return {
         ...state,

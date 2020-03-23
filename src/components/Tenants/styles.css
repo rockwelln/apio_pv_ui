@@ -46,6 +46,10 @@
   margin-right: 10px !important;
 }
 
+.margin-right-2 {
+  margin-right: 20px !important;
+}
+
 .indent-top-bottom-1 {
   margin-top: 10px !important;
   margin-bottom: 10px !important;
@@ -227,4 +231,29 @@ textarea {
 
 .nowrap {
   white-space: nowrap;
+}
+
+.licenses-td {
+  border-top: none !important;
+  border-bottom: 1px solid #ddd;
+}
+
+.licenses-th {
+  border-bottom: 1px solid #ddd !important;
+}
+
+.vertical-middle {
+  vertical-align: middle !important;
+}
+
+.edit-pencil {
+  color: #337ab7;
+}
+
+.display-table-cell {
+  display: table-cell;
+}
+
+.relative:first-child:first-child {
+  position: relative !important;
 }

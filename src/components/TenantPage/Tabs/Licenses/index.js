@@ -19,11 +19,14 @@ import FormControl from "react-bootstrap/lib/FormControl";
 import Checkbox from "react-bootstrap/lib/Checkbox";
 import HelpBlock from "react-bootstrap/lib/HelpBlock";
 import Button from "react-bootstrap/lib/Button";
+import Table from "react-bootstrap/lib/Table";
 
 import { FormattedMessage } from "react-intl";
 import Loading from "../../../../common/Loading";
 import EditLicenses from "../../../../common/EditLicenses";
 import ServicePackAuthorisation from "../../../ServicePackAuthorisation";
+import LicensesPanel from "../../../../common/License";
+import SingleEdit from "../../../../common/License/SingleEdit";
 
 import { removeEmpty } from "../../../remuveEmptyInObject";
 
@@ -42,7 +45,10 @@ export class Licenses extends Component {
     editTrunkCapacity: false,
     editServicePacks: false,
     editGroupServices: false,
-    showModal: false
+    showModal: false,
+
+    editTrunkLicenses: false,
+    editMaxBursting: false
   };
 
   fetchData() {
@@ -75,14 +81,212 @@ export class Licenses extends Component {
       editNumberOfUsers,
       editTrunkCapacity,
       editServicePacks,
-      editGroupServices
+      editGroupServices,
+
+      editTrunkLicenses,
+      editMaxBursting
     } = this.state;
     if (this.state.isLoading || isLoadingTrunk) {
       return <Loading />;
     }
     return (
       <Row className={"margin-top-2 margin-left-8"}>
-        <Col md={4}>
+        <Col md={5}>
+          <div>
+            <Panel>
+              <Panel.Heading>
+                <FormattedMessage
+                  id="trunling_capacity"
+                  defaultMessage="TRUNKING CAPACITY"
+                />
+              </Panel.Heading>
+              {this.props.isAuthorisedTrunkTenant ? (
+                Object.keys(trunkGroups).length ? (
+                  <Panel.Body>
+                    <Table responsive>
+                      <tbody>
+                        <tr>
+                          <td className={"licenses-td vertical-middle"}>
+                            <FormattedMessage
+                              id="trunking_licenses"
+                              defaultMessage={`Trunking licenses:`}
+                            />
+                          </td>
+                          <td
+                            className={"text-right licenses-td vertical-middle"}
+                          >
+                            {
+                              this.props.tenantTrunkGroups.maxActiveCalls
+                                .maximum
+                            }
+                          </td>
+                          <td
+                            className={"text-right licenses-td vertical-middle"}
+                          >
+                            <Glyphicon
+                              glyph="glyphicon glyphicon-pencil"
+                              className={"edit-pencil"}
+                              onClick={() =>
+                                this.setState({
+                                  editTrunkLicenses: true
+                                })
+                              }
+                            />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className={"licenses-td vertical-middle"}>
+                            <FormattedMessage
+                              id="max_bursting"
+                              defaultMessage={`Max bursting:`}
+                            />
+                          </td>
+                          <td
+                            className={"text-right licenses-td vertical-middle"}
+                          >
+                            {this.props.tenantTrunkGroups.burstingMaxActiveCalls
+                              .unlimited
+                              ? String.fromCharCode(INFINITY)
+                              : this.props.tenantTrunkGroups
+                                  .burstingMaxActiveCalls.maximum}
+                          </td>
+                          <td
+                            className={"text-right licenses-td vertical-middle"}
+                          >
+                            <Glyphicon
+                              glyph="glyphicon glyphicon-pencil"
+                              className={"edit-pencil"}
+                              onClick={() =>
+                                this.setState({ editMaxBursting: true })
+                              }
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                    <SingleEdit
+                      show={editTrunkLicenses}
+                      title={
+                        <FormattedMessage
+                          id="trunling_capacity"
+                          defaultMessage="TRUNKING CAPACITY"
+                        />
+                      }
+                      onClose={() =>
+                        this.setState({ editTrunkLicenses: false }, () =>
+                          this.fetchData()
+                        )
+                      }
+                      isEditTrunkLicenses
+                      value={this.state.trunkGroups.maxActiveCalls.maximum}
+                      onChange={this.changeTrunkingLicenses}
+                      onSave={this.updateTrunkCapacity}
+                    />
+                    <SingleEdit
+                      show={editMaxBursting}
+                      title={
+                        <FormattedMessage
+                          id="trunling_capacity"
+                          defaultMessage="TRUNKING CAPACITY"
+                        />
+                      }
+                      onClose={() =>
+                        this.setState({ editMaxBursting: false }, () =>
+                          this.fetchData()
+                        )
+                      }
+                      isEditMaxBursting
+                      value={
+                        this.state.trunkGroups.burstingMaxActiveCalls.maximum
+                      }
+                      infinity={
+                        this.state.trunkGroups.burstingMaxActiveCalls.unlimited
+                      }
+                      onChangeInfinity={this.changeMaxBurstingInfinity}
+                      onChange={this.changeMaxBurstingValue}
+                      onSave={this.updateTrunkCapacity}
+                    />
+                  </Panel.Body>
+                ) : (
+                  <Panel.Body>
+                    <FormattedMessage
+                      id="no_trunk_groups"
+                      defaultMessage="No info"
+                    />
+                  </Panel.Body>
+                )
+              ) : (
+                <Panel.Body>
+                  <FormattedMessage
+                    id="trunking_not_authorised"
+                    defaultMessage="Trunking not authorised"
+                  />
+                </Panel.Body>
+              )}
+            </Panel>
+            <Panel>
+              <Panel.Heading>
+                <FormattedMessage
+                  id="service_packs"
+                  defaultMessage="SERVICE PACKS"
+                />
+              </Panel.Heading>
+              <Panel.Body>
+                {this.state.servicePacks.length ? (
+                  <LicensesPanel licenses={this.state.servicePacks} />
+                ) : (
+                  <FormattedMessage
+                    id="No_service_packs"
+                    defaultMessage="No service packs were found"
+                  />
+                )}
+              </Panel.Body>
+            </Panel>
+            <Button
+              className={"width-100p"}
+              bsStyle="link"
+              onClick={() => this.setState({ showModal: true })}
+            >
+              <FormattedMessage
+                id="edit_end_user_service_authorisation"
+                defaultMessage="Edit end user service authorisation"
+              />
+            </Button>
+            <ServicePackAuthorisation
+              level={"tenant"}
+              tenantId={this.props.match.params.tenantId}
+              isOpen={this.state.showModal}
+              handleHide={this.handleHide}
+              userServices={this.props.userServices}
+            />
+          </div>
+        </Col>
+        <Col md={7}>
+          <Panel>
+            <Panel.Heading>
+              <FormattedMessage
+                id="group_services"
+                defaultMessage="GROUP SERVICES"
+              />
+            </Panel.Heading>
+            <Panel.Body>
+              {this.props.tenantLicenses.groups &&
+              this.props.tenantLicenses.groups.length ? (
+                <LicensesPanel
+                  licenses={this.state.groupServices}
+                  showHide={this.showHideAdditionalServices}
+                  withShowMore
+                />
+              ) : (
+                <FormattedMessage
+                  id="No_service_packs"
+                  defaultMessage="No service packs were found"
+                />
+              )}
+            </Panel.Body>
+          </Panel>
+        </Col>
+        {/* <Col md={4}>
           <Row>
             <Panel>
               <Panel.Heading>
@@ -563,10 +767,61 @@ export class Licenses extends Component {
               userServices={this.props.userServices}
             />
           </Row>
-        </Col>
+        </Col> */}
       </Row>
     );
   }
+
+  changeMaxBurstingInfinity = () => {
+    this.setState(prevState => ({
+      trunkGroups: {
+        ...prevState.trunkGroups,
+        burstingMaxActiveCalls: {
+          ...prevState.trunkGroups.burstingMaxActiveCalls,
+          unlimited: !prevState.trunkGroups.burstingMaxActiveCalls.unlimited
+        }
+      }
+    }));
+  };
+
+  changeMaxBurstingValue = e => {
+    let value = e.target.value;
+    this.setState(prevState => ({
+      trunkGroups: {
+        ...prevState.trunkGroups,
+        burstingMaxActiveCalls: {
+          ...prevState.trunkGroups.burstingMaxActiveCalls,
+          maximum: Number(value)
+        }
+      }
+    }));
+  };
+
+  showHideAdditionalServices = status => {
+    const { groupServices } = this.state;
+    const newGroupServices = [];
+    groupServices.forEach(el => {
+      if (el.additional) {
+        newGroupServices.push({ ...el, hide: status });
+      } else {
+        newGroupServices.push(el);
+      }
+    });
+    this.setState({ groupServices: newGroupServices });
+  };
+
+  changeTrunkingLicenses = e => {
+    let value = e.target.value;
+    this.setState(prevState => ({
+      trunkGroups: {
+        ...prevState.trunkGroups,
+        maxActiveCalls: {
+          ...prevState.trunkGroups.maxActiveCalls,
+          maximum: Number(value)
+        }
+      }
+    }));
+  };
 
   handleHide = () => {
     this.setState({ showModal: false });
@@ -642,13 +897,16 @@ export class Licenses extends Component {
   };
 
   updateTrunkCapacity = () => {
+    ////////////
     const data = {
       maxActiveCalls: this.state.trunkGroups.maxActiveCalls,
       burstingMaxActiveCalls: this.state.trunkGroups.burstingMaxActiveCalls
     };
     this.props
       .fetchPutUpdateTrunkByTenantId(this.props.match.params.tenantId, data)
-      .then(this.setState({ editTrunkCapacity: false }));
+      .then(
+        this.setState({ editTrunkLicenses: false, editMaxBursting: false })
+      );
   };
 
   updateGroupServices = () => {
