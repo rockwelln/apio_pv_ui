@@ -573,6 +573,11 @@ export const trunkNotAuthorisedTenant = () => ({
   type: actionType.TRUNK_NOT_AUTHORISED_TENANT
 });
 
+export const showHideAdditionalServicesTenant = data => ({
+  type: actionType.SHOW_HIDE_ADDITIONAL_SERVICES_TENANT,
+  data
+});
+
 export function fetchGetTenants(cancelLoad) {
   return function(dispatch) {
     return fetch_get(`${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/`)

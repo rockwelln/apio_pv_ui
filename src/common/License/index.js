@@ -4,13 +4,15 @@ import Table from "react-bootstrap/lib/Table";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Button from "react-bootstrap/lib/Button";
 
+import SingleEdit from "./SingleEdit";
+
 import { FormattedMessage } from "react-intl";
 
 const INFINITY = 8734;
 
 const Licenses = props => {
   const [showMore, setShowMore] = useState(false);
-  const { licenses, withShowMore, showHide } = props;
+  const { licenses, withShowMore, showHide, showEdit } = props;
   return (
     <React.Fragment>
       <Table responsive>
@@ -28,7 +30,7 @@ const Licenses = props => {
         </thead>
         <tbody>
           {licenses.map(
-            el =>
+            (el, i) =>
               (!el.additional || !el.hide) && (
                 <tr key={el.name}>
                   <td className={"licenses-td vertical-middle"}>{el.name}</td>
@@ -58,6 +60,7 @@ const Licenses = props => {
                     <Glyphicon
                       glyph="glyphicon glyphicon-pencil"
                       className={"edit-pencil"}
+                      onClick={() => showEdit(i)}
                     />
                   </td>
                 </tr>

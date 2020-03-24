@@ -503,7 +503,11 @@ function mainReducer(state = initialState, action) {
           group.name !== "Meet-me Conferencing" &&
           group.name !== "Trunk Group"
         ) {
-          groupServicesHide.push({ ...group, hide: true, additional: true });
+          groupServicesHide.push({
+            ...group,
+            hide: true,
+            additional: true
+          });
         }
       });
       groupServicesHide.sort((a, b) => {
@@ -1097,7 +1101,21 @@ function mainReducer(state = initialState, action) {
     case actionType.TRUNK_NOT_AUTHORISED_TENANT: {
       return {
         ...state,
-        isAuthorisedTrunkTenant: false
+        tenantLicenses: false
+      };
+    }
+    case actionType.SHOW_HIDE_ADDITIONAL_SERVICES_TENANT: {
+      const newTanantLicenses = [];
+      state.tenantLicenses.groups.forEach(el => {
+        if (el.additional) {
+          newTanantLicenses.push({ ...el, hide: action.data });
+        } else {
+          newTanantLicenses.push(el);
+        }
+      });
+      return {
+        ...state,
+        tenantLicenses: { ...state.tenantLicenses, groups: newTanantLicenses }
       };
     }
     default:

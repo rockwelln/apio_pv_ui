@@ -16,13 +16,16 @@ const SingleEdit = props => {
     title,
     show,
     onClose,
-    isEditTrunkLicenses,
     value,
     onChange,
     onSave,
     infinity,
     isEditMaxBursting,
-    onChangeInfinity
+    onChangeInfinity,
+    licenseTitle,
+    isEditPacks,
+    isEditTunkLicenses,
+    allocated
   } = props;
   return (
     <Modal show={show} onHide={onClose}>
@@ -30,66 +33,67 @@ const SingleEdit = props => {
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {isEditTrunkLicenses && (
-          <Table>
-            <tbody>
-              <tr>
-                <td>
-                  <FormattedMessage
-                    id="trunking_licenses"
-                    defaultMessage={`Trunking licenses:`}
-                  />
-                </td>
-                <td className={"text-right"}>
-                  <FormControl
-                    type="number"
-                    className={"width-8 display-table-cell"}
-                    value={value}
-                    onChange={e => onChange(e)}
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        )}
-        {isEditMaxBursting && (
-          <Table>
+        <Table>
+          {!isEditTunkLicenses && (
             <thead>
               <tr>
-                <th />
-                <th />
-                <th className={"text-center"}>
-                  {String.fromCharCode(INFINITY)}
+                <th width="50%" className={"licenses-th"} />
+                <th className={"licenses-th text-right"}>
+                  {!isEditMaxBursting && (
+                    <FormattedMessage
+                      id="allocated"
+                      defaultMessage="allocated"
+                    />
+                  )}
                 </th>
+                <th
+                  className={`licenses-th ${
+                    isEditPacks ? "text-center" : "text-right"
+                  }`}
+                >
+                  {!isEditMaxBursting && (
+                    <FormattedMessage id="limited" defaultMessage="limited" />
+                  )}
+                </th>
+                {!isEditTunkLicenses && (
+                  <th className={"text-center licenses-th"}>
+                    {String.fromCharCode(INFINITY)}
+                  </th>
+                )}
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <FormattedMessage
-                    id="max_bursting"
-                    defaultMessage={`Max bursting:`}
-                  />
-                </td>
-                <td className={"text-right"}>
-                  <FormControl
-                    type="number"
-                    className={"width-8 display-table-cell"}
-                    value={value}
-                    disabled={infinity}
-                    onChange={e => onChange(e)}
-                  />
-                </td>
+          )}
+          <tbody>
+            <tr>
+              <td className={"vertical-middle"}>{licenseTitle}</td>
+              <td className={"text-right vertical-middle"}>
+                {isEditPacks && allocated}
+              </td>
+              <td className={`${isEditPacks ? "text-center" : "text-right"}`}>
+                <FormControl
+                  type="number"
+                  className={"width-8 display-table-cell"}
+                  disabled={infinity}
+                  value={value || 0}
+                  onChange={e => {
+                    const value = e.target.value;
+                    onChange(value);
+                  }}
+                />
+              </td>
+              {!isEditTunkLicenses && (
                 <td className={"text-center"}>
-                  <Checkbox
-                    value={infinity}
-                    onChange={() => onChangeInfinity()}
+                  <FormControl
+                    className={"infinity-checkbox"}
+                    type="checkbox"
+                    checked={infinity}
+                    onChange={e => onChangeInfinity(e.target.checked)}
                   />
                 </td>
-              </tr>
-            </tbody>
-          </Table>
-        )}
+              )}
+            </tr>
+          </tbody>
+        </Table>
       </Modal.Body>
       <Modal.Footer>
         <Button
