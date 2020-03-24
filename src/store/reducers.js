@@ -1106,13 +1106,14 @@ function mainReducer(state = initialState, action) {
     }
     case actionType.SHOW_HIDE_ADDITIONAL_SERVICES_TENANT: {
       const newTanantLicenses = [];
-      state.tenantLicenses.groups.forEach(el => {
-        if (el.additional) {
-          newTanantLicenses.push({ ...el, hide: action.data });
-        } else {
-          newTanantLicenses.push(el);
-        }
-      });
+      state.tenantLicenses.groups &&
+        state.tenantLicenses.groups.forEach(el => {
+          if (el.additional) {
+            newTanantLicenses.push({ ...el, hide: action.data });
+          } else {
+            newTanantLicenses.push(el);
+          }
+        });
       return {
         ...state,
         tenantLicenses: { ...state.tenantLicenses, groups: newTanantLicenses }

@@ -72,6 +72,7 @@ const SingleEdit = props => {
               <td className={`${isEditPacks ? "text-center" : "text-right"}`}>
                 <FormControl
                   type="number"
+                  min={0}
                   className={"width-8 display-table-cell"}
                   disabled={infinity}
                   value={value || 0}
