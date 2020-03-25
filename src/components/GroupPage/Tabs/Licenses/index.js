@@ -6,15 +6,16 @@ import Panel from "react-bootstrap/lib/Panel";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
-import FormControl from "react-bootstrap/lib/FormControl";
-import Checkbox from "react-bootstrap/lib/Checkbox";
-import HelpBlock from "react-bootstrap/lib/HelpBlock";
 import Button from "react-bootstrap/lib/Button";
+import Table from "react-bootstrap/lib/Table";
 
 import { FormattedMessage } from "react-intl";
 import Loading from "../../../../common/Loading";
-import EditLicenses from "../../../../common/EditLicenses";
 import ServicePackAuthorisation from "../../../ServicePackAuthorisation";
+import LicensesPanel from "../../../../common/License";
+import SingleEdit from "../../../../common/License/SingleEdit";
+
+import { removeEmpty } from "../../../remuveEmptyInObject";
 
 import {
   fetchGetLicensesByGroupId,
@@ -24,24 +25,29 @@ import {
   clearErrorMassage,
   fetchPutUpdateServicePacksByGroupId,
   fetchPutUpdateGroupServicesByGroupId,
-  fetchPostAddGroupServicesToGroup
+  fetchPostAddGroupServicesToGroup,
+  fetchGetTenantServicePack
 } from "../../../../store/actions";
 
 const INFINITY = 8734;
 
 export class Licenses extends Component {
   state = {
-    isLoadingLicenses: true,
+    isLoading: true,
     isLoadingTrunk: true,
-    showMore: false,
+    groupServices: [],
     trunkGroups: {},
     servicePacks: [],
-    editNumberOfUsers: false,
-    newUserLimit: null,
-    editTrunkCapacity: false,
+    newUserLimit: 0,
+    editGroupServices: false,
+    showModal: false,
+    editTrunkLicenses: false,
+    editMaxBursting: false,
     editServicePacks: false,
     editGroupServices: false,
-    showModal: false
+    indexOfService: 0,
+    showMore: true,
+    editUserLimit: false
   };
 
   fetchData = () => {
@@ -51,7 +57,8 @@ export class Licenses extends Component {
         this.setState({
           groupServices: this.props.groupServices.groups,
           servicePacks: this.props.servicePacks,
-          isLoadingLicenses: data ? false : true
+          newUserLimit: this.props.group.userLimit,
+          isLoading: data ? false : true
         });
       });
     this.props
@@ -59,6 +66,7 @@ export class Licenses extends Component {
       .then(() => {
         this.setState({
           trunkGroups: this.props.trunkGroups,
+          newUserLimit: this.props.group.userLimit,
           isLoadingTrunk: false
         });
       });
@@ -70,180 +78,152 @@ export class Licenses extends Component {
 
   render() {
     const {
+      isLoading,
       isLoadingTrunk,
-      isLoadingLicenses,
       trunkGroups,
-      editNumberOfUsers,
-      editTrunkCapacity,
+      editTrunkLicenses,
+      editMaxBursting,
       editServicePacks,
-      editGroupServices
+      editGroupServices,
+      indexOfService,
+      editUserLimit
     } = this.state;
-    const { group, servicePacks, groupServices } = this.props;
 
-    if (isLoadingLicenses || isLoadingTrunk) {
+    if (isLoading || isLoadingTrunk) {
       return <Loading />;
     }
 
     return (
       <Row className={"margin-top-2 margin-left-8"}>
-        <Col md={4}>
-          <Row>
+        <Col md={5}>
+          <div>
             <Panel>
               <Panel.Heading>
                 <FormattedMessage
                   id="trunling_capacity"
                   defaultMessage="TRUNKING CAPACITY"
                 />
-                {!editTrunkCapacity ? (
-                  !!Object.keys(trunkGroups).length &&
-                  !!trunkGroups.maxAvailableActiveCalls.maximum && (
-                    <Button
-                      onClick={() => {
-                        this.props.clearErrorMassage();
-                        this.setState({ editTrunkCapacity: true });
-                      }}
-                      className={"btn-primary panel-header-btn"}
-                    >
-                      <Glyphicon glyph="glyphicon glyphicon-pencil" />
-                      &nbsp; Edit
-                    </Button>
-                  )
-                ) : (
-                  <React.Fragment>
-                    <Button
-                      onClick={() => {
-                        this.props.clearErrorMassage();
-                        this.setState({
-                          editTrunkCapacity: false,
-                          trunkGroups: this.props.trunkGroups
-                        });
-                      }}
-                      className={"btn-danger panel-header-btn"}
-                    >
-                      <Glyphicon glyph="glyphicon glyphicon-ban-circle" />
-                      &nbsp; Cancel
-                    </Button>
-
-                    <Button
-                      onClick={this.updateTrunkCapacity}
-                      className={"btn-success panel-header-btn"}
-                    >
-                      <Glyphicon glyph="glyphicon glyphicon-ok-circle" />
-                      &nbsp; Save
-                    </Button>
-                  </React.Fragment>
-                )}
               </Panel.Heading>
               {this.props.fetchTrunksGroupsFail ? (
                 Object.keys(trunkGroups).length ? (
                   <Panel.Body>
-                    <Row>
-                      <Col md={8} className={"text-left"}>
-                        <FormattedMessage
-                          id="trunking_licenses"
-                          defaultMessage={`Trunking licenses:`}
-                        />
-                      </Col>
-                      {!editTrunkCapacity ? (
-                        <Col
-                          md={4}
-                          className={"text-right"}
-                        >{`${this.props.trunkGroups.maxActiveCalls}`}</Col>
-                      ) : (
-                        <Col md={4} className={"text-right"}>
-                          <FormControl
-                            type="number"
-                            defaultValue={this.props.trunkGroups.maxActiveCalls}
-                            min={0}
-                            onChange={e => {
-                              this.props.clearErrorMassage();
-                              let target = e.currentTarget;
-                              this.setState(prevState => ({
-                                trunkGroups: {
-                                  ...prevState.trunkGroups,
-                                  maxActiveCalls: parseInt(target.value, 10)
-                                }
-                              }));
-                            }}
-                          />
-                        </Col>
-                      )}
-                    </Row>
-                    <Row>
-                      <Col md={8} className={"text-left"}>
-                        <FormattedMessage
-                          id="max_bursting"
-                          defaultMessage={`Max bursting:`}
-                        />
-                      </Col>
-                      {!editTrunkCapacity ? (
-                        <Col md={4} className={"text-right"}>{`${
-                          this.props.trunkGroups.burstingMaxActiveCalls
-                            .unlimited
-                            ? String.fromCharCode(INFINITY)
-                            : this.props.trunkGroups.burstingMaxActiveCalls
-                                .maximum
-                        }`}</Col>
-                      ) : (
-                        <Col md={4} className={"text-right"}>
-                          <Checkbox
-                            defaultChecked={
-                              this.props.trunkGroups.burstingMaxActiveCalls
-                                .unlimited
-                            }
-                            onChange={() => {
-                              this.props.clearErrorMassage();
-                              this.setState(prevState => ({
-                                trunkGroups: {
-                                  ...prevState.trunkGroups,
-                                  burstingMaxActiveCalls: {
-                                    ...prevState.trunkGroups
-                                      .burstingMaxActiveCalls,
-                                    unlimited: !prevState.trunkGroups
-                                      .burstingMaxActiveCalls.unlimited
-                                  }
-                                }
-                              }));
-                            }}
-                          >
-                            {String.fromCharCode(INFINITY)}
-                          </Checkbox>
-                          {!trunkGroups.burstingMaxActiveCalls.unlimited && (
-                            <FormControl
-                              type="number"
-                              defaultValue={
-                                this.props.trunkGroups.burstingMaxActiveCalls
-                                  .maximum
-                              }
-                              min={0}
-                              onChange={e => {
-                                this.props.clearErrorMassage();
-                                let target = e.currentTarget;
-                                this.setState(prevState => ({
-                                  trunkGroups: {
-                                    ...prevState.trunkGroups,
-                                    burstingMaxActiveCalls: {
-                                      ...prevState.trunkGroups
-                                        .burstingMaxActiveCalls,
-                                      maximum: parseInt(target.value, 10)
-                                    }
-                                  }
-                                }));
-                              }}
+                    <Table responsive>
+                      <tbody>
+                        <tr>
+                          <td className={"licenses-td vertical-middle"}>
+                            <FormattedMessage
+                              id="trunking_licenses"
+                              defaultMessage={`Trunking licenses:`}
                             />
-                          )}
-                        </Col>
-                      )}
-                    </Row>
-                    <Row>
-                      <Col md={12}>
-                        {this.props.groupTrunkErrorMassage && (
-                          <HelpBlock bsClass="color-error">
-                            {this.props.groupTrunkErrorMassage}
-                          </HelpBlock>
-                        )}
-                      </Col>
-                    </Row>
+                          </td>
+                          <td
+                            className={"text-right licenses-td vertical-middle"}
+                          >
+                            {this.props.trunkGroups.maxActiveCalls}
+                          </td>
+                          <td
+                            className={"text-right licenses-td vertical-middle"}
+                          >
+                            <Glyphicon
+                              glyph="glyphicon glyphicon-pencil"
+                              className={"edit-pencil"}
+                              onClick={() =>
+                                this.setState({
+                                  editTrunkLicenses: true
+                                })
+                              }
+                            />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className={"licenses-td vertical-middle"}>
+                            <FormattedMessage
+                              id="max_bursting"
+                              defaultMessage={`Max bursting:`}
+                            />
+                          </td>
+                          <td
+                            className={"text-right licenses-td vertical-middle"}
+                          >
+                            {this.props.trunkGroups.burstingMaxActiveCalls
+                              .unlimited
+                              ? String.fromCharCode(INFINITY)
+                              : this.props.trunkGroups.burstingMaxActiveCalls
+                                  .maximum}
+                          </td>
+                          <td
+                            className={"text-right licenses-td vertical-middle"}
+                          >
+                            <Glyphicon
+                              glyph="glyphicon glyphicon-pencil"
+                              className={"edit-pencil"}
+                              onClick={() =>
+                                this.setState({ editMaxBursting: true })
+                              }
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                    {editTrunkLicenses && (
+                      <SingleEdit
+                        isEditTunkLicenses
+                        show={editTrunkLicenses}
+                        title={
+                          <FormattedMessage
+                            id="trunling_capacity"
+                            defaultMessage="TRUNKING CAPACITY"
+                          />
+                        }
+                        onClose={() =>
+                          this.setState({ editTrunkLicenses: false }, () =>
+                            this.fetchData()
+                          )
+                        }
+                        value={this.state.trunkGroups.maxActiveCalls}
+                        onChange={this.changeTrunkingLicenses}
+                        onSave={this.updateTrunkCapacity}
+                        licenseTitle={
+                          <FormattedMessage
+                            id="trunking_licenses"
+                            defaultMessage={`Trunking licenses:`}
+                          />
+                        }
+                      />
+                    )}
+                    {editMaxBursting && (
+                      <SingleEdit
+                        show={editMaxBursting}
+                        title={
+                          <FormattedMessage
+                            id="trunling_capacity"
+                            defaultMessage="TRUNKING CAPACITY"
+                          />
+                        }
+                        onClose={() =>
+                          this.setState({ editMaxBursting: false }, () =>
+                            this.fetchData()
+                          )
+                        }
+                        isEditMaxBursting
+                        value={
+                          this.state.trunkGroups.burstingMaxActiveCalls.maximum
+                        }
+                        infinity={
+                          this.state.trunkGroups.burstingMaxActiveCalls
+                            .unlimited
+                        }
+                        onChangeInfinity={this.changeMaxBurstingInfinity}
+                        onChange={this.changeMaxBurstingValue}
+                        onSave={this.updateTrunkCapacity}
+                        licenseTitle={
+                          <FormattedMessage
+                            id="max_bursting"
+                            defaultMessage={`Max bursting:`}
+                          />
+                        }
+                      />
+                    )}
                   </Panel.Body>
                 ) : (
                   <Panel.Body>
@@ -262,417 +242,450 @@ export class Licenses extends Component {
                 </Panel.Body>
               )}
             </Panel>
-          </Row>
-          <Row>
             <Panel>
               <Panel.Heading>
                 <FormattedMessage
                   id="number_of_users"
                   defaultMessage="Number of users"
                 />
-                {!editNumberOfUsers ? (
-                  <Button
-                    onClick={() => this.setState({ editNumberOfUsers: true })}
-                    className={"btn-primary panel-header-btn"}
-                  >
-                    <Glyphicon glyph="glyphicon glyphicon-pencil" />
-                    &nbsp; Edit
-                  </Button>
-                ) : (
-                  <React.Fragment>
-                    <Button
-                      onClick={() =>
-                        this.setState({
-                          editNumberOfUsers: false
-                        })
-                      }
-                      className={"btn-danger panel-header-btn"}
-                    >
-                      <Glyphicon glyph="glyphicon glyphicon-ban-circle" />
-                      &nbsp; Cancel
-                    </Button>
-
-                    <Button
-                      onClick={this.updateUserLimit}
-                      className={"btn-success panel-header-btn"}
-                    >
-                      <Glyphicon glyph="glyphicon glyphicon-ok-circle" />
-                      &nbsp; Save
-                    </Button>
-                  </React.Fragment>
-                )}
               </Panel.Heading>
               <Panel.Body>
-                <Row>
-                  <Col
-                    mdOffset={4}
-                    md={4}
-                    className={"text-center font-weight-bold"}
-                  >
-                    in use
-                  </Col>
-                  <Col md={4} className={"text-center font-weight-bold"}>
-                    limited to
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={4} className={"text-left"}>
-                    <FormattedMessage
-                      id="service_packs"
-                      defaultMessage="User limit:"
-                    />
-                  </Col>
-                  <Col
-                    md={4}
-                    className={"text-center"}
-                  >{`${group.userCount}`}</Col>
-                  {!editNumberOfUsers ? (
-                    <Col
-                      md={4}
-                      className={"text-center"}
-                    >{`${group.userLimit}`}</Col>
-                  ) : (
-                    <Col md={4} className={"text-center"}>
-                      <FormControl
-                        type="number"
-                        min={0}
-                        defaultValue={group.userLimit}
-                        onChange={e => {
-                          this.setState({ newUserLimit: e.target.value });
-                        }}
+                <Table responsive>
+                  <thead>
+                    <tr>
+                      <th className={"licenses-th"}></th>
+                      <th
+                        className={
+                          "text-right vertical-middle licenses-th nowrap"
+                        }
+                      >
+                        <FormattedMessage id="in_use" defaultMessage="in use" />
+                      </th>
+                      <th className={"text-right vertical-middle licenses-th"}>
+                        <FormattedMessage
+                          id="limited"
+                          defaultMessage="limited"
+                        />
+                      </th>
+                      <th className={"licenses-th"}></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className={"licenses-td vertical-middle"}>
+                        <FormattedMessage
+                          id="service_packs"
+                          defaultMessage="User limit:"
+                        />
+                      </td>
+                      <td className={"text-right licenses-td vertical-middle"}>
+                        {this.props.group.userCount}
+                      </td>
+                      <td className={"text-right licenses-td vertical-middle"}>
+                        {this.props.group.userLimit}
+                      </td>
+                      <td className={"text-right licenses-td vertical-middle"}>
+                        <Glyphicon
+                          glyph="glyphicon glyphicon-pencil"
+                          className={"edit-pencil"}
+                          onClick={() =>
+                            this.setState({
+                              editUserLimit: true
+                            })
+                          }
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </Table>
+                {editUserLimit && (
+                  <SingleEdit
+                    isEditGroup
+                    isEditUserLimit
+                    show={editUserLimit}
+                    title={
+                      <FormattedMessage
+                        id="number_of_users"
+                        defaultMessage="Number of users"
                       />
-                    </Col>
-                  )}
-                </Row>
+                    }
+                    onClose={() =>
+                      this.setState({ editUserLimit: false }, () =>
+                        this.fetchData()
+                      )
+                    }
+                    allocated={this.props.group.userCount}
+                    value={this.state.newUserLimit}
+                    onChange={value => this.setState({ newUserLimit: value })}
+                    onSave={this.updateUserLimit}
+                    licenseTitle={
+                      <FormattedMessage
+                        id="service_packs"
+                        defaultMessage="User limit:"
+                      />
+                    }
+                  />
+                )}
               </Panel.Body>
             </Panel>
-          </Row>
-        </Col>
-
-        <Col md={4}>
-          <Panel>
-            <Panel.Heading>
-              <FormattedMessage
-                id="group_services"
-                defaultMessage="GROUP SERVICES"
-              />
-              {!editGroupServices ? (
-                <Button
-                  onClick={() => {
-                    this.setState({ editGroupServices: true });
-                  }}
-                  className={"btn-primary panel-header-btn"}
-                >
-                  <Glyphicon glyph="glyphicon glyphicon-pencil" />
-                  &nbsp; Edit
-                </Button>
-              ) : (
-                <React.Fragment>
-                  <Button
-                    onClick={() =>
-                      this.setState({
-                        editGroupServices: false
-                      })
-                    }
-                    className={"btn-danger panel-header-btn"}
-                  >
-                    <Glyphicon glyph="glyphicon glyphicon-ban-circle" />
-                    &nbsp; Cancel
-                  </Button>
-
-                  <Button
-                    onClick={this.updateGroupServices}
-                    className={"btn-success panel-header-btn"}
-                  >
-                    <Glyphicon glyph="glyphicon glyphicon-ok-circle" />
-                    &nbsp; Save
-                  </Button>
-                </React.Fragment>
-              )}
-            </Panel.Heading>
-
-            {groupServices.groups.length ? (
-              <Panel.Body>
-                <Row>
-                  <Col
-                    mdOffset={5}
-                    md={3}
-                    className={"text-center font-weight-bold"}
-                  >
-                    in use
-                  </Col>
-                  <Col md={3} className={"text-center font-weight-bold"}>
-                    limited to
-                  </Col>
-                </Row>
-                {this.state.groupServices.map((pack, i) =>
-                  !this.state.showMore && !editGroupServices ? (
-                    i <= groupServices.countShown - 1 ? (
-                      <Row key={i}>
-                        <Col md={5} className={"text-left"}>
-                          <FormattedMessage
-                            id="service_packs"
-                            defaultMessage={`${pack.name}:`}
-                          />
-                        </Col>
-                        {!pack.allocated.unlimited &&
-                        pack.allocated.maximum === 0 ? (
-                          <Col md={6}>not authorised</Col>
-                        ) : (
-                          <React.Fragment>
-                            <Col md={3} className={"text-center"}>{`${
-                              pack.inUse ? pack.inUse : 0
-                            }`}</Col>
-                            <Col md={3} className={"text-center"}>{`${
-                              pack.allocated.unlimited
-                                ? String.fromCharCode(INFINITY)
-                                : pack.allocated.maximum
-                            }`}</Col>
-                          </React.Fragment>
-                        )}
-                      </Row>
-                    ) : null
-                  ) : !editGroupServices ? (
-                    <Row key={i}>
-                      <Col md={5} className={"text-left"}>
-                        <FormattedMessage
-                          id="service_packs"
-                          defaultMessage={`${pack.name}:`}
-                        />
-                      </Col>
-                      {!pack.allocated.unlimited &&
-                      pack.allocated.maximum === 0 ? (
-                        <Col md={6} className={"text-center"}>
-                          not authorised
-                        </Col>
-                      ) : (
-                        <React.Fragment>
-                          <Col md={3} className={"text-center"}>{`${
-                            pack.inUse ? pack.inUse : 0
-                          }`}</Col>
-                          <Col md={3} className={"text-center"}>{`${
-                            pack.allocated.unlimited
-                              ? String.fromCharCode(INFINITY)
-                              : pack.allocated.maximum
-                          }`}</Col>
-                        </React.Fragment>
-                      )}
-                    </Row>
-                  ) : (
-                    <Row key={i}>
-                      <Col md={5} className={"text-left"}>
-                        <FormattedMessage
-                          id="service_packs"
-                          defaultMessage={`${pack.name}:`}
-                        />
-                      </Col>
-                      <Col md={3} className={"text-center"}>{`${
-                        pack.inUse ? pack.inUse : 0
-                      }`}</Col>
-                      <Col md={3} className={"text-center"}>
-                        <EditLicenses
-                          defaultChecked={pack.allocated.unlimited}
-                          index={i}
-                          defaultMaximum={pack.allocated.maximum}
-                          changePacksUnlimeted={
-                            this.changeGroupServicesUnlimeted
-                          }
-                          changePacksMaximum={this.changeGroupServicesMaximum}
-                        />
-                      </Col>
-                    </Row>
-                  )
-                )}
-                {!editGroupServices && (
-                  <Row>
-                    <Col
-                      md={8}
-                      className={"cursor-pointer"}
-                      componentClass="a"
-                      onClick={this.handleClickShowMore}
-                    >
-                      <FormattedMessage
-                        id="shown_more"
-                        defaultMessage={`${
-                          !this.state.showMore ? "Show more" : "Hide"
-                        }`}
-                      />
-                    </Col>
-                  </Row>
-                )}
-              </Panel.Body>
-            ) : (
-              <Panel.Body>
+            <Panel>
+              <Panel.Heading>
                 <FormattedMessage
-                  id="No_group_services"
-                  defaultMessage="No group services were found"
+                  id="service_packs"
+                  defaultMessage="SERVICE PACKS"
                 />
-              </Panel.Body>
-            )}
-          </Panel>
-        </Col>
-
-        <Col md={4}>
-          <Panel>
-            <Panel.Heading>
-              <FormattedMessage
-                id="service_packs"
-                defaultMessage="SERVICE PACKS"
-              />
-              {!!servicePacks.length &&
-                (!editServicePacks ? (
-                  <Button
-                    onClick={() => this.setState({ editServicePacks: true })}
-                    className={"btn-primary panel-header-btn"}
-                  >
-                    <Glyphicon glyph="glyphicon glyphicon-pencil" />
-                    &nbsp; Edit
-                  </Button>
+              </Panel.Heading>
+              <Panel.Body>
+                {this.props.servicePacks.length ? (
+                  <LicensesPanel
+                    licenses={this.props.servicePacks}
+                    showEdit={this.showEditSericePacks}
+                    isEditGroup
+                  />
                 ) : (
-                  <React.Fragment>
-                    <Button
-                      onClick={() =>
-                        this.setState({
-                          servicePacks: this.props.servicePacks,
-                          editServicePacks: false
-                        })
-                      }
-                      className={"btn-danger panel-header-btn"}
-                    >
-                      <Glyphicon glyph="glyphicon glyphicon-ban-circle" />
-                      &nbsp; Cancel
-                    </Button>
-
-                    <Button
-                      onClick={this.updateServicePacks}
-                      className={"btn-success panel-header-btn"}
-                    >
-                      <Glyphicon glyph="glyphicon glyphicon-ok-circle" />
-                      &nbsp; Save
-                    </Button>
-                  </React.Fragment>
-                ))}
-            </Panel.Heading>
-            {servicePacks.length ? (
-              <Panel.Body>
-                <Row>
-                  <Col
-                    mdOffset={5}
-                    md={3}
-                    className={"text-center font-weight-bold"}
-                  >
-                    in use
-                  </Col>
-                  <Col md={3} className={"text-center font-weight-bold"}>
-                    limited to
-                  </Col>
-                </Row>
-                {this.state.servicePacks.map((pack, i) =>
-                  !editServicePacks ? (
-                    <Row key={i}>
-                      <Col md={5} className={"text-left"}>
-                        <FormattedMessage
-                          id="service_packs"
-                          defaultMessage={`${pack.name}:`}
-                        />
-                      </Col>
-                      {!pack.allocated.unlimited &&
-                      pack.allocated.maximum === 0 ? (
-                        <Col md={6}>not authorised</Col>
-                      ) : (
-                        <React.Fragment>
-                          <Col md={3} className={"text-center"}>{`${
-                            pack.inUse ? pack.inUse : 0
-                          }`}</Col>
-                          <Col md={3} className={"text-center"}>{`${
-                            pack.allocated.unlimited
-                              ? String.fromCharCode(INFINITY)
-                              : pack.allocated.maximum
-                          }`}</Col>
-                        </React.Fragment>
-                      )}
-                    </Row>
-                  ) : !editServicePacks ? (
-                    <Row key={i}>
-                      <Col md={5} className={"text-left"}>
-                        <FormattedMessage
-                          id="service_packs"
-                          defaultMessage={`${pack.name}:`}
-                        />
-                      </Col>
-                      {!pack.allocated.unlimited &&
-                      pack.allocated.maximum === 0 ? (
-                        <Col md={6} className={"text-center"}>
-                          not authorised
-                        </Col>
-                      ) : (
-                        <React.Fragment>
-                          <Col md={3} className={"text-center"}>{`${
-                            pack.inUse ? pack.inUse : 0
-                          }`}</Col>
-                          <Col md={3} className={"text-center"}>{`${
-                            pack.allocated.unlimited
-                              ? String.fromCharCode(INFINITY)
-                              : pack.allocated.maximum
-                          }`}</Col>
-                        </React.Fragment>
-                      )}
-                    </Row>
-                  ) : (
-                    <Row key={i}>
-                      <Col md={5} className={"text-left"}>
-                        <FormattedMessage
-                          id="service_packs"
-                          defaultMessage={`${pack.name}:`}
-                        />
-                      </Col>
-                      <Col md={3} className={"text-center"}>{`${
-                        pack.inUse ? pack.inUse : 0
-                      }`}</Col>
-                      <Col md={3} className={"text-center"}>
-                        <EditLicenses
-                          defaultChecked={pack.allocated.unlimited}
-                          index={i}
-                          defaultMaximum={pack.allocated.maximum}
-                          changePacksUnlimeted={
-                            this.changeServicePacksUnlimeted
-                          }
-                          changePacksMaximum={this.changeServicePacksMaximum}
-                        />
-                      </Col>
-                    </Row>
-                  )
+                  <FormattedMessage
+                    id="No_service_packs"
+                    defaultMessage="No service packs were found"
+                  />
+                )}
+                {editServicePacks && (
+                  <SingleEdit
+                    tenantId={this.props.match.params.tenantId}
+                    isEditGroup
+                    isEditPacks
+                    apiRequest={this.props.fetchGetTenantServicePack}
+                    pack={this.props.tenantServicePack}
+                    show={editServicePacks}
+                    title={
+                      <FormattedMessage
+                        id="service_packs"
+                        defaultMessage="SERVICE PACKS"
+                      />
+                    }
+                    onClose={() =>
+                      this.setState({ editServicePacks: false }, () =>
+                        this.fetchData()
+                      )
+                    }
+                    licenseTitle={this.state.servicePacks[indexOfService].name}
+                    allocated={this.state.servicePacks[indexOfService].inUse}
+                    value={
+                      this.state.servicePacks[indexOfService].allocated
+                        .maximum || 0
+                    }
+                    infinity={
+                      this.state.servicePacks[indexOfService].allocated
+                        .unlimited
+                    }
+                    onChangeInfinity={this.changeServicePacksUnlimeted}
+                    onChange={this.changeServicePacksMaximum}
+                    onSave={this.updateServicePacks}
+                  />
                 )}
               </Panel.Body>
-            ) : (
-              <Panel.Body>
-                <FormattedMessage
-                  id="No_service_packs"
-                  defaultMessage="No service packs were found"
-                />
-              </Panel.Body>
-            )}
-          </Panel>
-          <Row className={"flex justify-center"}>
-            <Col>
-              <Button
-                bsStyle="link"
-                onClick={() => this.setState({ showModal: true })}
-              >
-                Edit service pack authorisation
-              </Button>
-            </Col>
+            </Panel>
+            <Button
+              className={"width-100p"}
+              bsStyle="link"
+              onClick={() => this.setState({ showModal: true })}
+            >
+              <FormattedMessage
+                id="edit_service_pack_authorisation"
+                defaultMessage="Edit service pack authorisation"
+              />
+            </Button>
             <ServicePackAuthorisation
               level={"group"}
               isOpen={this.state.showModal}
               handleHide={this.handleHide}
               userServices={this.props.userServices}
             />
-          </Row>
+          </div>
+        </Col>
+        <Col md={7}>
+          <Panel>
+            <Panel.Heading>
+              <FormattedMessage
+                id="group_services"
+                defaultMessage="GROUP SERVICES"
+              />
+            </Panel.Heading>
+            <Panel.Body>
+              {this.props.groupServices.groups &&
+              this.props.groupServices.groups.length ? (
+                <LicensesPanel
+                  licenses={this.props.groupServices.groups}
+                  showHide={this.showHideAdditionalServices}
+                  showEdit={this.showEditGroupServices}
+                  withShowMore
+                />
+              ) : (
+                <FormattedMessage
+                  id="No_service_packs"
+                  defaultMessage="No service packs were found"
+                />
+              )}
+              {editGroupServices && (
+                <SingleEdit
+                  isEditPacks
+                  show={editGroupServices}
+                  title={
+                    <FormattedMessage
+                      id="group_services"
+                      defaultMessage="GROUP SERVICES"
+                    />
+                  }
+                  onClose={() =>
+                    this.setState({ editGroupServices: false }, () =>
+                      this.fetchData()
+                    )
+                  }
+                  licenseTitle={this.state.groupServices[indexOfService].name}
+                  allocated={
+                    this.state.groupServices[indexOfService].currentlyAllocated
+                  }
+                  value={
+                    this.state.groupServices[indexOfService].allocated.maximum
+                  }
+                  infinity={
+                    this.state.groupServices[indexOfService].allocated.unlimited
+                  }
+                  onChangeInfinity={this.changeGroupServicesUnlimeted}
+                  onChange={this.changeGroupServicesMaximum}
+                  onSave={this.updateGroupServices}
+                />
+              )}
+            </Panel.Body>
+          </Panel>
         </Col>
       </Row>
+      //   <Col md={4}>
+      //     <Panel>
+      //       <Panel.Heading>
+      //         <FormattedMessage
+      //           id="group_services"
+      //           defaultMessage="GROUP SERVICES"
+      //         />
+      //         {!editGroupServices ? (
+      //           <Button
+      //             onClick={() => {
+      //               this.setState({ editGroupServices: true });
+      //             }}
+      //             className={"btn-primary panel-header-btn"}
+      //           >
+      //             <Glyphicon glyph="glyphicon glyphicon-pencil" />
+      //             &nbsp; Edit
+      //           </Button>
+      //         ) : (
+      //           <React.Fragment>
+      //             <Button
+      //               onClick={() =>
+      //                 this.setState({
+      //                   editGroupServices: false
+      //                 })
+      //               }
+      //               className={"btn-danger panel-header-btn"}
+      //             >
+      //               <Glyphicon glyph="glyphicon glyphicon-ban-circle" />
+      //               &nbsp; Cancel
+      //             </Button>
+
+      //             <Button
+      //               onClick={this.updateGroupServices}
+      //               className={"btn-success panel-header-btn"}
+      //             >
+      //               <Glyphicon glyph="glyphicon glyphicon-ok-circle" />
+      //               &nbsp; Save
+      //             </Button>
+      //           </React.Fragment>
+      //         )}
+      //       </Panel.Heading>
+
+      //       {groupServices.groups.length ? (
+      //         <Panel.Body>
+      //           <Row>
+      //             <Col
+      //               mdOffset={5}
+      //               md={3}
+      //               className={"text-center font-weight-bold"}
+      //             >
+      //               in use
+      //             </Col>
+      //             <Col md={3} className={"text-center font-weight-bold"}>
+      //               limited to
+      //             </Col>
+      //           </Row>
+      //           {this.state.groupServices.map((pack, i) =>
+      //             !this.state.showMore && !editGroupServices ? (
+      //               i <= groupServices.countShown - 1 ? (
+      //                 <Row key={i}>
+      //                   <Col md={5} className={"text-left"}>
+      //                     <FormattedMessage
+      //                       id="service_packs"
+      //                       defaultMessage={`${pack.name}:`}
+      //                     />
+      //                   </Col>
+      //                   {!pack.allocated.unlimited &&
+      //                   pack.allocated.maximum === 0 ? (
+      //                     <Col md={6}>not authorised</Col>
+      //                   ) : (
+      //                     <React.Fragment>
+      //                       <Col md={3} className={"text-center"}>{`${
+      //                         pack.inUse ? pack.inUse : 0
+      //                       }`}</Col>
+      //                       <Col md={3} className={"text-center"}>{`${
+      //                         pack.allocated.unlimited
+      //                           ? String.fromCharCode(INFINITY)
+      //                           : pack.allocated.maximum
+      //                       }`}</Col>
+      //                     </React.Fragment>
+      //                   )}
+      //                 </Row>
+      //               ) : null
+      //             ) : !editGroupServices ? (
+      //               <Row key={i}>
+      //                 <Col md={5} className={"text-left"}>
+      //                   <FormattedMessage
+      //                     id="service_packs"
+      //                     defaultMessage={`${pack.name}:`}
+      //                   />
+      //                 </Col>
+      //                 {!pack.allocated.unlimited &&
+      //                 pack.allocated.maximum === 0 ? (
+      //                   <Col md={6} className={"text-center"}>
+      //                     not authorised
+      //                   </Col>
+      //                 ) : (
+      //                   <React.Fragment>
+      //                     <Col md={3} className={"text-center"}>{`${
+      //                       pack.inUse ? pack.inUse : 0
+      //                     }`}</Col>
+      //                     <Col md={3} className={"text-center"}>{`${
+      //                       pack.allocated.unlimited
+      //                         ? String.fromCharCode(INFINITY)
+      //                         : pack.allocated.maximum
+      //                     }`}</Col>
+      //                   </React.Fragment>
+      //                 )}
+      //               </Row>
+      //             ) : (
+      //               <Row key={i}>
+      //                 <Col md={5} className={"text-left"}>
+      //                   <FormattedMessage
+      //                     id="service_packs"
+      //                     defaultMessage={`${pack.name}:`}
+      //                   />
+      //                 </Col>
+      //                 <Col md={3} className={"text-center"}>{`${
+      //                   pack.inUse ? pack.inUse : 0
+      //                 }`}</Col>
+      //                 <Col md={3} className={"text-center"}>
+      //                   <EditLicenses
+      //                     defaultChecked={pack.allocated.unlimited}
+      //                     index={i}
+      //                     defaultMaximum={pack.allocated.maximum}
+      //                     changePacksUnlimeted={
+      //                       this.changeGroupServicesUnlimeted
+      //                     }
+      //                     changePacksMaximum={this.changeGroupServicesMaximum}
+      //                   />
+      //                 </Col>
+      //               </Row>
+      //             )
+      //           )}
+      //           {!editGroupServices && (
+      //             <Row>
+      //               <Col
+      //                 md={8}
+      //                 className={"cursor-pointer"}
+      //                 componentClass="a"
+      //                 onClick={this.handleClickShowMore}
+      //               >
+      //                 <FormattedMessage
+      //                   id="shown_more"
+      //                   defaultMessage={`${
+      //                     !this.state.showMore ? "Show more" : "Hide"
+      //                   }`}
+      //                 />
+      //               </Col>
+      //             </Row>
+      //           )}
+      //         </Panel.Body>
+      //       ) : (
+      //         <Panel.Body>
+      //           <FormattedMessage
+      //             id="No_group_services"
+      //             defaultMessage="No group services were found"
+      //           />
+      //         </Panel.Body>
+      //       )}
+      //     </Panel>
+      //   </Col>
+
+      // <Row className={"flex justify-center"}>
+      //   <Col>
+      //     <Button
+      //       bsStyle="link"
+      //       onClick={() => this.setState({ showModal: true })}
+      //     >
+      //       Edit service pack authorisation
+      //     </Button>
+      //   </Col>
+      //   <ServicePackAuthorisation
+      //     level={"group"}
+      //     isOpen={this.state.showModal}
+      //     handleHide={this.handleHide}
+      //     userServices={this.props.userServices}
+      //   />
+      // </Row>
+      //   </Col>
+      // </Row>
     );
   }
+
+  showEditSericePacks = index => {
+    this.setState({ indexOfService: index }, () =>
+      this.setState({ editServicePacks: true })
+    );
+  };
+
+  changeMaxBurstingValue = value => {
+    this.setState(prevState => ({
+      trunkGroups: {
+        ...prevState.trunkGroups,
+        burstingMaxActiveCalls: {
+          ...prevState.trunkGroups.burstingMaxActiveCalls,
+          maximum: Number(value)
+        }
+      }
+    }));
+  };
+
+  changeMaxBurstingInfinity = () => {
+    this.setState(prevState => ({
+      trunkGroups: {
+        ...prevState.trunkGroups,
+        burstingMaxActiveCalls: {
+          ...prevState.trunkGroups.burstingMaxActiveCalls,
+          unlimited: !prevState.trunkGroups.burstingMaxActiveCalls.unlimited
+        }
+      }
+    }));
+  };
+
+  changeTrunkingLicenses = value => {
+    this.setState(prevState => ({
+      trunkGroups: {
+        ...prevState.trunkGroups,
+        maxActiveCalls: Number(value)
+      }
+    }));
+  };
+
+  showHideAdditionalServices = status => {
+    this.setState({ showMore: status });
+    this.props.showHideAdditionalServicesTenant(status);
+  };
 
   handleHide = () => {
     this.setState({ showModal: false }, () => this.fetchData());
@@ -693,34 +706,34 @@ export class Licenses extends Component {
       .then(() => this.setState({ editServicePacks: false }));
   };
 
-  changeServicePacksUnlimeted = (i, checked) => {
+  changeServicePacksUnlimeted = checked => {
     this.setState(prevState => ({
       servicePacks: [
-        ...prevState.servicePacks.slice(0, i),
+        ...prevState.servicePacks.slice(0, this.state.indexOfService),
         {
-          ...prevState.servicePacks[i],
+          ...prevState.servicePacks[this.state.indexOfService],
           allocated: {
-            ...prevState.servicePacks[i].allocated,
+            ...prevState.servicePacks[this.state.indexOfService].allocated,
             unlimited: checked
           }
         },
-        ...prevState.servicePacks.slice(i + 1)
+        ...prevState.servicePacks.slice(this.state.indexOfService + 1)
       ]
     }));
   };
 
-  changeServicePacksMaximum = (i, max) => {
+  changeServicePacksMaximum = max => {
     this.setState(prevState => ({
       servicePacks: [
-        ...prevState.servicePacks.slice(0, i),
+        ...prevState.servicePacks.slice(0, this.state.indexOfService),
         {
-          ...prevState.servicePacks[i],
+          ...prevState.servicePacks[this.state.indexOfService],
           allocated: {
-            ...prevState.servicePacks[i].allocated,
-            maximum: max
+            ...prevState.servicePacks[this.state.indexOfService].allocated,
+            maximum: Number(max)
           }
         },
-        ...prevState.servicePacks.slice(i + 1)
+        ...prevState.servicePacks.slice(this.state.indexOfService + 1)
       ]
     }));
   };
@@ -808,7 +821,9 @@ export class Licenses extends Component {
         this.props.match.params.groupId,
         data
       )
-      .then(() => this.setState({ editNumberOfUsers: false }));
+      .then(() =>
+        this.setState({ editNumberOfUsers: false, editUserLimit: false })
+      );
   };
 
   updateTrunkCapacity = () => {
@@ -823,7 +838,9 @@ export class Licenses extends Component {
         this.props.match.params.groupId,
         data
       )
-      .then(this.setState({ editTrunkCapacity: false }));
+      .then(
+        this.setState({ editTrunkLicenses: false, editMaxBursting: false })
+      );
   };
 }
 
@@ -834,7 +851,8 @@ const mapStateToProps = state => ({
   trunkGroups: state.trunkGroups,
   groupTrunkErrorMassage: state.groupTrunkErrorMassage,
   userServices: state.userServicesGroup,
-  fetchTrunksGroupsFail: state.fetchTrunksGroupsFail
+  fetchTrunksGroupsFail: state.fetchTrunksGroupsFail,
+  tenantServicePack: state.tenantServicePack
 });
 
 const mapDispatchToProps = {
@@ -845,7 +863,8 @@ const mapDispatchToProps = {
   clearErrorMassage,
   fetchPutUpdateServicePacksByGroupId,
   fetchPutUpdateGroupServicesByGroupId,
-  fetchPostAddGroupServicesToGroup
+  fetchPostAddGroupServicesToGroup,
+  fetchGetTenantServicePack
 };
 
 export default withRouter(

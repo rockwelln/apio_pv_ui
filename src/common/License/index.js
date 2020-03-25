@@ -12,15 +12,19 @@ const INFINITY = 8734;
 
 const Licenses = props => {
   const [showMore, setShowMore] = useState(false);
-  const { licenses, withShowMore, showHide, showEdit } = props;
+  const { licenses, withShowMore, showHide, showEdit, isEditGroup } = props;
   return (
     <React.Fragment>
       <Table responsive>
         <thead>
           <tr>
             <th className={"licenses-th"} />
-            <th className={"text-right vertical-middle licenses-th"}>
-              <FormattedMessage id="allocated" defaultMessage="allocated" />
+            <th className={"text-right vertical-middle licenses-th nowrap"}>
+              {isEditGroup ? (
+                <FormattedMessage id="in_use" defaultMessage="in use" />
+              ) : (
+                <FormattedMessage id="allocated" defaultMessage="allocated" />
+              )}
             </th>
             <th className={"text-right vertical-middle licenses-th"}>
               <FormattedMessage id="limited" defaultMessage="limited" />

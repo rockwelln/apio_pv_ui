@@ -13,6 +13,7 @@ const initialState = {
   servicePacks: [],
   groupServices: [],
   tenantServicePacks: [],
+  tenantServicePack: { allocated: { unlimited: undefined } },
   devices: [],
   user: {},
   trunkGroups: {},
@@ -543,6 +544,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         trunkGroupsByTenant: action.data.tenantTrunks
+      };
+    }
+    case actionType.GET_TENANT_SERVICE_PACK: {
+      return {
+        ...state,
+        tenantServicePack: action.data
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN: {

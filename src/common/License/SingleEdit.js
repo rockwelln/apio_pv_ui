@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Modal from "react-bootstrap/lib/Modal";
 import Table from "react-bootstrap/lib/Table";
@@ -25,8 +25,40 @@ const SingleEdit = props => {
     licenseTitle,
     isEditPacks,
     isEditTunkLicenses,
-    allocated
+    allocated,
+    isEditGroup,
+    isEditUserLimit,
+    tenantId,
+    apiRequest,
+    pack
   } = props;
+
+  const [groupServiceMax, setGroupServiceMax] = useState(9999);
+  const [groupServiceMin, setGroupServiceMin] = useState(0);
+
+  console.log(pack);
+
+  useEffect(() => {
+    if (isEditPacks && isEditGroup) {
+      setGroupServiceMin(allocated);
+      console.log(value, pack.allocated.maximum, pack.currentlyAllocated);
+      if (pack.allocated.unlimited) {
+        console.log("if");
+        return;
+      } else {
+        console.log("else");
+        console.log(value, pack.allocated.maximum, pack.currentlyAllocated);
+        const max = value + pack.allocated.maximum - pack.currentlyAllocated;
+        console.log(max);
+        setGroupServiceMax(max);
+      }
+    }
+  }, [pack]);
+
+  useEffect(() => {
+    isEditPacks && isEditGroup && apiRequest(tenantId, licenseTitle);
+  }, []);
+
   return (
     <Modal show={show} onHide={onClose}>
       <Modal.Header closeButton>
@@ -39,12 +71,15 @@ const SingleEdit = props => {
               <tr>
                 <th width="50%" className={"licenses-th"} />
                 <th className={"licenses-th text-right"}>
-                  {!isEditMaxBursting && (
-                    <FormattedMessage
-                      id="allocated"
-                      defaultMessage="allocated"
-                    />
-                  )}
+                  {!isEditMaxBursting &&
+                    (isEditGroup ? (
+                      <FormattedMessage id="in_use" defaultMessage="in use" />
+                    ) : (
+                      <FormattedMessage
+                        id="allocated"
+                        defaultMessage="allocated"
+                      />
+                    ))}
                 </th>
                 <th
                   className={`licenses-th ${
@@ -55,7 +90,7 @@ const SingleEdit = props => {
                     <FormattedMessage id="limited" defaultMessage="limited" />
                   )}
                 </th>
-                {!isEditTunkLicenses && (
+                {!isEditTunkLicenses && !isEditUserLimit && (
                   <th className={"text-center licenses-th"}>
                     {String.fromCharCode(INFINITY)}
                   </th>
@@ -67,12 +102,13 @@ const SingleEdit = props => {
             <tr>
               <td className={"vertical-middle"}>{licenseTitle}</td>
               <td className={"text-right vertical-middle"}>
-                {isEditPacks && allocated}
+                {(isEditPacks || isEditUserLimit) && allocated}
               </td>
               <td className={`${isEditPacks ? "text-center" : "text-right"}`}>
                 <FormControl
                   type="number"
-                  min={0}
+                  min={groupServiceMin}
+                  max={groupServiceMax}
                   className={"width-8 display-table-cell"}
                   disabled={infinity}
                   value={value || 0}
@@ -82,7 +118,7 @@ const SingleEdit = props => {
                   }}
                 />
               </td>
-              {!isEditTunkLicenses && (
+              {!isEditTunkLicenses && !isEditUserLimit && (
                 <td className={"text-center"}>
                   <FormControl
                     className={"infinity-checkbox"}

@@ -225,6 +225,11 @@ export const getTrunkGroupByTenant = data => ({
   data
 });
 
+export const getTenantServicePack = data => ({
+  type: actionType.GET_TENANT_SERVICE_PACK,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -1342,6 +1347,24 @@ export function fetchGetTrunkGroupByTenant(tenantId) {
   };
 }
 
+export function fetchGetTenantServicePack(tenantId, servicePackName) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/service_packs/${servicePackName}/`
+    )
+      .then(data => dispatch(getTenantServicePack(data)))
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-service-pack-failed"
+            defaultMessage="Failed to fetch service pack!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
 export function fetchPostCreateGroupAdmin(tenantId, groupId, data) {
   return function(dispatch) {
     return fetch_post(
@@ -1737,7 +1760,13 @@ export function fetchPutUpdateTrunkByGroupId(tenantId, groupId, data) {
       .then(data => dispatch(putUpdateTrunkByGroupId(data)))
       .catch(error => {
         if (error.response && error.response.status === 400) {
-          return dispatch(putUpdateTrunkByGroupIdError(error));
+          NotificationsManager.error(
+            <FormattedMessage
+              id="update-trunk-failed"
+              defaultMessage="Failed to update trunk!"
+            />,
+            error.errors[0].details.errors["0"].summary
+          );
         } else {
           NotificationsManager.error(
             <FormattedMessage
