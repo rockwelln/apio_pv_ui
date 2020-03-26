@@ -264,3 +264,7 @@ textarea {
   margin: 10px auto auto auto !important;
   margin-top: 10px;
 }
+
+.align-baseline {
+  align-items: baseline;
+}

@@ -235,6 +235,11 @@ export const getTenantGroupService = data => ({
   data
 });
 
+export const getTrunkGroupTemplate = data => ({
+  type: actionType.GET_TRUNK_GROUP_TEMPLATES,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -1388,6 +1393,24 @@ export function fetchGetTenantGroupService(tenantId, groupServiceName) {
           <FormattedMessage
             id="fetch-group-service-failed"
             defaultMessage="Failed to fetch group service!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchGetTrunkGroupTemplate() {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/configs/templates/categories/trunk_group/`
+    )
+      .then(data => dispatch(getTrunkGroupTemplate(data)))
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-trunk-group-templates-failed"
+            defaultMessage="Failed to fetch trunk group templates!"
           />,
           error.message
         );

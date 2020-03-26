@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 
 import Modal from "react-bootstrap/lib/Modal";
 import Table from "react-bootstrap/lib/Table";
-import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Button from "react-bootstrap/lib/Button";
 import FormControl from "react-bootstrap/lib/FormControl";
-import Checkbox from "react-bootstrap/lib/Checkbox";
 
 import { FormattedMessage } from "react-intl";
 

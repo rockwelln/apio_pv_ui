@@ -15,8 +15,6 @@ import ServicePackAuthorisation from "../../../ServicePackAuthorisation";
 import LicensesPanel from "../../../../common/License";
 import SingleEdit from "../../../../common/License/SingleEdit";
 
-import { removeEmpty } from "../../../remuveEmptyInObject";
-
 import {
   fetchGetLicensesByGroupId,
   fetchGetTrunkByGroupID,
