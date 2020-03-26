@@ -33,24 +33,17 @@ const SingleEdit = props => {
     pack
   } = props;
 
-  const [groupServiceMax, setGroupServiceMax] = useState(9999);
+  const [groupServiceMax, setGroupServiceMax] = useState();
   const [groupServiceMin, setGroupServiceMin] = useState(0);
-
-  console.log(pack);
 
   useEffect(() => {
     if (isEditPacks && isEditGroup) {
       setGroupServiceMin(allocated);
-      console.log(value, pack.allocated.maximum, pack.currentlyAllocated);
       if (pack.allocated.unlimited) {
-        console.log("if");
         return;
       } else {
-        console.log("else");
-        console.log(value, pack.allocated.maximum, pack.currentlyAllocated);
         const max = value + pack.allocated.maximum - pack.currentlyAllocated;
-        console.log(max);
-        setGroupServiceMax(max);
+        setGroupServiceMax(isNaN(max) ? undefined : max);
       }
     }
   }, [pack]);

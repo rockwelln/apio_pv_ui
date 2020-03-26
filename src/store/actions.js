@@ -230,6 +230,11 @@ export const getTenantServicePack = data => ({
   data
 });
 
+export const getTenantGroupService = data => ({
+  type: actionType.GET_TENANT_GROUP_SERIVCE,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -580,6 +585,11 @@ export const trunkNotAuthorisedTenant = () => ({
 
 export const showHideAdditionalServicesTenant = data => ({
   type: actionType.SHOW_HIDE_ADDITIONAL_SERVICES_TENANT,
+  data
+});
+
+export const showHideAdditionalServiceGroup = data => ({
+  type: actionType.SHOW_HIDE_ADDITIONAL_SERVICES_GROUP,
   data
 });
 
@@ -1358,6 +1368,26 @@ export function fetchGetTenantServicePack(tenantId, servicePackName) {
           <FormattedMessage
             id="fetch-service-pack-failed"
             defaultMessage="Failed to fetch service pack!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchGetTenantGroupService(tenantId, groupServiceName) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/licenses/`
+    )
+      .then(data =>
+        dispatch(getTenantGroupService({ ...data, groupServiceName }))
+      )
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-group-service-failed"
+            defaultMessage="Failed to fetch group service!"
           />,
           error.message
         );

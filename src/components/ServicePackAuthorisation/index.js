@@ -162,7 +162,7 @@ export class ServicePackAuthorisation extends Component {
         this.props
           .fetchPutUpdateServicePacksByGroupId(
             this.props.match.params.tenantId,
-            this.props.match.params.groupId,
+            this.props.groupId,
             data
           )
           .then(res => {
