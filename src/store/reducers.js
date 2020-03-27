@@ -368,7 +368,8 @@ function mainReducer(state = initialState, action) {
     case actionType.GET_TRUNKS_GROUPS_BY_GROUP: {
       return {
         ...state,
-        trunksGroups: action.data.trunks
+        trunksGroups: action.data.trunks,
+        trunkGroupNotAuthorisedGroup: true
       };
     }
     case actionType.GET_TRUNK_GROUP_BY_NAME: {
