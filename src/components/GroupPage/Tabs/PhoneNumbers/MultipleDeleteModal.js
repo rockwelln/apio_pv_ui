@@ -2,15 +2,15 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
-import { fetchDeletePhoneFromGroup } from "../../../../store/actions";
-
 import Modal from "react-bootstrap/lib/Modal";
 import Alert from "react-bootstrap/lib/Alert";
 import Button from "react-bootstrap/lib/Button";
 
-import { FormattedMessage } from "react-intl";
+import { fetchDeletePhoneFromGroup } from "../../../../store/actions";
 
 import { getRange } from "../../../expandRangeOfPhoneNumber";
+
+import { FormattedMessage } from "react-intl";
 
 class DeleteModal extends Component {
   constructor(props) {
@@ -19,18 +19,19 @@ class DeleteModal extends Component {
     this.onDelete = this.onDelete.bind(this);
   }
 
-  onDelete(rangeStart) {
+  onDelete() {
     const { onClose } = this.props;
     this.setState({ deleting: true });
+
     const allNumbers = [];
 
-    if (this.props.number.rangeEnd) {
-      const expandedRange = getRange(
-        this.props.number.rangeStart,
-        this.props.number.rangeEnd
-      );
-      allNumbers.push(...expandedRange);
-    } else allNumbers.push(this.props.number.rangeStart);
+    this.props.rangeStart.map(number => {
+      if (number.includes(" - ")) {
+        const range = number.split(" - ");
+        const expandedRange = getRange(range[0], range[1]);
+        allNumbers.push(...expandedRange);
+      } else allNumbers.push(number);
+    });
 
     const data = {
       numbers: allNumbers.map(number => ({ phoneNumber: number }))
@@ -51,7 +52,6 @@ class DeleteModal extends Component {
   render() {
     const { rangeStart, show, onClose } = this.props;
     const { deleting } = this.state;
-
     return (
       <Modal
         show={show}
@@ -85,7 +85,7 @@ class DeleteModal extends Component {
         </Modal.Body>
         <Modal.Footer>
           <Button
-            onClick={() => this.onDelete(rangeStart)}
+            onClick={() => this.onDelete()}
             bsStyle="danger"
             disabled={rangeStart.length === 0}
           >

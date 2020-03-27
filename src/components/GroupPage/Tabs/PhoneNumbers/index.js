@@ -18,7 +18,7 @@ import { fetchGetPhoneNumbersByGroupId } from "../../../../store/actions";
 
 import Loading from "../../../../common/Loading";
 import PhoneNumber from "./PhoneNumber";
-import DeleteModal from "./DeleteModal";
+import DeleteModal from "./MultipleDeleteModal";
 import { countsPerPages } from "../../../../constants";
 
 import "./styles.css";
@@ -149,12 +149,12 @@ export class PhoneNumbersTab extends Component {
                       rangeStart={numbersForDelete.map(
                         number => number.phoneNumbers || number.phoneNumber
                       )}
-                      show={showDelete}
+                      tenantId={this.props.tenantId}
+                      show={this.state.showDelete}
                       onClose={e => {
-                        onReload && onReload(numbersForDelete);
+                        this.fetchNumbers();
                         this.setState({ showDelete: false });
                       }}
-                      {...this.props}
                     />
                   </div>
                   <div className={"flex align-items-center"}>
