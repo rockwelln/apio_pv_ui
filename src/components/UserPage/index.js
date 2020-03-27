@@ -19,7 +19,7 @@ const GroupComponent = () => {
         <Col md={2}>
           <Sidebar />
         </Col>
-        <Col md={10} className={"border-left padding-left-3"}>
+        <Col md={10} className={"padding-left-3"}>
           <Row>
             <Breadcrumb />
           </Row>

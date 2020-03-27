@@ -11,6 +11,7 @@ import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import HelpBlock from "react-bootstrap/lib/HelpBlock";
 import { Form } from "react-bootstrap";
+import Select from "react-select";
 
 import Loading from "../../../../common/Loading";
 import {
@@ -22,8 +23,8 @@ import {
 class PhoneNumber extends Component {
   state = {
     isLoadingUser: true,
-    phoneNumber: "",
-    cliPhoneNumber: "",
+    phoneNumber: { value: "", label: "none" },
+    cliPhoneNumber: { value: "", label: "none" },
     extension: "",
     updateMassage: ""
   };
@@ -37,8 +38,18 @@ class PhoneNumber extends Component {
       )
       .then(() =>
         this.setState({
-          phoneNumber: this.props.user.phoneNumber,
-          cliPhoneNumber: this.props.user.cliPhoneNumber,
+          phoneNumber: this.props.user.phoneNumber
+            ? {
+                value: this.props.user.phoneNumber,
+                label: this.props.user.phoneNumber
+              }
+            : { value: "", label: "none" },
+          cliPhoneNumber: this.props.user.cliPhoneNumber
+            ? {
+                value: this.props.user.cliPhoneNumber,
+                label: this.props.user.cliPhoneNumber
+              }
+            : { value: "", label: "none" },
           extension: this.props.user.extension,
           isLoadingUser: false
         })
@@ -67,6 +78,8 @@ class PhoneNumber extends Component {
       return <Loading />;
     }
 
+    const phoneNumbers = this.getPhonenumbers();
+
     return (
       <Col md={8}>
         <Form horizontal className={"margin-1"}>
@@ -77,35 +90,14 @@ class PhoneNumber extends Component {
                 Phone Number
               </Col>
               <Col md={9}>
-                <FormControl
-                  componentClass="select"
-                  placeholder="Phone Number"
+                <Select
+                  className={"width-100p"}
                   defaultValue={phoneNumber}
-                  onChange={e =>
-                    this.setState({
-                      phoneNumber: e.target.value
-                    })
+                  onChange={selected =>
+                    this.setState({ phoneNumber: selected })
                   }
-                >
-                  <option key={"none"} value="">
-                    none
-                  </option>
-                  {phoneNumber && (
-                    <option key={"phoneNumber"} value={phoneNumber}>
-                      {phoneNumber}
-                    </option>
-                  )}
-                  {cliPhoneNumber && (
-                    <option key={"cliPhoneNumber"} value={cliPhoneNumber}>
-                      {cliPhoneNumber}
-                    </option>
-                  )}
-                  {this.props.availableNumbers.map((number, i) => (
-                    <option key={i} value={number}>
-                      {number}
-                    </option>
-                  ))}
-                </FormControl>
+                  options={phoneNumbers}
+                />
               </Col>
             </FormGroup>
             <FormGroup controlId="cliPhoneNumber">
@@ -113,35 +105,14 @@ class PhoneNumber extends Component {
                 CLI for outgoing calls
               </Col>
               <Col md={9}>
-                <FormControl
-                  componentClass="select"
-                  placeholder="CLI for outgoing calls"
+                <Select
+                  className={"width-100p"}
                   defaultValue={cliPhoneNumber}
-                  onChange={e =>
-                    this.setState({
-                      cliPhoneNumber: e.target.value
-                    })
+                  onChange={selected =>
+                    this.setState({ cliPhoneNumber: selected })
                   }
-                >
-                  <option key={"none"} value="">
-                    none
-                  </option>
-                  {cliPhoneNumber && (
-                    <option key={"cliPhoneNumber"} value={cliPhoneNumber}>
-                      {cliPhoneNumber}
-                    </option>
-                  )}
-                  {phoneNumber && (
-                    <option key={"phoneNumber"} value={phoneNumber}>
-                      {phoneNumber}
-                    </option>
-                  )}
-                  {this.props.availableNumbers.map((number, i) => (
-                    <option key={i} value={number}>
-                      {number}
-                    </option>
-                  ))}
-                </FormControl>
+                  options={phoneNumbers}
+                />
               </Col>
             </FormGroup>
             <FormGroup controlId="extension">
@@ -191,13 +162,42 @@ class PhoneNumber extends Component {
     );
   }
 
+  getPhonenumbers = () => {
+    const { phoneNumber, cliPhoneNumber } = this.state;
+    const phoneNumbers = [];
+    const availableNumbers = [...this.props.availableNumbers];
+    phoneNumbers.push({ value: "", label: "none" });
+    if (phoneNumber.value) {
+      if (~availableNumbers.indexOf(phoneNumber.value)) {
+        availableNumbers.splice(availableNumbers.indexOf(phoneNumber.value), 1);
+      }
+      phoneNumbers.push(phoneNumber);
+    }
+    if (cliPhoneNumber.value) {
+      if (~availableNumbers.indexOf(cliPhoneNumber.value)) {
+        availableNumbers.splice(
+          availableNumbers.indexOf(cliPhoneNumber.value),
+          1
+        );
+      }
+      phoneNumbers.push(cliPhoneNumber);
+    }
+    return [
+      ...phoneNumbers,
+      ...availableNumbers.map(number => ({
+        value: number,
+        label: number
+      }))
+    ];
+  };
+
   updateUser = e => {
     e.preventDefault();
     const { phoneNumber, cliPhoneNumber, extension } = this.state;
 
     const data = {
-      phoneNumber,
-      cliPhoneNumber,
+      phoneNumber: phoneNumber.value,
+      cliPhoneNumber: cliPhoneNumber.value,
       extension
     };
 
