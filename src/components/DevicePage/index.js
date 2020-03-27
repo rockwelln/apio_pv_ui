@@ -474,7 +474,7 @@ export class DevicePage extends Component {
         this.props.deviceName,
         clearData
       )
-      .then(() => this.props.handleHide());
+      .then(res => res === "success" && this.props.handleHide());
   };
   validateMacAddress = e => {
     let regDots = /^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$/;

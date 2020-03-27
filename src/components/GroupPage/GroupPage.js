@@ -15,7 +15,11 @@ import Devices from "./Tabs/Devices";
 import Admins from "./Tabs/Admins";
 import TrunksGroup from "./Tabs/TrunksGroup";
 
-import { fetchGetTenantById, fetchGetGroupById } from "../../store/actions";
+import {
+  fetchGetTenantById,
+  fetchGetGroupById,
+  fetchGetTrunksGroupsByGroup
+} from "../../store/actions";
 
 import DeleteModal from "./DeleteModal";
 
@@ -40,6 +44,10 @@ class TenantPage extends Component {
         this.props.match.params.groupId
       )
       .then(() => this.setState({ isLoadingGroup: false }));
+    this.props.fetchGetTrunksGroupsByGroup(
+      this.props.match.params.tenantId,
+      this.props.match.params.groupId
+    );
   };
 
   componentDidMount() {
@@ -135,7 +143,8 @@ class TenantPage extends Component {
 
 const mapDispatchToProps = {
   fetchGetTenantById,
-  fetchGetGroupById
+  fetchGetGroupById,
+  fetchGetTrunksGroupsByGroup
 };
 
 const mapStateToProps = state => ({

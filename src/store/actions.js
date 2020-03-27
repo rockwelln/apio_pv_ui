@@ -2071,6 +2071,7 @@ export function fetchPutUpdateDevice(tenantId, groupId, deviceName, data) {
           />,
           "Updated"
         );
+        return "success";
       })
       .catch(error =>
         NotificationsManager.error(

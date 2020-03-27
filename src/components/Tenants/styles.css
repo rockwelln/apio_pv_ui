@@ -268,3 +268,13 @@ textarea {
 .align-baseline {
   align-items: baseline;
 }
+
+.nav-tabs {
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: -webkit-box;
+  display: -moz-box;
+}
+.nav-tabs > li {
+  float: none;
+}
