@@ -116,7 +116,8 @@ const initialState = {
   userServicesTenant: [],
   isAuthorisedTrunkTenant: true,
   trunkGroupsByTenant: [],
-  trunkGroupsTemplates: []
+  trunkGroupsTemplates: [],
+  trunkGroupNotAuthorisedGroup: true
 };
 
 function mainReducer(state = initialState, action) {
@@ -1161,6 +1162,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         groupServices: { ...state.groupServices, groups: newGroupServices }
+      };
+    }
+    case actionType.TRUNK_NOT_AUTHORISED_GROUP: {
+      return {
+        ...state,
+        trunkGroupNotAuthorisedGroup: false
       };
     }
     default:

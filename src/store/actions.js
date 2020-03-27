@@ -598,6 +598,10 @@ export const showHideAdditionalServiceGroup = data => ({
   data
 });
 
+export const trunkNotAuthorisedGroup = () => ({
+  type: actionType.TRUNK_NOT_AUTHORISED_GROUP
+});
+
 export function fetchGetTenants(cancelLoad) {
   return function(dispatch) {
     return fetch_get(`${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/`)
@@ -1029,22 +1033,26 @@ export function fetchGetUsersByTrunkGroup(tenantId, groupId, trunkGroupName) {
       );
   };
 }
-
+/////////
 export function fetchGetTrunksGroupsByGroup(tenantId, groupId) {
   return function(dispatch) {
     return fetch_get(
       `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/services/trunk_groups/`
     )
       .then(data => dispatch(getTrunksGroupsByGroup(data)))
-      .catch(error =>
+      .catch(error => {
+        if (error.response.status === 404) {
+          dispatch(trunkNotAuthorisedGroup());
+          return;
+        }
         NotificationsManager.error(
           <FormattedMessage
             id="fetch-trunk-groups-failed"
             defaultMessage="Failed to fetch trunk groups!"
           />,
           error.message
-        )
-      );
+        );
+      });
   };
 }
 
