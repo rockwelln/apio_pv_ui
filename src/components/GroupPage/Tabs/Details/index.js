@@ -21,18 +21,7 @@ import {
 class Details extends Component {
   state = {
     group: [],
-    groupName: "",
-    defaultDomain: "",
     isLoading: true,
-    addressInformation: {
-      addressLine1: "",
-      addressLine2: "",
-      city: "",
-      country: "",
-      postalCode: "",
-      state: "",
-      stateDisplayName: ""
-    },
     updateMassage: ""
   };
 
@@ -45,9 +34,6 @@ class Details extends Component {
       .then(() =>
         this.setState({
           group: this.props.group,
-          addressInformation: this.props.group.addressInformation
-            ? this.props.group.addressInformation
-            : this.state.addressInformation,
           isLoading: false
         })
       );
@@ -58,7 +44,7 @@ class Details extends Component {
   }
 
   render() {
-    const { isLoading, group, addressInformation, updateMassage } = this.state;
+    const { isLoading, group, updateMassage } = this.state;
 
     if (isLoading) {
       return <Loading />;
@@ -90,9 +76,11 @@ class Details extends Component {
                 <FormControl
                   type="text"
                   placeholder="Group name"
-                  defaultValue={group.groupName}
+                  value={group.groupName}
                   onChange={e => {
-                    this.setState({ groupName: e.target.value });
+                    this.setState({
+                      group: { ...this.state.group, groupName: e.target.value }
+                    });
                   }}
                 />
               </Col>
@@ -105,12 +93,15 @@ class Details extends Component {
                 <FormControl
                   type="text"
                   placeholder="Street"
-                  defaultValue={`${addressInformation.addressLine1} ${addressInformation.addressLine2}`}
+                  value={`${group.addressInformation.addressLine1} ${group.addressInformation.addressLine2}`}
                   onChange={e => {
                     this.setState({
-                      addressInformation: {
-                        ...this.state.addressInformation,
-                        addressLine1: e.target.value
+                      group: {
+                        ...this.state.group,
+                        addressInformation: {
+                          ...this.state.addressInformation,
+                          addressLine1: e.target.value
+                        }
                       }
                     });
                   }}
@@ -122,12 +113,15 @@ class Details extends Component {
                 <FormControl
                   type="text"
                   placeholder="ZIP"
-                  defaultValue={addressInformation.postalCode}
+                  value={group.addressInformation.postalCode}
                   onChange={e => {
                     this.setState({
-                      addressInformation: {
-                        ...this.state.addressInformation,
-                        postalCode: e.target.value
+                      group: {
+                        ...this.state.group,
+                        addressInformation: {
+                          ...this.state.addressInformation,
+                          postalCode: e.target.value
+                        }
                       }
                     });
                   }}
@@ -137,12 +131,15 @@ class Details extends Component {
                 <FormControl
                   type="text"
                   placeholder="City"
-                  defaultValue={addressInformation.city}
+                  value={group.addressInformation.city}
                   onChange={e => {
                     this.setState({
-                      addressInformation: {
-                        ...this.state.addressInformation,
-                        city: e.target.value
+                      group: {
+                        ...this.state.group,
+                        addressInformation: {
+                          ...this.state.addressInformation,
+                          city: e.target.value
+                        }
                       }
                     });
                   }}
@@ -152,12 +149,15 @@ class Details extends Component {
                 <FormControl
                   type="text"
                   placeholder="Country"
-                  defaultValue={addressInformation.country}
+                  value={group.addressInformation.country}
                   onChange={e => {
                     this.setState({
-                      addressInformation: {
-                        ...this.state.addressInformation,
-                        country: e.target.value
+                      group: {
+                        ...this.state.group,
+                        addressInformation: {
+                          ...this.state.addressInformation,
+                          country: e.target.value
+                        }
                       }
                     });
                   }}
@@ -172,9 +172,14 @@ class Details extends Component {
                 <FormControl
                   type="text"
                   placeholder="Default Domain"
-                  defaultValue={group.defaultDomain}
+                  value={group.defaultDomain}
                   onChange={e => {
-                    this.setState({ defaultDomain: e.target.value });
+                    this.setState({
+                      group: {
+                        ...this.state.group,
+                        defaultDomain: e.target.value
+                      }
+                    });
                   }}
                 />
               </Col>
@@ -188,7 +193,14 @@ class Details extends Component {
                   type="text"
                   placeholder="Calling Line Id Name"
                   defaultValue={group.cliPhoneNumber}
-                  disabled
+                  onChange={e => {
+                    this.setState({
+                      group: {
+                        ...this.state.group,
+                        cliPhoneNumber: e.target.value
+                      }
+                    });
+                  }}
                 />
               </Col>
             </FormGroup>
@@ -201,7 +213,14 @@ class Details extends Component {
                   type="text"
                   placeholder="Calling Line Id Name"
                   defaultValue={group.cliName}
-                  disabled
+                  onChange={e => {
+                    this.setState({
+                      group: {
+                        ...this.state.group,
+                        cliName: e.target.value
+                      }
+                    });
+                  }}
                 />
               </Col>
             </FormGroup>
@@ -232,10 +251,9 @@ class Details extends Component {
   }
 
   updateGroupDetails = () => {
-    const { addressInformation, groupName } = this.state;
+    const { group } = this.state;
     const data = {
-      groupName,
-      addressInformation
+      ...group
     };
     this.setState({ updateMassage: "Loading..." }, () =>
       this.props
