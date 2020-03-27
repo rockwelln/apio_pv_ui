@@ -9,13 +9,15 @@ import FormControl from "react-bootstrap/lib/FormControl";
 import Button from "react-bootstrap/lib/Button";
 
 import { fetchPutUpdateTrunkGroup } from "../../../../store/actions";
+import DevicePage from "../../../DevicePage";
 
 export class Details extends Component {
   state = {
     pilotUserId: null,
     accessDevice: null,
     disableButton: false,
-    sipAuthenticationPassword: ""
+    sipAuthenticationPassword: "",
+    showDevice: false
   };
 
   componentDidMount() {
@@ -58,9 +60,22 @@ export class Details extends Component {
             <div className={"margin-right-1 flex flex-basis-16"}>
               Access device
             </div>
-            <div>{this.state.accessDevice}</div>
+            <div className={"margin-right-1"}>{this.state.accessDevice}</div>
+            <Button
+              className={"btn-primary"}
+              onClick={() => this.setState({ showDevice: true })}
+            >
+              Edit
+            </Button>
           </Col>
         </Row>
+        {this.state.showDevice && (
+          <DevicePage
+            isOpen={this.state.showDevice}
+            deviceName={this.state.accessDevice}
+            handleHide={() => this.setState({ showDevice: false })}
+          />
+        )}
         {/* <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>

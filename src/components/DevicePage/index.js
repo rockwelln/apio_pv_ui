@@ -428,7 +428,7 @@ export class DevicePage extends Component {
                     }
                   >
                     <Glyphicon glyph="glyphicon glyphicon-ok" />
-                    <FormattedMessage id="create" defaultMessage="Create" />
+                    <FormattedMessage id="create" defaultMessage="Update" />
                   </Button>
                 </div>
               </div>
@@ -467,12 +467,14 @@ export class DevicePage extends Component {
     };
     const clearData = removeEmpty(data);
 
-    this.props.fetchPutUpdateDevice(
-      this.props.match.params.tenantId,
-      this.props.match.params.groupId,
-      this.props.deviceName,
-      clearData
-    );
+    this.props
+      .fetchPutUpdateDevice(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        this.props.deviceName,
+        clearData
+      )
+      .then(() => this.props.handleHide());
   };
   validateMacAddress = e => {
     let regDots = /^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$/;

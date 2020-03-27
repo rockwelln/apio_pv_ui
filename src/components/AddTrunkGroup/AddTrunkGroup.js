@@ -246,6 +246,21 @@ export class AddTrunkGroup extends Component {
               </Radio>
             </Col>
           </Row>
+          {
+            //for map templates
+            <Row className={"margin-top-1"}>
+              {/* <Col mdOffset={3} md={3}>
+                <Radio
+                  name="template"
+                  value={""}
+                  onChange={e => this.setState({ template: e.target.value })}
+                  checked={this.state.template === ""}
+                >
+                  none
+                </Radio>
+              </Col> */}
+            </Row>
+          }
           {/* <Row className={"margin-top-1"}>
             <Col md={3}>Device Name</Col>
             <Col md={3}>
