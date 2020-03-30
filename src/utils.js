@@ -47,16 +47,12 @@ class NotificationsHandler {
     NotificationsHandler.rootRef = ref_;
   }
 
-  error(title, message, extra) {
+  error(title, message) {
     NotificationsHandler.rootRef &&
-      NotificationsHandler.rootRef.current &&
       NotificationsHandler.rootRef.current.addNotification({
         title: title,
         message: message,
-        level: "error",
-        autoDismiss: 0,
-        dismissible: "button",
-        ...extra
+        level: "error"
       });
   }
 
