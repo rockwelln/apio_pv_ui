@@ -117,7 +117,8 @@ const initialState = {
   isAuthorisedTrunkTenant: true,
   trunkGroupsByTenant: [],
   trunkGroupsTemplates: [],
-  trunkGroupNotAuthorisedGroup: true
+  trunkGroupNotAuthorisedGroup: true,
+  trunkGroupTemplate: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -574,6 +575,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         trunkGroupsTemplates: action.data
+      };
+    }
+    case actionType.GET_TRUNK_GROUP_TEMPLATE: {
+      return {
+        ...state,
+        trunkGroupTemplate: action.data
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN: {
