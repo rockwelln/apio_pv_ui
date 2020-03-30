@@ -8,7 +8,6 @@ import FormControl from "react-bootstrap/lib/FormControl";
 import InputGroup from "react-bootstrap/lib/InputGroup";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
-import Checkbox from "react-bootstrap/lib/Checkbox";
 import Pagination from "react-bootstrap/lib/Pagination";
 import Button from "react-bootstrap/lib/Button";
 
@@ -96,16 +95,7 @@ export class PhoneNumbersTab extends Component {
           <React.Fragment>
             <Row>
               <Col md={12}>
-                <div className={"flex space-between indent-top-bottom-1"}>
-                  <div className={"flex align-items-center"}>
-                    <Checkbox
-                      className={"margin-checbox"}
-                      checked={this.state.selectAll}
-                      onChange={this.handleSelectAllClick}
-                    >
-                      (Un)select all shown numbers
-                    </Checkbox>
-                  </div>
+                <div className="flex flex-row flex-end-center indent-top-bottom-1">
                   <div className={"flex align-items-center"}>
                     <div>Item per page</div>
                     <FormControl
@@ -130,8 +120,7 @@ export class PhoneNumbersTab extends Component {
                 <Table hover>
                   <thead>
                     <tr>
-                      <th />
-                      <th>
+                      <th width="40%">
                         <FormattedMessage
                           id="tenant-id"
                           defaultMessage="Range start"
@@ -141,7 +130,7 @@ export class PhoneNumbersTab extends Component {
                           onClick={this.sortByRangeStart}
                         />
                       </th>
-                      <th>
+                      <th width="40%">
                         <FormattedMessage
                           id="name"
                           defaultMessage="Range end"
@@ -151,6 +140,7 @@ export class PhoneNumbersTab extends Component {
                           onClick={this.sortByRangeEnd}
                         />
                       </th>
+                      <th />
                     </tr>
                   </thead>
                   <tbody>
@@ -168,6 +158,7 @@ export class PhoneNumbersTab extends Component {
                             this.props.groupId
                           )
                         }
+                        assignNumbers={this.assignNumbers}
                       />
                     ))}
                   </tbody>
@@ -192,7 +183,7 @@ export class PhoneNumbersTab extends Component {
                     onClick={this.assignNumbers}
                     className={"btn-primary"}
                   >
-                    Add now
+                    Done
                   </Button>
                 </div>
               </div>
@@ -210,30 +201,30 @@ export class PhoneNumbersTab extends Component {
     );
   }
 
-  assignNumbers = () => {
-    const selecetedNumbers = this.state.phoneNumbers.filter(phone => {
-      return !!phone.phoneChecked;
-    });
-    const data = selecetedNumbers.reduce(
-      (accamulator, phone) => {
-        if (!phone.rangeEnd) {
-          accamulator.numbers.push({ phoneNumber: phone.rangeStart });
-        } else {
-          let range = getRange(phone.rangeStart, phone.rangeEnd);
-          range &&
-            range.map(phone =>
-              accamulator.numbers.push({ phoneNumber: phone })
-            );
-        }
-        return accamulator;
-      },
-      { numbers: [] }
-    );
-    this.props
+  assignNumbers = numbersToAssign => {
+    // const selecetedNumbers = this.state.phoneNumbers.filter(phone => {
+    //   return !!phone.phoneChecked;
+    // });
+    // const data = selecetedNumbers.reduce(
+    //   (accamulator, phone) => {
+    //     if (!phone.rangeEnd) {
+    //       accamulator.numbers.push({ phoneNumber: phone.rangeStart });
+    //     } else {
+    //       let range = getRange(phone.rangeStart, phone.rangeEnd);
+    //       range &&
+    //         range.map(phone =>
+    //           accamulator.numbers.push({ phoneNumber: phone })
+    //         );
+    //     }
+    //     return accamulator;
+    //   },
+    //   { numbers: [] }
+    // );
+    return this.props
       .fetchPostAssignPhoneNumbersToGroup(
         this.props.match.params.tenantId,
         this.props.match.params.groupId,
-        data
+        numbersToAssign
       )
       .then(() => this.props.toUpdate());
   };
@@ -331,18 +322,6 @@ export class PhoneNumbersTab extends Component {
         this.pagination()
       );
     }
-  };
-
-  handleSelectAllClick = e => {
-    const isChecked = e.target.checked;
-    const newArr = this.state.phoneNumbers.map(el => ({
-      ...el,
-      phoneChecked: isChecked
-    }));
-    this.setState(
-      { phoneNumbers: newArr, selectAll: !this.state.selectAll },
-      () => this.pagination()
-    );
   };
 
   handleSingleCheckboxClick = index => {
