@@ -34,7 +34,6 @@ export class GroupService extends Component {
   }
 
   render() {
-    ``;
     return (
       <React.Fragment>
         {(this.props.iad.protocolMode === "SIP" ||
