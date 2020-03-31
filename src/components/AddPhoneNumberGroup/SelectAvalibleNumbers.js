@@ -14,7 +14,6 @@ import Button from "react-bootstrap/lib/Button";
 import { FormattedMessage } from "react-intl";
 
 import PhoneNumber from "./PhoneNumber";
-import { getRange } from "../expandRangeOfPhoneNumber";
 import { countsPerPages } from "../../constants";
 
 import { fetchPostAssignPhoneNumbersToGroup } from "../../store/actions";
@@ -179,10 +178,7 @@ export class PhoneNumbersTab extends Component {
             <Row>
               <div className="button-row">
                 <div className="pull-right">
-                  <Button
-                    onClick={this.assignNumbers}
-                    className={"btn-primary"}
-                  >
+                  <Button onClick={this.handleDone} className={"btn-primary"}>
                     Done
                   </Button>
                 </div>
@@ -201,25 +197,13 @@ export class PhoneNumbersTab extends Component {
     );
   }
 
+  handleDone = () => {
+    this.props.history.push(
+      `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}`
+    );
+  };
+
   assignNumbers = numbersToAssign => {
-    // const selecetedNumbers = this.state.phoneNumbers.filter(phone => {
-    //   return !!phone.phoneChecked;
-    // });
-    // const data = selecetedNumbers.reduce(
-    //   (accamulator, phone) => {
-    //     if (!phone.rangeEnd) {
-    //       accamulator.numbers.push({ phoneNumber: phone.rangeStart });
-    //     } else {
-    //       let range = getRange(phone.rangeStart, phone.rangeEnd);
-    //       range &&
-    //         range.map(phone =>
-    //           accamulator.numbers.push({ phoneNumber: phone })
-    //         );
-    //     }
-    //     return accamulator;
-    //   },
-    //   { numbers: [] }
-    // );
     return this.props
       .fetchPostAssignPhoneNumbersToGroup(
         this.props.match.params.tenantId,
