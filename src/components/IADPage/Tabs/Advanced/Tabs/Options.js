@@ -19,11 +19,14 @@ import {
   fetchPutUpdateIAD
 } from "../../../../../store/actions";
 import { removeEmpty } from "../../../../remuveEmptyInObject";
+import RebootWindow from "../../../RebootWindow";
 
 export class Options extends Component {
   state = {
     advanced: {},
-    disabledButton: false
+    disabledButton: false,
+    showRebootDialog: false,
+    data: {}
   };
   componentDidMount() {
     this.setState({
@@ -173,6 +176,11 @@ export class Options extends Component {
             </div>
           </Col>
         </Row>
+        <RebootWindow
+          data={this.state.data}
+          show={this.state.showRebootDialog}
+          onClose={() => this.setState({ showRebootDialog: false })}
+        />
         <Row>
           <Col md={12}>
             <div className="button-row">
@@ -198,22 +206,43 @@ export class Options extends Component {
     const { advanced } = this.state;
     const data = { advanced };
     const clearData = removeEmpty(data);
-    if (Object.keys(clearData).length) {
-      this.setState({ disabledButton: true }, () =>
-        this.props
-          .fetchPutUpdateIAD(
-            this.props.match.params.tenantId,
-            this.props.match.params.groupId,
-            this.props.match.params.iadId,
-            clearData
-          )
-          .then(() => this.setState({ disabledButton: false }))
-      );
-    } else {
-      this.setState({ disabledButton: true }, () =>
-        this.setState({ disabledButton: false })
-      );
+
+    const propsAdvanced = {
+      clock_master: this.props.iad.advanced.clock_master,
+      dual_power: this.props.iad.advanced.dual_power,
+      isdnTerminationSide: this.props.iad.advanced.isdnTerminationSide,
+      sysLogEnabled: this.props.iad.advanced.sysLogEnabled,
+      sysLogIp: this.props.iad.advanced.sysLogIp
+    };
+
+    if (
+      JSON.stringify(advanced) !== JSON.stringify(propsAdvanced) &&
+      Object.keys(clearData).length
+    ) {
+      this.setState({ data: clearData, showRebootDialog: true });
+      return;
     }
+
+    this.setState({ disabledButton: true }, () =>
+      this.setState({ disabledButton: false })
+    );
+
+    // if (Object.keys(clearData).length) {
+    //   this.setState({ disabledButton: true }, () =>
+    //     this.props
+    //       .fetchPutUpdateIAD(
+    //         this.props.match.params.tenantId,
+    //         this.props.match.params.groupId,
+    //         this.props.match.params.iadId,
+    //         clearData
+    //       )
+    //       .then(() => this.setState({ disabledButton: false }))
+    //   );
+    // } else {
+    //   this.setState({ disabledButton: true }, () =>
+    //     this.setState({ disabledButton: false })
+    //   );
+    // }
   };
 
   changeIsdnTerminationSide = e => {

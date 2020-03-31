@@ -16,11 +16,14 @@ import {
   fetchPutUpdateIAD
 } from "../../../../../store/actions";
 import { removeEmpty } from "../../../../remuveEmptyInObject";
+import RebootWindow from "../../../RebootWindow";
 
 export class TrunkId extends Component {
   state = {
     advanced: {},
-    disabledButton: false
+    disabledButton: false,
+    data: {},
+    showRebootDialog: false
   };
   componentDidMount() {
     this.setState({
@@ -263,6 +266,11 @@ export class TrunkId extends Component {
             </div>
           </Col>
         </Row>
+        <RebootWindow
+          data={this.state.data}
+          show={this.state.showRebootDialog}
+          onClose={() => this.setState({ showRebootDialog: false })}
+        />
         <Row>
           <Col md={12}>
             <div className="button-row">
@@ -288,22 +296,43 @@ export class TrunkId extends Component {
     const { advanced } = this.state;
     const data = { advanced };
     const clearData = removeEmpty(data);
-    if (Object.keys(clearData).length) {
-      this.setState({ disabledButton: true }, () =>
-        this.props
-          .fetchPutUpdateIAD(
-            this.props.match.params.tenantId,
-            this.props.match.params.groupId,
-            this.props.match.params.iadId,
-            clearData
-          )
-          .then(() => this.setState({ disabledButton: false }))
-      );
-    } else {
-      this.setState({ disabledButton: true }, () =>
-        this.setState({ disabledButton: false })
-      );
+    const propsAdvanced = {
+      trunkId5: this.props.iad.advanced.trunkId5,
+      trunkId6: this.props.iad.advanced.trunkId6,
+      trunkId7: this.props.iad.advanced.trunkId7,
+      trunkId8: this.props.iad.advanced.trunkId8,
+      trunkId9: this.props.iad.advanced.trunkId9,
+      trunkId10: this.props.iad.advanced.trunkId10
+    };
+
+    if (
+      JSON.stringify(advanced) !== JSON.stringify(propsAdvanced) &&
+      Object.keys(clearData).length
+    ) {
+      this.setState({ data: clearData, showRebootDialog: true });
+      return;
     }
+
+    this.setState({ disabledButton: true }, () =>
+      this.setState({ disabledButton: false })
+    );
+
+    // if (Object.keys(clearData).length) {
+    //   this.setState({ disabledButton: true }, () =>
+    //     this.props
+    //       .fetchPutUpdateIAD(
+    //         this.props.match.params.tenantId,
+    //         this.props.match.params.groupId,
+    //         this.props.match.params.iadId,
+    //         clearData
+    //       )
+    //       .then(() => this.setState({ disabledButton: false }))
+    //   );
+    // } else {
+    //   this.setState({ disabledButton: true }, () =>
+    //     this.setState({ disabledButton: false })
+    //   );
+    // }
   };
 
   // chageTrunkId1 = e => {

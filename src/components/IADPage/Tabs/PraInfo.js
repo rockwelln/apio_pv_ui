@@ -14,6 +14,7 @@ import { FormattedMessage } from "react-intl";
 
 import { changeIAD, fetchPutUpdateIAD } from "../../../store/actions";
 import { removeEmpty } from "../../remuveEmptyInObject";
+import RebootWindow from "../RebootWindow";
 
 import { isAllowed, pages } from "../../../utils/user";
 
@@ -22,7 +23,9 @@ export class PraInfo extends Component {
     praByIad: {},
     disabledButton: false,
     arrayOfPraId: [],
-    selectedID: []
+    selectedID: [],
+    data: {},
+    showRebootDialog: false
   };
 
   componentDidMount() {
@@ -248,6 +251,11 @@ export class PraInfo extends Component {
             </Row>
           </React.Fragment>
         ))}
+        <RebootWindow
+          data={this.state.data}
+          show={this.state.showRebootDialog}
+          onClose={() => this.setState({ showRebootDialog: false })}
+        />
         <Row>
           <Col md={12}>
             <div className="button-row">
@@ -306,22 +314,32 @@ export class PraInfo extends Component {
     });
     const data = { pra_info };
     const clearData = removeEmpty(data);
+
     if (Object.keys(clearData).length) {
-      this.setState({ disabledButton: true }, () =>
-        this.props
-          .fetchPutUpdateIAD(
-            this.props.match.params.tenantId,
-            this.props.match.params.groupId,
-            this.props.match.params.iadId,
-            clearData
-          )
-          .then(() => this.setState({ disabledButton: false }))
-      );
-    } else {
-      this.setState({ disabledButton: true }, () =>
-        this.setState({ disabledButton: false })
-      );
+      this.setState({ data: clearData, showRebootDialog: true });
+      return;
     }
+
+    this.setState({ disabledButton: true }, () =>
+      this.setState({ disabledButton: false })
+    );
+
+    // if (Object.keys(clearData).length) {
+    //   this.setState({ disabledButton: true }, () =>
+    //     this.props
+    //       .fetchPutUpdateIAD(
+    //         this.props.match.params.tenantId,
+    //         this.props.match.params.groupId,
+    //         this.props.match.params.iadId,
+    //         clearData
+    //       )
+    //       .then(() => this.setState({ disabledButton: false }))
+    //   );
+    // } else {
+    //   this.setState({ disabledButton: true }, () =>
+    //     this.setState({ disabledButton: false })
+    //   );
+    // }
   };
 }
 
