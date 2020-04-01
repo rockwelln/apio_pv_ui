@@ -32,7 +32,9 @@ const SingleEdit = props => {
   } = props;
 
   const [groupServiceMax, setGroupServiceMax] = useState();
-  const [groupServiceMin, setGroupServiceMin] = useState(0);
+  const [groupServiceMin, setGroupServiceMin] = useState(
+    isNaN(allocated) ? 0 : allocated
+  );
 
   useEffect(() => {
     if (isEditPacks && isEditGroup) {
@@ -100,9 +102,10 @@ const SingleEdit = props => {
                   type="number"
                   min={groupServiceMin}
                   max={groupServiceMax}
+                  pattern="\d [0-9]"
                   className={"width-8 display-table-cell"}
                   disabled={infinity}
-                  value={value || 0}
+                  defaultValue={value}
                   onChange={e => {
                     const value = e.target.value;
                     onChange(value);

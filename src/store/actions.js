@@ -2069,8 +2069,8 @@ export function fetchPutUpdateGroupServicesByTenantId(tenantId, data) {
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage
-            id="update-trunk-failed"
-            defaultMessage="Failed to update trunk!"
+            id="update-group-services-failed"
+            defaultMessage="Failed to update group services!"
           />,
           error.message
         )
@@ -2119,8 +2119,8 @@ export function fetchPutUpdateTenantServicePacks(tenantId, servicePack, data) {
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage
-            id="update-trunk-failed"
-            defaultMessage="Failed to update trunk!"
+            id="update-service-packs-failed"
+            defaultMessage="Failed to update service packs!"
           />,
           error.message
         )
