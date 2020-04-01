@@ -18,6 +18,8 @@ import {
   fetchPutUpdateGroupDetails
 } from "../../../../store/actions";
 
+import { get } from "../../../get";
+
 class Details extends Component {
   state = {
     group: [],
@@ -76,7 +78,7 @@ class Details extends Component {
                 <FormControl
                   type="text"
                   placeholder="Group name"
-                  value={group.groupName}
+                  value={get(group, "groupName") ? group.groupName : ""}
                   onChange={e => {
                     this.setState({
                       group: { ...this.state.group, groupName: e.target.value }
@@ -93,7 +95,15 @@ class Details extends Component {
                 <FormControl
                   type="text"
                   placeholder="Street"
-                  value={`${group.addressInformation.addressLine1} ${group.addressInformation.addressLine2}`}
+                  value={`${
+                    get(group, "addressInformation.addressLine1")
+                      ? group.addressInformation.addressLine1
+                      : ""
+                  } ${
+                    get(group, "addressInformation.addressLine2")
+                      ? group.addressInformation.addressLine2
+                      : ""
+                  }`}
                   onChange={e => {
                     this.setState({
                       group: {
@@ -113,7 +123,11 @@ class Details extends Component {
                 <FormControl
                   type="text"
                   placeholder="ZIP"
-                  value={group.addressInformation.postalCode}
+                  value={
+                    get(group, "addressInformation.postalCode")
+                      ? group.addressInformation.postalCode
+                      : ""
+                  }
                   onChange={e => {
                     this.setState({
                       group: {
@@ -131,7 +145,11 @@ class Details extends Component {
                 <FormControl
                   type="text"
                   placeholder="City"
-                  value={group.addressInformation.city}
+                  value={
+                    get(group, "addressInformation.city")
+                      ? group.addressInformation.city
+                      : ""
+                  }
                   onChange={e => {
                     this.setState({
                       group: {
@@ -149,7 +167,11 @@ class Details extends Component {
                 <FormControl
                   type="text"
                   placeholder="Country"
-                  value={group.addressInformation.country}
+                  value={
+                    get(group, "addressInformation.country")
+                      ? group.addressInformation.country
+                      : ""
+                  }
                   onChange={e => {
                     this.setState({
                       group: {
@@ -172,7 +194,7 @@ class Details extends Component {
                 <FormControl
                   type="text"
                   placeholder="Default Domain"
-                  value={group.defaultDomain}
+                  value={get(group, "defaultDomain") ? group.defaultDomain : ""}
                   onChange={e => {
                     this.setState({
                       group: {
@@ -192,7 +214,9 @@ class Details extends Component {
                 <FormControl
                   type="text"
                   placeholder="Calling Line Id Name"
-                  defaultValue={group.cliPhoneNumber}
+                  defaultValue={
+                    get(group, "cliPhoneNumber") ? group.cliPhoneNumber : ""
+                  }
                   onChange={e => {
                     this.setState({
                       group: {
@@ -212,7 +236,7 @@ class Details extends Component {
                 <FormControl
                   type="text"
                   placeholder="Calling Line Id Name"
-                  defaultValue={group.cliName}
+                  defaultValue={get(group, "cliName") ? group.cliName : ""}
                   onChange={e => {
                     this.setState({
                       group: {
