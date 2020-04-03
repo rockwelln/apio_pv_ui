@@ -89,7 +89,7 @@ class Details extends Component {
             </FormGroup>
             <FormGroup controlId="tentantStreet">
               <Col componentClass={ControlLabel} md={3} className={"text-left"}>
-                Addess
+                Address
               </Col>
               <Col md={9}>
                 <FormControl
