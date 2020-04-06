@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
 
 import Modal from "react-bootstrap/lib/Modal";
 import Button from "react-bootstrap/lib/Button";

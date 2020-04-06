@@ -45,7 +45,6 @@ export class AddLocalUserPage extends Component {
 
   componentDidMount() {
     this.props.fetchGetLanguages().then(() => {
-      console.log(this.props.languages);
       this.setState({
         language: {
           value: this.props.languages.defaultLangue,
@@ -77,7 +76,6 @@ export class AddLocalUserPage extends Component {
     if (this.state.isLoading) {
       return <Loading />;
     }
-    console.log(this.state.language, this.state.userType);
 
     return (
       <React.Fragment>

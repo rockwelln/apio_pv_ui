@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 
 import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
@@ -37,11 +36,4 @@ export class Phone extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
-
-const mapDispatchToProps = {};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Phone);
+export default Phone;

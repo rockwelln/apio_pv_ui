@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 
 export class Phone extends Component {
   render() {
@@ -13,7 +12,4 @@ export class Phone extends Component {
   }
 }
 
-export default connect(
-  null,
-  null
-)(Phone);
+export default Phone;

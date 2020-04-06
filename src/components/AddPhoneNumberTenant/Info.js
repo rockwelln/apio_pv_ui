@@ -71,7 +71,6 @@ export class Info extends Component {
                   OK
                 </Button>
               </Link>
-              {/* )} */}
             </div>
           </div>
         </Row>

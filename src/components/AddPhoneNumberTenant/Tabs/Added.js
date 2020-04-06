@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
@@ -62,7 +61,4 @@ export class Added extends Component {
   };
 }
 
-export default connect(
-  null,
-  null
-)(Added);
+export default Added;

@@ -32,7 +32,7 @@ export class OkTab extends Component {
     this.getValidatedNumbers();
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (
       prevProps.validatedNumbersTenant.err.length !==
       this.props.validatedNumbersTenant.err.length
