@@ -261,38 +261,40 @@ export class AddTrunkGroup extends Component {
               </Radio>
             </Col>
           </Row>
-          {this.props.trunkGroupsTemplates.map(temp => (
-            <Row className={"margin-top-1"}>
-              <Col mdOffset={3} md={9}>
-                <Radio
-                  className={"margin-top-0"}
-                  name="template"
-                  value={temp.name}
-                  onChange={e =>
-                    this.setState({ template: e.target.value }, () =>
-                      this.props
-                        .fetchGetTrunkGroupTemplate(this.state.template)
-                        .then(
-                          () =>
-                            get(
-                              this.props,
-                              "trunkGroupTemplate.default_values.accessDevice"
-                            ) &&
-                            this.setState({
-                              accessDeviceInfo: this.props.trunkGroupTemplate
-                                .default_values.accessDevice
-                            })
-                        )
-                    )
-                  }
-                  checked={this.state.template === temp.name}
-                >
-                  <b className={"margin-right-1"}>{temp.name}</b>
-                  {temp.description}
-                </Radio>
-              </Col>
-            </Row>
-          ))}
+          {get(this.props, "trunkGroupTemplate") &&
+            Array.isArray(this.props.trunkGroupsTemplates) &&
+            this.props.trunkGroupsTemplates.map(temp => (
+              <Row className={"margin-top-1"}>
+                <Col mdOffset={3} md={9}>
+                  <Radio
+                    className={"margin-top-0"}
+                    name="template"
+                    value={temp.name}
+                    onChange={e =>
+                      this.setState({ template: e.target.value }, () =>
+                        this.props
+                          .fetchGetTrunkGroupTemplate(this.state.template)
+                          .then(
+                            () =>
+                              get(
+                                this.props,
+                                "trunkGroupTemplate.default_values.accessDevice"
+                              ) &&
+                              this.setState({
+                                accessDeviceInfo: this.props.trunkGroupTemplate
+                                  .default_values.accessDevice
+                              })
+                          )
+                      )
+                    }
+                    checked={this.state.template === temp.name}
+                  >
+                    <b className={"margin-right-1"}>{temp.name}</b>
+                    {temp.description}
+                  </Radio>
+                </Col>
+              </Row>
+            ))}
           {this.state.template &&
             !get(
               this.props,
