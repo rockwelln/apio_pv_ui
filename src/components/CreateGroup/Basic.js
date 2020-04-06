@@ -9,6 +9,9 @@ import Col from "react-bootstrap/lib/Col";
 import FormControl from "react-bootstrap/lib/FormControl";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import Button from "react-bootstrap/lib/Button";
+import Checkbox from "react-bootstrap/lib/Checkbox";
+
+import { FormattedMessage } from "react-intl";
 
 import {
   refuseCreateGroup,
@@ -29,7 +32,8 @@ export class Basic extends Component {
     errorMessage: "",
     domainError: "",
     userUnlimited: false,
-    groupId: ""
+    groupId: "",
+    overwriteId: false
   };
 
   componentDidMount() {
@@ -40,12 +44,12 @@ export class Basic extends Component {
     let second = Math.floor(Math.random() * 10);
     let third = Math.floor(Math.random() * 10);
     let four = Math.floor(Math.random() * 10);
-    this.setState(
-      {
-        groupId: `${this.props.match.params.tenantId}_grp${first}${second}${third}${four}`
-      },
-      () => this.props.changeIdOfGroup(this.state.groupId)
-    );
+    // this.setState(
+    //   {
+    //     groupId: `${this.props.match.params.tenantId}_grp${first}${second}${third}${four}`
+    //   },
+    //   () => this.props.changeIdOfGroup(this.state.groupId)
+    // );
   }
 
   render() {
@@ -86,21 +90,40 @@ export class Basic extends Component {
             </Col>
           </Row>
           <Row className={"margin-1"}>
-            <Col componentClass={ControlLabel} md={3}>
-              ID{"\u002a"}
-            </Col>
-            <Col md={9}>
-              <FormControl
-                type="text"
-                placeholder="Group ID"
-                value={this.state.groupId}
+            <Col md={12}>
+              <Checkbox
+                checked={this.state.overwriteId}
                 onChange={e => {
-                  this.props.changeIdOfGroup(e.target.value);
-                  this.setState({ errorMessage: "" });
+                  if (e.target.checked) {
+                    this.setState({ overwriteId: e.target.checked });
+                  } else {
+                    this.setState({ overwriteId: e.target.checked });
+                    this.props.changeIdOfGroup("");
+                  }
                 }}
-              />
+              >
+                <ControlLabel>Overwrite default group ID</ControlLabel>
+              </Checkbox>
             </Col>
           </Row>
+          {this.state.overwriteId && (
+            <Row className={"margin-1"}>
+              <Col componentClass={ControlLabel} md={3}>
+                ID
+              </Col>
+              <Col md={9}>
+                <FormControl
+                  type="text"
+                  placeholder="Group ID"
+                  value={this.props.createGroup.groupId}
+                  onChange={e => {
+                    this.props.changeIdOfGroup(e.target.value);
+                    this.setState({ errorMessage: "" });
+                  }}
+                />
+              </Col>
+            </Row>
+          )}
           <Row className={"margin-1"}>
             <Col componentClass={ControlLabel} md={3}>
               Name{"\u002a"}
@@ -199,11 +222,11 @@ export class Basic extends Component {
 
   nextStep = () => {
     const { groupId, groupName } = this.props.createGroup;
-    if (groupId && groupName) {
+    if (groupName) {
       this.props.changeStepOfCreateGroup("Template");
     } else {
       this.setState({
-        errorMessage: "Grop ID and name are required"
+        errorMessage: "Name are required"
       });
     }
   };

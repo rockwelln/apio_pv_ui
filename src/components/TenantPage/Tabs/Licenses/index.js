@@ -84,7 +84,6 @@ export class Licenses extends Component {
     if (this.state.isLoading || isLoadingTrunk) {
       return <Loading />;
     }
-    console.log(this.state.servicePacks);
     return (
       <Row className={"margin-top-2 margin-left-8"}>
         <Col md={5}>
@@ -443,7 +442,6 @@ export class Licenses extends Component {
   };
 
   changeServicePacksMaximum = max => {
-    console.log(max);
     this.setState(prevState => ({
       servicePacks: [
         ...prevState.servicePacks.slice(0, this.state.indexOfService),
