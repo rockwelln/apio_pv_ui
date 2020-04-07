@@ -7,6 +7,8 @@ import FormControl from "react-bootstrap/lib/FormControl";
 
 import { FormattedMessage } from "react-intl";
 
+import { get } from "../../components/get";
+
 const INFINITY = 8734;
 
 const SingleEdit = props => {
@@ -39,9 +41,9 @@ const SingleEdit = props => {
   useEffect(() => {
     if (isEditPacks && isEditGroup) {
       setGroupServiceMin(allocated);
-      if (pack.allocated.unlimited) {
+      if (get(pack, "allocated.unlimited") && pack.allocated.unlimited) {
         return;
-      } else {
+      } else if (get(pack, "allocated.unlimited")) {
         const max = value + pack.allocated.maximum - pack.currentlyAllocated;
         setGroupServiceMax(isNaN(max) ? undefined : max);
       }
