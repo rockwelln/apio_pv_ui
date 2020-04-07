@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import Tabs from "react-bootstrap/lib/Tabs";
 import Tab from "react-bootstrap/lib/Tab";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
+import Button from "react-bootstrap/lib/Button";
 
 import Loading from "../../common/Loading";
 import GroupsTab from "./Tabs/Groups";
@@ -15,10 +16,14 @@ import DeleteModal from "./DeleteModal";
 import Licenses from "./Tabs/Licenses";
 import Trunking from "./Tabs/Trunking";
 
+import { get } from "../get";
+import { getCookie } from "../../utils";
+
 import {
   fetchGetTenantById,
   refuseCreateGroup,
-  refuseAddPhoneToTenant
+  refuseAddPhoneToTenant,
+  fetchGetSelfcareURL
 } from "../../store/actions";
 
 import "./styles.css";
@@ -26,6 +31,7 @@ import "./styles.css";
 class TenantPage extends Component {
   state = {
     isLoading: true,
+    isLoadingSCURL: true,
     showDelete: false
   };
 
@@ -35,31 +41,52 @@ class TenantPage extends Component {
       .then(() => this.setState({ isLoading: false }));
     this.props.refuseCreateGroup();
     this.props.refuseAddPhoneToTenant();
+    this.props
+      .fetchGetSelfcareURL()
+      .then(() => this.setState({ isLoadingSCURL: false }));
   }
 
   render() {
     const { tenant } = this.props;
-    const { isLoading, showDelete } = this.state;
-    if (isLoading) {
+    const { isLoading, showDelete, isLoadingSCURL } = this.state;
+    if (isLoading || isLoadingSCURL) {
       return <Loading />;
     }
 
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
-          <div className={"header"}>
-            {`${tenant.type}: ${tenant.name} (id: ${tenant.tenantId})`}
-            <Glyphicon
-              glyph="glyphicon glyphicon-trash"
-              onClick={() => this.setState({ showDelete: true })}
-            />
-            <DeleteModal
-              tenantId={tenant.tenantId}
-              show={showDelete}
-              onClose={() => {
-                this.setState({ showDelete: false });
-              }}
-            />
+          <div className={"header flex space-between"}>
+            <div>
+              {`${tenant.type}: ${tenant.name} (id: ${tenant.tenantId})`}
+              <Glyphicon
+                glyph="glyphicon glyphicon-trash"
+                onClick={() => this.setState({ showDelete: true })}
+              />
+              <DeleteModal
+                tenantId={tenant.tenantId}
+                show={showDelete}
+                onClose={() => {
+                  this.setState({ showDelete: false });
+                }}
+              />
+            </div>
+            {get(this.props, "selfcareUrl.selfcare.url") && (
+              <Button
+                className="btn-primary"
+                onClick={() =>
+                  window.open(
+                    `${
+                      this.props.selfcareUrl.selfcare.url
+                    }/sso?token=${getCookie("auth_token")}&tenant=${
+                      this.props.match.params.tenantId
+                    }`
+                  )
+                }
+              >
+                Switch to selfcare portal
+              </Button>
+            )}
           </div>
         </div>
         <div className={"panel-body"}>
@@ -100,12 +127,14 @@ class TenantPage extends Component {
 const mapDispatchToProps = {
   fetchGetTenantById,
   refuseCreateGroup,
-  refuseAddPhoneToTenant
+  refuseAddPhoneToTenant,
+  fetchGetSelfcareURL
 };
 
 const mapStateToProps = state => ({
   tenant: state.tenant,
-  isAuthorisedTrunkTenant: state.isAuthorisedTrunkTenant
+  isAuthorisedTrunkTenant: state.isAuthorisedTrunkTenant,
+  selfcareUrl: state.selfcareUrl
 });
 
 export default withRouter(

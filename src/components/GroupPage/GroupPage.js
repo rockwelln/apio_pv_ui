@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import Tabs from "react-bootstrap/lib/Tabs";
 import Tab from "react-bootstrap/lib/Tab";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
+import Button from "react-bootstrap/lib/Button";
 
 import Loading from "../../common/Loading";
 import Users from "./Tabs/Users";
@@ -15,10 +16,14 @@ import Devices from "./Tabs/Devices";
 import Admins from "./Tabs/Admins";
 import TrunksGroup from "./Tabs/TrunksGroup";
 
+import { get } from "../get";
+import { getCookie } from "../../utils";
+
 import {
   fetchGetTenantById,
   fetchGetGroupById,
-  fetchGetTrunksGroupsByGroup
+  fetchGetTrunksGroupsByGroup,
+  fetchGetSelfcareURL
 } from "../../store/actions";
 
 import DeleteModal from "./DeleteModal";
@@ -31,7 +36,8 @@ class TenantPage extends Component {
   state = {
     isLoadingTenant: true,
     isLoadingGroup: true,
-    showDelete: false
+    showDelete: false,
+    isLoadingSCURL: true
   };
 
   fetchTennant = () => {
@@ -48,6 +54,9 @@ class TenantPage extends Component {
       this.props.match.params.tenantId,
       this.props.match.params.groupId
     );
+    this.props
+      .fetchGetSelfcareURL()
+      .then(() => this.setState({ isLoadingSCURL: false }));
   };
 
   componentDidMount() {
@@ -62,29 +71,54 @@ class TenantPage extends Component {
 
   render() {
     const { tenant, group } = this.props;
-    const { isLoadingTenant, isLoadingGroup, showDelete } = this.state;
+    const {
+      isLoadingTenant,
+      isLoadingGroup,
+      showDelete,
+      isLoadingSCURL
+    } = this.state;
 
-    if (isLoadingTenant && isLoadingGroup) {
+    if (isLoadingTenant || isLoadingGroup || isLoadingSCURL) {
       return <Loading />;
     }
 
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
-          <p className={"header"}>
-            {`GROUP: ${group.groupName} (${this.props.match.params.groupId}) of tenant ${tenant.name} (${tenant.tenantId})`}
-            <Glyphicon
-              glyph="glyphicon glyphicon-trash"
-              onClick={() => this.setState({ showDelete: true })}
-            />
-            <DeleteModal
-              groupId={this.props.match.params.groupId}
-              show={showDelete}
-              onClose={() => {
-                this.setState({ showDelete: false });
-              }}
-            />
-          </p>
+          <div className={"header flex space-between"}>
+            <div>
+              {`GROUP: ${group.groupName} (${this.props.match.params.groupId}) of tenant ${tenant.name} (${tenant.tenantId})`}
+              <Glyphicon
+                glyph="glyphicon glyphicon-trash"
+                onClick={() => this.setState({ showDelete: true })}
+              />
+              <DeleteModal
+                groupId={this.props.match.params.groupId}
+                show={showDelete}
+                onClose={() => {
+                  this.setState({ showDelete: false });
+                }}
+              />
+            </div>
+            {get(this.props, "selfcareUrl.selfcare.url") && (
+              <div>
+                <Button
+                  className="btn-primary"
+                  onClick={() =>
+                    window.open(
+                      `${
+                        this.props.selfcareUrl.selfcare.url
+                      }/sso?token=${getCookie("auth_token")}&tenant=${
+                        this.props.match.params.tenantId
+                      }&group=${this.props.match.params.groupId}`
+                    )
+                  }
+                >
+                  Switch to selfcare portal
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
         <div className={"panel-body"}>
           <Tabs
@@ -144,14 +178,16 @@ class TenantPage extends Component {
 const mapDispatchToProps = {
   fetchGetTenantById,
   fetchGetGroupById,
-  fetchGetTrunksGroupsByGroup
+  fetchGetTrunksGroupsByGroup,
+  fetchGetSelfcareURL
 };
 
 const mapStateToProps = state => ({
   tenant: state.tenant,
   group: state.group,
   fetchTrunksGroupsFail: state.fetchTrunksGroupsFail,
-  trunkGroupNotAuthorisedGroup: state.trunkGroupNotAuthorisedGroup
+  trunkGroupNotAuthorisedGroup: state.trunkGroupNotAuthorisedGroup,
+  selfcareUrl: state.selfcareUrl
 });
 
 export default withRouter(

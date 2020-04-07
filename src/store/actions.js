@@ -245,6 +245,11 @@ export const getTrunkGroupTemplate = data => ({
   data
 });
 
+export const getSelfcareURL = data => ({
+  type: actionType.GET_SELFCARE_URL,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -1445,6 +1450,25 @@ export function fetchGetTrunkGroupTemplate(trunkGroupName) {
           />,
           error.message
         );
+      });
+  };
+}
+
+export function fetchGetSelfcareURL() {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/configs/applications/prov_gui/config`
+    )
+      .then(data => dispatch(getSelfcareURL(data)))
+      .catch(error => {
+        console.error(error.message);
+        // NotificationsManager.error(
+        //   <FormattedMessage
+        //     id="fetch-trunk-group-template-failed"
+        //     defaultMessage="Failed to fetch trunk group template!"
+        //   />,
+        //   error.message
+        // );
       });
   };
 }

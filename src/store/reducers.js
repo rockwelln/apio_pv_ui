@@ -1,4 +1,5 @@
 import * as actionType from "./constants";
+import { get } from "../components/get";
 
 const initialState = {
   tenants: [],
@@ -118,7 +119,8 @@ const initialState = {
   trunkGroupsByTenant: [],
   trunkGroupsTemplates: [],
   trunkGroupNotAuthorisedGroup: true,
-  trunkGroupTemplate: {}
+  trunkGroupTemplate: {},
+  selfcareUrl: undefined
 };
 
 function mainReducer(state = initialState, action) {
@@ -581,6 +583,15 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         trunkGroupTemplate: action.data
+      };
+    }
+    case actionType.GET_SELFCARE_URL: {
+      const selfcareUrl =
+        get(action, "data.data") &&
+        JSON.parse(action.data.data.replace(/\\r|\\t|\\n|\\/g, ""));
+      return {
+        ...state,
+        selfcareUrl
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN: {

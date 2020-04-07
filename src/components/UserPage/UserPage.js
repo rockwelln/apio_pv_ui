@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import Tabs from "react-bootstrap/lib/Tabs";
 import Tab from "react-bootstrap/lib/Tab";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
+import Button from "react-bootstrap/lib/Button";
 
 import Loading from "../../common/Loading";
 import Details from "./Tabs/Details";
@@ -15,10 +16,14 @@ import ServicesPacks from "./Tabs/ServicePacks";
 import deepEqual from "../deepEqual";
 import DeleteModal from "./DeleteModal";
 
+import { get } from "../get";
+import { getCookie } from "../../utils";
+
 import {
   fetchGetTenantById,
   fetchGetGroupById,
-  fetchGetUserByName
+  fetchGetUserByName,
+  fetchGetSelfcareURL
 } from "../../store/actions";
 
 class TenantPage extends Component {
@@ -26,7 +31,8 @@ class TenantPage extends Component {
     isLoadingTenant: true,
     isLoadingGroup: true,
     isLoadingUser: true,
-    showDelete: false
+    showDelete: false,
+    isLoadingSCURL: true
   };
 
   fetchRequsts = () => {
@@ -46,6 +52,9 @@ class TenantPage extends Component {
         this.props.match.params.userName
       )
       .then(() => this.setState({ isLoadingUser: false }));
+    this.props
+      .fetchGetSelfcareURL()
+      .then(() => this.setState({ isLoadingSCURL: false }));
   };
 
   componentDidMount() {
@@ -66,31 +75,54 @@ class TenantPage extends Component {
       isLoadingTenant,
       isLoadingGroup,
       isLoadingUser,
-      showDelete
+      showDelete,
+      isLoadingSCURL
     } = this.state;
 
-    if (isLoadingTenant && isLoadingGroup && isLoadingUser) {
+    if (isLoadingTenant || isLoadingGroup || isLoadingUser || isLoadingSCURL) {
       return <Loading />;
     }
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
-          <div className={"header"}>
-            {`User: 
+          <div className={"header flex space-between"}>
+            <div>
+              {`User: 
               ${user.firstName ? user.firstName : ""} 
               ${user.lastName ? user.lastName : ""}
               (${this.props.match.params.userName})`}
-            <Glyphicon
-              glyph="glyphicon glyphicon-trash"
-              onClick={() => this.setState({ showDelete: true })}
-            />
-            <DeleteModal
-              userId={this.props.match.params.userName}
-              show={showDelete}
-              onClose={() => {
-                this.setState({ showDelete: false });
-              }}
-            />
+              <Glyphicon
+                glyph="glyphicon glyphicon-trash"
+                onClick={() => this.setState({ showDelete: true })}
+              />
+              <DeleteModal
+                userId={this.props.match.params.userName}
+                show={showDelete}
+                onClose={() => {
+                  this.setState({ showDelete: false });
+                }}
+              />
+            </div>{" "}
+            {get(this.props, "selfcareUrl.selfcare.url") && (
+              <div>
+                <Button
+                  className="btn-primary"
+                  onClick={() =>
+                    window.open(
+                      `${
+                        this.props.selfcareUrl.selfcare.url
+                      }/sso?token=${getCookie("auth_token")}&tenant=${
+                        this.props.match.params.tenantId
+                      }&group=${this.props.match.params.groupId}&user=${
+                        this.props.match.params.userName
+                      }`
+                    )
+                  }
+                >
+                  Switch to selfcare portal
+                </Button>
+              </div>
+            )}
           </div>
         </div>
         <div className={"panel-body"}>
@@ -117,13 +149,15 @@ class TenantPage extends Component {
 const mapDispatchToProps = {
   fetchGetTenantById,
   fetchGetGroupById,
-  fetchGetUserByName
+  fetchGetUserByName,
+  fetchGetSelfcareURL
 };
 
 const mapStateToProps = state => ({
   tenant: state.tenant,
   group: state.group,
-  user: state.user
+  user: state.user,
+  selfcareUrl: state.selfcareUrl
 });
 
 export default withRouter(
