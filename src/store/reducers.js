@@ -120,7 +120,7 @@ const initialState = {
   trunkGroupsTemplates: [],
   trunkGroupNotAuthorisedGroup: true,
   trunkGroupTemplate: {},
-  selfcareUrl: undefined
+  selfcareUrl: {}
 };
 
 function mainReducer(state = initialState, action) {
