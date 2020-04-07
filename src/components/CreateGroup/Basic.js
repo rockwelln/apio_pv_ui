@@ -102,7 +102,7 @@ export class Basic extends Component {
                   }
                 }}
               >
-                <ControlLabel>Overwrite default group ID</ControlLabel>
+                Overwrite default group ID
               </Checkbox>
             </Col>
           </Row>
