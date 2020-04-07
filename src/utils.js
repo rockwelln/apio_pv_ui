@@ -6,7 +6,7 @@ export const API_URL_PROXY_PREFIX = "/api/v01/apio/sync";
 
 export const API_BASE_URL = "/api/v01/p2";
 
-function getCookie(name) {
+export function getCookie(name) {
   var value = "; " + document.cookie;
   var parts = value.split("; " + name + "=");
   if (parts.length === 2)
