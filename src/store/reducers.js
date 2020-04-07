@@ -574,7 +574,7 @@ function mainReducer(state = initialState, action) {
     case actionType.GET_TRUNK_GROUP_TEMPLATES: {
       return {
         ...state,
-        trunkGroupsTemplates: action.data
+        trunkGroupsTemplates: action.data.templates
       };
     }
     case actionType.GET_TRUNK_GROUP_TEMPLATE: {

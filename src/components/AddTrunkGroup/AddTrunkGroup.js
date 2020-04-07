@@ -46,7 +46,8 @@ export class AddTrunkGroup extends Component {
     template: "",
     isLoadingTemplates: true,
     isNewTrukDevice: "",
-    accessDeviceInfo: null
+    accessDeviceInfo: null,
+    isRecivedTemplate: false
   };
 
   componentDidMount() {
@@ -274,17 +275,17 @@ export class AddTrunkGroup extends Component {
                       this.setState({ template: e.target.value }, () =>
                         this.props
                           .fetchGetTrunkGroupTemplate(this.state.template)
-                          .then(
-                            () =>
-                              get(
-                                this.props,
-                                "trunkGroupTemplate.default_values.accessDevice"
-                              ) &&
+                          .then(() => {
+                            this.setState({ isRecivedTemplate: true });
+                            get(
+                              this.props,
+                              "trunkGroupTemplate.data.default_values.accessDevice"
+                            ) &&
                               this.setState({
-                                accessDeviceInfo: this.props.trunkGroupTemplate
+                                accessDevice: this.props.trunkGroupTemplate.data
                                   .default_values.accessDevice
-                              })
-                          )
+                              });
+                          })
                       )
                     }
                     checked={this.state.template === temp.name}
@@ -296,9 +297,10 @@ export class AddTrunkGroup extends Component {
               </Row>
             ))}
           {this.state.template &&
+            this.state.isRecivedTemplate &&
             !get(
               this.props,
-              "trunkGroupTemplate.default_values.accessDevice"
+              "trunkGroupTemplate.data.default_values.accessDevice"
             ) && (
               <React.Fragment>
                 <Row className={"margin-top-1"}>
@@ -456,13 +458,15 @@ export class AddTrunkGroup extends Component {
       case "sip": {
         return {
           requireAuthentication,
-          sipAuthenticationUserName:
-            sipAuthenticationUserName + `@${this.props.tenant.defaultDomain}`,
+          sipAuthenticationUserName,
           sipAuthenticationPassword
         };
       }
       case "tgrp": {
-        return { trunkGroupIdentity };
+        return {
+          trunkGroupIdentity:
+            trunkGroupIdentity + `@${this.props.tenant.defaultDomain}`
+        };
       }
       case "otg/dtg": {
         return {
@@ -476,7 +480,7 @@ export class AddTrunkGroup extends Component {
   };
 
   createTrunk = () => {
-    const { name, maxActiveCalls, accessDeviceInfo } = this.state;
+    const { name, maxActiveCalls, accessDevice } = this.state;
     if (!name) {
       this.setState({ nameError: "error" });
       return;
@@ -486,7 +490,7 @@ export class AddTrunkGroup extends Component {
       name,
       maxActiveCalls,
       ...authenticationData,
-      accessDeviceInfo
+      accessDevice
     });
     this.setState({ isDisabled: true }, () =>
       this.props
