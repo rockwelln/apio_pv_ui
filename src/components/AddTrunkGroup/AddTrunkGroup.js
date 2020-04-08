@@ -43,10 +43,13 @@ export class AddTrunkGroup extends Component {
     sipAuthenticationPassword: undefined,
     trunkGroupIdentity: undefined,
     otgDtgIdentity: undefined,
-    template: "",
+    templateName: "",
     isLoadingTemplates: true,
     isNewTrukDevice: "",
-    accessDeviceInfo: null,
+    accessDevice: {
+      deviceName: "",
+      deviceType: ""
+    },
     isRecivedTemplate: false
   };
 
@@ -251,12 +254,12 @@ export class AddTrunkGroup extends Component {
                 value={""}
                 onChange={e =>
                   this.setState({
-                    template: e.target.value,
+                    templateName: e.target.value,
                     isNewTrukDevice: "",
-                    accessDeviceInfo: null
+                    accessDevice: { deviceName: "", deviceType: "" }
                   })
                 }
-                checked={this.state.template === ""}
+                checked={this.state.templateName === ""}
               >
                 <b>none</b>
               </Radio>
@@ -272,23 +275,15 @@ export class AddTrunkGroup extends Component {
                     name="template"
                     value={temp.name}
                     onChange={e =>
-                      this.setState({ template: e.target.value }, () =>
+                      this.setState({ templateName: e.target.value }, () =>
                         this.props
-                          .fetchGetTrunkGroupTemplate(this.state.template)
+                          .fetchGetTrunkGroupTemplate(this.state.templateName)
                           .then(() => {
                             this.setState({ isRecivedTemplate: true });
-                            get(
-                              this.props,
-                              "trunkGroupTemplate.data.default_values.accessDevice"
-                            ) &&
-                              this.setState({
-                                accessDevice: this.props.trunkGroupTemplate.data
-                                  .default_values.accessDevice
-                              });
                           })
                       )
                     }
-                    checked={this.state.template === temp.name}
+                    checked={this.state.templateName === temp.name}
                   >
                     <b className={"margin-right-1"}>{temp.name}</b>
                     {temp.description}
@@ -296,7 +291,7 @@ export class AddTrunkGroup extends Component {
                 </Col>
               </Row>
             ))}
-          {this.state.template &&
+          {this.state.templateName &&
             this.state.isRecivedTemplate &&
             !get(
               this.props,
@@ -329,14 +324,14 @@ export class AddTrunkGroup extends Component {
                         componentClass="select"
                         onChange={e =>
                           this.setState({
-                            accessDeviceInfo: {
+                            accessDevice: {
                               deviceName: e.target.value.deviceName,
-                              deviceType: e.target.value.deviceName
+                              deviceType: e.target.value.deviceType
                             }
                           })
                         }
                       >
-                        {!this.state.accessDeviceInfo && (
+                        {!this.state.accessDevice && (
                           <option key={"none"} value={{}}>
                             {""}
                           </option>
@@ -359,7 +354,7 @@ export class AddTrunkGroup extends Component {
                       onChange={e =>
                         this.setState({
                           isNewTrukDevice: e.target.value,
-                          accessDeviceInfo: { deviceName: "", deviceType: "" }
+                          accessDevice: { deviceName: "", deviceType: "" }
                         })
                       }
                       checked={this.state.isNewTrukDevice === "new"}
@@ -375,11 +370,11 @@ export class AddTrunkGroup extends Component {
                       <Col md={3}>
                         <FormControl
                           type="text"
-                          value={this.state.accessDeviceInfo.deviceName}
+                          value={this.state.accessDevice.deviceName}
                           onChange={e =>
                             this.setState({
-                              accessDeviceInfo: {
-                                ...this.state.accessDeviceInfo,
+                              accessDevice: {
+                                ...this.state.accessDevice,
                                 deviceName: e.target.value
                               }
                             })
@@ -392,11 +387,11 @@ export class AddTrunkGroup extends Component {
                       <Col md={3}>
                         <FormControl
                           componentClass="select"
-                          value={this.state.accessDeviceInfo.deviceType}
+                          value={this.state.accessDevice.deviceType}
                           onChange={e =>
                             this.setState({
-                              accessDeviceInfo: {
-                                ...this.state.accessDeviceInfo,
+                              accessDevice: {
+                                ...this.state.accessDevice,
                                 deviceType: e.target.value
                               }
                             })
@@ -480,7 +475,7 @@ export class AddTrunkGroup extends Component {
   };
 
   createTrunk = () => {
-    const { name, maxActiveCalls, accessDevice } = this.state;
+    const { name, maxActiveCalls, accessDevice, templateName } = this.state;
     if (!name) {
       this.setState({ nameError: "error" });
       return;
@@ -490,7 +485,8 @@ export class AddTrunkGroup extends Component {
       name,
       maxActiveCalls,
       ...authenticationData,
-      accessDevice
+      accessDevice,
+      templateName
     });
     this.setState({ isDisabled: true }, () =>
       this.props
