@@ -118,12 +118,53 @@ class RebootWindow extends Component {
   updateIad = () => {
     const { data, onClose } = this.props;
     const { requestedTime, rebootLater } = this.state;
-    const time =
-      rebootLater === "later"
-        ? requestedTime
-        : rebootLater === "now"
-        ? new Date().getUTCHours() + ":" + new Date().getUTCMinutes()
-        : "";
+
+    const pad = number => {
+      if (number < 10) {
+        return "0" + number;
+      }
+      return number;
+    };
+
+    const getYearMonthDate = (year, month, date) => {
+      const coundDaysInMonths = new Date(year, month, 0).getDate();
+      if (date > coundDaysInMonths) {
+        if (month === 12) {
+          return `${year + 1}-01-01`;
+        }
+        return `${year}-${pad(month + 1)}-01`;
+      }
+      return `${year}-${pad(month)}-${pad(date)}`;
+    };
+
+    let time = "";
+    const dateNow = new Date();
+
+    if (rebootLater === "later") {
+      const currentDate = dateNow.getTime();
+      const selectedTime = requestedTime.split(":");
+      const selectedDate = new Date(
+        `${dateNow.getFullYear()}-${pad(dateNow.getMonth() + 1)}-${pad(
+          dateNow.getDate()
+        )}T${selectedTime[0]}:${selectedTime[1]}`
+      ).getTime();
+      if (currentDate > selectedDate) {
+        time = `${getYearMonthDate(
+          dateNow.getFullYear(),
+          dateNow.getMonth() + 1,
+          dateNow.getDate() + 1
+        )}T${selectedTime[0]}:${selectedTime[1]}`;
+      } else {
+        time = `${dateNow.getFullYear()}-${pad(dateNow.getMonth() + 1)}-${pad(
+          dateNow.getDate()
+        )}T${selectedTime[0]}:${selectedTime[1]}`;
+      }
+    } else if (rebootLater === "now") {
+      time = `${dateNow.getFullYear()}-${pad(dateNow.getMonth() + 1)}-${pad(
+        dateNow.getDate()
+      )}T00:00`;
+    }
+
     const dataForUpdate = {
       ...data,
       rebootRequest: {
