@@ -44,30 +44,32 @@ export class Options extends Component {
   render() {
     return (
       <React.Fragment>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="clockMaster"
-                  defaultMessage="Clock Master"
+        {this.props.iad.protocolMode !== "SIP" && (
+          <Row className={"margin-top-1"}>
+            <Col md={12} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-16"}>
+                <ControlLabel>
+                  <FormattedMessage
+                    id="clockMaster"
+                    defaultMessage="Clock Master"
+                  />
+                </ControlLabel>
+              </div>
+              <div className={"margin-right-1 flex-basis-33"}>
+                <Checkbox
+                  checked={this.state.advanced.clock_master}
+                  onChange={this.changeClockMaster}
+                  disabled={
+                    !isAllowed(
+                      localStorage.getItem("userProfile"),
+                      pages.edit_group_iad_advanced_clock_master
+                    )
+                  }
                 />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <Checkbox
-                checked={this.state.advanced.clock_master}
-                onChange={this.changeClockMaster}
-                disabled={
-                  !isAllowed(
-                    localStorage.getItem("userProfile"),
-                    pages.edit_group_iad_advanced_clock_master
-                  )
-                }
-              />
-            </div>
-          </Col>
-        </Row>
+              </div>
+            </Col>
+          </Row>
+        )}
         <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>

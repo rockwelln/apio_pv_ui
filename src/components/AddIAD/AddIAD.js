@@ -1455,32 +1455,34 @@ export class AddIAD extends Component {
                   </div>
                 </Col>
               </Row>
-              <Row className={"margin-top-1"}>
-                <Col md={12} className={"flex align-items-center"}>
-                  <div className={"margin-right-1 flex flex-basis-16"}>
-                    <ControlLabel>
-                      <FormattedMessage
-                        id="clockMaster"
-                        defaultMessage="Clock Master"
+              {this.props.group.pbxType !== "SIP" && (
+                <Row className={"margin-top-1"}>
+                  <Col md={12} className={"flex align-items-center"}>
+                    <div className={"margin-right-1 flex flex-basis-16"}>
+                      <ControlLabel>
+                        <FormattedMessage
+                          id="clockMaster"
+                          defaultMessage="Clock Master"
+                        />
+                      </ControlLabel>
+                    </div>
+                    <div className={"margin-right-1 flex-basis-33"}>
+                      <Checkbox
+                        defaultChecked={this.state.clock_master}
+                        onChange={e =>
+                          this.setState({ clock_master: e.target.checked })
+                        }
+                        disabled={
+                          !isAllowed(
+                            localStorage.getItem("userProfile"),
+                            pages.edit_group_iad_advanced_clock_master
+                          )
+                        }
                       />
-                    </ControlLabel>
-                  </div>
-                  <div className={"margin-right-1 flex-basis-33"}>
-                    <Checkbox
-                      defaultChecked={this.state.clock_master}
-                      onChange={e =>
-                        this.setState({ clock_master: e.target.checked })
-                      }
-                      disabled={
-                        !isAllowed(
-                          localStorage.getItem("userProfile"),
-                          pages.edit_group_iad_advanced_clock_master
-                        )
-                      }
-                    />
-                  </div>
-                </Col>
-              </Row>
+                    </div>
+                  </Col>
+                </Row>
+              )}
               <Row className={"margin-top-1"}>
                 <Col md={12} className={"flex align-items-center"}>
                   <div className={"margin-right-1 flex flex-basis-16"}>
