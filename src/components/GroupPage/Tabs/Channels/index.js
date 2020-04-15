@@ -35,7 +35,8 @@ export class Channels extends Component {
     disableButton: false,
     channelsOut: 0,
     channelsIn: 0,
-    numberOfChannelsError: null
+    numberOfChannelsError: null,
+    channelHuntingOptions: []
   };
 
   fetchReq = () => {
@@ -60,7 +61,20 @@ export class Channels extends Component {
               },
               channelsOut:
                 this.state.group.channelsOut || this.state.channelsOut,
-              channelsIn: this.state.group.channelsIn || this.state.channelsIn
+              channelsIn: this.state.group.channelsIn || this.state.channelsIn,
+              channelHuntingOptions: this.props.config.tenant.group.channelHunting.map(
+                el => ({
+                  ...el,
+                  disabled:
+                    this.state.group.channelHunting === "Loadbalanced"
+                      ? el.value === "Loadbalanced"
+                        ? false
+                        : true
+                      : el.value === "Loadbalanced"
+                      ? true
+                      : false
+                })
+              )
             })
           )
         )
@@ -354,13 +368,11 @@ export class Channels extends Component {
                   this.props.validationGroupError
                 }
               >
-                {this.props.config.tenant.group.channelHunting.map(
-                  (type, i) => (
-                    <option key={i} value={type.value}>
-                      {type.label}
-                    </option>
-                  )
-                )}
+                {this.state.channelHuntingOptions.map((type, i) => (
+                  <option key={i} value={type.value} disabled={type.disabled}>
+                    {type.label}
+                  </option>
+                ))}
               </FormControl>
             </div>
           </Col>
