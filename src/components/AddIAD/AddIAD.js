@@ -875,7 +875,8 @@ export class AddIAD extends Component {
                                 ...this.state.praByIad,
                                 [pra]: {
                                   ...this.state.praByIad[pra],
-                                  praID: Number(e.target.value)
+                                  praID: Number(e.target.value),
+                                  enabled: Number(e.target.value) ? true : false
                                 }
                               }
                             });
@@ -989,6 +990,7 @@ export class AddIAD extends Component {
                       <div className={"margin-right-1 flex-basis-33"}>
                         <Checkbox
                           className={"table-checkbox"}
+                          checked={this.state.praByIad[pra].enabled}
                           disabled={
                             !this.state.praByIad[pra].praID ||
                             !isAllowed(
