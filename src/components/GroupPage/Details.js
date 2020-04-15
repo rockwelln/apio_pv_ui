@@ -35,7 +35,8 @@ export class index extends Component {
     additionnalRedundancy: true,
     isLoading: true,
     isLoadingPN: true,
-    group: {}
+    group: {},
+    disabledUpdateButton: false
   };
 
   fetchGroup = () => {
@@ -245,10 +246,18 @@ export class index extends Component {
                   <Button
                     onClick={() => this.updateGroup()}
                     type="submit"
+                    disabled={this.state.disabledUpdateButton}
                     className="btn-primary"
                   >
                     <Glyphicon glyph="glyphicon glyphicon-ok" />
-                    <FormattedMessage id="update" defaultMessage="Update" />
+                    {this.state.disabledUpdateButton ? (
+                      <FormattedMessage
+                        id="updating"
+                        defaultMessage="Updating..."
+                      />
+                    ) : (
+                      <FormattedMessage id="update" defaultMessage="Update" />
+                    )}
                   </Button>
                 </div>
                 <div className="pull-right margin-right-1">
@@ -281,19 +290,34 @@ export class index extends Component {
       cliPhoneNumber,
       zipCode
     };
-    this.props
-      .fetchPutUpdateGroupDetails(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId,
-        data
-      )
-      .then(() => {
-        this.props.fetchGetPhoneNumbersByGroupId(
+    this.setState({ disabledUpdateButton: true }, () =>
+      this.props
+        .fetchPutUpdateGroupDetails(
           this.props.match.params.tenantId,
-          this.props.match.params.groupId
-        );
-        this.setState({ isDisabled: true });
-      });
+          this.props.match.params.groupId,
+          data
+        )
+        .then(() => {
+          this.props.fetchGetPhoneNumbersByGroupId(
+            this.props.match.params.tenantId,
+            this.props.match.params.groupId
+          );
+          this.setState({ isDisabled: true, disabledUpdateButton: false });
+        })
+    );
+    // this.props
+    //   .fetchPutUpdateGroupDetails(
+    //     this.props.match.params.tenantId,
+    //     this.props.match.params.groupId,
+    //     data
+    //   )
+    //   .then(() => {
+    //     this.props.fetchGetPhoneNumbersByGroupId(
+    //       this.props.match.params.tenantId,
+    //       this.props.match.params.groupId
+    //     );
+    //     this.setState({ isDisabled: true });
+    //   });
   };
 }
 

@@ -415,7 +415,10 @@ export class AddGroup extends Component {
                       onClick={this.AddGroup}
                       type="submit"
                       className="btn-primary"
-                      disabled={!this.state.zipCode}
+                      disabled={
+                        !this.state.zipCode ||
+                        this.state.buttonName === "Creating..."
+                      }
                     >
                       <Glyphicon glyph="glyphicon glyphicon-ok" />{" "}
                       {this.state.buttonName}
