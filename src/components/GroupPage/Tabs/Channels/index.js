@@ -81,6 +81,12 @@ export class Channels extends Component {
       );
   };
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.group.serviceType !== this.props.group.serviceType) {
+      this.fetchReq();
+    }
+  }
+
   componentDidMount() {
     this.fetchReq();
   }
