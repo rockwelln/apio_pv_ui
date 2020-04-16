@@ -131,7 +131,7 @@ export class Details extends Component {
               <div className={"margin-right-1 flex-basis-33"}>
                 <FormControl
                   type="text"
-                  value={this.state.macAddress || this.props.iad.macAddress}
+                  value={this.state.macAddress}
                   placeholder={"MAC Address"}
                   disabled={this.state.isDisabled}
                   onChange={this.upadateMacAddres}
