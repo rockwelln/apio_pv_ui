@@ -55,7 +55,8 @@ export class PhoneNumbersTab extends Component {
     showRefreshAllDialog: false,
     disableDialogButtons: false,
     disabledUpdateStatusActive: false,
-    disabledUpdateStatusPreActive: false
+    disabledUpdateStatusPreActive: false,
+    disableRefresInfo: false
   };
 
   fetchGetNumbers() {
@@ -213,6 +214,7 @@ export class PhoneNumbersTab extends Component {
                     <Button
                       onClick={this.refreshInformation}
                       className={"btn-primary margin-right-1"}
+                      disabled={this.state.disableRefresInfo}
                     >
                       <FormattedMessage
                         id="refreshInformation"
@@ -253,7 +255,7 @@ export class PhoneNumbersTab extends Component {
                       onClick={this.refreshAll}
                       bsStyle="primary"
                     >
-                      OK
+                      {this.state.disableDialogButtons ? "Refreshing..." : "OK"}
                     </Button>
                   </Modal.Footer>
                 </Modal>
@@ -468,10 +470,14 @@ export class PhoneNumbersTab extends Component {
       ""
     );
     const queryString = `refresh_db=true${queryNumbers}`;
-    this.props.fetchGetPhoneNumbersWithRefreshDB(
-      this.props.match.params.tenantId,
-      this.props.match.params.groupId,
-      queryString
+    this.setState({ disableRefresInfo: true }, () =>
+      this.props
+        .fetchGetPhoneNumbersWithRefreshDB(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          queryString
+        )
+        .then(() => this.setState({ disableRefresInfo: false }))
     );
   };
 

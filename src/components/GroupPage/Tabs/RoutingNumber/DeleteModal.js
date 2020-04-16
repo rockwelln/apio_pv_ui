@@ -64,7 +64,11 @@ class DeleteModal extends Component {
           </p>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={() => this.onDelete()} bsStyle="danger">
+          <Button
+            onClick={() => this.onDelete()}
+            bsStyle="danger"
+            disabled={deleting}
+          >
             <FormattedMessage id="delete" defaultMessage="Delete" />
           </Button>
           <Button onClick={() => onClose && onClose(false)} disabled={deleting}>

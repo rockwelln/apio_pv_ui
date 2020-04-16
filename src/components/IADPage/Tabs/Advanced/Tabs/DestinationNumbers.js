@@ -207,7 +207,14 @@ export class TrunkId extends Component {
                   disabled={this.state.disabledButton}
                 >
                   <Glyphicon glyph="glyphicon glyphicon-ok" />
-                  <FormattedMessage id="update" defaultMessage="Update" />
+                  {this.state.disabledButton ? (
+                    <FormattedMessage
+                      id="updating"
+                      defaultMessage="Updating..."
+                    />
+                  ) : (
+                    <FormattedMessage id="update" defaultMessage="Update" />
+                  )}
                 </Button>
               </div>
             </div>

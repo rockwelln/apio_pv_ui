@@ -49,6 +49,9 @@ const RightColumn = () => {
   };
 
   const addIadToTable = () => {
+    if (errorIAD || !manualIAD) {
+      return;
+    }
     const newIADs = [...IADs];
     if (!newIADs.includes(manualIAD)) {
       newIADs.push(manualIAD);
@@ -95,7 +98,7 @@ const RightColumn = () => {
             <Button
               className="btn-primary"
               onClick={addIadToTable}
-              disabled={!manualIAD}
+              //disabled={!manualIAD}
             >
               <FormattedMessage id="add" defaultMessage="Add" />
             </Button>

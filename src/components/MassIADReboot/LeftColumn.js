@@ -81,9 +81,11 @@ const LeftColumn = () => {
       if (!querySearch.length) {
         return;
       }
-      dispatch(fetchGetSearchIADs(querySearch));
-      setButtonName(newButtomName);
+      setButtonName("Searching...");
       setDisableSearchButton(true);
+      dispatch(fetchGetSearchIADs(querySearch)).then(() => {
+        setButtonName(newButtomName);
+      });
       return;
     }
     setButtonName(newButtomName);

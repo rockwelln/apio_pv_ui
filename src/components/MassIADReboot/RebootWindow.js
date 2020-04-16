@@ -17,6 +17,7 @@ import { fetchPutMassIADsReboot } from "../../store/actions";
 const RebootWindow = props => {
   const [rebootLater, setRebootLater] = useState("now");
   const [requestedTime, setRequestedTime] = useState("");
+  const [disableOkButton, setDisableOkButton] = useState(false);
 
   const dispatch = useDispatch();
   const promiseArray = [];
@@ -100,7 +101,9 @@ const RebootWindow = props => {
       const clearData = removeEmpty(dataForUpdate);
       fillPromiseArray(clearData);
     });
+    setDisableOkButton(true);
     Promise.all(promiseArray).then(() => {
+      setDisableOkButton(false);
       props.onClose();
     });
   };
@@ -164,11 +167,24 @@ const RebootWindow = props => {
       <Modal.Footer>
         <Button
           onClick={rebootIads}
-          disabled={rebootLater === "later" && !requestedTime}
+          disabled={
+            (rebootLater === "later" && !requestedTime) || disableOkButton
+          }
         >
-          <FormattedMessage id="ok" defaultMessage="Ok" />
+          {disableOkButton ? (
+            rebootLater === "later" ? (
+              <FormattedMessage
+                id="scheduling"
+                defaultMessage="Scheduling..."
+              />
+            ) : (
+              <FormattedMessage id="rebooting" defaultMessage="Rebooting..." />
+            )
+          ) : (
+            <FormattedMessage id="ok" defaultMessage="Ok" />
+          )}
         </Button>
-        <Button onClick={() => props.onClose()}>
+        <Button onClick={() => props.onClose()} disabled={disableOkButton}>
           <FormattedMessage id="cancel" defaultMessage="Cancel" />
         </Button>
       </Modal.Footer>

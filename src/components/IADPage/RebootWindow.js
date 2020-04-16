@@ -15,7 +15,7 @@ import { withRouter } from "react-router";
 import { removeEmpty } from "../remuveEmptyInObject";
 
 class RebootWindow extends Component {
-  state = { rebootLater: "now", requestedTime: "" };
+  state = { rebootLater: "now", requestedTime: "", disableOkButton: false };
 
   render() {
     const { show, onClose } = this.props;
@@ -96,10 +96,26 @@ class RebootWindow extends Component {
           <Button
             onClick={this.updateIad}
             disabled={
-              this.state.rebootLater === "later" && !this.state.requestedTime
+              (this.state.rebootLater === "later" &&
+                !this.state.requestedTime) ||
+              this.state.disableOkButton
             }
           >
-            <FormattedMessage id="ok" defaultMessage="Ok" />
+            {this.state.disableOkButton ? (
+              this.state.rebootLater === "later" ? (
+                <FormattedMessage
+                  id="scheduling"
+                  defaultMessage="Scheduling..."
+                />
+              ) : (
+                <FormattedMessage
+                  id="rebooting"
+                  defaultMessage="Rebooting..."
+                />
+              )
+            ) : (
+              <FormattedMessage id="ok" defaultMessage="Ok" />
+            )}
           </Button>
           <Button
             onClick={() =>
@@ -107,6 +123,7 @@ class RebootWindow extends Component {
                 onClose()
               )
             }
+            disabled={this.state.disableOkButton}
           >
             <FormattedMessage id="cancel" defaultMessage="Cancel" />
           </Button>
@@ -172,20 +189,23 @@ class RebootWindow extends Component {
       }
     };
     const clearData = removeEmpty(dataForUpdate);
-    this.props
-      .fetchPutUpdateIAD(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId,
-        this.props.match.params.iadId,
-        clearData
-      )
-      .then(
-        res =>
-          res === "successful" &&
-          this.setState({ requestedTime: "", rebootLater: "now" }, () =>
-            onClose()
-          )
-      );
+    this.setState({ disableOkButton: true }, () =>
+      this.props
+        .fetchPutUpdateIAD(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          this.props.match.params.iadId,
+          clearData
+        )
+        .then(
+          res =>
+            res === "successful" &&
+            this.setState(
+              { requestedTime: "", rebootLater: "now", disableOkButton: false },
+              () => onClose()
+            )
+        )
+    );
   };
 }
 

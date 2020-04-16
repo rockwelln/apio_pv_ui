@@ -23,7 +23,8 @@ export class ZipToRouting extends Component {
     errorHeader: "",
     showWarning: false,
     disabledUpload: true,
-    theInputKey: "inputKey"
+    theInputKey: "inputKey",
+    disableUploadButtonAPI: false
   };
   render() {
     return (
@@ -114,9 +115,14 @@ export class ZipToRouting extends Component {
                   onClick={this.uploadFile}
                   type="submit"
                   className="btn-primary"
-                  disabled={this.state.disabledUpload}
+                  disabled={
+                    this.state.disabledUpload ||
+                    this.state.disableUploadButtonAPI
+                  }
                 >
-                  Upload
+                  {this.state.disableUploadButtonAPI
+                    ? "Uploading..."
+                    : "Upload"}
                 </Button>
               </div>
             </div>
@@ -136,12 +142,15 @@ export class ZipToRouting extends Component {
         csv: b64,
         has_header: this.state.withHeaders
       };
-      this.props.fetchPostEmergencyRouting(data).then(() =>
-        this.setState({
-          csvValue: [],
-          theInputKey: new Date(),
-          disabledUpload: true
-        })
+      this.setState({ disableUploadButtonAPI: true }, () =>
+        this.props.fetchPostEmergencyRouting(data).then(() =>
+          this.setState({
+            csvValue: [],
+            theInputKey: new Date(),
+            disabledUpload: true,
+            disableUploadButtonAPI: false
+          })
+        )
       );
     });
   };

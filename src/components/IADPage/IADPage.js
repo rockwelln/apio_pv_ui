@@ -92,7 +92,7 @@ export class IADPage extends Component {
                     }}
                   />
                 </div>
-                <div className="pull-right">
+                {/* <div className="pull-right">
                   <Button
                     onClick={this.updateIAD}
                     type="submit"
@@ -100,12 +100,19 @@ export class IADPage extends Component {
                     disabled={this.state.disabledButton}
                   >
                     <Glyphicon glyph="glyphicon glyphicon-ok" />
-                    <FormattedMessage
-                      id="updateIad"
-                      defaultMessage="Update IAD"
-                    />
+                    {this.state.disabledButton ? (
+                      <FormattedMessage
+                        id="updatingIad"
+                        defaultMessage="Updating IAD"
+                      />
+                    ) : (
+                      <FormattedMessage
+                        id="updateIad"
+                        defaultMessage="Update IAD"
+                      />
+                    )}
                   </Button>
-                </div>
+                </div> */}
               </div>
             </Col>
           </Row>

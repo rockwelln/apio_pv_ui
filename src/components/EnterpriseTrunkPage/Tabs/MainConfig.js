@@ -25,7 +25,8 @@ export class MainConfig extends Component {
     iadFromSite: [],
     iadNotFromSite: [],
     routeExhaustionAction: "",
-    routeExhaustionDestination: ""
+    routeExhaustionDestination: "",
+    disableUpdateButton: false
   };
 
   fetchIADs = () => {
@@ -247,12 +248,20 @@ export class MainConfig extends Component {
                   type="submit"
                   className="btn-primary"
                   disabled={
-                    this.state.routeExhaustionAction === "Forward" &&
-                    !this.state.routeExhaustionDestination
+                    (this.state.routeExhaustionAction === "Forward" &&
+                      !this.state.routeExhaustionDestination) ||
+                    this.state.disableUpdateButton
                   }
                 >
                   <Glyphicon glyph="glyphicon glyphicon-ok" />
-                  <FormattedMessage id="update" defaultMessage="Update" />
+                  {this.state.disableUpdateButton ? (
+                    <FormattedMessage
+                      id="updating"
+                      defaultMessage="Updating..."
+                    />
+                  ) : (
+                    <FormattedMessage id="update" defaultMessage="Update" />
+                  )}
                 </Button>
               </div>
             </div>
@@ -278,14 +287,19 @@ export class MainConfig extends Component {
       routeExhaustionDestination
     };
     //const clearData = removeEmpty(data);
-    this.props
-      .fetchPutUpdateEnterpriseTrunk(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId,
-        this.props.match.params.entTrunkId,
-        data
-      )
-      .then(() => this.fetchIADs());
+    this.setState({ disableUpdateButton: true }, () =>
+      this.props
+        .fetchPutUpdateEnterpriseTrunk(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          this.props.match.params.entTrunkId,
+          data
+        )
+        .then(() => {
+          this.fetchIADs();
+          this.setState({ disableUpdateButton: false });
+        })
+    );
   };
 
   changeStatusOfIadFromSite = (e, i) => {

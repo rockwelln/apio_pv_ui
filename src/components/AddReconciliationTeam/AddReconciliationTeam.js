@@ -42,7 +42,7 @@ export class AddReconciliationTeam extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  <FormattedMessage id="name" defaultMessage="Name" />
+                  <FormattedMessage id="name" defaultMessage="Name" />*
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
@@ -57,7 +57,7 @@ export class AddReconciliationTeam extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  <FormattedMessage id="email" defaultMessage="Email" />
+                  <FormattedMessage id="email" defaultMessage="Email" />*
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl

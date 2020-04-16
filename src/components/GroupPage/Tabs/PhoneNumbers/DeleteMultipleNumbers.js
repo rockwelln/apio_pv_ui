@@ -92,7 +92,7 @@ class DeleteModal extends Component {
           <Button
             onClick={() => this.onDelete()}
             bsStyle="danger"
-            disabled={rangeStart.length === 0}
+            disabled={rangeStart.length === 0 || deleting}
           >
             <FormattedMessage id="delete" defaultMessage="Delete" />
           </Button>

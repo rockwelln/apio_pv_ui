@@ -15,7 +15,7 @@ import { FormattedMessage } from "react-intl";
 import { removeEmpty } from "../remuveEmptyInObject";
 
 class RebootWindow extends Component {
-  state = { rebootLater: "now", requestedTime: "" };
+  state = { rebootLater: "now", requestedTime: "", disableOkButton: false };
 
   render() {
     const { show, onClose } = this.props;
@@ -99,9 +99,26 @@ class RebootWindow extends Component {
               this.state.rebootLater === "later" && !this.state.requestedTime
             }
           >
-            <FormattedMessage id="ok" defaultMessage="Ok" />
+            {this.state.disableOkButton ? (
+              this.state.rebootLater === "later" ? (
+                <FormattedMessage
+                  id="scheduling"
+                  defaultMessage="Scheduling..."
+                />
+              ) : (
+                <FormattedMessage
+                  id="rebooting"
+                  defaultMessage="Rebooting..."
+                />
+              )
+            ) : (
+              <FormattedMessage id="ok" defaultMessage="Ok" />
+            )}
           </Button>
-          <Button onClick={() => onClose()}>
+          <Button
+            onClick={() => onClose()}
+            disabled={this.state.disableOkButton}
+          >
             <FormattedMessage id="cancel" defaultMessage="Cancel" />
           </Button>
         </Modal.Footer>
@@ -166,13 +183,18 @@ class RebootWindow extends Component {
       }
     };
     const clearData = removeEmpty(dataForUpdate);
-    this.props
-      .fetchPutUpdateGroupDetails(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId,
-        clearData
-      )
-      .then(res => res === "successful" && onClose());
+    this.setState({ disableOkButton: true }, () =>
+      this.props
+        .fetchPutUpdateGroupDetails(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          clearData
+        )
+        .then(res => {
+          this.setState({ disableOkButton: false });
+          res === "successful" && onClose();
+        })
+    );
   };
 }
 

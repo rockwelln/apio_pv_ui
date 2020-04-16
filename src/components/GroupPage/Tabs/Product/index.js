@@ -256,7 +256,8 @@ export class Product extends Component {
                   this.state.disableButton ||
                   ((get(this.props, "validationGroup.warnings") &&
                     !!this.props.validationGroup.warnings.length) ||
-                    this.props.validationGroupError)
+                    this.props.validationGroupError) ||
+                  this.state.updatingButton
                 }
               >
                 {this.state.updatingButton ? (
@@ -318,21 +319,22 @@ export class Product extends Component {
       serviceType
       //np1Redundancy
     };
-    this.setState({ updatingButton: true });
     const clearData = removeEmpty(data);
-    this.props
-      .fetchPutUpdateGroupDetails(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId,
-        clearData
-      )
-      .then(() => {
-        this.props.fetchGetIADs(
+    this.setState({ updatingButton: true }, () =>
+      this.props
+        .fetchPutUpdateGroupDetails(
           this.props.match.params.tenantId,
-          this.props.match.params.groupId
-        );
-        this.setState({ updatingButton: false });
-      });
+          this.props.match.params.groupId,
+          clearData
+        )
+        .then(() => {
+          this.props.fetchGetIADs(
+            this.props.match.params.tenantId,
+            this.props.match.params.groupId
+          );
+          this.setState({ updatingButton: false });
+        })
+    );
   };
 }
 

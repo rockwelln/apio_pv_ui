@@ -27,7 +27,8 @@ export class Anomalies extends Component {
     isDisabled: true,
     anomaly: {},
     isLoading: true,
-    isLoadingConfig: true
+    isLoadingConfig: true,
+    disableUpdateButton: false
   };
   componentDidMount() {
     this.props
@@ -399,9 +400,20 @@ export class Anomalies extends Component {
                         onClick={this.anomalyUpdate}
                         type="submit"
                         className="btn-primary"
+                        disabled={this.state.disableUpdateButton}
                       >
                         <Glyphicon glyph="glyphicon glyphicon-ok" />
-                        <FormattedMessage id="update" defaultMessage="Update" />
+                        {this.state.disableUpdateButton ? (
+                          <FormattedMessage
+                            id="updating"
+                            defaultMessage="Updating..."
+                          />
+                        ) : (
+                          <FormattedMessage
+                            id="update"
+                            defaultMessage="Update"
+                          />
+                        )}
                       </Button>
                     </div>
                     <div className="pull-right margin-right-1">
@@ -410,7 +422,6 @@ export class Anomalies extends Component {
                         type="submit"
                         className="btn-primary"
                       >
-                        <Glyphicon glyph="glyphicon glyphicon-ok" />
                         <FormattedMessage id="cancel" defaultMessage="Cancel" />
                       </Button>
                     </div>
@@ -440,9 +451,15 @@ export class Anomalies extends Component {
       comments
     };
     const clearData = removeEmpty(data);
-    this.props
-      .fetchPutUpdateAnomaly(this.props.match.params.anomalyHash, clearData)
-      .then(res => res === "success" && this.setState({ isDisabled: true }));
+    this.setState({ disableUpdateButton: true }, () =>
+      this.props
+        .fetchPutUpdateAnomaly(this.props.match.params.anomalyHash, clearData)
+        .then(
+          res =>
+            res === "success" &&
+            this.setState({ isDisabled: true, disableUpdateButton: false })
+        )
+    );
   };
 }
 

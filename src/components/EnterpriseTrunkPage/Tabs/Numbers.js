@@ -27,7 +27,8 @@ export class Numbers extends Component {
     groupNumbers: [],
     searchValueEntNumbers: "",
     searchValueGroupNumbers: "",
-    searchablePhoneNumber: []
+    searchablePhoneNumber: [],
+    disableUpdatingButton: false
   };
 
   fetchNumbers = () => {
@@ -175,12 +176,20 @@ export class Numbers extends Component {
                   type="submit"
                   className="btn-primary"
                   disabled={
-                    this.state.routeExhaustionAction === "Forward" &&
-                    !this.state.routeExhaustionDestination
+                    (this.state.routeExhaustionAction === "Forward" &&
+                      !this.state.routeExhaustionDestination) ||
+                    this.state.disableUpdatingButton
                   }
                 >
                   <Glyphicon glyph="glyphicon glyphicon-ok" />
-                  <FormattedMessage id="update" defaultMessage="Update" />
+                  {this.state.disableUpdatingButton ? (
+                    <FormattedMessage
+                      id="updating"
+                      defaultMessage="Updatimg..."
+                    />
+                  ) : (
+                    <FormattedMessage id="update" defaultMessage="Update" />
+                  )}
                 </Button>
               </div>
             </div>
@@ -200,14 +209,17 @@ export class Numbers extends Component {
       added_numbers: checkedPhoneNumbers
     };
     const clearData = removeEmpty(data);
-    this.props
-      .fetchPutUpdateNumbersByEnterpriseTrunk(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId,
-        this.props.match.params.entTrunkId,
-        clearData
-      )
-      .then(() => this.fetchNumbers());
+    this.setState({ disableUpdatingButton: true }, () =>
+      this.props
+        .fetchPutUpdateNumbersByEnterpriseTrunk(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          this.props.match.params.entTrunkId,
+          clearData
+        )
+        .then(() => this.fetchNumbers())
+        .then(() => this.setState({ disableUpdatingButton: false }))
+    );
   };
 
   filterBySearchEntValue = () => {

@@ -24,7 +24,8 @@ export class AddPhoneNumber extends Component {
     arrayTo: "",
     buttonName: "Add",
     status: "preActive",
-    numbers: [{ phoneNumber: "" }]
+    numbers: [{ phoneNumber: "" }],
+    disableAddButton: false
   };
   render() {
     return (
@@ -168,9 +169,10 @@ export class AddPhoneNumber extends Component {
                       onClick={this.addAID}
                       type="submit"
                       className="btn-primary"
+                      disabled={this.state.disableAddButton}
                     >
                       <Glyphicon glyph="glyphicon glyphicon-ok" />{" "}
-                      {this.state.buttonName}
+                      {this.state.disableAddButton ? "Adding" : "Add"}
                     </Button>
                   </div>
                 </div>
@@ -210,19 +212,22 @@ export class AddPhoneNumber extends Component {
       range: { minPhoneNumber: arrayFrom, maxPhoneNumber: arrayTo }
     };
     const clearData = removeEmpty(data);
-    this.props
-      .fetchPostAssignPhoneNumbersToGroup(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId,
-        clearData
-      )
-      .then(
-        res =>
-          res === "success" &&
-          this.props.history.push(
-            `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}`
-          )
-      );
+    this.setState({ disableAddButton: true }, () =>
+      this.props
+        .fetchPostAssignPhoneNumbersToGroup(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          clearData
+        )
+        .then(
+          res =>
+            res === "success" &&
+            this.props.history.push(
+              `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}`
+            )
+        )
+        .then(() => this.setState({ disableAddButton: false }))
+    );
   };
 }
 
