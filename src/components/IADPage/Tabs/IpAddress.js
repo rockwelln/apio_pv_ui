@@ -12,6 +12,8 @@ import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import HelpBlock from "react-bootstrap/lib/HelpBlock";
 
+import RebootWindow from "../RebootWindow";
+
 import { FormattedMessage } from "react-intl";
 
 import {
@@ -36,7 +38,9 @@ export class IPAddress extends Component {
     errorIpAdressV4: null,
     errorNetMaskV4: null,
     errorIpAdressV6: null,
-    errorNetMaskV6: null
+    errorNetMaskV6: null,
+    disabledButton: false,
+    showRebootDialog: false
   };
 
   componentDidMount() {
@@ -507,6 +511,11 @@ export class IPAddress extends Component {
             </div>
           </Col>
         </Row>
+        <RebootWindow
+          data={this.state.data}
+          show={this.state.showRebootDialog}
+          onClose={() => this.setState({ showRebootDialog: false })}
+        />
       </React.Fragment>
     );
   }
@@ -531,22 +540,31 @@ export class IPAddress extends Component {
         : null;
     const data = { transportMode, pbx, ip1: checkedIp };
     const clearData = removeEmpty(data);
+
     if (Object.keys(clearData).length) {
-      this.setState({ disabledButton: true }, () =>
-        this.props
-          .fetchPutUpdateIAD(
-            this.props.match.params.tenantId,
-            this.props.match.params.groupId,
-            this.props.match.params.iadId,
-            clearData
-          )
-          .then(() => this.setState({ disabledButton: false }))
-      );
-    } else {
-      this.setState({ disabledButton: true }, () =>
-        this.setState({ disabledButton: false })
-      );
+      this.setState({ data: clearData, showRebootDialog: true });
+      return;
     }
+
+    this.setState({ disabledButton: true }, () =>
+      this.setState({ disabledButton: false })
+    );
+    // if (Object.keys(clearData).length) {
+    //   this.setState({ disabledButton: true }, () =>
+    //     this.props
+    //       .fetchPutUpdateIAD(
+    //         this.props.match.params.tenantId,
+    //         this.props.match.params.groupId,
+    //         this.props.match.params.iadId,
+    //         clearData
+    //       )
+    //       .then(() => this.setState({ disabledButton: false }))
+    //   );
+    // } else {
+    //   this.setState({ disabledButton: true }, () =>
+    //     this.setState({ disabledButton: false })
+    //   );
+    // }
   };
 
   validateNetMaskV6 = e => {

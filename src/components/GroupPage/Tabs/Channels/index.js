@@ -25,6 +25,7 @@ import { removeEmpty } from "../../../remuveEmptyInObject";
 import { get } from "../../../get";
 
 import Loading from "../../../../common/Loading";
+import RebootWindow from "../../RebootWindow";
 
 export class Channels extends Component {
   state = {
@@ -36,7 +37,9 @@ export class Channels extends Component {
     channelsOut: 0,
     channelsIn: 0,
     numberOfChannelsError: null,
-    channelHuntingOptions: []
+    channelHuntingOptions: [],
+    data: {},
+    showRebootDialog: false
   };
 
   fetchReq = () => {
@@ -411,6 +414,11 @@ export class Channels extends Component {
             </div>
           </div>
         </Row>
+        <RebootWindow
+          data={this.state.data}
+          show={this.state.showRebootDialog}
+          onClose={() => this.setState({ showRebootDialog: false })}
+        />
       </React.Fragment>
     );
   }
@@ -460,6 +468,20 @@ export class Channels extends Component {
       channelsOut
     };
     const clearData = removeEmpty(data);
+
+    if (
+      (this.state.group.pbxType === "SIP" ||
+        this.state.group.pbxType === "PRA") &&
+      this.state.group.channelHunting !== this.props.group.channelHunting
+    ) {
+      this.setState({
+        showRebootDialog: true,
+        data: clearData,
+        disableButton: false
+      });
+      return;
+    }
+
     this.setState({ updatingButton: true }, () =>
       this.props
         .fetchPutUpdateGroupDetails(

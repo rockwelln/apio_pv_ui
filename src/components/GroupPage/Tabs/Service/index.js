@@ -20,12 +20,15 @@ import {
 } from "../../../../store/actions";
 
 import { isAllowed, pages } from "../../../../utils/user";
+import RebootWindow from "../../RebootWindow";
 
 export class Service extends Component {
   state = {
     isLoading: true,
     group: {},
-    disableButton: false
+    disableButton: false,
+    data: {},
+    showRebootDialog: false
   };
   componentDidMount() {
     this.props
@@ -350,6 +353,11 @@ export class Service extends Component {
             </div>
           </div>
         </Row>
+        <RebootWindow
+          data={this.state.data}
+          show={this.state.showRebootDialog}
+          onClose={() => this.setState({ showRebootDialog: false })}
+        />
       </React.Fragment>
     );
   }
@@ -367,6 +375,19 @@ export class Service extends Component {
     };
     this.setState({ disableButton: true });
     const clearData = removeEmpty(data);
+
+    if (
+      this.state.group.pbxType === "SIP" &&
+      this.state.group.dtmf !== this.props.group.dtmf
+    ) {
+      this.setState({
+        showRebootDialog: true,
+        data: clearData,
+        disableButton: false
+      });
+      return;
+    }
+
     this.props
       .fetchPutUpdateGroupDetails(
         this.props.match.params.tenantId,
