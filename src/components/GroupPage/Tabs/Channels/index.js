@@ -377,11 +377,14 @@ export class Channels extends Component {
                   this.props.validationGroupError
                 }
               >
-                {this.state.channelHuntingOptions.map((type, i) => (
-                  <option key={i} value={type.value} disabled={type.disabled}>
-                    {type.label}
-                  </option>
-                ))}
+                {this.state.channelHuntingOptions.map(
+                  (type, i) =>
+                    !type.disabled && (
+                      <option key={i} value={type.value}>
+                        {type.label}
+                      </option>
+                    )
+                )}
               </FormControl>
             </div>
           </Col>
