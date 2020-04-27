@@ -239,9 +239,7 @@ export class ZipToRouting extends Component {
         });
         return [];
       }
-      console.log(currentline);
       for (let j = 0; j < headers.length; j++) {
-        console.log(currentline[j]);
         if (currentline[j].length && currentline[j].length > 255) {
           let errorHeader = "Value length error";
           let errorText = "Your max length of value must be not more 255";
