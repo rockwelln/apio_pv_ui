@@ -99,17 +99,13 @@ class Details extends Component {
                     get(group, "addressInformation.addressLine1")
                       ? group.addressInformation.addressLine1
                       : ""
-                  } ${
-                    get(group, "addressInformation.addressLine2")
-                      ? group.addressInformation.addressLine2
-                      : ""
                   }`}
                   onChange={e => {
                     this.setState({
                       group: {
                         ...this.state.group,
                         addressInformation: {
-                          ...this.state.addressInformation,
+                          ...this.state.group.addressInformation,
                           addressLine1: e.target.value
                         }
                       }
@@ -133,7 +129,7 @@ class Details extends Component {
                       group: {
                         ...this.state.group,
                         addressInformation: {
-                          ...this.state.addressInformation,
+                          ...this.state.group.addressInformation,
                           postalCode: e.target.value
                         }
                       }
@@ -155,7 +151,7 @@ class Details extends Component {
                       group: {
                         ...this.state.group,
                         addressInformation: {
-                          ...this.state.addressInformation,
+                          ...this.state.group.addressInformation,
                           city: e.target.value
                         }
                       }
@@ -177,7 +173,7 @@ class Details extends Component {
                       group: {
                         ...this.state.group,
                         addressInformation: {
-                          ...this.state.addressInformation,
+                          ...this.state.group.addressInformation,
                           country: e.target.value
                         }
                       }
