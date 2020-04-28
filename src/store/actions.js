@@ -1934,11 +1934,20 @@ export function fetchPutUpdateGroupServicesByGroupId(tenantId, groupId, data) {
 export function fetchPutUpdateTenantDetails(tenantId, data) {
   return function(dispatch) {
     return fetch_put(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}`,
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/`,
       data
     )
       .then(res => res.json())
-      .then(data => dispatch(putUpdateTenantDetails(data)))
+      .then(data => {
+        dispatch(putUpdateTenantDetails(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="update-tenant-details-success"
+            defaultMessage="Tenant successfully updated"
+          />,
+          "Updated"
+        );
+      })
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage
