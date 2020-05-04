@@ -277,7 +277,7 @@ export class Service extends Component {
                     this.setState({
                       group: {
                         ...this.state.group,
-                        aoc: e.target.value
+                        aoc: e.target.value === "false" ? false : e.target.value
                       }
                     })
                   }
