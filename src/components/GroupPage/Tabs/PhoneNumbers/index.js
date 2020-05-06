@@ -93,6 +93,9 @@ export class PhoneNumbersTab extends Component {
         () => this.pagination()
       );
     }
+    if (prevProps.location.hash !== this.props.location.hash) {
+      this.fetchGetNumbers();
+    }
   }
 
   render() {
@@ -110,7 +113,6 @@ export class PhoneNumbersTab extends Component {
       return <Loading />;
     }
 
-    console.log(this.props.phoneNumbers);
     return (
       <React.Fragment>
         <Row className={"margin-top-2 flex align-items-center"}>

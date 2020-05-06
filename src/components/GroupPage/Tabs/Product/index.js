@@ -74,6 +74,12 @@ export class Product extends Component {
   componentDidMount() {
     this.fetchReq();
   }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.location.hash !== this.props.location.hash) {
+      this.fetchReq();
+    }
+  }
   render() {
     if (this.state.isLoading) {
       return (

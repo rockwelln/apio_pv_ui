@@ -30,7 +30,8 @@ export class Service extends Component {
     data: {},
     showRebootDialog: false
   };
-  componentDidMount() {
+
+  fetchReq = () => {
     this.props
       .fetchGetGroupById(
         this.props.match.params.tenantId,
@@ -61,6 +62,16 @@ export class Service extends Component {
           )
         )
       );
+  };
+
+  componentDidMount() {
+    this.fetchReq();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.location.hash !== this.props.location.hash) {
+      this.fetchReq();
+    }
   }
 
   render() {

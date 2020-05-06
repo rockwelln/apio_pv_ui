@@ -59,6 +59,11 @@ export class RoutingNumber extends Component {
   componentDidMount() {
     this.fetchTrunks();
   }
+  componentDidUpdate(prevProps) {
+    if (prevProps.location.hash !== this.props.location.hash) {
+      this.fetchTrunks();
+    }
+  }
   render() {
     if (this.state.isLoading) {
       return <Loading />;

@@ -63,7 +63,10 @@ export class IADs extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.iads.iads.length !== this.props.iads.iads.length) {
+    if (
+      prevProps.iads.iads.length !== this.props.iads.iads.length ||
+      prevProps.location.hash !== this.props.location.hash
+    ) {
       this.fetchIADs();
     }
   }

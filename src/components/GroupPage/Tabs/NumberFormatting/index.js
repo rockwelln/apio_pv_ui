@@ -29,7 +29,8 @@ export class NumberFormatting extends Component {
     disableButton: false,
     showRebootDialog: false
   };
-  componentDidMount() {
+
+  fetchReq = () => {
     this.props
       .fetchGetGroupById(
         this.props.match.params.tenantId,
@@ -65,7 +66,18 @@ export class NumberFormatting extends Component {
           )
         )
       );
+  };
+
+  componentDidMount() {
+    this.fetchReq();
   }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.location.hash !== this.props.location.hash) {
+      this.fetchReq();
+    }
+  }
+
   render() {
     if (this.state.isLoading) {
       return (
