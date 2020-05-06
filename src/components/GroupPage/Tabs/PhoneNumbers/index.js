@@ -109,6 +109,8 @@ export class PhoneNumbersTab extends Component {
     if (isLoading && pagination) {
       return <Loading />;
     }
+
+    console.log(this.props.phoneNumbers);
     return (
       <React.Fragment>
         <Row className={"margin-top-2 flex align-items-center"}>
@@ -632,7 +634,10 @@ export class PhoneNumbersTab extends Component {
       .filter(
         phone =>
           phone.rangeStart.toLowerCase().includes(searchValue.toLowerCase()) ||
-          phone.rangeEnd.toLowerCase().includes(searchValue.toLowerCase()) ||
+          (phone.phoneNumbers &&
+            phone.phoneNumbers.some(el =>
+              el.rangeStart.toLowerCase().includes(searchValue.toLowerCase())
+            )) ||
           (phone.userId &&
             phone.userId.toLowerCase().includes(searchValue.toLowerCase())) ||
           (phone.userType &&
