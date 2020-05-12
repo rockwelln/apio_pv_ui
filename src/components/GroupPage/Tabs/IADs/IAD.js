@@ -18,9 +18,7 @@ class IAD extends Component {
   componentDidMount() {
     this.props.fetchGetTimerForIAD(this.props.iad.iadId).then(data =>
       this.setState({
-        timers: data.timers.filter(
-          timer => new Date(timer.at).getTime() > new Date().getTime()
-        )
+        timers: data.timers.filter(timer => timer.status === "WAIT")
       })
     );
   }

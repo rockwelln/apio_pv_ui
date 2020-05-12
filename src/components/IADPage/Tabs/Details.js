@@ -37,9 +37,7 @@ export class Details extends Component {
     this.setState({
       macAddress: this.props.iad.macAddress,
       pilotNumber: this.props.iad.pilotNumber,
-      timers: this.props.iadTimer.filter(
-        timer => new Date(timer.at).getTime() > new Date().getTime()
-      ),
+      timers: this.props.iadTimer.filter(timer => timer.status === "WAIT"),
       cliPhoneNumber: this.props.iad.cliPhoneNumber
     });
     this.props
