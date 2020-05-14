@@ -13,6 +13,7 @@ import { FormattedMessage } from "react-intl";
 import TableZTR from "./TableZTR";
 
 import { fetchPostEmergencyRouting } from "../../../../store/actions";
+import { delimiter } from "path";
 
 export class ZipToRouting extends Component {
   state = {
@@ -24,7 +25,8 @@ export class ZipToRouting extends Component {
     showWarning: false,
     disabledUpload: true,
     theInputKey: "inputKey",
-    disableUploadButtonAPI: false
+    disableUploadButtonAPI: false,
+    delimiter: ";"
   };
   render() {
     return (
@@ -107,6 +109,17 @@ export class ZipToRouting extends Component {
             </div>
           </Col>
         </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={12} className={"flex align-items-center"}>
+            <Button
+              onClick={this.downloadTemplate}
+              bsStyle="link"
+              className={"padding-0"}
+            >
+              Download template.csv
+            </Button>
+          </Col>
+        </Row>
         <Row>
           <Col md={12}>
             <div className="button-row">
@@ -135,12 +148,24 @@ export class ZipToRouting extends Component {
     );
   }
 
+  downloadTemplate = () => {
+    const pom = document.createElement("a");
+    const csvContent =
+      "Zip Code;Routing Profile\n1040;RProfile 41\n1050;routing_profile_51\n1060;rp61\n1070;Pròfìlé 71";
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    pom.href = url;
+    pom.setAttribute("download", "template.csv");
+    pom.click();
+  };
+
   uploadFile = () => {
     this.toBase64(this.state.file).then(res => {
       const b64 = res.replace(/^data:.+;base64,/, "");
       const data = {
         csv: b64,
-        has_header: this.state.withHeaders
+        has_header: this.state.withHeaders,
+        delimiter: this.state.delimiter
       };
       this.setState({ disableUploadButtonAPI: true }, () =>
         this.props.fetchPostEmergencyRouting(data).then(() =>
@@ -199,15 +224,19 @@ export class ZipToRouting extends Component {
     if (withHeaders) {
       headers = lines[0].split(";");
       if (headers.length > 2) {
-        let errorHeader = "Count header error";
-        let errorText = "You must have two headers in the file";
-        this.setState({
-          showError: true,
-          errorHeader,
-          errorText,
-          disabledUpload: true
-        });
-        return [];
+        headers = lines[0].split(",");
+        this.setState({ delimiter: "," });
+        if (headers.length > 2) {
+          let errorHeader = "Count header error";
+          let errorText = "You must have two headers in the file";
+          this.setState({
+            showError: true,
+            errorHeader,
+            errorText,
+            disabledUpload: true
+          });
+          return [];
+        }
       }
     } else {
       headers = ["Zip Code", "Routing Profile"];
@@ -228,16 +257,20 @@ export class ZipToRouting extends Component {
       let obj = {};
       let currentline = lines[i].split(";");
       if (currentline.length !== 2) {
-        let errorHeader = "Count columns error";
-        let errorText = "You must have two columns in the file";
+        currentline = lines[i].split(",");
+        this.setState({ delimiter: "," });
+        if (currentline.length !== 2) {
+          let errorHeader = "Count columns error";
+          let errorText = "You must have two columns in the file";
 
-        this.setState({
-          showError: true,
-          errorHeader,
-          errorText,
-          disabledUpload: true
-        });
-        return [];
+          this.setState({
+            showError: true,
+            errorHeader,
+            errorText,
+            disabledUpload: true
+          });
+          return [];
+        }
       }
       for (let j = 0; j < headers.length; j++) {
         if (currentline[j].length && currentline[j].length > 255) {
