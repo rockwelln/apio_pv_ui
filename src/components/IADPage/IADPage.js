@@ -146,7 +146,8 @@ export class IADPage extends Component {
               <Advanced />
             </Tab>
             {(this.props.iad.protocolMode === "PRA" ||
-              this.props.iad.protocolMode === "PRA_SIP") && (
+              this.props.iad.protocolMode === "PRA_SIP" ||
+              this.props.iad.protocolMode === "SIP_PRA") && (
               <Tab eventKey={5} title="PRA lines configuration">
                 <PraInfo
                   isLoading={this.state.isLoading}
