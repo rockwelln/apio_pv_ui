@@ -10,6 +10,7 @@ import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Radio from "react-bootstrap/lib/Radio";
 import FormGroup from "react-bootstrap/lib/FormGroup";
+import Alert from "react-bootstrap/lib/Alert";
 
 import { STATENUMBERS } from "../../constants";
 
@@ -18,6 +19,8 @@ import { fetchPostAssignPhoneNumbersToGroup } from "../../store/actions";
 import { removeEmpty } from "../remuveEmptyInObject";
 import { validateInputPhoneNumber } from "../validateInputPhoneNumber";
 
+import { FormattedMessage } from "react-intl";
+
 export class AddPhoneNumber extends Component {
   state = {
     arrayFrom: "",
@@ -25,7 +28,8 @@ export class AddPhoneNumber extends Component {
     buttonName: "Add",
     status: "preActive",
     numbers: [{ phoneNumber: "" }],
-    disableAddButton: false
+    disableAddButton: false,
+    countNumbersError: false
   };
   render() {
     return (
@@ -88,6 +92,7 @@ export class AddPhoneNumber extends Component {
                     value={this.state.arrayFrom}
                     placeholder={"From phone number"}
                     onKeyDown={validateInputPhoneNumber}
+                    onBlur={this.validateCountOfPhoneNumber}
                     onChange={e => {
                       this.setState({ arrayFrom: e.target.value });
                     }}
@@ -102,6 +107,7 @@ export class AddPhoneNumber extends Component {
                     value={this.state.arrayTo}
                     placeholder={"To phone number"}
                     onKeyDown={validateInputPhoneNumber}
+                    onBlur={this.validateCountOfPhoneNumber}
                     onChange={e => this.setState({ arrayTo: e.target.value })}
                   />
                 </div>
@@ -121,6 +127,7 @@ export class AddPhoneNumber extends Component {
                         value={number.phoneNumber}
                         placeholder={"Phone number"}
                         onKeyDown={validateInputPhoneNumber}
+                        onBlur={this.validateCountOfPhoneNumber}
                         onChange={e => {
                           const val = e.target.value;
                           this.setState(curState => {
@@ -161,15 +168,30 @@ export class AddPhoneNumber extends Component {
                 </div>
               </Col>
             </Row>
+            {this.state.countNumbersError && (
+              <Row className={"margin-top-1"}>
+                <Col md={12}>
+                  <Alert bsStyle="danger">
+                    <FormattedMessage
+                      id="countNumbersError"
+                      defaultMessage="Only 100 numbers can be added at a time"
+                    />
+                  </Alert>
+                </Col>
+              </Row>
+            )}
             <Row>
               <Col md={12}>
                 <div className="button-row">
                   <div className="pull-right">
                     <Button
-                      onClick={this.addAID}
+                      onClick={this.addPhoneNumbers}
                       type="submit"
                       className="btn-primary"
-                      disabled={this.state.disableAddButton}
+                      disabled={
+                        this.state.disableAddButton ||
+                        this.state.countNumbersError
+                      }
                     >
                       <Glyphicon glyph="glyphicon glyphicon-ok" />{" "}
                       {this.state.disableAddButton ? "Adding" : "Add"}
@@ -184,7 +206,15 @@ export class AddPhoneNumber extends Component {
     );
   }
 
-  validteInputPhoneNumber = e => {};
+  validateCountOfPhoneNumber = () => {
+    const { numbers, arrayFrom, arrayTo } = this.state;
+    const countSingleNumber = numbers.filter(el => el.phoneNumber).length;
+    if (Number(arrayTo) - Number(arrayFrom) + countSingleNumber > 100) {
+      this.setState({ countNumbersError: true });
+    } else {
+      this.setState({ countNumbersError: false });
+    }
+  };
 
   addPhoneToArray = () => {
     const numbers = this.state.numbers;
@@ -195,7 +225,7 @@ export class AddPhoneNumber extends Component {
   removeNumberFromArray = i => {
     const numbers = this.state.numbers;
     numbers.splice(i, 1);
-    this.setState({ numbers });
+    this.setState({ numbers }, () => this.validateCountOfPhoneNumber());
   };
 
   cancelClick = () => {
@@ -204,7 +234,7 @@ export class AddPhoneNumber extends Component {
     );
   };
 
-  addAID = () => {
+  addPhoneNumbers = () => {
     const { numbers, arrayFrom, arrayTo, status } = this.state;
     const data = {
       numbers,
