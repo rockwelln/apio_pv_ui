@@ -136,7 +136,7 @@ export class Channels extends Component {
             <Col md={12} className={"flex align-items-center"}>
               <div className={"margin-right-1 flex flex-basis-16"}>
                 <ControlLabel>
-                  {this.state.group.pbxType === "PRA" ? (
+                  {this.state.group.pbxType === "PRA" || this.state.group.pbxType === "PRA_SIP" ? (
                     <FormattedMessage
                       id="numberOfPRA"
                       defaultMessage="Number of PRA"
@@ -160,7 +160,7 @@ export class Channels extends Component {
                     this.props.validationGroupError
                   }
                 >
-                  {this.state.group.pbxType === "PRA"
+                  {this.state.group.pbxType === "PRA" || this.state.group.pbxType === "PRA_SIP"
                     ? ~this.props.config.tenant.group.iad[
                         "2EDUsForServiceTypes"
                       ].indexOf(this.state.group.serviceType)
@@ -178,7 +178,7 @@ export class Channels extends Component {
                             </option>
                           )
                         )
-                    : this.state.group.pbxType === "SIP"
+                    : this.state.group.pbxType === "SIP" || this.state.group.pbxType === "SIP_PRA"
                     ? ~this.props.config.tenant.group.iad[
                         "2EDUsForServiceTypes"
                       ].indexOf(this.state.group.serviceType)

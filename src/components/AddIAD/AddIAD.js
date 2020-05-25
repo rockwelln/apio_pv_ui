@@ -812,7 +812,8 @@ export class AddIAD extends Component {
               </React.Fragment>
             )}
             {(this.props.group.pbxType === "PRA" ||
-              this.props.group.pbxType === "PRA_SIP") && (
+              this.props.group.pbxType === "PRA_SIP" ||
+              this.props.group.pbxType === "SIP_PRA") && (
               <Row className={"margin-top-1"}>
                 <Col md={12} className={"flex align-items-center"}>
                   <div className={"margin-right-1 flex font-24"}>
@@ -822,7 +823,8 @@ export class AddIAD extends Component {
               </Row>
             )}
             {(this.props.group.pbxType === "PRA" ||
-              this.props.group.pbxType === "PRA_SIP") &&
+              this.props.group.pbxType === "PRA_SIP" ||
+              this.props.group.pbxType === "SIP_PRA") &&
               Object.keys(this.state.praByIad).map((pra, i) => (
                 <React.Fragment key={i + ""}>
                   <Row className={"margin-top-1"}>

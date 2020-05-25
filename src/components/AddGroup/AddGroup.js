@@ -345,7 +345,7 @@ export class AddGroup extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  {this.state.typeOfIad === "PRA" ? (
+                  {this.state.typeOfIad === "PRA" || this.state.typeOfIad === "PRA_SIP" ? (
                     <FormattedMessage
                       id="numberOfPRA"
                       defaultMessage="Number of PRA"
@@ -366,7 +366,7 @@ export class AddGroup extends Component {
                       this.setState({ numberOfChannels: e.target.value })
                     }
                   >
-                    {this.state.typeOfIad === "PRA"
+                    {this.state.typeOfIad === "PRA" || this.state.typeOfIad === "PRA_SIP"
                       ? ~this.props.config.tenant.group.iad[
                           "2EDUsForServiceTypes"
                         ].indexOf(this.state.serviceType)
@@ -384,7 +384,7 @@ export class AddGroup extends Component {
                               </option>
                             )
                           )
-                      : this.state.typeOfIad === "SIP"
+                      : this.state.typeOfIad === "SIP" || this.state.typeOfIad === "SIP_PRA"
                       ? ~this.props.config.tenant.group.iad[
                           "2EDUsForServiceTypes"
                         ].indexOf(this.state.serviceType)
