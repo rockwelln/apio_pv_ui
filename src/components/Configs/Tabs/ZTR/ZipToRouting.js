@@ -151,7 +151,7 @@ export class ZipToRouting extends Component {
   downloadTemplate = () => {
     const pom = document.createElement("a");
     const csvContent =
-      "Zip Code;Routing Profile\n1040;RProfile 41\n1050;routing_profile_51\n1060;rp61\n1070;Pròfìlé 71";
+      "Zip Code;Routing Profile\n1040;RProfile 41\n1050;routing_profile_51\n1060;rp61\n1070;Profile 71";
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     pom.href = url;
@@ -238,6 +238,7 @@ export class ZipToRouting extends Component {
           return [];
         }
       }
+      this.setState({ delimiter: ";" });
     } else {
       headers = ["Zip Code", "Routing Profile"];
     }
@@ -272,6 +273,7 @@ export class ZipToRouting extends Component {
           return [];
         }
       }
+      this.setState({ delimiter: ";" });
       for (let j = 0; j < headers.length; j++) {
         if (currentline[j].length && currentline[j].length > 255) {
           let errorHeader = "Value length error";
