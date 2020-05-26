@@ -10,6 +10,8 @@ import Button from "react-bootstrap/lib/Button";
 
 import { fetchPutUpdateTrunkGroup } from "../../../../store/actions";
 
+import { removeEmpty } from "../../../remuveEmptyInObject";
+
 export class Capacity extends Component {
   state = {
     disableButton: false,
@@ -138,13 +140,15 @@ export class Capacity extends Component {
       enableBursting: enableBursting && enableBursting
     };
 
+    const clearData = removeEmpty(data);
+
     this.setState({ disableButton: true }, () =>
       this.props
         .fetchPutUpdateTrunkGroup(
           this.props.match.params.tenantId,
           this.props.match.params.groupId,
           this.props.match.params.trunkGroupName,
-          data
+          clearData
         )
         .then(() => this.setState({ disableButton: false }))
     );

@@ -10,6 +10,8 @@ import Button from "react-bootstrap/lib/Button";
 
 import { fetchPutUpdateTrunkGroup } from "../../../../store/actions";
 
+import { removeEmpty } from "../../../remuveEmptyInObject";
+
 export class Advanced extends Component {
   state = {
     disableButton: false,
@@ -42,7 +44,14 @@ export class Advanced extends Component {
             <Checkbox
               checked={this.state.routeToPeeringDomain}
               onChange={e => {
-                this.setState({ routeToPeeringDomain: e.target.checked });
+                if (e.target.checked) {
+                  this.setState({ routeToPeeringDomain: e.target.checked });
+                } else {
+                  this.setState({
+                    routeToPeeringDomain: e.target.checked,
+                    peeringDomain: ""
+                  });
+                }
               }}
             >
               Overwrite the domain of the R-URI for outgoing calls
@@ -51,6 +60,7 @@ export class Advanced extends Component {
               className={"width-auto margin-left-1"}
               type="text"
               value={this.state.peeringDomain}
+              disabled={!this.state.routeToPeeringDomain}
               onChange={e => {
                 this.setState({
                   peeringDomain: e.target.value
@@ -64,7 +74,14 @@ export class Advanced extends Component {
             <Checkbox
               checked={this.state.prefixEnabled}
               onChange={e => {
-                this.setState({ prefixEnabled: e.target.checked });
+                if (e.target.checked) {
+                  this.setState({ prefixEnabled: e.target.checked });
+                } else {
+                  this.setState({
+                    prefixEnabled: e.target.checked,
+                    prefix: ""
+                  });
+                }
               }}
             >
               Add prefix to R-URI for outgoing calls
@@ -73,6 +90,7 @@ export class Advanced extends Component {
               className={"width-auto margin-left-1"}
               type="text"
               value={this.state.prefix}
+              disabled={!this.state.prefixEnabled}
               onChange={e => {
                 this.setState({
                   prefix: e.target.value
@@ -88,7 +106,12 @@ export class Advanced extends Component {
                 <Button
                   className={"btn-primary"}
                   onClick={this.update}
-                  disabled={this.state.disableButton}
+                  disabled={
+                    this.state.disableButton ||
+                    (this.state.routeToPeeringDomain &&
+                      !this.state.peeringDomain) ||
+                    (this.state.prefixEnabled && !this.state.prefix)
+                  }
                 >
                   Update
                 </Button>
@@ -114,13 +137,15 @@ export class Advanced extends Component {
       prefix: prefix && prefix
     };
 
+    const clearData = removeEmpty(data);
+
     this.setState({ disableButton: true }, () =>
       this.props
         .fetchPutUpdateTrunkGroup(
           this.props.match.params.tenantId,
           this.props.match.params.groupId,
           this.props.match.params.trunkGroupName,
-          data
+          clearData
         )
         .then(() => this.setState({ disableButton: false }))
     );

@@ -9,6 +9,7 @@ import Button from "react-bootstrap/lib/Button";
 import FormControl from "react-bootstrap/lib/FormControl";
 
 import { fetchPutUpdateTrunkGroup } from "../../../../store/actions";
+import { removeEmpty } from "../../../remuveEmptyInObject";
 
 export class CallScreening extends Component {
   state = {
@@ -247,13 +248,15 @@ export class CallScreening extends Component {
         inviteFailureThresholdWindowSeconds
     };
 
+    const clearData = removeEmpty(data);
+
     this.setState({ disableButton: true }, () =>
       this.props
         .fetchPutUpdateTrunkGroup(
           this.props.match.params.tenantId,
           this.props.match.params.groupId,
           this.props.match.params.trunkGroupName,
-          data
+          clearData
         )
         .then(() => this.setState({ disableButton: false }))
     );

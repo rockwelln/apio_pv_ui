@@ -268,7 +268,7 @@ export class TrunkIndenty extends Component {
           this.props.match.params.tenantId,
           this.props.match.params.groupId,
           this.props.match.params.trunkGroupName,
-          data
+          clearData
         )
         .then(() => this.setState({ disableButton: false }))
     );
