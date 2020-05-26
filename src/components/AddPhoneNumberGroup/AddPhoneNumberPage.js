@@ -26,14 +26,20 @@ export class AddPhoneNumberPage extends Component {
 
   componentDidUpdate(prevProps) {
     if (
-      prevProps.availableNumbersTenant.lenght !==
-      this.props.availableNumbersTenant.lenght
+      JSON.stringify(prevProps.availableNumbersTenant) !==
+      JSON.stringify(this.props.availableNumbersTenant)
     ) {
-      this.props.fetchGetAvailableNumbersByTenantID(
-        this.props.match.params.tenantId
-      );
+      this.fetchAvailableNumbers();
     }
   }
+
+  fetchAvailableNumbers = () => {
+    this.setState({ isLoading: true }, () =>
+      this.props
+        .fetchGetAvailableNumbersByTenantID(this.props.match.params.tenantId)
+        .then(() => this.setState({ isLoading: false }))
+    );
+  };
   render() {
     return (
       <React.Fragment>

@@ -45,7 +45,10 @@ export default class PhoneNumber extends Component {
         {this.state.showModal && (
           <SelectRange
             show={this.state.showModal}
-            onClose={() => this.setState({ showModal: false })}
+            onClose={() => {
+              this.setState({ showModal: false });
+              this.props.toUpdate();
+            }}
             number={number}
             assignNumbers={this.props.assignNumbers}
           />

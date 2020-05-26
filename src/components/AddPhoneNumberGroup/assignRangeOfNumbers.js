@@ -149,7 +149,7 @@ class SelectRange extends Component {
     );
     this.setState({
       subrangeSize: Number(value),
-      maxPhoneNumber: this.state.rangeOptions[indexOfStart + Number(value) - 1]
+      maxPhoneNumber: this.state.rangeOptions[indexOfStart + Number(value)]
     });
   };
 

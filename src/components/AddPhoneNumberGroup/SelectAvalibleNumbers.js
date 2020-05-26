@@ -157,6 +157,7 @@ export class PhoneNumbersTab extends Component {
                             this.props.groupId
                           )
                         }
+                        toUpdate={this.props.toUpdate}
                         assignNumbers={this.assignNumbers}
                       />
                     ))}
