@@ -217,7 +217,14 @@ export class ZipToRouting extends Component {
   };
 
   csvJSON = (csv, withHeaders) => {
-    let lines = csv.split("\n");
+    let lines = csv.split(/\r\n|\n/);
+
+    if (lines.length)
+      for (let i = 1; i < lines.length; i++) {
+        if (lines[lines.length - i] === "") {
+          lines.splice(lines.length - i, 1);
+        }
+      }
 
     let result = [];
     let headers;
