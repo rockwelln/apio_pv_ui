@@ -197,14 +197,10 @@ class RebootWindow extends Component {
           this.props.match.params.iadId,
           clearData
         )
-        .then(
-          res =>
-            res === "successful" &&
-            this.setState(
-              { requestedTime: "", rebootLater: "now", disableOkButton: false },
-              () => onClose()
-            )
-        )
+        .then(res => {
+          this.setState({ disableOkButton: false });
+          res === "successful" && onClose();
+        })
     );
   };
 }
