@@ -94,7 +94,10 @@ export class AddPhoneNumber extends Component {
                     onKeyDown={validateInputPhoneNumber}
                     onBlur={this.validateCountOfPhoneNumber}
                     onChange={e => {
-                      this.setState({ arrayFrom: e.target.value });
+                      this.setState({
+                        arrayFrom: e.target.value,
+                        countNumbersError: false
+                      });
                     }}
                   />
                 </div>
@@ -108,7 +111,12 @@ export class AddPhoneNumber extends Component {
                     placeholder={"To phone number"}
                     onKeyDown={validateInputPhoneNumber}
                     onBlur={this.validateCountOfPhoneNumber}
-                    onChange={e => this.setState({ arrayTo: e.target.value })}
+                    onChange={e =>
+                      this.setState({
+                        arrayTo: e.target.value,
+                        countNumbersError: false
+                      })
+                    }
                   />
                 </div>
               </Col>
@@ -136,7 +144,7 @@ export class AddPhoneNumber extends Component {
                               ...numbers[i],
                               phoneNumber: val
                             };
-                            return { numbers };
+                            return { numbers, countNumbersError: false };
                           });
                         }}
                         className={"flex flex-basis-33 margin-right-1"}
@@ -209,7 +217,7 @@ export class AddPhoneNumber extends Component {
   validateCountOfPhoneNumber = () => {
     const { numbers, arrayFrom, arrayTo } = this.state;
     const countSingleNumber = numbers.filter(el => el.phoneNumber).length;
-    if (Number(arrayTo) - Number(arrayFrom) + countSingleNumber > 100) {
+    if (Number(arrayTo) - Number(arrayFrom) + 1 + countSingleNumber > 100) {
       this.setState({ countNumbersError: true });
     } else {
       this.setState({ countNumbersError: false });
