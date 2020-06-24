@@ -76,7 +76,7 @@ class DeleteModal extends Component {
             <p>
               <FormattedMessage
                 id="confirm-delete-warning"
-                defaultMessage={`You are about to delete the phone ${
+                defaultMessage={`You are about to delete the phone number(s) ${
                   this.props.number.rangeStart
                 }${
                   this.props.number.rangeEnd

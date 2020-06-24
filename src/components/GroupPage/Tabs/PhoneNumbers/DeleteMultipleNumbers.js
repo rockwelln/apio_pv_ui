@@ -80,7 +80,7 @@ class DeleteModal extends Component {
               id="confirm-delete-warning"
               defaultMessage={
                 rangeStart.length
-                  ? `You are about to delete the phone ${rangeStart.join(
+                  ? `You are about to delete the phone number(s) ${rangeStart.join(
                       ", "
                     )}!`
                   : "Select phone numbers first"
