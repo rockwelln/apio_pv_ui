@@ -238,7 +238,7 @@ export class AddPhoneNumber extends Component {
 
   cancelClick = () => {
     this.props.history.push(
-      `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}`
+      `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}#numbers`
     );
   };
 
