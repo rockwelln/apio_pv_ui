@@ -495,9 +495,6 @@ export class AddIAD extends Component {
                     value={this.state.wanPortA}
                     placeholder={"WAN port"}
                     onChange={e => {
-                      if (isNaN(e.target.value)) {
-                        return;
-                      }
                       this.setState({ wanPortA: e.target.value });
                     }}
                     disabled={this.props.group.virtual}
@@ -521,9 +518,6 @@ export class AddIAD extends Component {
                       value={this.state.wanPortB}
                       placeholder={"WAN port"}
                       onChange={e => {
-                        if (isNaN(e.target.value)) {
-                          return;
-                        }
                         this.setState({ wanPortB: e.target.value });
                       }}
                       disabled={this.props.group.virtual}

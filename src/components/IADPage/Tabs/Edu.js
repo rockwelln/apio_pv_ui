@@ -180,9 +180,6 @@ export class Edu extends Component {
                 value={this.state.edu1.wanPort}
                 placeholder={"WAN port"}
                 onChange={e => {
-                  if (["1", "2", "t1"].indexOf(e.target.value) > -1) {
-                    return;
-                  }
                   this.changeEdu1Wan(e);
                 }}
               />
