@@ -1,6 +1,7 @@
 export const pages = Object.freeze({
   requests_nprequests: 0,
   config_iad_reboot_pages: 1,
+  not_common_page: 2,
   requests_startup_events: 4,
   requests_workflow_editor: 5,
   data_tenants: 6,
@@ -70,6 +71,7 @@ const definition = {
   CPM: {
     [pages.common_page_access]: true,
     [pages.reconciliations]: true,
+    [pages.not_common_page]: true,
     [pages.edit_group_iad_pra_info_tpid]: true,
     [pages.edit_group_iad_pra_info_circuit_id]: true,
     [pages.edit_group_iad_pra_info_pra_port]: true,
@@ -102,6 +104,7 @@ const definition = {
   HelpDesk2: {
     [pages.common_page_access]: true,
     [pages.reconciliations]: true,
+    [pages.not_common_page]: true,
     [pages.edit_group_iad_pra_info_tpid]: true,
     [pages.edit_group_iad_pra_info_circuit_id]: true,
     [pages.edit_pra_nat_dst]: true,
@@ -124,6 +127,7 @@ const definition = {
   HelpDesk3: {
     [pages.common_page_access]: true,
     [pages.reconciliations]: true,
+    [pages.not_common_page]: true,
     [pages.edit_group_iad_pra_info_tpid]: true,
     [pages.edit_group_iad_pra_info_circuit_id]: true,
     [pages.edit_group_iad_pra_info_pra_port]: true,
@@ -154,6 +158,7 @@ const definition = {
   VoiceOps: {
     [pages.common_page_access]: true,
     [pages.reconciliations]: true,
+    [pages.not_common_page]: true,
     [pages.config_iad_reboot_pages]: true,
     [pages.edit_group_iad_advanced_clock_master]: true,
     [pages.edit_group_iad_pra_info_tpid]: true,
@@ -190,6 +195,7 @@ const definition = {
     [pages.common_page_access]: true,
     [pages.reconciliations]: true,
     [pages.config_iad_reboot_pages]: true,
+    [pages.not_common_page]: true,
     [pages.edit_group_iad_advanced_clock_master]: true,
     [pages.edit_group_iad_pra_info_tpid]: true,
     [pages.edit_group_iad_pra_info_circuit_id]: true,
