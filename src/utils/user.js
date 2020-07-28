@@ -1,16 +1,18 @@
 export const pages = Object.freeze({
-  requests: 19,
   requests_nprequests: 0,
+  config_iad_reboot_pages: 1,
   requests_startup_events: 4,
   requests_workflow_editor: 5,
-  data: 20,
   data_tenants: 6,
-  system: 21,
   system_users: 12,
   system_config: 14,
   system_gateways: 15,
   system_databases: 16,
   system_reporting: 17,
+  reconciliations: 18,
+  requests: 19,
+  data: 20,
+  system: 21,
   /////////////////////////////////////////
   edit_group_iad_advanced_clock_master: 100,
   edit_group_iad_pra_info_tpid: 101,
@@ -67,6 +69,7 @@ const definition = {
 
   CPM: {
     [pages.common_page_access]: true,
+    [pages.reconciliations]: true,
     [pages.edit_group_iad_pra_info_tpid]: true,
     [pages.edit_group_iad_pra_info_circuit_id]: true,
     [pages.edit_group_iad_pra_info_pra_port]: true,
@@ -98,6 +101,7 @@ const definition = {
 
   HelpDesk2: {
     [pages.common_page_access]: true,
+    [pages.reconciliations]: true,
     [pages.edit_group_iad_pra_info_tpid]: true,
     [pages.edit_group_iad_pra_info_circuit_id]: true,
     [pages.edit_pra_nat_dst]: true,
@@ -119,6 +123,7 @@ const definition = {
 
   HelpDesk3: {
     [pages.common_page_access]: true,
+    [pages.reconciliations]: true,
     [pages.edit_group_iad_pra_info_tpid]: true,
     [pages.edit_group_iad_pra_info_circuit_id]: true,
     [pages.edit_group_iad_pra_info_pra_port]: true,
@@ -148,6 +153,8 @@ const definition = {
 
   VoiceOps: {
     [pages.common_page_access]: true,
+    [pages.reconciliations]: true,
+    [pages.config_iad_reboot_pages]: true,
     [pages.edit_group_iad_advanced_clock_master]: true,
     [pages.edit_group_iad_pra_info_tpid]: true,
     [pages.edit_group_iad_pra_info_circuit_id]: true,
@@ -181,6 +188,8 @@ const definition = {
 
   VoiceEng: {
     [pages.common_page_access]: true,
+    [pages.reconciliations]: true,
+    [pages.config_iad_reboot_pages]: true,
     [pages.edit_group_iad_advanced_clock_master]: true,
     [pages.edit_group_iad_pra_info_tpid]: true,
     [pages.edit_group_iad_pra_info_circuit_id]: true,

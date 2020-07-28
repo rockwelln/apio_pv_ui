@@ -293,7 +293,7 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/configs"
                 component={props =>
-                  isAllowed(ui_profile, pages.common_page_access) ? (
+                  isAllowed(ui_profile, pages.config_iad_reboot_pages) ? (
                     <Configs />
                   ) : (
                     <NotAllowed />
@@ -304,7 +304,7 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/reconciliations"
                 component={props =>
-                  isAllowed(ui_profile, pages.common_page_access) ? (
+                  isAllowed(ui_profile, pages.reconciliations) ? (
                     <Reconciliations />
                   ) : (
                     <NotAllowed />
@@ -315,7 +315,7 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/iadreboot"
                 component={props =>
-                  isAllowed(ui_profile, pages.common_page_access) ? (
+                  isAllowed(ui_profile, pages.config_iad_reboot_pages) ? (
                     <MassIADReboot />
                   ) : (
                     <NotAllowed />
