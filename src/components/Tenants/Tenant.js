@@ -36,8 +36,8 @@ class Tenant extends Component {
         <td>{t.tina_id}</td>
         {isAllowed(
           localStorage.getItem("userProfile"),
-          pages.delete_access
-        ) && (
+          pages.delete_enterprises
+        ) ? (
           <td>
             <ButtonToolbar>
               <Glyphicon
@@ -55,7 +55,7 @@ class Tenant extends Component {
               {...this.props}
             />
           </td>
-        )}
+        ) : null}
       </tr>
     );
   }

@@ -105,7 +105,10 @@ export class GroupsTab extends Component {
               </FormattedMessage>
             </InputGroup>
           </Col>
-          {isAllowed(localStorage.getItem("userProfile"), pages.add_access) && (
+          {isAllowed(
+            localStorage.getItem("userProfile"),
+            pages.create_group
+          ) && (
             <Col md={1}>
               <Link
                 to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/addgroup`}

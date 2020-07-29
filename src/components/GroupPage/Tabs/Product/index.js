@@ -17,6 +17,8 @@ import Loading from "../../../../common/Loading";
 import { removeEmpty } from "../../../remuveEmptyInObject";
 import { get } from "../../../get";
 
+import { isAllowed, pages } from "../../../../utils/user";
+
 import {
   fetchGetConfig,
   fetchGetGroupById,
@@ -200,7 +202,11 @@ export class Product extends Component {
                   disabled={
                     (get(this.props, "validationGroup.warnings") &&
                       !!this.props.validationGroup.warnings.length) ||
-                    this.props.validationGroupError
+                    this.props.validationGroupError ||
+                    !isAllowed(
+                      localStorage.getItem("userProfile"),
+                      pages.edit_group_product_type
+                    )
                   }
                 >
                   {this.props.config.tenant.group.serviceType.map((el, i) => (
@@ -255,26 +261,31 @@ export class Product extends Component {
         <Row>
           <div className="button-row">
             <div className="pull-right">
-              <Button
-                onClick={this.updateProduct}
-                className={"btn-primary"}
-                disabled={
-                  this.state.disableButton ||
-                  ((get(this.props, "validationGroup.warnings") &&
-                    !!this.props.validationGroup.warnings.length) ||
-                    this.props.validationGroupError) ||
-                  this.state.updatingButton
-                }
-              >
-                {this.state.updatingButton ? (
-                  <FormattedMessage
-                    id="updating"
-                    defaultMessage="Updating..."
-                  />
-                ) : (
-                  <FormattedMessage id="update" defaultMessage="Update" />
-                )}
-              </Button>
+              {isAllowed(
+                localStorage.getItem("userProfile"),
+                pages.edit_group_product_type
+              ) ? (
+                <Button
+                  onClick={this.updateProduct}
+                  className={"btn-primary"}
+                  disabled={
+                    this.state.disableButton ||
+                    ((get(this.props, "validationGroup.warnings") &&
+                      !!this.props.validationGroup.warnings.length) ||
+                      this.props.validationGroupError) ||
+                    this.state.updatingButton
+                  }
+                >
+                  {this.state.updatingButton ? (
+                    <FormattedMessage
+                      id="updating"
+                      defaultMessage="Updating..."
+                    />
+                  ) : (
+                    <FormattedMessage id="update" defaultMessage="Update" />
+                  )}
+                </Button>
+              ) : null}
             </div>
           </div>
         </Row>

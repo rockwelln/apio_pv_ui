@@ -71,7 +71,7 @@ class TenantPage extends Component {
             {`Site: ${group.groupName} (${this.props.match.params.groupId}) of customer ${tenant.name} (${tenant.tenantId})`}
             {isAllowed(
               localStorage.getItem("userProfile"),
-              pages.delete_access
+              pages.delete_group
             ) && (
               <Glyphicon
                 glyph="glyphicon glyphicon-trash"

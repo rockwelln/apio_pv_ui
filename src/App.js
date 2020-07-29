@@ -359,7 +359,7 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/add"
                 component={props =>
-                  isAllowed(ui_profile, pages.add_access) ? (
+                  isAllowed(ui_profile, pages.add_enterprises) ? (
                     <AddEntreprises />
                   ) : (
                     <NotAllowed />
@@ -381,7 +381,7 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/addgroup"
                 component={props =>
-                  isAllowed(ui_profile, pages.add_access) ? (
+                  isAllowed(ui_profile, pages.create_group) ? (
                     <AddGroup />
                   ) : (
                     <NotAllowed />

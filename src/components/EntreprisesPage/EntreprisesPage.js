@@ -22,6 +22,8 @@ import {
 } from "../../store/actions";
 import RoutingNumbers from "./RoutingNumbers";
 
+import { isAllowed, pages } from "../../utils/user";
+
 class TenantPage extends Component {
   state = {
     isLoading: true,
@@ -91,13 +93,18 @@ class TenantPage extends Component {
                 <div className={"margin-right-1"}>
                   <FormattedMessage id="details" defaultMessage="Details" />
                 </div>
-                {this.state.isDisabled && (
-                  <Glyphicon
-                    className={"font-18"}
-                    glyph="glyphicon glyphicon-pencil"
-                    onClick={() => this.setState({ isDisabled: false })}
-                  ></Glyphicon>
-                )}
+                {isAllowed(
+                  localStorage.getItem("userProfile"),
+                  pages.edit_enterprise
+                )
+                  ? this.state.isDisabled && (
+                      <Glyphicon
+                        className={"font-18"}
+                        glyph="glyphicon glyphicon-pencil"
+                        onClick={() => this.setState({ isDisabled: false })}
+                      ></Glyphicon>
+                    )
+                  : null}
               </div>
             </Col>
           </Row>

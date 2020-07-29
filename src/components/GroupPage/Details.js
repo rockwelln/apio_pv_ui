@@ -12,6 +12,8 @@ import Radio from "react-bootstrap/lib/Radio";
 
 import Loading from "../../common/Loading";
 
+import { isAllowed, pages } from "../../utils/user";
+
 import { FormattedMessage } from "react-intl";
 
 import {
@@ -70,13 +72,18 @@ export class index extends Component {
               <div className={"header margin-right-2"}>
                 <FormattedMessage id="details" defaultMessage="Details" />
               </div>
-              {this.state.isDisabled && (
-                <Glyphicon
-                  className={"font-18"}
-                  glyph="glyphicon glyphicon-pencil"
-                  onClick={() => this.setState({ isDisabled: false })}
-                />
-              )}
+              {isAllowed(
+                localStorage.getItem("userProfile"),
+                pages.edit_group_details
+              )
+                ? this.state.isDisabled && (
+                    <Glyphicon
+                      className={"font-18"}
+                      glyph="glyphicon glyphicon-pencil"
+                      onClick={() => this.setState({ isDisabled: false })}
+                    />
+                  )
+                : null}
             </React.Fragment>
           </Col>
         </Row>

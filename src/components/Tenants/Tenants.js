@@ -133,7 +133,7 @@ class Tenants extends Component {
             </Col>
             {isAllowed(
               localStorage.getItem("userProfile"),
-              pages.add_access
+              pages.add_enterprises
             ) && (
               <Col md={1}>
                 <Link

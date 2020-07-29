@@ -41,11 +41,18 @@ export const pages = Object.freeze({
   edit_group_iad_advanced_isdnTerminationSide: 123,
   edit_group_iad_advanced_dual_power: 124,
   edit_group_iad_transportMode: 125,
+  edit_enterprise: 126,
+  edit_group_details: 127,
+  edit_group_product_type: 128,
   //////////////////////////////////////////////////
   common_page_access: 200,
   add_access: 201,
   delete_access: 202,
-  refresh_info_phonenumbers: 203
+  refresh_info_phonenumbers: 203,
+  add_enterprises: 204,
+  delete_enterprises: 205,
+  create_group: 206,
+  delete_group: 207
 });
 
 export const privileges = Object.freeze({});
@@ -95,8 +102,15 @@ const definition = {
     [pages.edit_group_iad_advanced_isdnTerminationSide]: true,
     [pages.edit_group_iad_advanced_dual_power]: true,
     [pages.edit_group_iad_transportMode]: true,
+    [pages.edit_enterprise]: true,
+    [pages.edit_group_details]: true,
+    [pages.edit_group_product_type]: true,
     [pages.add_access]: true,
-    [pages.delete_access]: true
+    [pages.delete_access]: true,
+    [pages.add_enterprises]: true,
+    [pages.delete_enterprises]: true,
+    [pages.create_group]: true,
+    [pages.delete_group]: true
   },
 
   HelpDesk1: { [pages.common_page_access]: true },
@@ -121,7 +135,10 @@ const definition = {
     [pages.edit_group_iad_pbx_IPAddress]: true,
     [pages.edit_group_iad_pbx_port]: true,
     [pages.edit_group_iad_advanced_isdnTerminationSide]: true,
-    [pages.edit_group_iad_transportMode]: true
+    [pages.edit_group_iad_transportMode]: true,
+    [pages.edit_enterprise]: true,
+    [pages.edit_group_details]: true,
+    [pages.edit_group_product_type]: true
   },
 
   HelpDesk3: {
@@ -151,6 +168,9 @@ const definition = {
     [pages.edit_group_iad_advanced_isdnTerminationSide]: true,
     [pages.edit_group_iad_advanced_dual_power]: true,
     [pages.edit_group_iad_transportMode]: true,
+    [pages.edit_enterprise]: true,
+    [pages.edit_group_details]: true,
+    [pages.edit_group_product_type]: true,
     [pages.add_access]: true,
     [pages.delete_access]: true
   },
@@ -186,9 +206,16 @@ const definition = {
     [pages.edit_group_iad_advanced_isdnTerminationSide]: true,
     [pages.edit_group_iad_advanced_dual_power]: true,
     [pages.edit_group_iad_transportMode]: true,
+    [pages.edit_enterprise]: true,
+    [pages.edit_group_details]: true,
+    [pages.edit_group_product_type]: true,
     [pages.add_access]: true,
     [pages.delete_access]: true,
-    [pages.refresh_info_phonenumbers]: true
+    [pages.refresh_info_phonenumbers]: true,
+    [pages.add_enterprises]: true,
+    [pages.delete_enterprises]: true,
+    [pages.create_group]: true,
+    [pages.delete_group]: true
   },
 
   VoiceEng: {
@@ -222,9 +249,16 @@ const definition = {
     [pages.edit_group_iad_advanced_isdnTerminationSide]: true,
     [pages.edit_group_iad_advanced_dual_power]: true,
     [pages.edit_group_iad_transportMode]: true,
+    [pages.edit_enterprise]: true,
+    [pages.edit_group_details]: true,
+    [pages.edit_group_product_type]: true,
     [pages.add_access]: true,
     [pages.delete_access]: true,
-    [pages.refresh_info_phonenumbers]: true
+    [pages.refresh_info_phonenumbers]: true,
+    [pages.add_enterprises]: true,
+    [pages.delete_enterprises]: true,
+    [pages.create_group]: true,
+    [pages.delete_group]: true
   }
 };
 

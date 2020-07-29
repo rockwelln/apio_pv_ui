@@ -28,10 +28,7 @@ class Group extends Component {
         <td>{group.accessType ? group.accessType : "-"}</td>
         <td>{group.virtual ? "Yes" : "No"}</td>
         <td>{group.numberOfChannels ? group.numberOfChannels : "-"}</td>
-        {isAllowed(
-          localStorage.getItem("userProfile"),
-          pages.delete_access
-        ) && (
+        {isAllowed(localStorage.getItem("userProfile"), pages.delete_group) && (
           <td>
             <ButtonToolbar>
               <Glyphicon
