@@ -326,7 +326,7 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/reconciliations/:anomalyHash"
                 component={props =>
-                  isAllowed(ui_profile, pages.not_common_page) ? (
+                  isAllowed(ui_profile, pages.common_page_access) ? (
                     <AnomaliesPage />
                   ) : (
                     <NotAllowed />
@@ -348,7 +348,7 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/configs/reconciliationteam/:teamName"
                 component={props =>
-                  isAllowed(ui_profile, pages.not_common_page) ? (
+                  isAllowed(ui_profile, pages.common_page_access) ? (
                     <ReconciliationTeamPage />
                   ) : (
                     <NotAllowed />
@@ -392,7 +392,7 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId"
                 component={props =>
-                  isAllowed(ui_profile, pages.not_common_page) ? (
+                  isAllowed(ui_profile, pages.common_page_access) ? (
                     <GroupPage />
                   ) : (
                     <NotAllowed />
@@ -436,7 +436,7 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/iad/:iadId"
                 component={props =>
-                  isAllowed(ui_profile, pages.not_common_page) ? (
+                  isAllowed(ui_profile, pages.common_page_access) ? (
                     <IADPage />
                   ) : (
                     <NotAllowed />
@@ -447,7 +447,7 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/enterprisetrunk/:entTrunkId"
                 component={props =>
-                  isAllowed(ui_profile, pages.not_common_page) ? (
+                  isAllowed(ui_profile, pages.common_page_access) ? (
                     <EnterpriseTrunkPage />
                   ) : (
                     <NotAllowed />
