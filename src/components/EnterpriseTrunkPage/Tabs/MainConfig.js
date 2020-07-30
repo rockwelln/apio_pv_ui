@@ -19,6 +19,8 @@ import {
 import { FormattedMessage } from "react-intl";
 import Loading from "../../../common/Loading";
 
+import { isAllowed, pages } from "../../../utils/user";
+
 export class MainConfig extends Component {
   state = {
     isLoading: true,
@@ -117,6 +119,12 @@ export class MainConfig extends Component {
                 onChange={e =>
                   this.setState({ routeExhaustionAction: e.target.value })
                 }
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_group_routing_numbers
+                  )
+                }
               >
                 <option value={"Forward"}>Forward</option>
                 <option value={"None"}>None</option>
@@ -145,6 +153,12 @@ export class MainConfig extends Component {
                     routeExhaustionDestination: e.target.value
                   })
                 }
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_group_routing_numbers
+                  )
+                }
               />
             </div>
           </Col>
@@ -167,6 +181,12 @@ export class MainConfig extends Component {
                           className={"table-checkbox margin-left-08"}
                           checked={iad.checked}
                           onChange={e => this.changeStatusOfIadFromSite(e, i)}
+                          disabled={
+                            !isAllowed(
+                              localStorage.getItem("userProfile"),
+                              pages.edit_group_routing_numbers
+                            )
+                          }
                         />
                       </td>
                       <td className={"flex space-between align-items-center"}>
@@ -176,14 +196,28 @@ export class MainConfig extends Component {
                             <Glyphicon
                               glyph={`glyphicon glyphicon-menu-up`}
                               className={"font-size-10"}
-                              onClick={() => this.raisePriorityFromSite(i)}
+                              onClick={() =>
+                                isAllowed(
+                                  localStorage.getItem("userProfile"),
+                                  pages.edit_group_routing_numbers
+                                )
+                                  ? this.raisePriorityFromSite(i)
+                                  : () => {}
+                              }
                             />
                           )}
                           {this.state.iadFromSite.length !== i + 1 && (
                             <Glyphicon
                               glyph={`glyphicon glyphicon-menu-down`}
                               className={"font-size-10"}
-                              onClick={() => this.lowerPriorityFromSite(i)}
+                              onClick={() =>
+                                isAllowed(
+                                  localStorage.getItem("userProfile"),
+                                  pages.edit_group_routing_numbers
+                                )
+                                  ? this.lowerPriorityFromSite(i)
+                                  : () => {}
+                              }
                             />
                           )}
                         </div>
@@ -212,6 +246,12 @@ export class MainConfig extends Component {
                           onChange={e =>
                             this.changeStatusOfIadNotFromSite(e, i)
                           }
+                          disabled={
+                            !isAllowed(
+                              localStorage.getItem("userProfile"),
+                              pages.edit_group_routing_numbers
+                            )
+                          }
                         />
                       </td>
                       <td className={"flex space-between align-items-center"}>
@@ -221,14 +261,28 @@ export class MainConfig extends Component {
                             <Glyphicon
                               glyph={`glyphicon glyphicon-menu-up`}
                               className={"font-size-10"}
-                              onClick={() => this.raisePriorityNotFromSite(i)}
+                              onClick={() =>
+                                isAllowed(
+                                  localStorage.getItem("userProfile"),
+                                  pages.edit_group_routing_numbers
+                                )
+                                  ? this.raisePriorityNotFromSite(i)
+                                  : () => {}
+                              }
                             />
                           )}
                           {this.state.iadNotFromSite.length !== i + 1 && (
                             <Glyphicon
                               glyph={`glyphicon glyphicon-menu-down`}
                               className={"font-size-10"}
-                              onClick={() => this.lowerPriorityNotFromSite(i)}
+                              onClick={() =>
+                                isAllowed(
+                                  localStorage.getItem("userProfile"),
+                                  pages.edit_group_routing_numbers
+                                )
+                                  ? this.lowerPriorityNotFromSite(i)
+                                  : () => {}
+                              }
                             />
                           )}
                         </div>
@@ -243,26 +297,31 @@ export class MainConfig extends Component {
           <Col md={12}>
             <div className="button-row">
               <div className="pull-right">
-                <Button
-                  onClick={this.updateEnterpriseTrunkGroup}
-                  type="submit"
-                  className="btn-primary"
-                  disabled={
-                    (this.state.routeExhaustionAction === "Forward" &&
-                      !this.state.routeExhaustionDestination) ||
-                    this.state.disableUpdateButton
-                  }
-                >
-                  <Glyphicon glyph="glyphicon glyphicon-ok" />
-                  {this.state.disableUpdateButton ? (
-                    <FormattedMessage
-                      id="updating"
-                      defaultMessage="Updating..."
-                    />
-                  ) : (
-                    <FormattedMessage id="update" defaultMessage="Update" />
-                  )}
-                </Button>
+                {isAllowed(
+                  localStorage.getItem("userProfile"),
+                  pages.edit_group_routing_numbers
+                ) ? (
+                  <Button
+                    onClick={this.updateEnterpriseTrunkGroup}
+                    type="submit"
+                    className="btn-primary"
+                    disabled={
+                      (this.state.routeExhaustionAction === "Forward" &&
+                        !this.state.routeExhaustionDestination) ||
+                      this.state.disableUpdateButton
+                    }
+                  >
+                    <Glyphicon glyph="glyphicon glyphicon-ok" />
+                    {this.state.disableUpdateButton ? (
+                      <FormattedMessage
+                        id="updating"
+                        defaultMessage="Updating..."
+                      />
+                    ) : (
+                      <FormattedMessage id="update" defaultMessage="Update" />
+                    )}
+                  </Button>
+                ) : null}
               </div>
             </div>
           </Col>

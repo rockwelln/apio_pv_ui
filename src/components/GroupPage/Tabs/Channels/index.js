@@ -27,6 +27,8 @@ import { get } from "../../../get";
 import Loading from "../../../../common/Loading";
 import RebootWindow from "../../RebootWindow";
 
+import { isAllowed, pages } from "../../../../utils/user";
+
 export class Channels extends Component {
   state = {
     isLoading: true,
@@ -136,7 +138,8 @@ export class Channels extends Component {
             <Col md={12} className={"flex align-items-center"}>
               <div className={"margin-right-1 flex flex-basis-16"}>
                 <ControlLabel>
-                  {this.state.group.pbxType === "PRA" || this.state.group.pbxType === "PRA_SIP" ? (
+                  {this.state.group.pbxType === "PRA" ||
+                  this.state.group.pbxType === "PRA_SIP" ? (
                     <FormattedMessage
                       id="numberOfPRA"
                       defaultMessage="Number of PRA"
@@ -157,10 +160,15 @@ export class Channels extends Component {
                   disabled={
                     (get(this.props, "validationGroup.warnings") &&
                       !!this.props.validationGroup.warnings.length) ||
-                    this.props.validationGroupError
+                    this.props.validationGroupError ||
+                    !isAllowed(
+                      localStorage.getItem("userProfile"),
+                      pages.edit_group_channels_number_of_channels
+                    )
                   }
                 >
-                  {this.state.group.pbxType === "PRA" || this.state.group.pbxType === "PRA_SIP"
+                  {this.state.group.pbxType === "PRA" ||
+                  this.state.group.pbxType === "PRA_SIP"
                     ? ~this.props.config.tenant.group.iad[
                         "2EDUsForServiceTypes"
                       ].indexOf(this.state.group.serviceType)
@@ -178,7 +186,8 @@ export class Channels extends Component {
                             </option>
                           )
                         )
-                    : this.state.group.pbxType === "SIP" || this.state.group.pbxType === "SIP_PRA"
+                    : this.state.group.pbxType === "SIP" ||
+                      this.state.group.pbxType === "SIP_PRA"
                     ? ~this.props.config.tenant.group.iad[
                         "2EDUsForServiceTypes"
                       ].indexOf(this.state.group.serviceType)
@@ -236,7 +245,11 @@ export class Channels extends Component {
                 disabled={
                   (get(this.props, "validationGroup.warnings") &&
                     !!this.props.validationGroup.warnings.length) ||
-                  this.props.validationGroupError
+                  this.props.validationGroupError ||
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_group_channels_other_fields
+                  )
                 }
               >
                 {this.props.config.tenant.group.direction.map((type, i) => (
@@ -278,7 +291,11 @@ export class Channels extends Component {
                       disabled={
                         (get(this.props, "validationGroup.warnings") &&
                           !!this.props.validationGroup.warnings.length) ||
-                        this.props.validationGroupError
+                        this.props.validationGroupError ||
+                        !isAllowed(
+                          localStorage.getItem("userProfile"),
+                          pages.edit_group_channels_other_fields
+                        )
                       }
                     />
                   </div>
@@ -328,7 +345,11 @@ export class Channels extends Component {
                       disabled={
                         (get(this.props, "validationGroup.warnings") &&
                           !!this.props.validationGroup.warnings.length) ||
-                        this.props.validationGroupError
+                        this.props.validationGroupError ||
+                        !isAllowed(
+                          localStorage.getItem("userProfile"),
+                          pages.edit_group_channels_other_fields
+                        )
                       }
                     />
                   </div>
@@ -377,7 +398,11 @@ export class Channels extends Component {
                 disabled={
                   (get(this.props, "validationGroup.warnings") &&
                     !!this.props.validationGroup.warnings.length) ||
-                  this.props.validationGroupError
+                  this.props.validationGroupError ||
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_group_channels_other_fields
+                  )
                 }
               >
                 {this.state.channelHuntingOptions.map(
@@ -395,28 +420,33 @@ export class Channels extends Component {
         <Row>
           <div className="button-row">
             <div className="pull-right">
-              <Button
-                onClick={this.updateChannels}
-                className={"btn-primary"}
-                disabled={
-                  !!this.state.channelsOutError ||
-                  !!this.state.channelsInError ||
-                  this.state.disableButton ||
-                  ((get(this.props, "validationGroup.warnings") &&
-                    !!this.props.validationGroup.warnings.length) ||
-                    this.props.validationGroupError) ||
-                  this.state.updatingButton
-                }
-              >
-                {this.state.updatingButton ? (
-                  <FormattedMessage
-                    id="updating"
-                    defaultMessage="Updating..."
-                  />
-                ) : (
-                  <FormattedMessage id="update" defaultMessage="Update" />
-                )}
-              </Button>
+              {isAllowed(
+                localStorage.getItem("userProfile"),
+                pages.edit_group_channels_other_fields
+              ) ? (
+                <Button
+                  onClick={this.updateChannels}
+                  className={"btn-primary"}
+                  disabled={
+                    !!this.state.channelsOutError ||
+                    !!this.state.channelsInError ||
+                    this.state.disableButton ||
+                    ((get(this.props, "validationGroup.warnings") &&
+                      !!this.props.validationGroup.warnings.length) ||
+                      this.props.validationGroupError) ||
+                    this.state.updatingButton
+                  }
+                >
+                  {this.state.updatingButton ? (
+                    <FormattedMessage
+                      id="updating"
+                      defaultMessage="Updating..."
+                    />
+                  ) : (
+                    <FormattedMessage id="update" defaultMessage="Update" />
+                  )}
+                </Button>
+              ) : null}
             </div>
           </div>
         </Row>

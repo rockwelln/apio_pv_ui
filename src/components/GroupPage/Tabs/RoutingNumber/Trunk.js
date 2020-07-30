@@ -25,7 +25,10 @@ class Trunk extends Component {
           </Link>
         </td>
         <td>{trunk.routingMode}</td>
-        {isAllowed(localStorage.getItem("userProfile"), pages.delete_access) &&
+        {isAllowed(
+          localStorage.getItem("userProfile"),
+          pages.delete_group_routing_number
+        ) &&
           (trunk.name.slice(-2) !== "01" ? (
             <td>
               <ButtonToolbar>

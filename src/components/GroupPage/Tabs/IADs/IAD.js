@@ -46,10 +46,7 @@ class IAD extends Component {
         ) : (
           <td>-</td>
         )}
-        {isAllowed(
-          localStorage.getItem("userProfile"),
-          pages.delete_access
-        ) && (
+        {isAllowed(localStorage.getItem("userProfile"), pages.delete_iad) && (
           <td>
             <ButtonToolbar>
               <Glyphicon

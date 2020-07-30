@@ -143,7 +143,10 @@ export class PhoneNumbersTab extends Component {
               </FormattedMessage>
             </InputGroup>
           </Col>
-          {isAllowed(localStorage.getItem("userProfile"), pages.add_access) && (
+          {isAllowed(
+            localStorage.getItem("userProfile"),
+            pages.group_numbers_other_actions
+          ) && (
             <Col md={1}>
               <Link
                 to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.tenantId}/groups/${this.props.groupId}/addphone`}
@@ -171,7 +174,7 @@ export class PhoneNumbersTab extends Component {
                     </Checkbox> */}
                   {isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.delete_access
+                    pages.group_numbers_other_actions
                   ) && (
                     <div
                       onClick={this.deleteSlectedNumbers}
@@ -198,22 +201,27 @@ export class PhoneNumbersTab extends Component {
                     }}
                     {...this.props}
                   />
-                  <Button
-                    onClick={this.updateStatus}
-                    className={"btn-primary margin-right-1"}
-                    disabled={
-                      this.state.disabledUpdateStatusActive ||
-                      this.state.disabledUpdateStatusPreActive
-                    }
-                  >
-                    <FormattedMessage
-                      id="updateStatus"
-                      defaultMessage="Update Status"
-                    />
-                  </Button>
                   {isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.refresh_info_phonenumbers
+                    pages.group_numbers_other_actions
+                  ) ? (
+                    <Button
+                      onClick={this.updateStatus}
+                      className={"btn-primary margin-right-1"}
+                      disabled={
+                        this.state.disabledUpdateStatusActive ||
+                        this.state.disabledUpdateStatusPreActive
+                      }
+                    >
+                      <FormattedMessage
+                        id="updateStatus"
+                        defaultMessage="Update Status"
+                      />
+                    </Button>
+                  ) : null}
+                  {isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.group_numbers_other_actions
                   ) && (
                     <Button
                       onClick={this.refreshInformation}
@@ -226,17 +234,22 @@ export class PhoneNumbersTab extends Component {
                       />
                     </Button>
                   )}
-                  <Button
-                    onClick={() =>
-                      this.setState({ showRefreshAllDialog: true })
-                    }
-                    className={"btn-primary margin-right-1"}
-                  >
-                    <FormattedMessage
-                      id="refreshAll"
-                      defaultMessage="Refresh all"
-                    />
-                  </Button>
+                  {isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.group_numbers_refresh_all
+                  ) ? (
+                    <Button
+                      onClick={() =>
+                        this.setState({ showRefreshAllDialog: true })
+                      }
+                      className={"btn-primary margin-right-1"}
+                    >
+                      <FormattedMessage
+                        id="refreshAll"
+                        defaultMessage="Refresh all"
+                      />
+                    </Button>
+                  ) : null}
                 </div>
                 <Modal show={this.state.showRefreshAllDialog}>
                   <Modal.Header>

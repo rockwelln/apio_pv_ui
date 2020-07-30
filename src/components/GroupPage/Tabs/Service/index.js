@@ -103,7 +103,13 @@ export class Service extends Component {
                     }
                   })
                 }
-                disabled={this.state.isDisabled}
+                disabled={
+                  this.state.isDisabled ||
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_group_services
+                  )
+                }
               >
                 {this.props.config.tenant.group.ncos.map((el, i) => (
                   <option key={i} value={el.value}>
@@ -130,6 +136,12 @@ export class Service extends Component {
                     }
                   })
                 }
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_group_services
+                  )
+                }
               >
                 <div className="font-weight-bold flex">Active</div>
               </Radio>
@@ -146,6 +158,12 @@ export class Service extends Component {
                       clip: false
                     }
                   })
+                }
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_group_services
+                  )
                 }
               >
                 <div className="font-weight-bold flex">Not Active</div>
@@ -169,6 +187,12 @@ export class Service extends Component {
                     }
                   })
                 }
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_group_services
+                  )
+                }
               >
                 <div className="font-weight-bold flex">Active</div>
               </Radio>
@@ -185,6 +209,12 @@ export class Service extends Component {
                       clir: false
                     }
                   })
+                }
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_group_services
+                  )
                 }
               >
                 <div className="font-weight-bold flex">Not Active</div>
@@ -208,6 +238,12 @@ export class Service extends Component {
                     }
                   })
                 }
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_group_services
+                  )
+                }
               >
                 <div className="font-weight-bold flex">Active</div>
               </Radio>
@@ -224,6 +260,12 @@ export class Service extends Component {
                       colr: false
                     }
                   })
+                }
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_group_services
+                  )
                 }
               >
                 <div className="font-weight-bold flex">Not Active</div>
@@ -247,6 +289,12 @@ export class Service extends Component {
                     }
                   })
                 }
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_group_services
+                  )
+                }
               >
                 <div className="font-weight-bold flex">Active</div>
               </Radio>
@@ -263,6 +311,12 @@ export class Service extends Component {
                       colp: false
                     }
                   })
+                }
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_group_services
+                  )
                 }
               >
                 <div className="font-weight-bold flex">Not Active</div>
@@ -292,7 +346,13 @@ export class Service extends Component {
                       }
                     })
                   }
-                  disabled={this.state.isDisabled}
+                  disabled={
+                    this.state.isDisabled ||
+                    !isAllowed(
+                      localStorage.getItem("userProfile"),
+                      pages.edit_group_services
+                    )
+                  }
                 >
                   {this.props.config.tenant.group.aoc.map((el, i) => (
                     <option key={i} value={el.value}>
@@ -330,7 +390,7 @@ export class Service extends Component {
                     this.state.isDisabled ||
                     !isAllowed(
                       localStorage.getItem("userProfile"),
-                      pages.edit_group_dtmf
+                      pages.edit_group_services
                     )
                   }
                 >
@@ -347,20 +407,25 @@ export class Service extends Component {
         <Row>
           <div className="button-row">
             <div className="pull-right">
-              <Button
-                onClick={this.updateService}
-                className={"btn-primary"}
-                disabled={this.state.disableButton}
-              >
-                {this.state.disableButton ? (
-                  <FormattedMessage
-                    id="updating"
-                    defaultMessage="Updating..."
-                  />
-                ) : (
-                  <FormattedMessage id="update" defaultMessage="Update" />
-                )}
-              </Button>
+              {isAllowed(
+                localStorage.getItem("userProfile"),
+                pages.edit_group_services
+              ) ? (
+                <Button
+                  onClick={this.updateService}
+                  className={"btn-primary"}
+                  disabled={this.state.disableButton}
+                >
+                  {this.state.disableButton ? (
+                    <FormattedMessage
+                      id="updating"
+                      defaultMessage="Updating..."
+                    />
+                  ) : (
+                    <FormattedMessage id="update" defaultMessage="Update" />
+                  )}
+                </Button>
+              ) : null}
             </div>
           </div>
         </Row>

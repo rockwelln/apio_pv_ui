@@ -124,7 +124,7 @@ export class IADs extends Component {
               </FormattedMessage>
             </InputGroup>
           </Col>
-          {isAllowed(localStorage.getItem("userProfile"), pages.add_access) &&
+          {isAllowed(localStorage.getItem("userProfile"), pages.create_iad) &&
             (this.props.iads.iads.length < this.props.iads.nbrIadsNeeded && (
               <Col md={1}>
                 <Link

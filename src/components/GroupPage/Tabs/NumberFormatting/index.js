@@ -122,7 +122,7 @@ export class NumberFormatting extends Component {
                     disabled={
                       !isAllowed(
                         localStorage.getItem("userProfile"),
-                        pages.edit_pra_nat_dst
+                        pages.edit_group_number_formating_tab
                       )
                     }
                   >
@@ -160,7 +160,7 @@ export class NumberFormatting extends Component {
                     disabled={
                       !isAllowed(
                         localStorage.getItem("userProfile"),
-                        pages.edit_pra_nat_src
+                        pages.edit_group_number_formating_tab
                       )
                     }
                   >
@@ -198,7 +198,7 @@ export class NumberFormatting extends Component {
                     disabled={
                       !isAllowed(
                         localStorage.getItem("userProfile"),
-                        pages.edit_pra_int_src
+                        pages.edit_group_number_formating_tab
                       )
                     }
                   >
@@ -247,7 +247,7 @@ export class NumberFormatting extends Component {
                     disabled={
                       !isAllowed(
                         localStorage.getItem("userProfile"),
-                        pages.edit_sip_nat_dst
+                        pages.edit_group_number_formating_tab
                       )
                     }
                   >
@@ -285,7 +285,7 @@ export class NumberFormatting extends Component {
                     disabled={
                       !isAllowed(
                         localStorage.getItem("userProfile"),
-                        pages.edit_sip_nat_src
+                        pages.edit_group_number_formating_tab
                       )
                     }
                   >
@@ -323,7 +323,7 @@ export class NumberFormatting extends Component {
                     disabled={
                       !isAllowed(
                         localStorage.getItem("userProfile"),
-                        pages.edit_group_iad_ip1_mode
+                        pages.edit_group_number_formating_tab
                       )
                     }
                   >
@@ -341,20 +341,25 @@ export class NumberFormatting extends Component {
         <Row>
           <div className="button-row">
             <div className="pull-right">
-              <Button
-                onClick={this.updateNumberFormatting}
-                className={"btn-primary"}
-                disabled={this.state.disableButton}
-              >
-                {this.state.disableButton ? (
-                  <FormattedMessage
-                    id="updating"
-                    defaultMessage="Updating..."
-                  />
-                ) : (
-                  <FormattedMessage id="update" defaultMessage="Update" />
-                )}
-              </Button>
+              {isAllowed(
+                localStorage.getItem("userProfile"),
+                pages.edit_group_number_formating_tab
+              ) ? (
+                <Button
+                  onClick={this.updateNumberFormatting}
+                  className={"btn-primary"}
+                  disabled={this.state.disableButton}
+                >
+                  {this.state.disableButton ? (
+                    <FormattedMessage
+                      id="updating"
+                      defaultMessage="Updating..."
+                    />
+                  ) : (
+                    <FormattedMessage id="update" defaultMessage="Update" />
+                  )}
+                </Button>
+              ) : null}
             </div>
           </div>
         </Row>

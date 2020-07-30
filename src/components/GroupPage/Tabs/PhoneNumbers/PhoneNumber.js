@@ -30,6 +30,12 @@ export default class PhoneNumber extends Component {
                   number.inRange
                 );
               }}
+              disabled={
+                !isAllowed(
+                  localStorage.getItem("userProfile"),
+                  pages.group_numbers_other_actions
+                )
+              }
             />
           </td>
           <React.Fragment>
@@ -44,6 +50,12 @@ export default class PhoneNumber extends Component {
                     number.inRange
                   );
                 }}
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.group_numbers_other_actions
+                  )
+                }
               />
             </td>
             <td>
@@ -57,6 +69,12 @@ export default class PhoneNumber extends Component {
                     number.inRange
                   );
                 }}
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.group_numbers_other_actions
+                  )
+                }
               />
             </td>
           </React.Fragment>
@@ -83,7 +101,7 @@ export default class PhoneNumber extends Component {
           <td>{number.maintenance_number ? "Yes" : "No"}</td>
           {isAllowed(
             localStorage.getItem("userProfile"),
-            pages.delete_access
+            pages.group_numbers_other_actions
           ) && (
             <td>
               <React.Fragment>

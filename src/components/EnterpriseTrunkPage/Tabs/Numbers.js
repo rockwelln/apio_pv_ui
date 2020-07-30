@@ -21,6 +21,8 @@ import { removeEmpty } from "../../remuveEmptyInObject";
 
 import { FormattedMessage } from "react-intl";
 
+import { isAllowed, pages } from "../../../utils/user";
+
 export class Numbers extends Component {
   state = {
     numbersFromEnterpriseTrunk: [],
@@ -155,6 +157,12 @@ export class Numbers extends Component {
                                 num.phoneNumber
                               )
                             }
+                            disabled={
+                              !isAllowed(
+                                localStorage.getItem("userProfile"),
+                                pages.edit_group_routing_numbers
+                              )
+                            }
                           />
                         </td>
                         <td className={"flex space-between align-items-center"}>
@@ -171,26 +179,31 @@ export class Numbers extends Component {
           <Col md={12}>
             <div className="button-row">
               <div className="pull-right">
-                <Button
-                  onClick={this.updateEnterpriseTrunkGroup}
-                  type="submit"
-                  className="btn-primary"
-                  disabled={
-                    (this.state.routeExhaustionAction === "Forward" &&
-                      !this.state.routeExhaustionDestination) ||
-                    this.state.disableUpdatingButton
-                  }
-                >
-                  <Glyphicon glyph="glyphicon glyphicon-ok" />
-                  {this.state.disableUpdatingButton ? (
-                    <FormattedMessage
-                      id="updating"
-                      defaultMessage="Updatimg..."
-                    />
-                  ) : (
-                    <FormattedMessage id="update" defaultMessage="Update" />
-                  )}
-                </Button>
+                {isAllowed(
+                  localStorage.getItem("userProfile"),
+                  pages.edit_group_routing_numbers
+                ) ? (
+                  <Button
+                    onClick={this.updateEnterpriseTrunkGroup}
+                    type="submit"
+                    className="btn-primary"
+                    disabled={
+                      (this.state.routeExhaustionAction === "Forward" &&
+                        !this.state.routeExhaustionDestination) ||
+                      this.state.disableUpdatingButton
+                    }
+                  >
+                    <Glyphicon glyph="glyphicon glyphicon-ok" />
+                    {this.state.disableUpdatingButton ? (
+                      <FormattedMessage
+                        id="updating"
+                        defaultMessage="Updatimg..."
+                      />
+                    ) : (
+                      <FormattedMessage id="update" defaultMessage="Update" />
+                    )}
+                  </Button>
+                ) : null}
               </div>
             </div>
           </Col>

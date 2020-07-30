@@ -403,7 +403,7 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/addiad"
                 component={props =>
-                  isAllowed(ui_profile, pages.add_access) ? (
+                  isAllowed(ui_profile, pages.create_iad) ? (
                     <AddIAD />
                   ) : (
                     <NotAllowed />
@@ -414,7 +414,7 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/addphone"
                 component={props =>
-                  isAllowed(ui_profile, pages.add_access) ? (
+                  isAllowed(ui_profile, pages.group_numbers_other_actions) ? (
                     <AddPhoneToGroup />
                   ) : (
                     <NotAllowed />
@@ -425,7 +425,7 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/addenterprisetrunk"
                 component={props =>
-                  isAllowed(ui_profile, pages.add_access) ? (
+                  isAllowed(ui_profile, pages.create_group_routing_number) ? (
                     <AddEntrepriseTrunkPage />
                   ) : (
                     <NotAllowed />

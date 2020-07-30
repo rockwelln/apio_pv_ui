@@ -44,6 +44,11 @@ export const pages = Object.freeze({
   edit_enterprise: 126,
   edit_group_details: 127,
   edit_group_product_type: 128,
+  edit_group_channels_number_of_channels: 129,
+  edit_group_channels_other_fields: 130,
+  edit_group_services: 131,
+  edit_group_number_formating_tab: 132,
+  edit_group_routing_numbers: 133,
   //////////////////////////////////////////////////
   common_page_access: 200,
   add_access: 201,
@@ -52,7 +57,13 @@ export const pages = Object.freeze({
   add_enterprises: 204,
   delete_enterprises: 205,
   create_group: 206,
-  delete_group: 207
+  delete_group: 207,
+  create_iad: 208,
+  delete_iad: 209,
+  group_numbers_refresh_all: 210,
+  group_numbers_other_actions: 211,
+  create_group_routing_number: 212,
+  delete_group_routing_number: 213
 });
 
 export const privileges = Object.freeze({});
@@ -105,12 +116,21 @@ const definition = {
     [pages.edit_enterprise]: true,
     [pages.edit_group_details]: true,
     [pages.edit_group_product_type]: true,
+    [pages.edit_group_channels_number_of_channels]: true,
+    [pages.edit_group_channels_other_fields]: true,
+    [pages.edit_group_services]: true,
+    [pages.edit_group_number_formating_tab]: true,
+    [pages.edit_group_routing_numbers]: true,
     [pages.add_access]: true,
     [pages.delete_access]: true,
     [pages.add_enterprises]: true,
     [pages.delete_enterprises]: true,
     [pages.create_group]: true,
-    [pages.delete_group]: true
+    [pages.delete_group]: true,
+    [pages.create_iad]: true,
+    [pages.delete_iad]: true,
+    [pages.create_group_routing_number]: true,
+    [pages.delete_group_routing_number]: true
   },
 
   HelpDesk1: { [pages.common_page_access]: true },
@@ -138,7 +158,13 @@ const definition = {
     [pages.edit_group_iad_transportMode]: true,
     [pages.edit_enterprise]: true,
     [pages.edit_group_details]: true,
-    [pages.edit_group_product_type]: true
+    [pages.edit_group_product_type]: true,
+    [pages.edit_group_channels_other_fields]: true,
+    [pages.edit_group_services]: true,
+    [pages.edit_group_number_formating_tab]: true,
+    [pages.edit_group_routing_numbers]: true,
+    [pages.create_iad]: true,
+    [pages.group_numbers_other_actions]: true
   },
 
   HelpDesk3: {
@@ -171,8 +197,14 @@ const definition = {
     [pages.edit_enterprise]: true,
     [pages.edit_group_details]: true,
     [pages.edit_group_product_type]: true,
+    [pages.edit_group_channels_other_fields]: true,
+    [pages.edit_group_services]: true,
+    [pages.edit_group_number_formating_tab]: true,
+    [pages.edit_group_routing_numbers]: true,
     [pages.add_access]: true,
-    [pages.delete_access]: true
+    [pages.delete_access]: true,
+    [pages.create_iad]: true,
+    [pages.group_numbers_other_actions]: true
   },
 
   VoiceOps: {
@@ -209,13 +241,24 @@ const definition = {
     [pages.edit_enterprise]: true,
     [pages.edit_group_details]: true,
     [pages.edit_group_product_type]: true,
+    [pages.edit_group_channels_number_of_channels]: true,
+    [pages.edit_group_channels_other_fields]: true,
+    [pages.edit_group_services]: true,
+    [pages.edit_group_number_formating_tab]: true,
+    [pages.edit_group_routing_numbers]: true,
     [pages.add_access]: true,
     [pages.delete_access]: true,
     [pages.refresh_info_phonenumbers]: true,
     [pages.add_enterprises]: true,
     [pages.delete_enterprises]: true,
     [pages.create_group]: true,
-    [pages.delete_group]: true
+    [pages.delete_group]: true,
+    [pages.create_iad]: true,
+    [pages.delete_iad]: true,
+    [pages.group_numbers_refresh_all]: true,
+    [pages.group_numbers_other_actions]: true,
+    [pages.create_group_routing_number]: true,
+    [pages.delete_group_routing_number]: true
   },
 
   VoiceEng: {
@@ -252,13 +295,24 @@ const definition = {
     [pages.edit_enterprise]: true,
     [pages.edit_group_details]: true,
     [pages.edit_group_product_type]: true,
+    [pages.edit_group_channels_number_of_channels]: true,
+    [pages.edit_group_channels_other_fields]: true,
+    [pages.edit_group_services]: true,
+    [pages.edit_group_number_formating_tab]: true,
+    [pages.edit_group_routing_numbers]: true,
     [pages.add_access]: true,
     [pages.delete_access]: true,
     [pages.refresh_info_phonenumbers]: true,
     [pages.add_enterprises]: true,
     [pages.delete_enterprises]: true,
     [pages.create_group]: true,
-    [pages.delete_group]: true
+    [pages.delete_group]: true,
+    [pages.create_iad]: true,
+    [pages.delete_iad]: true,
+    [pages.group_numbers_refresh_all]: true,
+    [pages.group_numbers_other_actions]: true,
+    [pages.create_group_routing_number]: true,
+    [pages.delete_group_routing_number]: true
   }
 };
 
