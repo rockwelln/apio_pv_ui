@@ -122,7 +122,7 @@ export class MainConfig extends Component {
                 disabled={
                   !isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.edit_group_routing_numbers
+                    pages.edit_group_routing_numbers_rex_red
                   )
                 }
               >
@@ -156,7 +156,7 @@ export class MainConfig extends Component {
                 disabled={
                   !isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.edit_group_routing_numbers
+                    pages.edit_group_routing_numbers_rex_red
                   )
                 }
               />
@@ -184,7 +184,7 @@ export class MainConfig extends Component {
                           disabled={
                             !isAllowed(
                               localStorage.getItem("userProfile"),
-                              pages.edit_group_routing_numbers
+                              pages.edit_group_routing_numbers_other
                             )
                           }
                         />
@@ -199,7 +199,7 @@ export class MainConfig extends Component {
                               onClick={() =>
                                 isAllowed(
                                   localStorage.getItem("userProfile"),
-                                  pages.edit_group_routing_numbers
+                                  pages.edit_group_routing_numbers_other
                                 )
                                   ? this.raisePriorityFromSite(i)
                                   : () => {}
@@ -213,7 +213,7 @@ export class MainConfig extends Component {
                               onClick={() =>
                                 isAllowed(
                                   localStorage.getItem("userProfile"),
-                                  pages.edit_group_routing_numbers
+                                  pages.edit_group_routing_numbers_other
                                 )
                                   ? this.lowerPriorityFromSite(i)
                                   : () => {}
@@ -249,7 +249,7 @@ export class MainConfig extends Component {
                           disabled={
                             !isAllowed(
                               localStorage.getItem("userProfile"),
-                              pages.edit_group_routing_numbers
+                              pages.edit_group_routing_numbers_other
                             )
                           }
                         />
@@ -264,7 +264,7 @@ export class MainConfig extends Component {
                               onClick={() =>
                                 isAllowed(
                                   localStorage.getItem("userProfile"),
-                                  pages.edit_group_routing_numbers
+                                  pages.edit_group_routing_numbers_other
                                 )
                                   ? this.raisePriorityNotFromSite(i)
                                   : () => {}
@@ -278,7 +278,7 @@ export class MainConfig extends Component {
                               onClick={() =>
                                 isAllowed(
                                   localStorage.getItem("userProfile"),
-                                  pages.edit_group_routing_numbers
+                                  pages.edit_group_routing_numbers_other
                                 )
                                   ? this.lowerPriorityNotFromSite(i)
                                   : () => {}
@@ -299,7 +299,11 @@ export class MainConfig extends Component {
               <div className="pull-right">
                 {isAllowed(
                   localStorage.getItem("userProfile"),
-                  pages.edit_group_routing_numbers
+                  pages.edit_group_routing_numbers_rex_red
+                ) ||
+                isAllowed(
+                  localStorage.getItem("userProfile"),
+                  pages.edit_group_routing_numbers_other
                 ) ? (
                   <Button
                     onClick={this.updateEnterpriseTrunkGroup}
