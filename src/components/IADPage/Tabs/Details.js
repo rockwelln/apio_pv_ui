@@ -14,6 +14,8 @@ import Alert from "react-bootstrap/lib/Alert";
 
 import { FormattedMessage } from "react-intl";
 
+import { isAllowed, pages } from "../../../utils/user";
+
 import {
   changeIAD,
   fetchPutUpdateIAD,
@@ -74,13 +76,20 @@ export class Details extends Component {
               <div className={"header margin-right-2"}>
                 <FormattedMessage id="details" defaultMessage="Details" />
               </div>
-              {this.state.isDisabled && (
-                <Glyphicon
-                  className={"font-18"}
-                  glyph="glyphicon glyphicon-pencil"
-                  onClick={() => this.setState({ isDisabled: false })}
-                />
-              )}
+              {isAllowed(
+                localStorage.getItem("userProfile"),
+                pages.edit_iad_details
+              ) ? (
+                <React.Fragment>
+                  {this.state.isDisabled && (
+                    <Glyphicon
+                      className={"font-18"}
+                      glyph="glyphicon glyphicon-pencil"
+                      onClick={() => this.setState({ isDisabled: false })}
+                    />
+                  )}
+                </React.Fragment>
+              ) : null}
             </React.Fragment>
           </Col>
         </Row>

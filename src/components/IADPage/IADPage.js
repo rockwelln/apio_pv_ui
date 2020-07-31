@@ -76,7 +76,7 @@ export class IADPage extends Component {
                   {`IAD: ${this.props.match.params.iadId}`}
                   {isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.delete_access
+                    pages.delete_iad
                   ) && (
                     <Glyphicon
                       glyph="glyphicon glyphicon-trash"

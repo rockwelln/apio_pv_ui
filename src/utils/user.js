@@ -50,6 +50,13 @@ export const pages = Object.freeze({
   edit_group_number_formating_tab: 132,
   edit_group_routing_numbers_rex_red: 133,
   edit_group_routing_numbers_other: 134,
+  edit_iad_details: 135,
+  edit_iad_edu: 136,
+  edit_iad_site_service_override: 137,
+  edit_iad_ip_addressing_edit: 138,
+  edit_iad_pra_lines_configuration: 139,
+  edit_iad_advanced_options: 140,
+  edit_iad_advanced_customized_tags: 141,
   //////////////////////////////////////////////////
   common_page_access: 200,
   add_access: 201,
@@ -64,7 +71,8 @@ export const pages = Object.freeze({
   group_numbers_refresh_all: 210,
   group_numbers_other_actions: 211,
   create_group_routing_number: 212,
-  delete_group_routing_number: 213
+  delete_group_routing_number: 213,
+  access_to_iad_advanced_destination_numbers: 214
 });
 
 export const privileges = Object.freeze({});
@@ -123,6 +131,12 @@ const definition = {
     [pages.edit_group_number_formating_tab]: true,
     [pages.edit_group_routing_numbers_rex_red]: true,
     [pages.edit_group_routing_numbers_other]: true,
+    [pages.edit_iad_details]: true,
+    [pages.edit_iad_edu]: true,
+    [pages.edit_iad_site_service_override]: true,
+    [pages.edit_iad_ip_addressing_edit]: true,
+    [pages.edit_iad_pra_lines_configuration]: true,
+    [pages.edit_iad_advanced_options]: true,
     [pages.add_access]: true,
     [pages.delete_access]: true,
     [pages.add_enterprises]: true,
@@ -165,6 +179,11 @@ const definition = {
     [pages.edit_group_services]: true,
     [pages.edit_group_number_formating_tab]: true,
     [pages.edit_group_routing_numbers_rex_red]: true,
+    [pages.edit_iad_details]: true,
+    [pages.edit_iad_site_service_override]: true,
+    [pages.edit_iad_ip_addressing_edit]: true,
+    [pages.edit_iad_pra_lines_configuration]: true,
+    [pages.edit_iad_advanced_options]: true,
     [pages.create_iad]: true,
     [pages.group_numbers_other_actions]: true
   },
@@ -203,6 +222,10 @@ const definition = {
     [pages.edit_group_services]: true,
     [pages.edit_group_number_formating_tab]: true,
     [pages.edit_group_routing_numbers_rex_red]: true,
+    [pages.edit_iad_details]: true,
+    [pages.edit_iad_site_service_override]: true,
+    [pages.edit_iad_ip_addressing_edit]: true,
+    [pages.edit_iad_advanced_options]: true,
     [pages.add_access]: true,
     [pages.delete_access]: true,
     [pages.create_iad]: true,
@@ -249,6 +272,12 @@ const definition = {
     [pages.edit_group_number_formating_tab]: true,
     [pages.edit_group_routing_numbers_rex_red]: true,
     [pages.edit_group_routing_numbers_other]: true,
+    [pages.edit_iad_details]: true,
+    [pages.edit_iad_edu]: true,
+    [pages.edit_iad_site_service_override]: true,
+    [pages.edit_iad_ip_addressing_edit]: true,
+    [pages.edit_iad_advanced_options]: true,
+    [pages.edit_iad_advanced_customized_tags]: true,
     [pages.add_access]: true,
     [pages.delete_access]: true,
     [pages.refresh_info_phonenumbers]: true,
@@ -261,7 +290,8 @@ const definition = {
     [pages.group_numbers_refresh_all]: true,
     [pages.group_numbers_other_actions]: true,
     [pages.create_group_routing_number]: true,
-    [pages.delete_group_routing_number]: true
+    [pages.delete_group_routing_number]: true,
+    [pages.access_to_iad_advanced_destination_numbers]: true
   },
 
   VoiceEng: {
@@ -304,6 +334,12 @@ const definition = {
     [pages.edit_group_number_formating_tab]: true,
     [pages.edit_group_routing_numbers_rex_red]: true,
     [pages.edit_group_routing_numbers_other]: true,
+    [pages.edit_iad_details]: true,
+    [pages.edit_iad_edu]: true,
+    [pages.edit_iad_site_service_override]: true,
+    [pages.edit_iad_ip_addressing_edit]: true,
+    [pages.edit_iad_advanced_options]: true,
+    [pages.edit_iad_advanced_customized_tags]: true,
     [pages.add_access]: true,
     [pages.delete_access]: true,
     [pages.refresh_info_phonenumbers]: true,
@@ -316,11 +352,18 @@ const definition = {
     [pages.group_numbers_refresh_all]: true,
     [pages.group_numbers_other_actions]: true,
     [pages.create_group_routing_number]: true,
-    [pages.delete_group_routing_number]: true
+    [pages.delete_group_routing_number]: true,
+    [pages.access_to_iad_advanced_destination_numbers]: true
   }
 };
 
-export function isAllowed(profile, page, requested_level, requested_privilege) {
+export function isAllowed(
+  cryptedProfile,
+  page,
+  requested_level,
+  requested_privilege
+) {
+  const profile = decodingUserProfile(cryptedProfile);
   // system access all pages
   if (profile === "user") return true; //if (profile === "system") return true;
   // deny access for unknown profiles
@@ -345,6 +388,34 @@ export function isAllowed(profile, page, requested_level, requested_privilege) {
   }
 }
 
-export function is_admin(profile) {
+let globalProfile = "";
+
+export function is_admin(cryptedProfile) {
+  const profile = decodingUserProfile(cryptedProfile);
   return profile === "admin" || profile === "system";
+}
+
+export function encryptionUserProfile(profile) {
+  globalProfile = profile;
+  let crypted = [];
+  for (let i = 0; i < profile.length; i++) {
+    let code = profile.charCodeAt(i) ^ 32;
+    crypted.push(code);
+  }
+  const string = crypted.join(" ");
+  return string;
+}
+
+function decodingUserProfile(profile) {
+  if (profile) {
+    let decoded = "";
+    let crypredArr = profile.split(" ");
+
+    for (let j = 0; j < crypredArr.length; j++) {
+      let code = crypredArr[j] ^ 32;
+      decoded = decoded + String.fromCharCode(code);
+    }
+    return decoded;
+  }
+  return;
 }

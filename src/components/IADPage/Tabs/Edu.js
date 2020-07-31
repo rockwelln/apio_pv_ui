@@ -14,6 +14,8 @@ import { get } from "../../get";
 
 import { FormattedMessage } from "react-intl";
 
+import { isAllowed, pages } from "../../../utils/user";
+
 import {
   changeObjectIAD,
   fetchPutUpdateIAD,
@@ -85,6 +87,12 @@ export class Edu extends Component {
                 onChange={e =>
                   this.setState({ normLocalUpdate: e.target.checked })
                 }
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_iad_edu
+                  )
+                }
               />
             </div>
           </Col>
@@ -102,6 +110,12 @@ export class Edu extends Component {
                 value={this.state.edu1.name}
                 placeholder={"EDU Name"}
                 onChange={this.changeEdu1Name}
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_iad_edu
+                  )
+                }
               />
             </div>
           </Col>
@@ -118,6 +132,12 @@ export class Edu extends Component {
                   value={this.state.edu2.name}
                   placeholder={"EDU Name"}
                   onChange={this.changeEdu2Name}
+                  disabled={
+                    !isAllowed(
+                      localStorage.getItem("userProfile"),
+                      pages.edit_iad_edu
+                    )
+                  }
                 />
               </div>
             </Col>
@@ -141,6 +161,12 @@ export class Edu extends Component {
                   }
                   this.changeEdu1Lan(e);
                 }}
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_iad_edu
+                  )
+                }
               />
             </div>
           </Col>
@@ -162,6 +188,12 @@ export class Edu extends Component {
                     }
                     this.changeEdu2Lan(e);
                   }}
+                  disabled={
+                    !isAllowed(
+                      localStorage.getItem("userProfile"),
+                      pages.edit_iad_edu
+                    )
+                  }
                 />
               </div>
             </Col>
@@ -182,6 +214,12 @@ export class Edu extends Component {
                 onChange={e => {
                   this.changeEdu1Wan(e);
                 }}
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_iad_edu
+                  )
+                }
               />
             </div>
           </Col>
@@ -200,6 +238,12 @@ export class Edu extends Component {
                   onChange={e => {
                     this.changeEdu2Wan(e);
                   }}
+                  disabled={
+                    !isAllowed(
+                      localStorage.getItem("userProfile"),
+                      pages.edit_iad_edu
+                    )
+                  }
                 />
               </div>
             </Col>
@@ -227,6 +271,12 @@ export class Edu extends Component {
                   }
                   this.changeEdu1Vlan(e);
                 }}
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_iad_edu
+                  )
+                }
               />
             </div>
           </Col>
@@ -255,6 +305,12 @@ export class Edu extends Component {
                     }
                     this.changeEdu2Vlan(e);
                   }}
+                  disabled={
+                    !isAllowed(
+                      localStorage.getItem("userProfile"),
+                      pages.edit_iad_edu
+                    )
+                  }
                 />
               </div>
             </Col>
@@ -273,6 +329,12 @@ export class Edu extends Component {
                 value={this.state.edu1.srName}
                 placeholder={"SR name"}
                 onChange={this.changeEdu1SrName}
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_iad_edu
+                  )
+                }
               />
             </div>
           </Col>
@@ -289,6 +351,12 @@ export class Edu extends Component {
                   value={this.state.edu2.srName}
                   placeholder={"SR name"}
                   onChange={this.changeEdu2SrName}
+                  disabled={
+                    !isAllowed(
+                      localStorage.getItem("userProfile"),
+                      pages.edit_iad_edu
+                    )
+                  }
                 />
               </div>
             </Col>
@@ -307,6 +375,12 @@ export class Edu extends Component {
                 value={this.state.edu1.srSap}
                 placeholder={"SR SAP"}
                 onChange={this.changeEdu1SrSap}
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_iad_edu
+                  )
+                }
               />
             </div>
           </Col>
@@ -323,6 +397,12 @@ export class Edu extends Component {
                   value={this.state.edu2.srSap}
                   placeholder={"SR SAP"}
                   onChange={this.changeEdu2SrSap}
+                  disabled={
+                    !isAllowed(
+                      localStorage.getItem("userProfile"),
+                      pages.edit_iad_edu
+                    )
+                  }
                 />
               </div>
             </Col>
@@ -642,22 +722,27 @@ export class Edu extends Component {
           <Col md={12}>
             <div className="button-row">
               <div className="pull-right">
-                <Button
-                  onClick={this.updateIAD}
-                  type="submit"
-                  className="btn-primary"
-                  disabled={this.state.disabledButton}
-                >
-                  <Glyphicon glyph="glyphicon glyphicon-ok" />
-                  {this.state.disabledButton ? (
-                    <FormattedMessage
-                      id="updating"
-                      defaultMessage="Updating..."
-                    />
-                  ) : (
-                    <FormattedMessage id="update" defaultMessage="Update" />
-                  )}
-                </Button>
+                {isAllowed(
+                  localStorage.getItem("userProfile"),
+                  pages.edit_iad_edu
+                ) ? (
+                  <Button
+                    onClick={this.updateIAD}
+                    type="submit"
+                    className="btn-primary"
+                    disabled={this.state.disabledButton}
+                  >
+                    <Glyphicon glyph="glyphicon glyphicon-ok" />
+                    {this.state.disabledButton ? (
+                      <FormattedMessage
+                        id="updating"
+                        defaultMessage="Updating..."
+                      />
+                    ) : (
+                      <FormattedMessage id="update" defaultMessage="Update" />
+                    )}
+                  </Button>
+                ) : null}
               </div>
             </div>
           </Col>

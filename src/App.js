@@ -24,7 +24,12 @@ import {
   parseJSON,
   NotificationsManager
 } from "./utils";
-import { isAllowed, pages } from "./utils/user";
+import {
+  isAllowed,
+  pages,
+  encryptionUserProfile,
+  decodingUserProfile
+} from "./utils/user";
 import { ResetPasswordPage, RESET_PASSWORD_PREFIX } from "./reset_password";
 
 import AsyncApioNavBar from "./components/Header";
@@ -104,8 +109,10 @@ class App extends Component {
     fetch_get("/api/v01/system/users/local")
       .then(data => {
         this.setState({ user_info: data });
-        localStorage.setItem("userProfile", data.ui_profile);
-        //localStorage.setItem("userProfile", "VoiceOps");
+        localStorage.setItem(
+          "userProfile",
+          encryptionUserProfile(data.ui_profile)
+        );
         this.props.onLanguageUpdate(data.language);
       })
       .catch(error => {
@@ -282,7 +289,10 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants"
                 component={props =>
-                  isAllowed(ui_profile, pages.common_page_access) ? (
+                  isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.common_page_access
+                  ) ? (
                     <Tenants />
                   ) : (
                     <NotAllowed />
@@ -293,7 +303,10 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/configs"
                 component={props =>
-                  isAllowed(ui_profile, pages.config_iad_reboot_pages) ? (
+                  isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.config_iad_reboot_pages
+                  ) ? (
                     <Configs />
                   ) : (
                     <NotAllowed />
@@ -304,7 +317,10 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/reconciliations"
                 component={props =>
-                  isAllowed(ui_profile, pages.reconciliations) ? (
+                  isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.reconciliations
+                  ) ? (
                     <Reconciliations />
                   ) : (
                     <NotAllowed />
@@ -315,7 +331,10 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/iadreboot"
                 component={props =>
-                  isAllowed(ui_profile, pages.config_iad_reboot_pages) ? (
+                  isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.config_iad_reboot_pages
+                  ) ? (
                     <MassIADReboot />
                   ) : (
                     <NotAllowed />
@@ -326,7 +345,10 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/reconciliations/:anomalyHash"
                 component={props =>
-                  isAllowed(ui_profile, pages.common_page_access) ? (
+                  isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.common_page_access
+                  ) ? (
                     <AnomaliesPage />
                   ) : (
                     <NotAllowed />
@@ -337,7 +359,10 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/configs/addteam"
                 component={props =>
-                  isAllowed(ui_profile, pages.add_access) ? (
+                  isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.add_access
+                  ) ? (
                     <AddReconciliationTeam />
                   ) : (
                     <NotAllowed />
@@ -348,7 +373,10 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/configs/reconciliationteam/:teamName"
                 component={props =>
-                  isAllowed(ui_profile, pages.common_page_access) ? (
+                  isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.common_page_access
+                  ) ? (
                     <ReconciliationTeamPage />
                   ) : (
                     <NotAllowed />
@@ -359,7 +387,10 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/add"
                 component={props =>
-                  isAllowed(ui_profile, pages.add_enterprises) ? (
+                  isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.add_enterprises
+                  ) ? (
                     <AddEntreprises />
                   ) : (
                     <NotAllowed />
@@ -370,7 +401,10 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId"
                 component={props =>
-                  isAllowed(ui_profile, pages.common_page_access) ? (
+                  isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.common_page_access
+                  ) ? (
                     <EntreprisesPage />
                   ) : (
                     <NotAllowed />
@@ -381,7 +415,10 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/addgroup"
                 component={props =>
-                  isAllowed(ui_profile, pages.create_group) ? (
+                  isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.create_group
+                  ) ? (
                     <AddGroup />
                   ) : (
                     <NotAllowed />
@@ -392,7 +429,10 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId"
                 component={props =>
-                  isAllowed(ui_profile, pages.common_page_access) ? (
+                  isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.common_page_access
+                  ) ? (
                     <GroupPage />
                   ) : (
                     <NotAllowed />
@@ -403,7 +443,10 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/addiad"
                 component={props =>
-                  isAllowed(ui_profile, pages.create_iad) ? (
+                  isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.create_iad
+                  ) ? (
                     <AddIAD />
                   ) : (
                     <NotAllowed />
@@ -414,7 +457,10 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/addphone"
                 component={props =>
-                  isAllowed(ui_profile, pages.group_numbers_other_actions) ? (
+                  isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.group_numbers_other_actions
+                  ) ? (
                     <AddPhoneToGroup />
                   ) : (
                     <NotAllowed />
@@ -425,7 +471,10 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/addenterprisetrunk"
                 component={props =>
-                  isAllowed(ui_profile, pages.create_group_routing_number) ? (
+                  isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.create_group_routing_number
+                  ) ? (
                     <AddEntrepriseTrunkPage />
                   ) : (
                     <NotAllowed />
@@ -436,7 +485,10 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/iad/:iadId"
                 component={props =>
-                  isAllowed(ui_profile, pages.common_page_access) ? (
+                  isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.common_page_access
+                  ) ? (
                     <IADPage />
                   ) : (
                     <NotAllowed />
@@ -447,7 +499,10 @@ class App extends Component {
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/enterprisetrunk/:entTrunkId"
                 component={props =>
-                  isAllowed(ui_profile, pages.common_page_access) ? (
+                  isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.common_page_access
+                  ) ? (
                     <EnterpriseTrunkPage />
                   ) : (
                     <NotAllowed />

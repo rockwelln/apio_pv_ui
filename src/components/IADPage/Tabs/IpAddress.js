@@ -89,7 +89,7 @@ export class IPAddress extends Component {
                       disabled={
                         !isAllowed(
                           localStorage.getItem("userProfile"),
-                          pages.edit_group_iad_transportMode
+                          pages.edit_iad_ip_addressing_edit
                         )
                       }
                     >
@@ -132,7 +132,7 @@ export class IPAddress extends Component {
                         disabled={
                           !isAllowed(
                             localStorage.getItem("userProfile"),
-                            pages.edit_group_iad_ip1_mode
+                            pages.edit_iad_ip_addressing_edit
                           )
                         }
                       >
@@ -176,7 +176,7 @@ export class IPAddress extends Component {
                         disabled={
                           !isAllowed(
                             localStorage.getItem("userProfile"),
-                            pages.edit_group_iad_ip1_ipv4Address
+                            pages.edit_iad_ip_addressing_edit
                           )
                         }
                       />
@@ -231,7 +231,7 @@ export class IPAddress extends Component {
                         disabled={
                           !isAllowed(
                             localStorage.getItem("userProfile"),
-                            pages.edit_group_iad_ip1_ipv4Netmask
+                            pages.edit_iad_ip_addressing_edit
                           )
                         }
                       />
@@ -290,7 +290,7 @@ export class IPAddress extends Component {
                         disabled={
                           !isAllowed(
                             localStorage.getItem("userProfile"),
-                            pages.edit_group_iad_ip1_ipv6Address
+                            pages.edit_iad_ip_addressing_edit
                           )
                         }
                       />
@@ -345,7 +345,7 @@ export class IPAddress extends Component {
                         disabled={
                           !isAllowed(
                             localStorage.getItem("userProfile"),
-                            pages.edit_group_iad_ip1_ipv6Netmask
+                            pages.edit_iad_ip_addressing_edit
                           )
                         }
                       />
@@ -421,7 +421,7 @@ export class IPAddress extends Component {
                         disabled={
                           !isAllowed(
                             localStorage.getItem("userProfile"),
-                            pages.edit_group_iad_pbx_IPAddress
+                            pages.edit_iad_ip_addressing_edit
                           )
                         }
                       />
@@ -451,7 +451,7 @@ export class IPAddress extends Component {
                     disabled={
                       !isAllowed(
                         localStorage.getItem("userProfile"),
-                        pages.edit_group_iad_pbx_port
+                        pages.edit_iad_ip_addressing_edit
                       )
                     }
                   />
@@ -483,30 +483,35 @@ export class IPAddress extends Component {
           <Col md={12}>
             <div className="button-row">
               <div className="pull-right">
-                <Button
-                  onClick={this.updateIAD}
-                  type="submit"
-                  className="btn-primary"
-                  disabled={
-                    this.state.disabledButton ||
-                    errorMacAddress ||
-                    errorPbxIpAdress ||
-                    errorIpAdressV4 ||
-                    errorNetMaskV4 ||
-                    errorIpAdressV6 ||
-                    errorNetMaskV6
-                  }
-                >
-                  <Glyphicon glyph="glyphicon glyphicon-ok" />
-                  {this.state.disabledButton ? (
-                    <FormattedMessage
-                      id="updating"
-                      defaultMessage="Updating..."
-                    />
-                  ) : (
-                    <FormattedMessage id="update" defaultMessage="Update" />
-                  )}
-                </Button>
+                {isAllowed(
+                  localStorage.getItem("userProfile"),
+                  pages.edit_iad_ip_addressing_edit
+                ) ? (
+                  <Button
+                    onClick={this.updateIAD}
+                    type="submit"
+                    className="btn-primary"
+                    disabled={
+                      this.state.disabledButton ||
+                      errorMacAddress ||
+                      errorPbxIpAdress ||
+                      errorIpAdressV4 ||
+                      errorNetMaskV4 ||
+                      errorIpAdressV6 ||
+                      errorNetMaskV6
+                    }
+                  >
+                    <Glyphicon glyph="glyphicon glyphicon-ok" />
+                    {this.state.disabledButton ? (
+                      <FormattedMessage
+                        id="updating"
+                        defaultMessage="Updating..."
+                      />
+                    ) : (
+                      <FormattedMessage id="update" defaultMessage="Update" />
+                    )}
+                  </Button>
+                ) : null}
               </div>
             </div>
           </Col>

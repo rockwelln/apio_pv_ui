@@ -10,6 +10,8 @@ import Options from "./Tabs/Options";
 import TrunlId from "./Tabs/TrunkId";
 import DestinationNumbers from "./Tabs/DestinationNumbers";
 
+import { isAllowed, pages } from "../../../../utils/user";
+
 export class AdvancedTab extends Component {
   render() {
     return (
@@ -22,12 +24,17 @@ export class AdvancedTab extends Component {
             {/* <Tab eventKey={1} title="Trunk Id">
               <TrunlId />
             </Tab> */}
-            {(this.props.iad.protocolMode === "PRA" ||
-              this.props.iad.protocolMode === "PRA_SIP") && (
-              <Tab eventKey={2} title="Destination Number">
-                <DestinationNumbers />
-              </Tab>
-            )}
+            {isAllowed(
+              localStorage.getItem("userProfile"),
+              pages.access_to_iad_advanced_destination_numbers
+            )
+              ? (this.props.iad.protocolMode === "PRA" ||
+                  this.props.iad.protocolMode === "PRA_SIP") && (
+                  <Tab eventKey={2} title="Destination Number">
+                    <DestinationNumbers />
+                  </Tab>
+                )
+              : null}
           </Tabs>
         </Col>
       </Row>

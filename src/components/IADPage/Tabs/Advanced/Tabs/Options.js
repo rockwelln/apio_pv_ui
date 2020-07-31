@@ -62,7 +62,7 @@ export class Options extends Component {
                   disabled={
                     !isAllowed(
                       localStorage.getItem("userProfile"),
-                      pages.edit_group_iad_advanced_clock_master
+                      pages.edit_iad_advanced_options
                     )
                   }
                 />
@@ -84,7 +84,7 @@ export class Options extends Component {
                 disabled={
                   !isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.edit_group_iad_advanced_dual_power
+                    pages.edit_iad_advanced_options
                   )
                 }
               />
@@ -112,7 +112,7 @@ export class Options extends Component {
                   disabled={
                     !isAllowed(
                       localStorage.getItem("userProfile"),
-                      pages.edit_group_iad_advanced_isdnTerminationSide
+                      pages.edit_iad_advanced_options
                     )
                   }
                 >
@@ -145,7 +145,7 @@ export class Options extends Component {
                 disabled={
                   !isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.edit_group_iad_advanced_sysLogEnabled
+                    pages.edit_iad_advanced_options
                   )
                 }
               />
@@ -171,7 +171,7 @@ export class Options extends Component {
                 disabled={
                   !isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.edit_group_iad_advanced_sysLogIp
+                    pages.edit_iad_advanced_options
                   )
                 }
               />
@@ -187,22 +187,27 @@ export class Options extends Component {
           <Col md={12}>
             <div className="button-row">
               <div className="pull-right">
-                <Button
-                  onClick={this.updateIAD}
-                  type="submit"
-                  className="btn-primary"
-                  disabled={this.state.disabledButton}
-                >
-                  <Glyphicon glyph="glyphicon glyphicon-ok" />
-                  {this.state.disabledButton ? (
-                    <FormattedMessage
-                      id="updating"
-                      defaultMessage="Updating..."
-                    />
-                  ) : (
-                    <FormattedMessage id="update" defaultMessage="Update" />
-                  )}
-                </Button>
+                {isAllowed(
+                  localStorage.getItem("userProfile"),
+                  pages.edit_iad_advanced_options
+                ) ? (
+                  <Button
+                    onClick={this.updateIAD}
+                    type="submit"
+                    className="btn-primary"
+                    disabled={this.state.disabledButton}
+                  >
+                    <Glyphicon glyph="glyphicon glyphicon-ok" />
+                    {this.state.disabledButton ? (
+                      <FormattedMessage
+                        id="updating"
+                        defaultMessage="Updating..."
+                      />
+                    ) : (
+                      <FormattedMessage id="update" defaultMessage="Update" />
+                    )}
+                  </Button>
+                ) : null}
               </div>
             </div>
           </Col>

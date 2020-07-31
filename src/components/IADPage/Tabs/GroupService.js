@@ -54,7 +54,7 @@ export class GroupService extends Component {
                   disabled={
                     !isAllowed(
                       localStorage.getItem("userProfile"),
-                      pages.edit_group_iad_services_dtmf
+                      pages.edit_iad_site_service_override
                     )
                   }
                 >
@@ -82,6 +82,12 @@ export class GroupService extends Component {
                 componentClass="select"
                 value={this.state.services.direction}
                 onChange={this.changeDirection}
+                disabled={
+                  !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_iad_site_service_override
+                  )
+                }
               >
                 {this.props.config.tenant.group.iad.directionOverride.map(
                   (el, i) => (
@@ -125,6 +131,12 @@ export class GroupService extends Component {
                       }
                       placeholder={"In"}
                       onChange={this.changeChannelsIn}
+                      disabled={
+                        !isAllowed(
+                          localStorage.getItem("userProfile"),
+                          pages.edit_iad_site_service_override
+                        )
+                      }
                     />
                   </div>
                   <div className={"margin-right-1 flex"}>
@@ -142,6 +154,12 @@ export class GroupService extends Component {
                       }
                       placeholder={"Out"}
                       onChange={this.changeChannelsOut}
+                      disabled={
+                        !isAllowed(
+                          localStorage.getItem("userProfile"),
+                          pages.edit_iad_site_service_override
+                        )
+                      }
                     />
                   </div>
                 </React.Fragment>
@@ -162,22 +180,27 @@ export class GroupService extends Component {
           <Col md={12}>
             <div className="button-row">
               <div className="pull-right">
-                <Button
-                  onClick={this.updateIAD}
-                  type="submit"
-                  className="btn-primary"
-                  disabled={this.state.disabledButton}
-                >
-                  <Glyphicon glyph="glyphicon glyphicon-ok" />
-                  {this.state.disabledButton ? (
-                    <FormattedMessage
-                      id="updating"
-                      defaultMessage="Updating..."
-                    />
-                  ) : (
-                    <FormattedMessage id="update" defaultMessage="Update" />
-                  )}
-                </Button>
+                {isAllowed(
+                  localStorage.getItem("userProfile"),
+                  pages.edit_iad_site_service_override
+                ) ? (
+                  <Button
+                    onClick={this.updateIAD}
+                    type="submit"
+                    className="btn-primary"
+                    disabled={this.state.disabledButton}
+                  >
+                    <Glyphicon glyph="glyphicon glyphicon-ok" />
+                    {this.state.disabledButton ? (
+                      <FormattedMessage
+                        id="updating"
+                        defaultMessage="Updating..."
+                      />
+                    ) : (
+                      <FormattedMessage id="update" defaultMessage="Update" />
+                    )}
+                  </Button>
+                ) : null}
               </div>
             </div>
           </Col>
