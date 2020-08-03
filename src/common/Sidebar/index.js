@@ -36,7 +36,7 @@ export class Sidebar extends Component {
           </LinkContainer>
           {isAllowed(
             localStorage.getItem("userProfile"),
-            pages.config_iad_reboot_pages
+            pages.config_pages
           ) ? (
             <LinkContainer
               to={`/provisioning/${this.props.match.params.gwName}/configs`}
@@ -62,7 +62,7 @@ export class Sidebar extends Component {
           ) : null}
           {isAllowed(
             localStorage.getItem("userProfile"),
-            pages.config_iad_reboot_pages
+            pages.iad_reboot_pages
           ) ? (
             <LinkContainer
               to={`/provisioning/${this.props.match.params.gwName}/iadreboot`}

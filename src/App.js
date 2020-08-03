@@ -305,7 +305,7 @@ class App extends Component {
                 component={props =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.config_iad_reboot_pages
+                    pages.config_pages
                   ) ? (
                     <Configs />
                   ) : (
@@ -333,7 +333,7 @@ class App extends Component {
                 component={props =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.config_iad_reboot_pages
+                    pages.iad_reboot_pages
                   ) ? (
                     <MassIADReboot />
                   ) : (
