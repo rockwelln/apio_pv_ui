@@ -388,15 +388,12 @@ export function isAllowed(
   }
 }
 
-let globalProfile = "";
-
 export function is_admin(cryptedProfile) {
   const profile = decodingUserProfile(cryptedProfile);
   return profile === "admin" || profile === "system";
 }
 
 export function encryptionUserProfile(profile) {
-  globalProfile = profile;
   let crypted = [];
   for (let i = 0; i < profile.length; i++) {
     let code = profile.charCodeAt(i) ^ 32;
