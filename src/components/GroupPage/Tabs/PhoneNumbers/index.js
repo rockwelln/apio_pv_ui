@@ -221,7 +221,7 @@ export class PhoneNumbersTab extends Component {
                   ) : null}
                   {isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.group_numbers_other_actions
+                    pages.group_numbers_refresh_selected
                   ) && (
                     <Button
                       onClick={this.refreshInformation}

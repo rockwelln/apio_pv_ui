@@ -1,6 +1,6 @@
 export const pages = Object.freeze({
   requests_nprequests: 0, // Base APIO Core
-  iad_reboot_pages: 1, // Access to IAD Reboot page (and menu entry) // TODO seend the same control is used for Configs which could be misleading
+  iad_reboot_pages: 1, // Access to IAD Reboot page (and menu entry)
   not_common_page: 2, // Not found what it is for in PRA code
   requests_startup_events: 4, // Base APIO Core
   requests_workflow_editor: 5, // Base APIO Core
@@ -20,12 +20,6 @@ export const pages = Object.freeze({
   edit_group_iad_pra_info_circuit_id: 102,
   edit_group_iad_pra_info_pra_port: 103,
   edit_group_iad_pra_info_enabled: 104,
-  edit_pra_nat_dst: 105,
-  edit_pra_nat_src: 106,
-  edit_pra_int_src: 107,
-  edit_sip_nat_dst: 108,
-  edit_sip_nat_src: 109,
-  edit_sip_int_src: 110,
   edit_group_iad_ip1_rtpPortRange: 111,
   edit_group_iad_ip1_mode: 112,
   edit_group_iad_ip1_ipv4Address: 113,
@@ -42,14 +36,14 @@ export const pages = Object.freeze({
   edit_group_iad_advanced_dual_power: 124,
   edit_group_iad_transportMode: 125,
   edit_enterprise: 126, // Edit Enterprise details
-  edit_group_details: 127,
-  edit_group_product_type: 128,
-  edit_group_channels_number_of_channels: 129,
-  edit_group_channels_other_fields: 130,
-  edit_group_services: 131,
-  edit_group_number_formating_tab: 132,
-  edit_group_routing_numbers_rex_red: 133,
-  edit_group_routing_numbers_other: 134,
+  edit_group_details: 127, // Edit Group  details
+  edit_group_product_service_type: 128, // Edit Group, Product tab, Service Type field
+  edit_group_channels_number_of_channels: 129, // Edit Group, Channels tab, Number of Channels field
+  edit_group_channels_other_fields: 130, // Edit Group, Channels tab, all fields except Number of Channels field
+  edit_group_services: 131, // Edit Group, Services tab
+  edit_group_number_formating_tab: 132,// Edit Group, Number Formating tab
+  edit_group_routing_numbers_rex_red: 133, // Edit Group, Numbers Routing tab, Config tab, Route Exhausted parameters
+  edit_group_routing_numbers_other: 134, // Edit Group, Numbers Routing tab, Config tab, all other parameters
   edit_iad_details: 135,
   edit_iad_edu: 136,
   edit_iad_site_service_override: 137,
@@ -61,21 +55,23 @@ export const pages = Object.freeze({
   common_page_access: 200, // Access to the commane base pages i.e. the Enterprises and sub-pages
   add_access: 201,
   delete_access: 202,
-  refresh_info_phonenumbers: 203,
+  group_numbers_refresh_selected: 203, // Edit Group, Numbers tab, allow the refresh selected button
   add_enterprises: 204, // Add Enterprise
   delete_enterprises: 205, // Delete Enterprise
   create_group: 206, // Create a Group
   delete_group: 207,
   create_iad: 208,
   delete_iad: 209,
-  group_numbers_refresh_all: 210,
-  group_numbers_other_actions: 211,
-  create_group_routing_number: 212,
-  delete_group_routing_number: 213,
+  group_numbers_refresh_all: 210, // Edit Group, Numbers tab, allow the refresh all button
+  group_numbers_other_actions: 211, // Edit Group, Numbers tab, all actions except the 2 refresh buttons
+  create_group_routing_number: 212,  // Edit Group, Numbers Routing tab, allow create
+  delete_group_routing_number: 213, // Edit Group, Numbers Routing tab, allow delete
   access_to_iad_advanced_destination_numbers: 214,
 
   //
-  config_pages: 300
+  config_pages: 300, // Config page (and menu entry)
+  edit_group_product: 301, // Edit Group Product tab
+  edit_group_routing_numbers_numbers: 302, // Edit Group, Numbers Routing tab, Numbers tab
 });
 
 export const privileges = Object.freeze({});
@@ -110,6 +106,21 @@ const definition = {
     [pages.create_group]: false,
     [pages.edit_group_details]: false,
     [pages.delete_group]: false,
+    [pages.edit_group_product]: false,
+    [pages.edit_group_product_service_type]: false,
+    [pages.edit_group_channels_number_of_channels]: false,
+    [pages.edit_group_channels_other_fields]: false,
+    [pages.edit_group_services]: false,
+    [pages.group_numbers_refresh_all]: false,
+    [pages.group_numbers_other_actions]: false,
+    [pages.group_numbers_refresh_selected]: false,
+    [pages.edit_group_number_formating_tab]: false,
+    [pages.create_group_routing_number]: false,
+    [pages.delete_group_routing_number]: false,
+    [pages.edit_group_routing_numbers_rex_red]: false,
+    [pages.edit_group_routing_numbers_other]: false,
+    [pages.edit_group_routing_numbers_numbers]: false,
+
   },
 
 
@@ -120,21 +131,32 @@ const definition = {
     [pages.iad_reboot_pages]: false,
     [pages.not_common_page]: true,
     [pages.add_enterprises]: false,
-    [pages.edit_enterprise]: false,
+    [pages.edit_enterprise]: true,
     [pages.delete_enterprises]: false,
     [pages.create_group]: false,
     [pages.edit_group_details]: true,
     [pages.delete_group]: false,
+    [pages.edit_group_product]: false,
+    [pages.edit_group_product_service_type]: false,
+    [pages.edit_group_channels_number_of_channels]: false,
+    [pages.edit_group_channels_other_fields]: true,
+    [pages.edit_group_services]: true,
+    [pages.group_numbers_refresh_all]: false,
+    [pages.group_numbers_other_actions]: true,
+    [pages.group_numbers_refresh_selected]: true,
+    [pages.edit_group_number_formating_tab]: true,
+    [pages.create_group_routing_number]: false,
+    [pages.delete_group_routing_number]: false,
+    [pages.edit_group_routing_numbers_rex_red]: true,
+    [pages.edit_group_routing_numbers_other]: false,
+    [pages.edit_group_routing_numbers_numbers]: false,
+
+
     [pages.edit_group_iad_pra_info_tpid]: true,
     [pages.edit_group_iad_pra_info_circuit_id]: true,
     [pages.edit_group_iad_pra_info_pra_port]: true,
     [pages.edit_group_iad_pra_info_enabled]: true,
-    [pages.edit_pra_nat_dst]: true,
-    [pages.edit_pra_nat_src]: true,
-    [pages.edit_pra_int_src]: true,
-    [pages.edit_sip_nat_dst]: true,
-    [pages.edit_sip_nat_src]: true,
-    [pages.edit_sip_int_src]: true,
+
     [pages.edit_group_iad_ip1_rtpPortRange]: true,
     [pages.edit_group_iad_ip1_mode]: true,
     [pages.edit_group_iad_ip1_ipv4Address]: true,
@@ -148,11 +170,10 @@ const definition = {
     [pages.edit_group_iad_advanced_isdnTerminationSide]: true,
     [pages.edit_group_iad_advanced_dual_power]: true,
     [pages.edit_group_iad_transportMode]: true,
-    [pages.edit_group_product_type]: true,
-    [pages.edit_group_channels_other_fields]: true,
-    [pages.edit_group_services]: true,
-    [pages.edit_group_number_formating_tab]: true,
-    [pages.edit_group_routing_numbers_rex_red]: true,
+
+
+
+
     [pages.edit_iad_details]: true,
     [pages.edit_iad_site_service_override]: true,
     [pages.edit_iad_ip_addressing_edit]: true,
@@ -160,7 +181,7 @@ const definition = {
     [pages.add_access]: true,
     [pages.delete_access]: true,
     [pages.create_iad]: true,
-    [pages.group_numbers_other_actions]: true
+
   },
 
   CPM: { // Admin User
@@ -175,16 +196,28 @@ const definition = {
     [pages.create_group]: true,
     [pages.edit_group_details]: true,
     [pages.delete_group]: true,
+    [pages.edit_group_product]: true,
+    [pages.edit_group_product_service_type]: true,
+    [pages.edit_group_channels_number_of_channels]: true,
+    [pages.edit_group_channels_other_fields]: true,
+    [pages.edit_group_services]: true,
+    [pages.group_numbers_refresh_all]: false,
+    [pages.group_numbers_other_actions]: true,
+    [pages.group_numbers_refresh_selected]: true,
+    [pages.edit_group_number_formating_tab]: true,
+    [pages.create_group_routing_number]: true,
+    [pages.delete_group_routing_number]: true,
+    [pages.edit_group_routing_numbers_rex_red]: true,
+    [pages.edit_group_routing_numbers_other]: true,
+    [pages.edit_group_routing_numbers_numbers]: true,
+
+
+
     [pages.edit_group_iad_pra_info_tpid]: true,
     [pages.edit_group_iad_pra_info_circuit_id]: true,
     [pages.edit_group_iad_pra_info_pra_port]: true,
     [pages.edit_group_iad_pra_info_enabled]: true,
-    [pages.edit_pra_nat_dst]: true,
-    [pages.edit_pra_nat_src]: true,
-    [pages.edit_pra_int_src]: true,
-    [pages.edit_sip_nat_dst]: true,
-    [pages.edit_sip_nat_src]: true,
-    [pages.edit_sip_int_src]: true,
+
     [pages.edit_group_iad_ip1_rtpPortRange]: true,
     [pages.edit_group_iad_ip1_mode]: true,
     [pages.edit_group_iad_ip1_ipv4Address]: true,
@@ -198,13 +231,7 @@ const definition = {
     [pages.edit_group_iad_advanced_isdnTerminationSide]: true,
     [pages.edit_group_iad_advanced_dual_power]: true,
     [pages.edit_group_iad_transportMode]: true,
-    [pages.edit_group_product_type]: true,
-    [pages.edit_group_channels_number_of_channels]: true,
-    [pages.edit_group_channels_other_fields]: true,
-    [pages.edit_group_services]: true,
-    [pages.edit_group_number_formating_tab]: true,
-    [pages.edit_group_routing_numbers_rex_red]: true,
-    [pages.edit_group_routing_numbers_other]: true,
+
     [pages.edit_iad_details]: true,
     [pages.edit_iad_edu]: true,
     [pages.edit_iad_site_service_override]: true,
@@ -215,8 +242,7 @@ const definition = {
     [pages.delete_access]: true,
     [pages.create_iad]: true,
     [pages.delete_iad]: true,
-    [pages.create_group_routing_number]: true,
-    [pages.delete_group_routing_number]: true
+
   },
 
   VoiceOps: { // Super Admin Users, now same as VoiceEng
@@ -231,17 +257,29 @@ const definition = {
     [pages.create_group]: true,
     [pages.edit_group_details]: true,
     [pages.delete_group]: true,
+    [pages.edit_group_product]: true,
+    [pages.edit_group_product_service_type]: true,
+    [pages.edit_group_channels_number_of_channels]: true,
+    [pages.edit_group_channels_other_fields]: true,
+    [pages.edit_group_services]: true,
+    [pages.group_numbers_refresh_all]: true,
+    [pages.group_numbers_other_actions]: true,
+    [pages.group_numbers_refresh_selected]: true,
+    [pages.edit_group_number_formating_tab]: true,
+    [pages.create_group_routing_number]: true,
+    [pages.delete_group_routing_number]: true,
+    [pages.edit_group_routing_numbers_rex_red]: true,
+    [pages.edit_group_routing_numbers_other]: true,
+    [pages.edit_group_routing_numbers_numbers]: true,
+
+
+
     [pages.edit_group_iad_advanced_clock_master]: true,
     [pages.edit_group_iad_pra_info_tpid]: true,
     [pages.edit_group_iad_pra_info_circuit_id]: true,
     [pages.edit_group_iad_pra_info_pra_port]: true,
     [pages.edit_group_iad_pra_info_enabled]: true,
-    [pages.edit_pra_nat_dst]: true,
-    [pages.edit_pra_nat_src]: true,
-    [pages.edit_pra_int_src]: true,
-    [pages.edit_sip_nat_dst]: true,
-    [pages.edit_sip_nat_src]: true,
-    [pages.edit_sip_int_src]: true,
+
     [pages.edit_group_iad_ip1_rtpPortRange]: true,
     [pages.edit_group_iad_ip1_mode]: true,
     [pages.edit_group_iad_ip1_ipv4Address]: true,
@@ -257,13 +295,10 @@ const definition = {
     [pages.edit_group_iad_advanced_isdnTerminationSide]: true,
     [pages.edit_group_iad_advanced_dual_power]: true,
     [pages.edit_group_iad_transportMode]: true,
-    [pages.edit_group_product_type]: true,
-    [pages.edit_group_channels_number_of_channels]: true,
-    [pages.edit_group_channels_other_fields]: true,
-    [pages.edit_group_services]: true,
-    [pages.edit_group_number_formating_tab]: true,
-    [pages.edit_group_routing_numbers_rex_red]: true,
-    [pages.edit_group_routing_numbers_other]: true,
+
+
+
+
     [pages.edit_iad_details]: true,
     [pages.edit_iad_edu]: true,
     [pages.edit_iad_site_service_override]: true,
@@ -272,14 +307,11 @@ const definition = {
     [pages.edit_iad_advanced_customized_tags]: true,
     [pages.add_access]: true,
     [pages.delete_access]: true,
-    [pages.refresh_info_phonenumbers]: true,
+
     [pages.create_iad]: true,
     [pages.delete_iad]: true,
-    [pages.group_numbers_refresh_all]: true,
-    [pages.group_numbers_other_actions]: true,
-    [pages.create_group_routing_number]: true,
-    [pages.delete_group_routing_number]: true,
-    [pages.access_to_iad_advanced_destination_numbers]: true
+
+    [pages.access_to_iad_advanced_destination_numbers]: true,
   },
 
 };

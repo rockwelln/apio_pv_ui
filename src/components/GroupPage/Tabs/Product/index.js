@@ -205,7 +205,7 @@ export class Product extends Component {
                     this.props.validationGroupError ||
                     !isAllowed(
                       localStorage.getItem("userProfile"),
-                      pages.edit_group_product_type
+                      pages.edit_group_product_service_type
                     )
                   }
                 >
@@ -263,7 +263,7 @@ export class Product extends Component {
             <div className="pull-right">
               {isAllowed(
                 localStorage.getItem("userProfile"),
-                pages.edit_group_product_type
+                pages.edit_group_product
               ) ? (
                 <Button
                   onClick={this.updateProduct}

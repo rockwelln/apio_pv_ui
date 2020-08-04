@@ -160,7 +160,7 @@ export class Numbers extends Component {
                             disabled={
                               !isAllowed(
                                 localStorage.getItem("userProfile"),
-                                pages.edit_group_routing_numbers_other
+                                pages.edit_group_routing_numbers_numbers
                               )
                             }
                           />
@@ -181,7 +181,7 @@ export class Numbers extends Component {
               <div className="pull-right">
                 {isAllowed(
                   localStorage.getItem("userProfile"),
-                  pages.edit_group_routing_numbers_other
+                  pages.edit_group_routing_numbers_numbers
                 ) ? (
                   <Button
                     onClick={this.updateEnterpriseTrunkGroup}
