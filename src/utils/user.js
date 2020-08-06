@@ -44,7 +44,7 @@ export const pages = Object.freeze({
   edit_group_number_formating_tab: 132,// Edit Group, Number Formating tab
   edit_group_routing_numbers_rex_red: 133, // Edit Group, Numbers Routing tab, Config tab, Route Exhausted parameters
   edit_group_routing_numbers_other: 134, // Edit Group, Numbers Routing tab, Config tab, all other parameters
-  edit_iad_details: 135,
+  edit_iad_details: 135, // Group, IAD, Details : edit button
   edit_iad_edu: 136,
   edit_iad_site_service_override: 137,
   edit_iad_ip_addressing_edit: 138,
@@ -60,8 +60,8 @@ export const pages = Object.freeze({
   delete_enterprises: 205, // Delete Enterprise
   create_group: 206, // Create a Group
   delete_group: 207,
-  create_iad: 208,
-  delete_iad: 209,
+  create_iad: 208, // Group / IADs tab, add button
+  delete_iad: 209, // Group / IADs tab, delete button; Group, IAD, Details, delete button
   group_numbers_refresh_all: 210, // Edit Group, Numbers tab, allow the refresh all button
   group_numbers_other_actions: 211, // Edit Group, Numbers tab, all actions except the 2 refresh buttons
   create_group_routing_number: 212,  // Edit Group, Numbers Routing tab, allow create
@@ -72,6 +72,7 @@ export const pages = Object.freeze({
   config_pages: 300, // Config page (and menu entry)
   edit_group_product: 301, // Edit Group Product tab
   edit_group_routing_numbers_numbers: 302, // Edit Group, Numbers Routing tab, Numbers tab
+  edit_iad_details_mac: 302, // Group, IAD, Details, mac field
 });
 
 export const privileges = Object.freeze({});
@@ -120,6 +121,10 @@ const definition = {
     [pages.edit_group_routing_numbers_rex_red]: false,
     [pages.edit_group_routing_numbers_other]: false,
     [pages.edit_group_routing_numbers_numbers]: false,
+    [pages.delete_iad]: false,
+    [pages.create_iad]: false,
+    [pages.edit_iad_details]: false,
+    [pages.edit_iad_details_mac]: false,
 
   },
 
@@ -150,13 +155,17 @@ const definition = {
     [pages.edit_group_routing_numbers_rex_red]: true,
     [pages.edit_group_routing_numbers_other]: false,
     [pages.edit_group_routing_numbers_numbers]: false,
+    [pages.delete_iad]: false,
+    [pages.create_iad]: true,
+    [pages.edit_iad_details]: true,
+    [pages.edit_iad_details_mac]: false, // for test
+
 
 
     [pages.edit_group_iad_pra_info_tpid]: true,
     [pages.edit_group_iad_pra_info_circuit_id]: true,
     [pages.edit_group_iad_pra_info_pra_port]: true,
     [pages.edit_group_iad_pra_info_enabled]: true,
-
     [pages.edit_group_iad_ip1_rtpPortRange]: true,
     [pages.edit_group_iad_ip1_mode]: true,
     [pages.edit_group_iad_ip1_ipv4Address]: true,
@@ -171,16 +180,12 @@ const definition = {
     [pages.edit_group_iad_advanced_dual_power]: true,
     [pages.edit_group_iad_transportMode]: true,
 
-
-
-
-    [pages.edit_iad_details]: true,
     [pages.edit_iad_site_service_override]: true,
     [pages.edit_iad_ip_addressing_edit]: true,
     [pages.edit_iad_advanced_options]: true,
     [pages.add_access]: true,
     [pages.delete_access]: true,
-    [pages.create_iad]: true,
+
 
   },
 
@@ -210,14 +215,16 @@ const definition = {
     [pages.edit_group_routing_numbers_rex_red]: true,
     [pages.edit_group_routing_numbers_other]: true,
     [pages.edit_group_routing_numbers_numbers]: true,
-
+    [pages.delete_iad]: true,
+    [pages.create_iad]: true,
+    [pages.edit_iad_details]: true,
+    [pages.edit_iad_details_mac]: true,
 
 
     [pages.edit_group_iad_pra_info_tpid]: true,
     [pages.edit_group_iad_pra_info_circuit_id]: true,
     [pages.edit_group_iad_pra_info_pra_port]: true,
     [pages.edit_group_iad_pra_info_enabled]: true,
-
     [pages.edit_group_iad_ip1_rtpPortRange]: true,
     [pages.edit_group_iad_ip1_mode]: true,
     [pages.edit_group_iad_ip1_ipv4Address]: true,
@@ -232,7 +239,6 @@ const definition = {
     [pages.edit_group_iad_advanced_dual_power]: true,
     [pages.edit_group_iad_transportMode]: true,
 
-    [pages.edit_iad_details]: true,
     [pages.edit_iad_edu]: true,
     [pages.edit_iad_site_service_override]: true,
     [pages.edit_iad_ip_addressing_edit]: true,
@@ -240,8 +246,8 @@ const definition = {
     [pages.edit_iad_advanced_options]: true,
     [pages.add_access]: true,
     [pages.delete_access]: true,
-    [pages.create_iad]: true,
-    [pages.delete_iad]: true,
+
+
 
   },
 
@@ -271,6 +277,10 @@ const definition = {
     [pages.edit_group_routing_numbers_rex_red]: true,
     [pages.edit_group_routing_numbers_other]: true,
     [pages.edit_group_routing_numbers_numbers]: true,
+    [pages.delete_iad]: true,
+    [pages.create_iad]: true,
+    [pages.edit_iad_details]: true,
+    [pages.edit_iad_details_mac]: true,
 
 
 
@@ -279,7 +289,6 @@ const definition = {
     [pages.edit_group_iad_pra_info_circuit_id]: true,
     [pages.edit_group_iad_pra_info_pra_port]: true,
     [pages.edit_group_iad_pra_info_enabled]: true,
-
     [pages.edit_group_iad_ip1_rtpPortRange]: true,
     [pages.edit_group_iad_ip1_mode]: true,
     [pages.edit_group_iad_ip1_ipv4Address]: true,
@@ -296,10 +305,6 @@ const definition = {
     [pages.edit_group_iad_advanced_dual_power]: true,
     [pages.edit_group_iad_transportMode]: true,
 
-
-
-
-    [pages.edit_iad_details]: true,
     [pages.edit_iad_edu]: true,
     [pages.edit_iad_site_service_override]: true,
     [pages.edit_iad_ip_addressing_edit]: true,
@@ -308,8 +313,6 @@ const definition = {
     [pages.add_access]: true,
     [pages.delete_access]: true,
 
-    [pages.create_iad]: true,
-    [pages.delete_iad]: true,
 
     [pages.access_to_iad_advanced_destination_numbers]: true,
   },

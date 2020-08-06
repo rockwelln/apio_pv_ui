@@ -140,7 +140,10 @@ export class Details extends Component {
                   type="text"
                   value={this.state.macAddress}
                   placeholder={"MAC Address"}
-                  disabled={this.state.isDisabled}
+                  disabled={this.state.isDisabled || !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_iad_details_mac
+                  )}
                   onChange={this.upadateMacAddres}
                   onBlur={this.validateMacAddress}
                 />
