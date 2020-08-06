@@ -198,7 +198,7 @@ export class Anomalies extends Component {
                   <FormControl
                     componentClass="textarea"
                     disabled
-                    value={this.state.anomaly.apio_db_data}
+                    value={this.state.anomaly.apio_data}
                   />
                 </div>
               </Col>
@@ -216,6 +216,23 @@ export class Anomalies extends Component {
                     componentClass="textarea"
                     disabled
                     value={this.state.anomaly.broadsoft_data}
+                  />
+                </div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  <FormattedMessage
+                    id="additional_description"
+                    defaultMessage="Additional Description"
+                  />
+                </div>
+                <div className={"margin-right-1 flex-basis-33"}>
+                  <FormControl
+                    componentClass="textarea"
+                    disabled
+                    value={this.state.anomaly.additional_description}
                   />
                 </div>
               </Col>
