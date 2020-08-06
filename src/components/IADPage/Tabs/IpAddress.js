@@ -89,7 +89,7 @@ export class IPAddress extends Component {
                       disabled={
                         !isAllowed(
                           localStorage.getItem("userProfile"),
-                          pages.edit_iad_ip_addressing_edit
+                          pages.edit_iad_ip_addressing
                         )
                       }
                     >
@@ -132,7 +132,7 @@ export class IPAddress extends Component {
                         disabled={
                           !isAllowed(
                             localStorage.getItem("userProfile"),
-                            pages.edit_iad_ip_addressing_edit
+                            pages.edit_iad_ip_addressing
                           )
                         }
                       >
@@ -176,7 +176,7 @@ export class IPAddress extends Component {
                         disabled={
                           !isAllowed(
                             localStorage.getItem("userProfile"),
-                            pages.edit_iad_ip_addressing_edit
+                            pages.edit_iad_ip_addressing
                           )
                         }
                       />
@@ -231,7 +231,7 @@ export class IPAddress extends Component {
                         disabled={
                           !isAllowed(
                             localStorage.getItem("userProfile"),
-                            pages.edit_iad_ip_addressing_edit
+                            pages.edit_iad_ip_addressing
                           )
                         }
                       />
@@ -290,7 +290,7 @@ export class IPAddress extends Component {
                         disabled={
                           !isAllowed(
                             localStorage.getItem("userProfile"),
-                            pages.edit_iad_ip_addressing_edit
+                            pages.edit_iad_ip_addressing
                           )
                         }
                       />
@@ -345,7 +345,7 @@ export class IPAddress extends Component {
                         disabled={
                           !isAllowed(
                             localStorage.getItem("userProfile"),
-                            pages.edit_iad_ip_addressing_edit
+                            pages.edit_iad_ip_addressing
                           )
                         }
                       />
@@ -421,7 +421,7 @@ export class IPAddress extends Component {
                         disabled={
                           !isAllowed(
                             localStorage.getItem("userProfile"),
-                            pages.edit_iad_ip_addressing_edit
+                            pages.edit_iad_ip_addressing
                           )
                         }
                       />
@@ -451,7 +451,7 @@ export class IPAddress extends Component {
                     disabled={
                       !isAllowed(
                         localStorage.getItem("userProfile"),
-                        pages.edit_iad_ip_addressing_edit
+                        pages.edit_iad_ip_addressing
                       )
                     }
                   />
@@ -485,7 +485,7 @@ export class IPAddress extends Component {
               <div className="pull-right">
                 {isAllowed(
                   localStorage.getItem("userProfile"),
-                  pages.edit_iad_ip_addressing_edit
+                  pages.edit_iad_ip_addressing
                 ) ? (
                   <Button
                     onClick={this.updateIAD}

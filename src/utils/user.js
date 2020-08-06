@@ -16,10 +16,10 @@ export const pages = Object.freeze({
   system: 21, // Base APIO Core
   /////////////////////////////////////////
   edit_group_iad_advanced_clock_master: 100,
-  edit_group_iad_pra_info_tpid: 101,
-  edit_group_iad_pra_info_circuit_id: 102,
-  edit_group_iad_pra_info_pra_port: 103,
-  edit_group_iad_pra_info_enabled: 104,
+  edit_group_iad_pra_info_tpid: 101, // Group, IAD, PRA Info tab: field tpid
+  edit_group_iad_pra_info_circuit_id: 102, // Group, IAD, PRA Info tab: field circuit_id
+  edit_group_iad_pra_info_pra_port: 103, // Group, IAD, PRA Info tab: field pra_port
+  edit_group_iad_pra_info_enabled: 104, // Group, IAD, PRA Info tab: field enabled
   edit_group_iad_ip1_rtpPortRange: 111,
   edit_group_iad_ip1_mode: 112,
   edit_group_iad_ip1_ipv4Address: 113,
@@ -45,9 +45,9 @@ export const pages = Object.freeze({
   edit_group_routing_numbers_rex_red: 133, // Edit Group, Numbers Routing tab, Config tab, Route Exhausted parameters
   edit_group_routing_numbers_other: 134, // Edit Group, Numbers Routing tab, Config tab, all other parameters
   edit_iad_details: 135, // Group, IAD, Details : edit button
-  edit_iad_edu: 136,
-  edit_iad_site_service_override: 137,
-  edit_iad_ip_addressing_edit: 138,
+  edit_iad_edu: 136, // Group, IAD, EDU tab: edit
+  edit_iad_site_service_override: 137, // Group, IAD, Sites Services Override tab: edit
+  edit_iad_ip_addressing: 138, // Group, IAD, IP Addressing tab: edit
   edit_iad_pra_lines_configuration: 139,
   edit_iad_advanced_options: 140,
   edit_iad_advanced_customized_tags: 141,
@@ -72,7 +72,8 @@ export const pages = Object.freeze({
   config_pages: 300, // Config page (and menu entry)
   edit_group_product: 301, // Edit Group Product tab
   edit_group_routing_numbers_numbers: 302, // Edit Group, Numbers Routing tab, Numbers tab
-  edit_iad_details_mac: 302, // Group, IAD, Details, mac field
+  edit_iad_details_mac: 303, // Group, IAD, Details, mac address field
+  edit_iad_details_main_nbr: 304, // Group, IAD, Details, main number field
 });
 
 export const privileges = Object.freeze({});
@@ -125,6 +126,14 @@ const definition = {
     [pages.create_iad]: false,
     [pages.edit_iad_details]: false,
     [pages.edit_iad_details_mac]: false,
+    [pages.edit_iad_details_main_nbr]: false,
+    [pages.edit_iad_edu]: false,
+    [pages.edit_iad_site_service_override]: false,
+    [pages.edit_iad_ip_addressing]: false,
+    [pages.edit_group_iad_pra_info_tpid]: false,
+    [pages.edit_group_iad_pra_info_circuit_id]: false,
+    [pages.edit_group_iad_pra_info_pra_port]: false,
+    [pages.edit_group_iad_pra_info_enabled]: false,
 
   },
 
@@ -158,14 +167,18 @@ const definition = {
     [pages.delete_iad]: false,
     [pages.create_iad]: true,
     [pages.edit_iad_details]: true,
-    [pages.edit_iad_details_mac]: false, // for test
-
-
-
+    [pages.edit_iad_details_mac]: true,
+    [pages.edit_iad_details_main_nbr]: true,
+    [pages.edit_iad_edu]: false,
+    [pages.edit_iad_site_service_override]: true,
+    [pages.edit_iad_ip_addressing]: true,
     [pages.edit_group_iad_pra_info_tpid]: true,
     [pages.edit_group_iad_pra_info_circuit_id]: true,
     [pages.edit_group_iad_pra_info_pra_port]: true,
     [pages.edit_group_iad_pra_info_enabled]: true,
+
+
+
     [pages.edit_group_iad_ip1_rtpPortRange]: true,
     [pages.edit_group_iad_ip1_mode]: true,
     [pages.edit_group_iad_ip1_ipv4Address]: true,
@@ -180,8 +193,9 @@ const definition = {
     [pages.edit_group_iad_advanced_dual_power]: true,
     [pages.edit_group_iad_transportMode]: true,
 
-    [pages.edit_iad_site_service_override]: true,
-    [pages.edit_iad_ip_addressing_edit]: true,
+
+
+    
     [pages.edit_iad_advanced_options]: true,
     [pages.add_access]: true,
     [pages.delete_access]: true,
@@ -219,12 +233,18 @@ const definition = {
     [pages.create_iad]: true,
     [pages.edit_iad_details]: true,
     [pages.edit_iad_details_mac]: true,
-
-
+    [pages.edit_iad_details_main_nbr]: true,
+    [pages.edit_iad_edu]: true,
+    [pages.edit_iad_site_service_override]: true,
+    [pages.edit_iad_ip_addressing]: true,
     [pages.edit_group_iad_pra_info_tpid]: true,
     [pages.edit_group_iad_pra_info_circuit_id]: true,
     [pages.edit_group_iad_pra_info_pra_port]: true,
     [pages.edit_group_iad_pra_info_enabled]: true,
+
+
+
+
     [pages.edit_group_iad_ip1_rtpPortRange]: true,
     [pages.edit_group_iad_ip1_mode]: true,
     [pages.edit_group_iad_ip1_ipv4Address]: true,
@@ -239,10 +259,7 @@ const definition = {
     [pages.edit_group_iad_advanced_dual_power]: true,
     [pages.edit_group_iad_transportMode]: true,
 
-    [pages.edit_iad_edu]: true,
-    [pages.edit_iad_site_service_override]: true,
-    [pages.edit_iad_ip_addressing_edit]: true,
-    [pages.edit_iad_pra_lines_configuration]: true,
+
     [pages.edit_iad_advanced_options]: true,
     [pages.add_access]: true,
     [pages.delete_access]: true,
@@ -281,14 +298,18 @@ const definition = {
     [pages.create_iad]: true,
     [pages.edit_iad_details]: true,
     [pages.edit_iad_details_mac]: true,
-
-
-
-    [pages.edit_group_iad_advanced_clock_master]: true,
+    [pages.edit_iad_details_main_nbr]: true,
+    [pages.edit_iad_edu]: true,
+    [pages.edit_iad_site_service_override]: true,
+    [pages.edit_iad_ip_addressing]: true,
     [pages.edit_group_iad_pra_info_tpid]: true,
     [pages.edit_group_iad_pra_info_circuit_id]: true,
     [pages.edit_group_iad_pra_info_pra_port]: true,
     [pages.edit_group_iad_pra_info_enabled]: true,
+
+
+    [pages.edit_group_iad_advanced_clock_master]: true,
+
     [pages.edit_group_iad_ip1_rtpPortRange]: true,
     [pages.edit_group_iad_ip1_mode]: true,
     [pages.edit_group_iad_ip1_ipv4Address]: true,
@@ -305,9 +326,9 @@ const definition = {
     [pages.edit_group_iad_advanced_dual_power]: true,
     [pages.edit_group_iad_transportMode]: true,
 
-    [pages.edit_iad_edu]: true,
-    [pages.edit_iad_site_service_override]: true,
-    [pages.edit_iad_ip_addressing_edit]: true,
+
+
+    
     [pages.edit_iad_advanced_options]: true,
     [pages.edit_iad_advanced_customized_tags]: true,
     [pages.add_access]: true,

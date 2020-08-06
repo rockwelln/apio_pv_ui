@@ -206,7 +206,10 @@ export class Details extends Component {
                     cliPhoneNumber: e.target.value
                   })
                 }
-                disabled={this.state.isDisabled}
+                disabled={this.state.isDisabled || !isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.edit_iad_details_main_nbr
+                  )}
                 onChange={this.upadateCliPhoneNumber}
               >
                 {!this.state.cliPhoneNumber && (
