@@ -61,6 +61,7 @@ export const pages = Object.freeze({
   edit_iad_pra_info_pra_port: 103, // Group, IAD, PRA Info tab: field pra_port
   edit_iad_pra_info_enabled: 104, // Group, IAD, PRA Info tab: field enabled
   edit_iad_advanced_options: 140, // Group, IAD, Adanced tab, Options tab
+  access_iad_advanced_options_syslog: 550, // Group, IAD, Advanced tab, Options tab, show syslog related fields
   edit_iad_advanced_customized_tags: 141, // Group, IAD, Adanced tab, Customized Tags tab (new feature still to develop)
   access_iad_advanced_destination_numbers: 214, // Group, IAD, Adanced tab, access to Destination numbers tab
 
@@ -169,6 +170,7 @@ const definition = {
     [pages.edit_iad_pra_info_enabled]: false,
     [pages.access_iad_advanced_destination_numbers]: false,
     [pages.edit_iad_advanced_options]: false,
+    [pages.access_iad_advanced_options_syslog]: false,
     [pages.edit_iad_advanced_customized_tags]: false,
 
 
@@ -220,6 +222,7 @@ const definition = {
     [pages.edit_iad_pra_info_enabled]: true,
     [pages.access_iad_advanced_destination_numbers]: false,
     [pages.edit_iad_advanced_options]: true,
+    [pages.access_iad_advanced_options_syslog]: false,
     [pages.edit_iad_advanced_customized_tags]: false,
 
 
@@ -289,6 +292,7 @@ const definition = {
     [pages.edit_iad_pra_info_enabled]: true,
     [pages.access_iad_advanced_destination_numbers]: false,
     [pages.edit_iad_advanced_options]: true,
+    [pages.access_iad_advanced_options_syslog]: false,
     [pages.edit_iad_advanced_customized_tags]: false,
 
 
@@ -321,6 +325,7 @@ const definition = {
     [pages.delete_reconciliation_anomaly]: true,
     [pages.access_config_pages]: true,
     [pages.edit_iad_advanced_customized_tags]: true,
+    [pages.add_config_reconciliation_team]: true,
     [pages.delete_config_reconciliation_team]: true,
     [pages.access_iad_reboot_pages]: true,
     [pages.access_statistics]: true,
@@ -357,14 +362,9 @@ const definition = {
     [pages.edit_iad_pra_info_circuit_id]: true,
     [pages.edit_iad_pra_info_pra_port]: true,
     [pages.edit_iad_pra_info_enabled]: true,
-    [pages.access_iad_advanced_destination_numbers]: true,
     [pages.edit_iad_advanced_options]: true,
-
-
-
-
-
-
+    [pages.access_iad_advanced_options_syslog]: true, // should be false, true to test
+    [pages.access_iad_advanced_destination_numbers]: true,
 
 
     [pages.edit_group_iad_advanced_clock_master]: true,
@@ -385,7 +385,7 @@ const definition = {
     [pages.edit_group_iad_transportMode]: true,
 
 
-    [pages.add_config_reconciliation_team]: true,
+
 
 
 

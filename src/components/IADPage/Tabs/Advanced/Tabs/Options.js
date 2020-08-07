@@ -128,56 +128,64 @@ export class Options extends Component {
             </Col>
           </Row>
         )}
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="sysLogEnabled"
-                  defaultMessage="Syslog enabled"
+        {(isAllowed(
+            localStorage.getItem("userProfile"),
+            pages.access_iad_advanced_options_syslog)) && (
+          <Row className={"margin-top-1"}>
+            <Col md={12} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-16"}>
+                <ControlLabel>
+                  <FormattedMessage
+                    id="sysLogEnabled"
+                    defaultMessage="Syslog enabled"
+                  />
+                </ControlLabel>
+              </div>
+              <div className={"margin-right-1 flex-basis-33"}>
+                <Checkbox
+                  checked={this.state.advanced.sysLogEnabled}
+                  onChange={this.changeSysLogEnabled}
+                  disabled={
+                    !isAllowed(
+                      localStorage.getItem("userProfile"),
+                      pages.edit_iad_advanced_options
+                    )
+                  }
                 />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <Checkbox
-                checked={this.state.advanced.sysLogEnabled}
-                onChange={this.changeSysLogEnabled}
-                disabled={
-                  !isAllowed(
-                    localStorage.getItem("userProfile"),
-                    pages.edit_iad_advanced_options
-                  )
-                }
-              />
-            </div>
-          </Col>
-        </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage
-                  id="sysLogIp"
-                  defaultMessage="Syslog IP Address"
+              </div>
+            </Col>
+          </Row>
+        )}
+        {(isAllowed(
+            localStorage.getItem("userProfile"),
+            pages.access_iad_advanced_options_syslog)) && (
+          <Row className={"margin-top-1"}>
+            <Col md={12} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-16"}>
+                <ControlLabel>
+                  <FormattedMessage
+                    id="sysLogIp"
+                    defaultMessage="Syslog IP Address"
+                  />
+                </ControlLabel>
+              </div>
+              <div className={"margin-right-1 flex-basis-16"}>
+                <FormControl
+                  type="text"
+                  value={this.state.advanced.sysLogIp}
+                  placeholder={"IPv4 address"}
+                  onChange={this.changeSysLogIp}
+                  disabled={
+                    !isAllowed(
+                      localStorage.getItem("userProfile"),
+                      pages.edit_iad_advanced_options
+                    )
+                  }
                 />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-16"}>
-              <FormControl
-                type="text"
-                value={this.state.advanced.sysLogIp}
-                placeholder={"IPv4 address"}
-                onChange={this.changeSysLogIp}
-                disabled={
-                  !isAllowed(
-                    localStorage.getItem("userProfile"),
-                    pages.edit_iad_advanced_options
-                  )
-                }
-              />
-            </div>
-          </Col>
-        </Row>
+              </div>
+            </Col>
+          </Row>
+        )}
         <RebootWindow
           data={this.state.data}
           show={this.state.showRebootDialog}
