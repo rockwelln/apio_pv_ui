@@ -693,12 +693,12 @@ export class AddIAD extends Component {
                           dtmf: e.target.value
                         })
                       }
-                      disabled={
+                      {/* disabled={
                         !isAllowed(
                           localStorage.getItem("userProfile"),
                           pages.edit_group_iad_services_dtmf
                         )
-                      }
+                      } */}
                     >
                       {this.props.config.tenant.group.iad.dtmfOverride.map(
                         (el, i) => (
@@ -1052,12 +1052,12 @@ export class AddIAD extends Component {
                               transportMode: e.target.value
                             })
                           }
-                          disabled={
+                          {/* disabled={
                             !isAllowed(
                               localStorage.getItem("userProfile"),
                               pages.edit_group_iad_transportMode
                             )
-                          }
+                          } */}
                         >
                           <div className="font-weight-bold flex">
                             {type.name}
@@ -1097,12 +1097,12 @@ export class AddIAD extends Component {
                                 ip1mode: e.target.value
                               })
                             }
-                            disabled={
+                            {/* disabled={
                               !isAllowed(
                                 localStorage.getItem("userProfile"),
                                 pages.edit_group_iad_ip1_mode
                               )
-                            }
+                            } */}
                           >
                             <div className="font-weight-bold flex">
                               {type.name}
@@ -1142,12 +1142,12 @@ export class AddIAD extends Component {
                               })
                             }
                             onBlur={this.validateIPAddressV4}
-                            disabled={
+                            {/* disabled={
                               !isAllowed(
                                 localStorage.getItem("userProfile"),
                                 pages.edit_group_iad_ip1_ipv4Address
                               )
-                            }
+                            } */}
                           />
                         </FormGroup>
                       </Col>
@@ -1196,12 +1196,12 @@ export class AddIAD extends Component {
                               })
                             }
                             onBlur={this.validateNetMaskV4}
-                            disabled={
+                            {/* disabled={
                               !isAllowed(
                                 localStorage.getItem("userProfile"),
                                 pages.edit_group_iad_ip1_ipv4Netmask
                               )
-                            }
+                            } */}
                           />
                         </FormGroup>
                       </Col>
@@ -1254,12 +1254,12 @@ export class AddIAD extends Component {
                             }
                             type="text"
                             onBlur={this.validateIPAddressV6}
-                            disabled={
+                            {/* disabled={
                               !isAllowed(
                                 localStorage.getItem("userProfile"),
                                 pages.edit_group_iad_ip1_ipv6Address
                               )
-                            }
+                            } */}
                           />
                         </FormGroup>
                       </Col>
@@ -1308,12 +1308,12 @@ export class AddIAD extends Component {
                               })
                             }
                             onBlur={this.validateNetMaskV6}
-                            disabled={
+                            {/* disabled={
                               !isAllowed(
                                 localStorage.getItem("userProfile"),
                                 pages.edit_group_iad_ip1_ipv6Netmask
                               )
-                            }
+                            } */}
                           />
                         </FormGroup>
                       </Col>
@@ -1381,12 +1381,12 @@ export class AddIAD extends Component {
                               })
                             }
                             onBlur={this.validatePbxIPAddress}
-                            disabled={
+                            {/* disabled={
                               !isAllowed(
                                 localStorage.getItem("userProfile"),
                                 pages.edit_group_iad_pbx_IPAddress
                               )
-                            }
+                            } */}
                           />
                         </div>
                       </FormGroup>
@@ -1409,12 +1409,12 @@ export class AddIAD extends Component {
                           }
                           this.setState({ port: e.target.value });
                         }}
-                        disabled={
+                        {/* disabled={
                           !isAllowed(
                             localStorage.getItem("userProfile"),
                             pages.edit_group_iad_pbx_port
                           )
-                        }
+                        } */}
                       />
                     </div>
                   </Col>
@@ -1470,12 +1470,12 @@ export class AddIAD extends Component {
                         onChange={e =>
                           this.setState({ clock_master: e.target.checked })
                         }
-                        disabled={
+                        {/*disabled={
                           !isAllowed(
                             localStorage.getItem("userProfile"),
                             pages.edit_group_iad_advanced_clock_master
                           )
-                        }
+                        } */}
                       />
                     </div>
                   </Col>
@@ -1497,12 +1497,12 @@ export class AddIAD extends Component {
                       onChange={e =>
                         this.setState({ dual_power: e.target.checked })
                       }
-                      disabled={
+                      {/* disabled={
                         !isAllowed(
                           localStorage.getItem("userProfile"),
                           pages.edit_group_iad_advanced_dual_power
                         )
-                      }
+                      } */}
                     />
                   </div>
                 </Col>
@@ -1527,12 +1527,12 @@ export class AddIAD extends Component {
                         onChange={e =>
                           this.setState({ isdnTerminationSide: e.target.value })
                         }
-                        disabled={
+                        {/* disabled={
                           !isAllowed(
                             localStorage.getItem("userProfile"),
                             pages.edit_group_iad_advanced_isdnTerminationSide
                           )
-                        }
+                        } */}
                       >
                         {this.props.config.tenant.group.iad.isdnTerminationSide.map(
                           (el, i) => (
