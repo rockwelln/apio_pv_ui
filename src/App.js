@@ -291,7 +291,7 @@ class App extends Component {
                 component={props =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.common_page_access
+                    pages.access_common_page
                   ) ? (
                     <Tenants />
                   ) : (
@@ -305,7 +305,7 @@ class App extends Component {
                 component={props =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.config_pages
+                    pages.access_config_pages
                   ) ? (
                     <Configs />
                   ) : (
@@ -333,7 +333,7 @@ class App extends Component {
                 component={props =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.iad_reboot_pages
+                    pages.access_iad_reboot_pages
                   ) ? (
                     <MassIADReboot />
                   ) : (
@@ -347,7 +347,7 @@ class App extends Component {
                 component={props =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.common_page_access
+                    pages.access_common_page
                   ) ? (
                     <AnomaliesPage />
                   ) : (
@@ -375,7 +375,7 @@ class App extends Component {
                 component={props =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.common_page_access
+                    pages.access_common_page
                   ) ? (
                     <ReconciliationTeamPage />
                   ) : (
@@ -403,7 +403,7 @@ class App extends Component {
                 component={props =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.common_page_access
+                    pages.access_common_page
                   ) ? (
                     <EntreprisesPage />
                   ) : (
@@ -431,7 +431,7 @@ class App extends Component {
                 component={props =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.common_page_access
+                    pages.access_common_page
                   ) ? (
                     <GroupPage />
                   ) : (
@@ -487,7 +487,7 @@ class App extends Component {
                 component={props =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.common_page_access
+                    pages.access_common_page
                   ) ? (
                     <IADPage />
                   ) : (
@@ -501,7 +501,7 @@ class App extends Component {
                 component={props =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.common_page_access
+                    pages.access_common_page
                   ) ? (
                     <EnterpriseTrunkPage />
                   ) : (

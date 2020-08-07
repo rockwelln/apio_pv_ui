@@ -26,7 +26,7 @@ export class AdvancedTab extends Component {
             </Tab> */}
             {isAllowed(
               localStorage.getItem("userProfile"),
-              pages.access_to_iad_advanced_destination_numbers
+              pages.access_iad_advanced_destination_numbers
             )
               ? (this.props.iad.protocolMode === "PRA" ||
                   this.props.iad.protocolMode === "PRA_SIP") && (

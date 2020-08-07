@@ -880,7 +880,7 @@ export class AddIAD extends Component {
                           disabled={
                             !isAllowed(
                               localStorage.getItem("userProfile"),
-                              pages.edit_group_iad_pra_info_pra_port
+                              pages.edit_iad_pra_info_pra_port
                             )
                           }
                         >
@@ -917,7 +917,7 @@ export class AddIAD extends Component {
                             !this.state.praByIad[pra].praID ||
                             !isAllowed(
                               localStorage.getItem("userProfile"),
-                              pages.edit_group_iad_pra_info_tpid
+                              pages.edit_iad_pra_info_tpid
                             )
                           }
                           onChange={e =>
@@ -955,7 +955,7 @@ export class AddIAD extends Component {
                             !this.state.praByIad[pra].praID ||
                             !isAllowed(
                               localStorage.getItem("userProfile"),
-                              pages.edit_group_iad_pra_info_circuit_id
+                              pages.edit_iad_pra_info_circuit_id
                             )
                           }
                           onChange={e =>
@@ -991,7 +991,7 @@ export class AddIAD extends Component {
                             !this.state.praByIad[pra].praID ||
                             !isAllowed(
                               localStorage.getItem("userProfile"),
-                              pages.edit_group_iad_pra_info_enabled
+                              pages.edit_iad_pra_info_enabled
                             )
                           }
                           onChange={e =>

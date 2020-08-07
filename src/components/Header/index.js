@@ -57,7 +57,7 @@ const AsyncApioNavBar = ({
 
         {isAllowed(
           localStorage.getItem("userProfile"),
-          pages.common_page_access
+          pages.access_common_page
         ) && (
           <NavDropdown
             eventKey={4}

@@ -1,8 +1,7 @@
 export const pages = Object.freeze({
   //////////////////// Base APIO Core
   requests_nprequests: 0, // Base APIO Core
-  iad_reboot_pages: 1, // Access to IAD Reboot page (and menu entry)
-  not_common_page: 2, // Not found what it is for in PRA code
+  not_common_page: 2, // Not found what it is for in PRA code, assumed Based APIo COre
   requests_startup_events: 4, // Base APIO Core
   requests_workflow_editor: 5, // Base APIO Core
   data_tenants: 6, // Base APIO Core
@@ -11,18 +10,70 @@ export const pages = Object.freeze({
   system_gateways: 15, // Base APIO Core
   system_databases: 16, // Base APIO Core
   system_reporting: 17, // Base APIO Core
-  access_reconciliations: 18, // Access to the Reconciliation pages
   requests: 19, // Base APIO Core
   data: 20, // Base APIO Core
   system: 21, // Base APIO Core
   ///////////////// PRA : Access to main pages
-  access_statistics : 55,
+  access_common_page: 200, // Access to the commane base pages i.e. the Enterprises and sub-pages
+  access_statistics : 50,
+  access_iad_reboot_pages: 51, // Access to IAD Reboot page (and menu entry)
+  access_reconciliations: 52, // Access to the Reconciliation pages
+  access_config_pages: 300, // Config page (and menu entry)
+
+
+  ///////////////// PRA : Entreprise related
+  add_enterprises: 204, // Add Enterprise
+  delete_enterprises: 205, // Delete Enterprise
+  edit_enterprise: 126, // Edit Enterprise details
+
+
+  ///////////////// PRA : Group related
+  create_group: 206, // Create a Group
+  delete_group: 207, //Delete Group
+  edit_group_details: 127, // Edit Group  details
+  edit_group_product: 301, // Edit Group Product tab, all editable fields except service_type
+  edit_group_product_service_type: 128, // Edit Group, Product tab, Service Type field
+  edit_group_channels_number_of_channels: 129, // Edit Group, Channels tab, Number of Channels field
+  edit_group_channels_other_fields: 130, // Edit Group, Channels tab, all fields except Number of Channels field
+  edit_group_services: 131, // Edit Group, Services tab
+  edit_group_number_formating_tab: 132,// Edit Group, Number Formating tab
+  create_group_routing_number: 212,  // Edit Group, Numbers Routing tab, allow create
+  delete_group_routing_number: 213, // Edit Group, Numbers Routing tab, allow delete
+  edit_group_routing_numbers_rex_red: 133, // Edit Group, Numbers Routing tab, Config tab, Route Exhausted parameters
+  edit_group_routing_numbers_other: 134, // Edit Group, Numbers Routing tab, Config tab, all other parameters
+  edit_group_routing_numbers_numbers: 302, // Edit Group, Numbers Routing tab, Numbers tab
+  group_numbers_refresh_selected: 203, // Edit Group, Numbers tab, allow the refresh selected button
+  group_numbers_refresh_all: 210, // Edit Group, Numbers tab, allow the refresh all button
+  group_numbers_other_actions: 211, // Edit Group, Numbers tab, all actions except the 2 refresh buttons
+
+
+  ///////////////// PRA : IAD related
+  create_iad: 208, // Group / IADs tab, add button
+  delete_iad: 209, // Group / IADs tab, delete button; Group, IAD, Details, delete button
+  edit_iad_details: 135, // Group, IAD, Details : edit button
+  edit_iad_details_mac: 303, // Group, IAD, Details, mac address field
+  edit_iad_details_main_nbr: 304, // Group, IAD, Details, main number field
+  edit_iad_edu: 136, // Group, IAD, EDU tab: edit
+  edit_iad_site_service_override: 137, // Group, IAD, Sites Services Override tab: edit
+  edit_iad_ip_addressing: 138, // Group, IAD, IP Addressing tab: edit
+  edit_iad_pra_info_tpid: 101, // Group, IAD, PRA Info tab: field tpid
+  edit_iad_pra_info_circuit_id: 102, // Group, IAD, PRA Info tab: field circuit_id
+  edit_iad_pra_info_pra_port: 103, // Group, IAD, PRA Info tab: field pra_port
+  edit_iad_pra_info_enabled: 104, // Group, IAD, PRA Info tab: field enabled
+  edit_iad_advanced_options: 140, // Group, IAD, Adanced tab, Options tab
+  edit_iad_advanced_customized_tags: 141, // Group, IAD, Adanced tab, Customized Tags tab (new feature still to develop)
+  access_iad_advanced_destination_numbers: 214, // Group, IAD, Adanced tab, access to Destination numbers tab
+
+
+  ///////////////// PRA: Other pages
+  delete_reconciliation_anomaly:305, // Reconciliation, Anomalies, can delete
+  add_config_reconciliation_team: 201, //Config , Reconciliation team, can create
+  delete_config_reconciliation_team: 202, //Config , Reconciliation team, can delete
+
+
   /////////////////////////////////////////
   edit_group_iad_advanced_clock_master: 100,
-  edit_group_iad_pra_info_tpid: 101, // Group, IAD, PRA Info tab: field tpid
-  edit_group_iad_pra_info_circuit_id: 102, // Group, IAD, PRA Info tab: field circuit_id
-  edit_group_iad_pra_info_pra_port: 103, // Group, IAD, PRA Info tab: field pra_port
-  edit_group_iad_pra_info_enabled: 104, // Group, IAD, PRA Info tab: field enabled
+
   edit_group_iad_ip1_rtpPortRange: 111,
   edit_group_iad_ip1_mode: 112,
   edit_group_iad_ip1_ipv4Address: 113,
@@ -38,46 +89,20 @@ export const pages = Object.freeze({
   edit_group_iad_advanced_isdnTerminationSide: 123,
   edit_group_iad_advanced_dual_power: 124,
   edit_group_iad_transportMode: 125,
-  edit_enterprise: 126, // Edit Enterprise details
-  edit_group_details: 127, // Edit Group  details
-  edit_group_product_service_type: 128, // Edit Group, Product tab, Service Type field
-  edit_group_channels_number_of_channels: 129, // Edit Group, Channels tab, Number of Channels field
-  edit_group_channels_other_fields: 130, // Edit Group, Channels tab, all fields except Number of Channels field
-  edit_group_services: 131, // Edit Group, Services tab
-  edit_group_number_formating_tab: 132,// Edit Group, Number Formating tab
-  edit_group_routing_numbers_rex_red: 133, // Edit Group, Numbers Routing tab, Config tab, Route Exhausted parameters
-  edit_group_routing_numbers_other: 134, // Edit Group, Numbers Routing tab, Config tab, all other parameters
-  edit_iad_details: 135, // Group, IAD, Details : edit button
-  edit_iad_edu: 136, // Group, IAD, EDU tab: edit
-  edit_iad_site_service_override: 137, // Group, IAD, Sites Services Override tab: edit
-  edit_iad_ip_addressing: 138, // Group, IAD, IP Addressing tab: edit
-  edit_iad_pra_lines_configuration: 139,
-  edit_iad_advanced_options: 140, // Group, IAD, Adanced tab, Options tab
-  edit_iad_advanced_customized_tags: 141, // Group, IAD, Adanced tab, Customized Tags tab (new feature still to develop)
+
+
+
   //////////////////////////////////////////////////
-  common_page_access: 200, // Access to the commane base pages i.e. the Enterprises and sub-pages
-  add_config_reconciliation_team: 201,
-  delete_config_reconciliation_team: 202, //Config , Reconciliation team, can delete
-  group_numbers_refresh_selected: 203, // Edit Group, Numbers tab, allow the refresh selected button
-  add_enterprises: 204, // Add Enterprise
-  delete_enterprises: 205, // Delete Enterprise
-  create_group: 206, // Create a Group
-  delete_group: 207,
-  create_iad: 208, // Group / IADs tab, add button
-  delete_iad: 209, // Group / IADs tab, delete button; Group, IAD, Details, delete button
-  group_numbers_refresh_all: 210, // Edit Group, Numbers tab, allow the refresh all button
-  group_numbers_other_actions: 211, // Edit Group, Numbers tab, all actions except the 2 refresh buttons
-  create_group_routing_number: 212,  // Edit Group, Numbers Routing tab, allow create
-  delete_group_routing_number: 213, // Edit Group, Numbers Routing tab, allow delete
-  access_to_iad_advanced_destination_numbers: 214, // Group, IAD, Adanced tab, access to Destination numbers tab
+
+
+
+
 
   //
-  config_pages: 300, // Config page (and menu entry)
-  edit_group_product: 301, // Edit Group Product tab
-  edit_group_routing_numbers_numbers: 302, // Edit Group, Numbers Routing tab, Numbers tab
-  edit_iad_details_mac: 303, // Group, IAD, Details, mac address field
-  edit_iad_details_main_nbr: 304, // Group, IAD, Details, main number field
-  delete_reconciliation_anomaly:305 // Reconciliation, Anomalies, can delete
+
+
+
+
 });
 
 export const privileges = Object.freeze({});
@@ -101,13 +126,13 @@ const definition = {
   },
 
   HelpDesk1: { // Read Only
-    [pages.common_page_access]: true,
+    [pages.access_common_page]: true,
     [pages.access_reconciliations]: false,
     [pages.delete_reconciliation_anomaly]: false,
-    [pages.config_pages]: false,
+    [pages.access_config_pages]: false,
     [pages.add_config_reconciliation_team]: false,
     [pages.delete_config_reconciliation_team]: false,
-    [pages.iad_reboot_pages]: false,
+    [pages.access_iad_reboot_pages]: false,
     [pages.access_statistics]: true,
     [pages.not_common_page]: false,
     [pages.add_enterprises]: false,
@@ -138,11 +163,11 @@ const definition = {
     [pages.edit_iad_edu]: false,
     [pages.edit_iad_site_service_override]: false,
     [pages.edit_iad_ip_addressing]: false,
-    [pages.edit_group_iad_pra_info_tpid]: false,
-    [pages.edit_group_iad_pra_info_circuit_id]: false,
-    [pages.edit_group_iad_pra_info_pra_port]: false,
-    [pages.edit_group_iad_pra_info_enabled]: false,
-    [pages.access_to_iad_advanced_destination_numbers]: false,
+    [pages.edit_iad_pra_info_tpid]: false,
+    [pages.edit_iad_pra_info_circuit_id]: false,
+    [pages.edit_iad_pra_info_pra_port]: false,
+    [pages.edit_iad_pra_info_enabled]: false,
+    [pages.access_iad_advanced_destination_numbers]: false,
     [pages.edit_iad_advanced_options]: false,
     [pages.edit_iad_advanced_customized_tags]: false,
 
@@ -152,13 +177,13 @@ const definition = {
 
 
   HelpDesk3: { // Tech Support User
-    [pages.common_page_access]: true,
+    [pages.access_common_page]: true,
     [pages.access_reconciliations]: true,
     [pages.delete_reconciliation_anomaly]: false,
-    [pages.config_pages]: false,
+    [pages.access_config_pages]: false,
     [pages.add_config_reconciliation_team]: false,
     [pages.delete_config_reconciliation_team]: false,
-    [pages.iad_reboot_pages]: false,
+    [pages.access_iad_reboot_pages]: false,
     [pages.access_statistics]: true,
     [pages.not_common_page]: true,
     [pages.add_enterprises]: false,
@@ -189,11 +214,11 @@ const definition = {
     [pages.edit_iad_edu]: false,
     [pages.edit_iad_site_service_override]: true,
     [pages.edit_iad_ip_addressing]: true,
-    [pages.edit_group_iad_pra_info_tpid]: true,
-    [pages.edit_group_iad_pra_info_circuit_id]: true,
-    [pages.edit_group_iad_pra_info_pra_port]: true,
-    [pages.edit_group_iad_pra_info_enabled]: true,
-    [pages.access_to_iad_advanced_destination_numbers]: false,
+    [pages.edit_iad_pra_info_tpid]: true,
+    [pages.edit_iad_pra_info_circuit_id]: true,
+    [pages.edit_iad_pra_info_pra_port]: true,
+    [pages.edit_iad_pra_info_enabled]: true,
+    [pages.access_iad_advanced_destination_numbers]: false,
     [pages.edit_iad_advanced_options]: true,
     [pages.edit_iad_advanced_customized_tags]: false,
 
@@ -221,13 +246,13 @@ const definition = {
   },
 
   CPM: { // Admin User
-    [pages.common_page_access]: true,
+    [pages.access_common_page]: true,
     [pages.access_reconciliations]: true,
     [pages.delete_reconciliation_anomaly]: true,
-    [pages.config_pages]: false,
+    [pages.access_config_pages]: false,
     [pages.add_config_reconciliation_team]: true,
     [pages.delete_config_reconciliation_team]: false,
-    [pages.iad_reboot_pages]: false,
+    [pages.access_iad_reboot_pages]: false,
     [pages.access_statistics]: true,
     [pages.not_common_page]: true,
     [pages.add_enterprises]: true,
@@ -258,11 +283,11 @@ const definition = {
     [pages.edit_iad_edu]: true,
     [pages.edit_iad_site_service_override]: true,
     [pages.edit_iad_ip_addressing]: true,
-    [pages.edit_group_iad_pra_info_tpid]: true,
-    [pages.edit_group_iad_pra_info_circuit_id]: true,
-    [pages.edit_group_iad_pra_info_pra_port]: true,
-    [pages.edit_group_iad_pra_info_enabled]: true,
-    [pages.access_to_iad_advanced_destination_numbers]: false,
+    [pages.edit_iad_pra_info_tpid]: true,
+    [pages.edit_iad_pra_info_circuit_id]: true,
+    [pages.edit_iad_pra_info_pra_port]: true,
+    [pages.edit_iad_pra_info_enabled]: true,
+    [pages.access_iad_advanced_destination_numbers]: false,
     [pages.edit_iad_advanced_options]: true,
     [pages.edit_iad_advanced_customized_tags]: false,
 
@@ -291,13 +316,13 @@ const definition = {
   },
 
   VoiceOps: { // Super Admin Users, now same as VoiceEng
-    [pages.common_page_access]: true,
+    [pages.access_common_page]: true,
     [pages.access_reconciliations]: true,
     [pages.delete_reconciliation_anomaly]: true,
-    [pages.config_pages]: true,
+    [pages.access_config_pages]: true,
     [pages.edit_iad_advanced_customized_tags]: true,
     [pages.delete_config_reconciliation_team]: true,
-    [pages.iad_reboot_pages]: true,
+    [pages.access_iad_reboot_pages]: true,
     [pages.access_statistics]: true,
     [pages.not_common_page]: true,
     [pages.add_enterprises]: true,
@@ -328,11 +353,11 @@ const definition = {
     [pages.edit_iad_edu]: true,
     [pages.edit_iad_site_service_override]: true,
     [pages.edit_iad_ip_addressing]: true,
-    [pages.edit_group_iad_pra_info_tpid]: true,
-    [pages.edit_group_iad_pra_info_circuit_id]: true,
-    [pages.edit_group_iad_pra_info_pra_port]: true,
-    [pages.edit_group_iad_pra_info_enabled]: true,
-    [pages.access_to_iad_advanced_destination_numbers]: true,
+    [pages.edit_iad_pra_info_tpid]: true,
+    [pages.edit_iad_pra_info_circuit_id]: true,
+    [pages.edit_iad_pra_info_pra_port]: true,
+    [pages.edit_iad_pra_info_enabled]: true,
+    [pages.access_iad_advanced_destination_numbers]: true,
     [pages.edit_iad_advanced_options]: true,
 
 
