@@ -59,7 +59,7 @@ export class Anomalies extends Component {
               )}
               {isAllowed(
                 localStorage.getItem("userProfile"),
-                pages.delete_access
+                pages.delete_reconciliation_anomaly
               ) && (
                 <Glyphicon
                   glyph="glyphicon glyphicon-trash"

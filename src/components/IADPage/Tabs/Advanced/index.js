@@ -7,7 +7,7 @@ import Tabs from "react-bootstrap/lib/Tabs";
 import Tab from "react-bootstrap/lib/Tab";
 
 import Options from "./Tabs/Options";
-import TrunlId from "./Tabs/TrunkId";
+//import TrunlId from "./Tabs/TrunkId"; // This page is obsolte it is now integrated in Destination Numbers
 import DestinationNumbers from "./Tabs/DestinationNumbers";
 
 import { isAllowed, pages } from "../../../../utils/user";

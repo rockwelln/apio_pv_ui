@@ -319,7 +319,7 @@ class App extends Component {
                 component={props =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.reconciliations
+                    pages.access_reconciliations
                   ) ? (
                     <Reconciliations />
                   ) : (
@@ -361,7 +361,7 @@ class App extends Component {
                 component={props =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.add_access
+                    pages.add_config_reconciliation_team
                   ) ? (
                     <AddReconciliationTeam />
                   ) : (

@@ -1,3 +1,4 @@
+// This page is obsolte it is now integrated in Destination Numbers
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";

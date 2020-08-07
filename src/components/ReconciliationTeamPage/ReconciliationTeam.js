@@ -50,7 +50,7 @@ export class AddReconciliationTeam extends Component {
               />
               {isAllowed(
                 localStorage.getItem("userProfile"),
-                pages.delete_access
+                pages.delete_config_reconciliation_team
               ) && (
                 <Glyphicon
                   glyph="glyphicon glyphicon-trash"

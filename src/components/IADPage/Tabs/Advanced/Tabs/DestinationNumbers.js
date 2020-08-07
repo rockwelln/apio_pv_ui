@@ -22,6 +22,8 @@ import Loading from "../../../../../common/Loading";
 
 import RebootWindow from "../../../RebootWindow";
 
+// No specific isAllowed: it is managed at index level
+
 const DESTINATIONNUMBERS = [
   {
     id: 5,

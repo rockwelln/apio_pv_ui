@@ -86,7 +86,7 @@ export class ReconciliationTeams extends Component {
               </FormattedMessage>
             </InputGroup>
           </Col>
-          {isAllowed(localStorage.getItem("userProfile"), pages.add_access) && (
+          {isAllowed(localStorage.getItem("userProfile"), pages.add_config_reconciliation_team) && (
             <Col md={1}>
               <Link
                 to={`/provisioning/${this.props.match.params.gwName}/configs/addteam`}

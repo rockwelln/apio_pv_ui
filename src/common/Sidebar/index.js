@@ -49,7 +49,7 @@ export class Sidebar extends Component {
           ) : null}
           {isAllowed(
             localStorage.getItem("userProfile"),
-            pages.reconciliations
+            pages.access_reconciliations
           ) ? (
             <LinkContainer
               to={`/provisioning/${this.props.match.params.gwName}/reconciliations`}

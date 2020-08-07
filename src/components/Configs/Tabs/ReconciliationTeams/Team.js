@@ -26,7 +26,7 @@ class Group extends Component {
         <td>{team.email}</td>
         {isAllowed(
           localStorage.getItem("userProfile"),
-          pages.delete_access
+          pages.delete_config_reconciliation_team
         ) && (
           <td>
             <ButtonToolbar>
