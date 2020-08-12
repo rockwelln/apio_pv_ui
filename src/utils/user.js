@@ -410,7 +410,7 @@ const definition = {
     [pages.edit_iad_pra_info_enabled]: true,
     [pages.edit_iad_advanced_options]: true,
     [pages.access_iad_advanced_options_syslog]: false,
-    [pages.access_iad_advanced_destination_numbers]: true,
+    [pages.access_iad_advanced_destination_numbers]: false,
     ///////////////// PRA: Other pages
     [pages.delete_reconciliation_anomaly]: true,
     [pages.add_config_reconciliation_team]: true,
@@ -477,7 +477,7 @@ const definition = {
     [pages.edit_iad_pra_info_enabled]: true,
     [pages.edit_iad_advanced_options]: true,
     [pages.access_iad_advanced_options_syslog]: false,
-    [pages.access_iad_advanced_destination_numbers]: true,
+    [pages.access_iad_advanced_destination_numbers]: false,
     ///////////////// PRA: Other pages
     [pages.delete_reconciliation_anomaly]: true,
     [pages.add_config_reconciliation_team]: true,
