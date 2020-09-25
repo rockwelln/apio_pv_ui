@@ -3,7 +3,7 @@ import { withRouter } from "react-router";
 
 import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
-import Checkbox from "react-bootstrap/lib/Checkbox";
+//import Checkbox from "react-bootstrap/lib/Checkbox";
 
 import { Link } from "react-router-dom";
 

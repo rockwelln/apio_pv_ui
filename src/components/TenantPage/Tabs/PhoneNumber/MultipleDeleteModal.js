@@ -24,7 +24,7 @@ class DeleteModal extends Component {
 
     const allNumbers = [];
 
-    this.props.rangeStart.map(number => {
+    this.props.rangeStart.forEach(number => {
       if (number.includes(" - ")) {
         const range = number.split(" - ");
         const expandedRange = getRange(range[0], range[1]);

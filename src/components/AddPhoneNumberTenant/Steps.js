@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import Basic from "./Basic";
 import Validated from "./Validated";
 import Info from "./Info";
-import InfoGroup from "./InfoGroup";
 
 export class Steps extends Component {
   render() {

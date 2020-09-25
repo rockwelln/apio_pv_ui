@@ -41,7 +41,6 @@ export class Licenses extends Component {
     editTrunkLicenses: false,
     editMaxBursting: false,
     editServicePacks: false,
-    editGroupServices: false,
     indexOfService: 0,
     showMore: true
   };

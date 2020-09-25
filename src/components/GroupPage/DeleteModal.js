@@ -18,7 +18,6 @@ class DeleteModal extends Component {
   }
 
   onDelete() {
-    const { onClose } = this.props;
     this.setState({ deleting: true });
 
     this.props

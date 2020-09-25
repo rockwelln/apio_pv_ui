@@ -11,8 +11,6 @@ import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import Button from "react-bootstrap/lib/Button";
 import Checkbox from "react-bootstrap/lib/Checkbox";
 
-import { FormattedMessage } from "react-intl";
-
 import {
   refuseCreateGroup,
   changeIdOfGroup,
@@ -211,7 +209,7 @@ export class Basic extends Component {
   }
 
   nextStep = () => {
-    const { groupId, groupName } = this.props.createGroup;
+    const { groupName } = this.props.createGroup;
     if (groupName) {
       this.props.changeStepOfCreateGroup("Template");
     } else {
