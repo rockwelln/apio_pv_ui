@@ -26,8 +26,6 @@ import {
   changeDomainOfTenant
 } from "../../store/actions";
 
-const RESELLEROPTIONS = [{ value: "", name: "None" }];
-
 export class Basic extends Component {
   state = {
     showMore: false,

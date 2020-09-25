@@ -19,8 +19,6 @@ import {
 
 import ServicePack from "./ServicePack";
 
-import equal from "../deepEqual";
-
 export class ServicePackAuthorisation extends Component {
   state = {
     countPerPage: 25,

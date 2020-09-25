@@ -9,13 +9,13 @@ import FormControl from "react-bootstrap/lib/FormControl";
 import InputGroup from "react-bootstrap/lib/InputGroup";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
-import Checkbox from "react-bootstrap/lib/Checkbox";
+//import Checkbox from "react-bootstrap/lib/Checkbox";
 import Pagination from "react-bootstrap/lib/Pagination";
 import { FormattedMessage } from "react-intl";
 
 import Loading from "../../../../common/Loading";
 import User from "./User";
-import DeleteModal from "./DeleteModal";
+//import DeleteModal from "./DeleteModal";
 
 import { fetchGetUsersByTrunkGroup } from "../../../../store/actions";
 
@@ -31,9 +31,9 @@ export class Users extends Component {
     page: 0,
     pagination: true,
     countPerPage: 25,
-    countPages: null,
-    showDelete: false,
-    usersForDelete: []
+    countPages: null
+    //showDelete: false,
+    //usersForDelete: []
   };
   fetchUsers = () => {
     this.props
@@ -73,9 +73,7 @@ export class Users extends Component {
       page,
       pagination,
       countPerPage,
-      paginationUsers,
-      usersForDelete,
-      showDelete
+      paginationUsers
     } = this.state;
     if (isLoading && pagination) {
       return <Loading />;

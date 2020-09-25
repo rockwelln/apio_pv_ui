@@ -261,7 +261,7 @@ export class TrunkIndenty extends Component {
         includeOtgIdentityForNetworkCalls && includeOtgIdentityForNetworkCalls
     };
 
-    const clearData = removeEmpty(clearData);
+    const clearData = removeEmpty(data);
     this.setState({ disableButton: true }, () =>
       this.props
         .fetchPutUpdateTrunkGroup(

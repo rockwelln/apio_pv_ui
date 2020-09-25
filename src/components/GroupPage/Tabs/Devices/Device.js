@@ -15,12 +15,12 @@ class Device extends Component {
     return (
       <tr key={device.deviceName}>
         <td>
-          <a
-            className={"cursor-pointer"}
+          <div
+            className={"fake-link"}
             onClick={() => this.setState({ showDevice: true })}
           >
             {device.deviceName}
-          </a>
+          </div>
           {this.state.showDevice && (
             <DevicePage
               isOpen={this.state.showDevice}

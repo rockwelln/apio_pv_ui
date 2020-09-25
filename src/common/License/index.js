@@ -4,8 +4,6 @@ import Table from "react-bootstrap/lib/Table";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Button from "react-bootstrap/lib/Button";
 
-import SingleEdit from "./SingleEdit";
-
 import { FormattedMessage } from "react-intl";
 
 const INFINITY = 8734;
