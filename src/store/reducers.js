@@ -70,7 +70,7 @@ const initialState = {
       phoneNumber: "",
       emailAddress: ""
     },
-    addressInformation: {
+    address: {
       addressLine1: "",
       addressLine2: "",
       city: "",

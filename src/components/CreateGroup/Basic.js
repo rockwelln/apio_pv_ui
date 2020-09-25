@@ -40,16 +40,6 @@ export class Basic extends Component {
     this.props
       .fetchGetTenantById(this.props.match.params.tenantId)
       .then(() => this.props.changeDomainOfGroup(this.props.defaultDomain));
-    let first = Math.floor(Math.random() * 10);
-    let second = Math.floor(Math.random() * 10);
-    let third = Math.floor(Math.random() * 10);
-    let four = Math.floor(Math.random() * 10);
-    // this.setState(
-    //   {
-    //     groupId: `${this.props.match.params.tenantId}_grp${first}${second}${third}${four}`
-    //   },
-    //   () => this.props.changeIdOfGroup(this.state.groupId)
-    // );
   }
 
   render() {
@@ -148,7 +138,7 @@ export class Basic extends Component {
                     glyph="glyphicon glyphicon-collapse-up"
                     onClick={this.showHideMore}
                   />
-                  Add adress
+                  Add address
                 </div>
               ) : (
                 <div>
@@ -165,7 +155,7 @@ export class Basic extends Component {
             <React.Fragment>
               <Row className={"margin-1"}>
                 <Col componentClass={ControlLabel} md={3}>
-                  Addess
+                  Address
                 </Col>
                 <Col md={9}>
                   <FormControl

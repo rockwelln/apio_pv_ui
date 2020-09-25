@@ -494,8 +494,8 @@ export class Licenses extends Component {
                     />
                   ) : (
                     <FormattedMessage
-                      id="No_service_packs"
-                      defaultMessage="No service packs were found"
+                      id="No_service_found"
+                      defaultMessage="No services were found"
                     />
                   )}
                   {editGroupServices && (

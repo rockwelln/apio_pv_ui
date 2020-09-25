@@ -228,17 +228,13 @@ export class Admin extends Component {
 
                 <div className="pull-right">
                   {/* CREATE & FINISH */}
-                  <Link
-                    to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.createdGroup.groupId}`}
+                  <Button
+                    onClick={() => this.createAdmin()}
+                    className={"btn-primary"}
                   >
-                    <Button
-                      onClick={() => this.createAdmin()}
-                      className={"btn-primary"}
-                    >
-                      <Glyphicon glyph="glyphicon glyphicon-ok" />
-                      {this.state.creating ? "Creating..." : "Create"}
-                    </Button>
-                  </Link>
+                    <Glyphicon glyph="glyphicon glyphicon-ok" />
+                    {this.state.creating ? "Creating..." : "Create"}
+                  </Button>
                 </div>
               </div>
             </Col>
@@ -305,7 +301,7 @@ export class Admin extends Component {
         )
         .then(() => {
           this.props.history.push(
-            `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}`
+            `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.createdGroup.groupId}`
           );
           this.props.refuseCreateGroup();
         })

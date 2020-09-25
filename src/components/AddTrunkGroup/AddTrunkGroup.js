@@ -229,7 +229,7 @@ export class AddTrunkGroup extends Component {
                   this.setState({ authenticationType: e.target.value })
                 }
               >
-                Statig (otg/dtg)
+                Static (otg/dtg)
               </Radio>
             </Col>
             {this.state.authenticationType === "otg/dtg" && (
