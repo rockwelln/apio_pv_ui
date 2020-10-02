@@ -108,9 +108,13 @@ class TenantPage extends Component {
                     window.open(
                       `${
                         this.props.selfcareUrl.selfcare.url
-                      }/sso?token=${getCookie("auth_token")}&tenant=${
-                        this.props.match.params.tenantId
-                      }&group=${this.props.match.params.groupId}`
+                      }/sso?token=${localStorage.getItem(
+                        "auth_token"
+                      )}&refreshToken=${localStorage.getItem(
+                        "refreshToken"
+                      )}&tenant=${this.props.match.params.tenantId}&group=${
+                        this.props.match.params.groupId
+                      }`
                     )
                   }
                 >
