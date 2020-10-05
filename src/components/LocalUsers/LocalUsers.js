@@ -73,7 +73,7 @@ export class LocalUsers extends Component {
         <div className={"panel-body"}>
           <Row className={"margin-top-2"}>
             <Col mdOffset={1} md={10}>
-              <InputGroup className={"margin-left-negative-4"}>
+              <InputGroup>
                 <InputGroup.Addon>
                   <Glyphicon glyph="lyphicon glyphicon-search" />
                 </InputGroup.Addon>
