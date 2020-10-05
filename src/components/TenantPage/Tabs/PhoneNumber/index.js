@@ -88,7 +88,7 @@ export class PhoneNumbersTab extends Component {
 
         <Row className={"margin-top-2"}>
           <Col mdOffset={1} md={10}>
-            <InputGroup className={"margin-left-negative-4"}>
+            <InputGroup>
               <InputGroup.Addon>
                 <Glyphicon glyph="lyphicon glyphicon-search" />
               </InputGroup.Addon>
@@ -116,9 +116,7 @@ export class PhoneNumbersTab extends Component {
           </Col>
           <Col md={1}>
             <Link
-              to={`/provisioning/${this.props.match.params.gwName}/tenants/${
-                this.props.match.params.tenantId
-              }/addphone`}
+              to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/addphone`}
             >
               <Glyphicon
                 className={"x-large"}

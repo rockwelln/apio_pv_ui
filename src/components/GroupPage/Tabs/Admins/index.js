@@ -75,7 +75,7 @@ export class Admins extends Component {
       <React.Fragment>
         <Row className={"margin-top-2"}>
           <Col mdOffset={1} md={10}>
-            <InputGroup className={"margin-left-negative-4"}>
+            <InputGroup>
               <InputGroup.Addon>
                 <Glyphicon glyph="lyphicon glyphicon-search" />
               </InputGroup.Addon>
@@ -104,9 +104,7 @@ export class Admins extends Component {
           </Col>
           <Col md={1}>
             <Link
-              to={`/provisioning/${this.props.match.params.gwName}/tenants/${
-                this.props.tenantId
-              }/groups/${this.props.groupId}/addadmin`}
+              to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.tenantId}/groups/${this.props.groupId}/addadmin`}
             >
               <Glyphicon
                 className={"x-large"}
