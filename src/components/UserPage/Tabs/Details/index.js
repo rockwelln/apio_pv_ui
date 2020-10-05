@@ -38,7 +38,9 @@ class Details extends Component {
     firstNameError: null,
     lastNameError: null,
     updateMassage: "",
-    isLoadingLanguages: true
+    isLoadingLanguages: true,
+    password: "",
+    confirmPassword: ""
   };
 
   fetchRequst = () => {
@@ -106,7 +108,10 @@ class Details extends Component {
       firstNameError,
       lastNameError,
       updateMassage,
-      isLoadingLanguages
+      isLoadingLanguages,
+      password,
+      confirmPassword,
+      passwordsNotMatch
     } = this.state;
 
     if (isLoading || isLoadingLanguages) {
@@ -255,6 +260,51 @@ class Details extends Component {
                     </option>
                   ))}
                 </FormControl>
+              </Col>
+            </FormGroup>
+            <FormGroup controlId="password" validationState={passwordsNotMatch}>
+              <Col componentClass={ControlLabel} md={3} className={"text-left"}>
+                Password
+              </Col>
+              <Col md={9}>
+                <FormControl
+                  type="password"
+                  placeholder="Password"
+                  defaultValue={password}
+                  onChange={e =>
+                    this.setState({
+                      password: e.target.value,
+                      passwordsNotMatch: null
+                    })
+                  }
+                />
+                {passwordsNotMatch && (
+                  <HelpBlock>Passwords do not match</HelpBlock>
+                )}
+              </Col>
+            </FormGroup>
+            <FormGroup
+              controlId="confirmPassword"
+              validationState={passwordsNotMatch}
+            >
+              <Col componentClass={ControlLabel} md={3} className={"text-left"}>
+                Confirm password
+              </Col>
+              <Col md={9}>
+                <FormControl
+                  type="password"
+                  placeholder="Confirm password"
+                  defaultValue={confirmPassword}
+                  onChange={e =>
+                    this.setState({
+                      confirmPassword: e.target.value,
+                      passwordsNotMatch: null
+                    })
+                  }
+                />
+                {passwordsNotMatch && (
+                  <HelpBlock>Passwords do not match</HelpBlock>
+                )}
               </Col>
             </FormGroup>
             {this.props.user.trunkEndpoint && (
@@ -539,7 +589,9 @@ class Details extends Component {
       lastName,
       cliFirstName,
       cliLastName,
-      language
+      language,
+      password,
+      confirmPassword
     } = this.state;
 
     if (emailAddress) {
@@ -556,6 +608,10 @@ class Details extends Component {
       this.setState({ lastNameError: "error" });
       return;
     }
+    if (password !== confirmPassword) {
+      this.setState({ passwordsNotMatch: "error" });
+      return;
+    }
 
     const data = {
       emailAddress,
@@ -563,7 +619,8 @@ class Details extends Component {
       lastName,
       cliFirstName: useSameName ? firstName : cliFirstName,
       cliLastName: useSameName ? lastName : cliLastName,
-      language
+      language,
+      password
     };
 
     this.setState({ updateMassage: "Loading..." }, () =>
