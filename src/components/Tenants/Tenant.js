@@ -26,16 +26,13 @@ class Tenant extends Component {
       <tr key={t.tenantId}>
         <td>
           <Link
-            to={`/provisioning/${this.props.match.params.gwName}/tenants/${
-              t.tenantId
-            }`}
+            to={`/provisioning/${this.props.match.params.gwName}/tenants/${t.tenantId}`}
           >
             {t.tenantId}
           </Link>
         </td>
         <td>{t.name}</td>
         <td>{t.type}</td>
-        <td>/</td>
         <td>
           <ButtonToolbar>
             <Glyphicon
