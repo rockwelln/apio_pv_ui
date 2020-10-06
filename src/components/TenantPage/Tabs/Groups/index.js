@@ -139,21 +139,21 @@ export class GroupsTab extends Component {
                 <Table hover>
                   <thead>
                     <tr>
-                      <th style={{ width: "24%" }}>
+                      <th style={{ width: "32%" }}>
                         <FormattedMessage id="tenant-id" defaultMessage="ID" />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
                           onClick={this.sortByID}
                         />
                       </th>
-                      <th style={{ width: "24%" }}>
+                      <th style={{ width: "32%" }}>
                         <FormattedMessage id="name" defaultMessage="Name" />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
                           onClick={this.sortByName}
                         />
                       </th>
-                      <th style={{ width: "24%" }}>
+                      <th style={{ width: "32%" }}>
                         <FormattedMessage
                           id="type"
                           defaultMessage="User limit"
@@ -162,13 +162,6 @@ export class GroupsTab extends Component {
                           glyph="glyphicon glyphicon-sort"
                           onClick={this.sortByUserLimit}
                         />
-                      </th>
-                      <th style={{ width: "24%" }}>
-                        <FormattedMessage
-                          id="reseller"
-                          defaultMessage="Reseller"
-                        />
-                        <Glyphicon glyph="glyphicon glyphicon-sort" />
                       </th>
                       <th style={{ width: "4%" }} />
                     </tr>
