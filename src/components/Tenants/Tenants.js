@@ -157,7 +157,7 @@ class Tenants extends Component {
                   <Table hover>
                     <thead>
                       <tr>
-                        <th style={{ width: "24%" }}>
+                        <th style={{ width: "32%" }}>
                           <FormattedMessage
                             id="tenant-id"
                             defaultMessage="ID"
@@ -167,26 +167,19 @@ class Tenants extends Component {
                             onClick={this.sortByID}
                           />
                         </th>
-                        <th style={{ width: "24%" }}>
+                        <th style={{ width: "32%" }}>
                           <FormattedMessage id="name" defaultMessage="Name" />
                           <Glyphicon
                             glyph="glyphicon glyphicon-sort"
                             onClick={this.sortByName}
                           />
                         </th>
-                        <th style={{ width: "24%" }}>
+                        <th style={{ width: "32%" }}>
                           <FormattedMessage id="type" defaultMessage="Type" />
                           <Glyphicon
                             glyph="glyphicon glyphicon-sort"
                             onClick={this.sortByType}
                           />
-                        </th>
-                        <th style={{ width: "24%" }}>
-                          <FormattedMessage
-                            id="reseller"
-                            defaultMessage="Reseller"
-                          />
-                          <Glyphicon glyph="glyphicon glyphicon-sort" />
                         </th>
                         <th style={{ width: "4%" }} />
                       </tr>
