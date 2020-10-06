@@ -16,16 +16,13 @@ class Group extends Component {
       <tr key={group.groupId}>
         <td>
           <Link
-            to={`/provisioning/${this.props.match.params.gwName}/tenants/${
-              group.tenantId
-            }/groups/${group.groupId}`}
+            to={`/provisioning/${this.props.match.params.gwName}/tenants/${group.tenantId}/groups/${group.groupId}`}
           >
             {group.groupId}
           </Link>
         </td>
         <td>{group.groupName}</td>
         <td>{group.userLimit}</td>
-        <td>/</td>
         <td>
           <ButtonToolbar>
             <Glyphicon
