@@ -85,6 +85,11 @@ const SingleEdit = props => {
                     <FormattedMessage id="limited" defaultMessage="limited" />
                   )}
                 </th>
+                {isEditGroup && !isEditUserLimit && (
+                  <th className={"licenses-th"}>
+                    <FormattedMessage id="max" defaultMessage="max" />
+                  </th>
+                )}
                 {!isEditTunkLicenses && !isEditUserLimit && (
                   <th className={"text-center licenses-th"}>
                     {String.fromCharCode(INFINITY)}
@@ -114,6 +119,9 @@ const SingleEdit = props => {
                   }}
                 />
               </td>
+              {isEditGroup && !isEditUserLimit && (
+                <td className={"vertical-middle"}>{groupServiceMax}</td>
+              )}
               {!isEditTunkLicenses && !isEditUserLimit && (
                 <td className={"text-center"}>
                   <FormControl
