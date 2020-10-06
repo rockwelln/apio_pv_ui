@@ -65,6 +65,7 @@ export class Users extends Component {
                           insensitiveUserIdContains: e.target.value
                         });
                       }}
+                      onKeyPress={e => this.onEnterSearch(e)}
                     />
                   </div>
                 </Col>
@@ -83,6 +84,7 @@ export class Users extends Component {
                           insensitiveUserLastNameContains: e.target.value
                         });
                       }}
+                      onKeyPress={e => this.onEnterSearch(e)}
                     />
                   </div>
                 </Col>
@@ -102,6 +104,7 @@ export class Users extends Component {
                           insensitiveUserFirstNameContains: e.target.value
                         });
                       }}
+                      onKeyPress={e => this.onEnterSearch(e)}
                     />
                   </div>
                 </Col>
@@ -120,6 +123,7 @@ export class Users extends Component {
                           insensitivePhoneNumberContains: e.target.value
                         });
                       }}
+                      onKeyPress={e => this.onEnterSearch(e)}
                     />
                   </div>
                 </Col>
@@ -138,6 +142,7 @@ export class Users extends Component {
                           insensitiveEmailAddressContains: e.target.value
                         });
                       }}
+                      onKeyPress={e => this.onEnterSearch(e)}
                     />
                   </div>
                 </Col>
@@ -160,6 +165,7 @@ export class Users extends Component {
                             insensitiveUserInTrunkGroupEquals: ""
                           })
                         }
+                        onKeyPress={e => this.onEnterSearch(e)}
                       >
                         <div>doesn't matter</div>
                       </Radio>
@@ -174,6 +180,7 @@ export class Users extends Component {
                             insensitiveUserInTrunkGroupEquals: true
                           })
                         }
+                        onKeyPress={e => this.onEnterSearch(e)}
                       >
                         <div>yes</div>
                       </Radio>
@@ -188,6 +195,7 @@ export class Users extends Component {
                             insensitiveUserInTrunkGroupEquals: false
                           })
                         }
+                        onKeyPress={e => this.onEnterSearch(e)}
                       >
                         <div>no</div>
                       </Radio>
@@ -209,6 +217,7 @@ export class Users extends Component {
                           insensitiveGroupIdContains: e.target.value
                         });
                       }}
+                      onKeyPress={e => this.onEnterSearch(e)}
                     />
                   </div>
                 </Col>
@@ -233,6 +242,7 @@ export class Users extends Component {
                             sizeError: null
                           });
                         }}
+                        onKeyPress={e => this.onEnterSearch(e)}
                       />
                       {this.state.sizeError && (
                         <HelpBlock>
@@ -250,17 +260,7 @@ export class Users extends Component {
                       <Button
                         className={"btn-primary"}
                         onClick={this.search}
-                        disabled={
-                          (!this.state.insensitiveUserIdContains &&
-                            !this.state.insensitiveUserLastNameContains &&
-                            !this.state.insensitiveUserFirstNameContains &&
-                            !this.state.insensitivePhoneNumberContains &&
-                            !this.state.insensitiveEmailAddressContains &&
-                            this.state.insensitiveUserInTrunkGroupEquals ===
-                              null &&
-                            !this.state.insensitiveGroupIdContains) ||
-                          this.state.buttonSearch === "Searching..."
-                        }
+                        disabled={this.disabledButton()}
                       >
                         {this.state.buttonSearch}
                       </Button>
@@ -435,6 +435,26 @@ export class Users extends Component {
       </React.Fragment>
     );
   }
+
+  disabledButton = () => {
+    return (
+      (!this.state.insensitiveUserIdContains &&
+        !this.state.insensitiveUserLastNameContains &&
+        !this.state.insensitiveUserFirstNameContains &&
+        !this.state.insensitivePhoneNumberContains &&
+        !this.state.insensitiveEmailAddressContains &&
+        this.state.insensitiveUserInTrunkGroupEquals === null &&
+        !this.state.insensitiveGroupIdContains) ||
+      this.state.buttonSearch === "Searching..."
+    );
+  };
+
+  onEnterSearch = e => {
+    if (e.key === "Enter" && !this.disabledButton()) {
+      this.search();
+    }
+  };
+
   search = () => {
     const {
       insensitiveUserIdContains,
