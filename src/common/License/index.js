@@ -49,7 +49,11 @@ const Licenses = props => {
                   ) : (
                     <React.Fragment>
                       <td className={"text-right licenses-td vertical-middle"}>
-                        {el.currentlyAllocated ? el.currentlyAllocated : 0}
+                        {el.currentlyAllocated
+                          ? el.currentlyAllocated
+                          : el.inUse
+                          ? el.inUse
+                          : 0}
                       </td>
                       <td className={"text-right licenses-td vertical-middle"}>
                         {el.allocated.unlimited
