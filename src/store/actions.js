@@ -250,6 +250,11 @@ export const getSelfcareURL = data => ({
   data
 });
 
+export const getTimezones = data => ({
+  type: actionType.GET_TIMEZONES,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -532,6 +537,11 @@ export const refuseCreateGroup = () => ({
 
 export const changeIdOfGroup = data => ({
   type: actionType.CHANGE_ID_OF_GROUP,
+  data
+});
+
+export const changeTimeZoneOfGroup = data => ({
+  type: actionType.CHANGE_TIME_ZONE_OF_GROUP,
   data
 });
 
@@ -1462,13 +1472,24 @@ export function fetchGetSelfcareURL() {
       .then(data => dispatch(getSelfcareURL(data)))
       .catch(error => {
         console.error(error.message);
-        // NotificationsManager.error(
-        //   <FormattedMessage
-        //     id="fetch-trunk-group-template-failed"
-        //     defaultMessage="Failed to fetch trunk group template!"
-        //   />,
-        //   error.message
-        // );
+      });
+  };
+}
+
+export function fetchGetTimezones() {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/system/timezones`
+    )
+      .then(data => dispatch(getTimezones(data)))
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-timezones-failed"
+            defaultMessage="Failed to fetch timezones!"
+          />,
+          error.message
+        );
       });
   };
 }

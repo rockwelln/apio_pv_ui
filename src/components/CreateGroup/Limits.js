@@ -29,7 +29,8 @@ import {
   fetchPostAddGroupServicesToGroup,
   fetchGetTenantServicePack,
   showHideAdditionalServiceGroup,
-  fetchGetTenantGroupService
+  fetchGetTenantGroupService,
+  refuseCreateGroup
 } from "../../store/actions";
 
 const INFINITY = 8734;
@@ -545,6 +546,15 @@ export class Licenses extends Component {
                   &nbsp; Next
                 </Button>
               </div>
+              <div className="pull-right link-button">
+                <Link
+                  to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}`}
+                >
+                  <div onClick={() => this.props.refuseCreateGroup()}>
+                    Quit wizard
+                  </div>
+                </Link>
+              </div>
             </div>
           </Row>
         </div>
@@ -784,7 +794,8 @@ const mapDispatchToProps = {
   fetchPostAddGroupServicesToGroup,
   fetchGetTenantServicePack,
   showHideAdditionalServiceGroup,
-  fetchGetTenantGroupService
+  fetchGetTenantGroupService,
+  refuseCreateGroup
 };
 
 export default withRouter(

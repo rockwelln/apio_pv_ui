@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
+import { Link } from "react-router-dom";
+
 import {
   fetchGetTenantLicenses,
   fetchGetTrunkByTenantID,
@@ -9,7 +11,8 @@ import {
   fetchPutUpdateGroupServicesByTenantId,
   fetchPutUpdateTenantServicePacks,
   showHideAdditionalServicesTenant,
-  changeStepOfCreateTenant
+  changeStepOfCreateTenant,
+  refuseCreateTenant
 } from "../../store/actions";
 
 import Panel from "react-bootstrap/lib/Panel";
@@ -422,15 +425,6 @@ export class Limits extends Component {
           </Row>
           <Row>
             <div class="button-row">
-              <div class="pull-left">
-                <Button
-                  className={"btn-success"}
-                  onClick={() => this.props.changeStepOfCreateTenant("Admin")}
-                >
-                  <Glyphicon glyph="glyphicon glyphicon-ok" />
-                  &nbsp; Finish
-                </Button>
-              </div>
               <div class="pull-right">
                 <Button
                   onClick={() => this.props.changeStepOfCreateTenant("Admin")}
@@ -439,6 +433,15 @@ export class Limits extends Component {
                   <Glyphicon glyph="glyphicon glyphicon-forward" />
                   &nbsp; Assign licenses
                 </Button>
+              </div>
+              <div className="pull-right link-button">
+                <Link
+                  to={`/provisioning/${this.props.match.params.gwName}/tenants`}
+                >
+                  <div onClick={() => this.props.refuseCreateTenant()}>
+                    Quit wizard
+                  </div>
+                </Link>
               </div>
             </div>
           </Row>
@@ -642,7 +645,8 @@ const mapDispatchToProps = {
   fetchPutUpdateGroupServicesByTenantId,
   fetchPutUpdateTenantServicePacks,
   showHideAdditionalServicesTenant,
-  changeStepOfCreateTenant
+  changeStepOfCreateTenant,
+  refuseCreateTenant
 };
 
 export default withRouter(

@@ -40,19 +40,7 @@ export class Basic extends Component {
         <div className={"panel-heading"}>
           <Row>
             <Col md={12}>
-              <div className={"header"}>
-                Add new tenant
-                <Link
-                  to={`/provisioning/${this.props.match.params.gwName}/tenants`}
-                >
-                  <Button
-                    className={"margin-left-1 btn-danger"}
-                    onClick={() => this.props.refuseCreateTenant()}
-                  >
-                    Cancel
-                  </Button>
-                </Link>
-              </div>
+              <div className={"header"}>Add new tenant</div>
             </Col>
           </Row>
         </div>
@@ -286,11 +274,20 @@ export class Basic extends Component {
           )}
           <Row className={"margin-1"}>
             <div class="button-row">
-              <div class="pull-right">
+              <div className="pull-right">
                 <Button className={"btn-primary"} onClick={this.nextStep}>
                   <Glyphicon glyph="glyphicon glyphicon-ok"></Glyphicon>
                   &nbsp; Next
                 </Button>
+              </div>
+              <div className="pull-right link-button">
+                <Link
+                  to={`/provisioning/${this.props.match.params.gwName}/tenants`}
+                >
+                  <div onClick={() => this.props.refuseCreateTenant()}>
+                    Quit wizard
+                  </div>
+                </Link>
               </div>
             </div>
           </Row>

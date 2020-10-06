@@ -213,19 +213,6 @@ export class Admin extends Component {
           <Row>
             <Col md={12}>
               <div class="button-row">
-                <div class="pull-left">
-                  {/* BACK BUTTON */}
-                  <Button
-                    className={"btn-success"}
-                    onClick={() =>
-                      this.props.changeStepOfCreateTenant("Limits")
-                    }
-                  >
-                    <Glyphicon glyph="glyphicon glyphicon-backward" />
-                    &nbsp; Back
-                  </Button>
-                </div>
-
                 <div class="pull-right">
                   {/* CREATE & FINISH */}
                   <Button
@@ -236,21 +223,13 @@ export class Admin extends Component {
                     &nbsp; Create
                   </Button>
                 </div>
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
-              <div class="button-row">
-                <div class="pull-right">
+                <div className="pull-right link-button">
                   <Link
-                    to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.createdTenant.tenantId}`}
+                    to={`/provisioning/${this.props.match.params.gwName}/tenants`}
                   >
-                    {/* SKIP & FINISH */}
-                    <Button className={"btn-warning"}>
-                      <Glyphicon glyph="glyphicon glyphicon-stop" />
-                      &nbsp; Skip
-                    </Button>
+                    <div onClick={() => this.props.refuseCreateTenant()}>
+                      Quit wizard
+                    </div>
                   </Link>
                 </div>
               </div>

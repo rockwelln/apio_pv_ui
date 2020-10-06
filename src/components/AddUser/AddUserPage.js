@@ -384,7 +384,6 @@ export class AddUserPage extends Component {
                             {template.name}
                           </option>
                         ))}
-                        ))}
                       </FormControl>
                     </Col>
                   </FormGroup>

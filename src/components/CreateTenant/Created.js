@@ -10,7 +10,10 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 
-import { changeStepOfCreateTenant } from "../../store/actions";
+import {
+  changeStepOfCreateTenant,
+  refuseCreateTenant
+} from "../../store/actions";
 
 export class Created extends Component {
   render() {
@@ -35,21 +38,20 @@ export class Created extends Component {
           </p>
           <Row>
             <div class="button-row">
-              <div class="pull-left">
-                <Link
-                  to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.createdTenant.tenantId}`}
-                >
-                  <Button className={"btn-success"}>
-                    <Glyphicon glyph="glyphicon glyphicon-ok"></Glyphicon>
-                    &nbsp; Finish
-                  </Button>
-                </Link>
-              </div>
               <div class="pull-right">
                 <Button onClick={this.goToLicenses} className={"btn-primary"}>
                   <Glyphicon glyph="glyphicon glyphicon-forward"></Glyphicon>
                   &nbsp; Assign licenses
                 </Button>
+              </div>
+              <div className="pull-right link-button">
+                <Link
+                  to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}`}
+                >
+                  <div onClick={() => this.props.refuseCreateTenant()}>
+                    Quit wizard
+                  </div>
+                </Link>
               </div>
             </div>
           </Row>
@@ -68,7 +70,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  changeStepOfCreateTenant
+  changeStepOfCreateTenant,
+  refuseCreateTenant
 };
 
 export default withRouter(

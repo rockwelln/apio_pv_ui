@@ -45,20 +45,7 @@ export class Template extends Component {
         <div className={"panel-heading"}>
           <Row>
             <Col md={12}>
-              <div className={"header"}>
-                Add tenant: select template
-                <Link
-                  to={`/provisioning/${this.props.match.params.gwName}/tenants`}
-                >
-                  <Button
-                    disabled={this.state.creating}
-                    className={"margin-left-1 btn-danger"}
-                    onClick={() => this.props.refuseCreateTenant()}
-                  >
-                    Cancel
-                  </Button>
-                </Link>
-              </div>
+              <div className={"header"}>Add tenant: select template</div>
             </Col>
           </Row>
         </div>
@@ -90,9 +77,7 @@ export class Template extends Component {
                     onClick={() => this.selectTemplate(template.name)}
                   >
                     <div className={"flex-row"}>
-                      <div className="font-weight-bold">{`${
-                        template.name
-                      }`}</div>
+                      <div className="font-weight-bold">{`${template.name}`}</div>
                       <div>
                         {template.description
                           ? `: ${template.description}`
@@ -106,17 +91,7 @@ export class Template extends Component {
           </Row>
           <Row>
             <div class="button-row">
-              <div class="pull-left">
-                <Button
-                  onClick={this.backButtonClick}
-                  disabled={this.state.creating}
-                  className={"btn-primary"}
-                >
-                  <Glyphicon glyph="glyphicon glyphicon-backward" />
-                  &nbsp; Back
-                </Button>
-              </div>
-              <div class="pull-right">
+              <div className="pull-right">
                 <Button
                   disabled={this.state.creating}
                   onClick={this.createButtonClick}
@@ -125,6 +100,15 @@ export class Template extends Component {
                   <Glyphicon glyph="glyphicon glyphicon-ok" />
                   {this.state.creating ? this.state.creating : " Create"}
                 </Button>
+              </div>
+              <div className="pull-right link-button">
+                <Link
+                  to={`/provisioning/${this.props.match.params.gwName}/tenants`}
+                >
+                  <div onClick={() => this.props.refuseCreateTenant()}>
+                    Quit wizard
+                  </div>
+                </Link>
               </div>
             </div>
           </Row>
@@ -148,10 +132,6 @@ export class Template extends Component {
 
   selectTemplate = name => {
     this.props.changeTemplateOfTenant(name);
-  };
-
-  backButtonClick = () => {
-    this.props.changeStepOfCreateTenant("Basic");
   };
 }
 
