@@ -1165,7 +1165,8 @@ function mainReducer(state = initialState, action) {
     case actionType.TRUNK_NOT_AUTHORISED_TENANT: {
       return {
         ...state,
-        tenantLicenses: false
+        tenantLicenses: false,
+        tenantTrunkGroups: {}
       };
     }
     case actionType.SHOW_HIDE_ADDITIONAL_SERVICES_TENANT: {
