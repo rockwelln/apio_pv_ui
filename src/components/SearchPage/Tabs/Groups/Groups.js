@@ -58,6 +58,7 @@ export class Groups extends Component {
                           insensitiveGroupNameContains: e.target.value
                         });
                       }}
+                      onKeyPress={e => this.onEnterSearch(e)}
                     />
                   </div>
                 </Col>
@@ -76,6 +77,7 @@ export class Groups extends Component {
                           insensitiveGroupIdContains: e.target.value
                         });
                       }}
+                      onKeyPress={e => this.onEnterSearch(e)}
                     />
                   </div>
                 </Col>
@@ -100,6 +102,7 @@ export class Groups extends Component {
                             sizeError: null
                           });
                         }}
+                        onKeyPress={e => this.onEnterSearch(e)}
                       />
                       {this.state.sizeError && (
                         <HelpBlock>
@@ -117,11 +120,7 @@ export class Groups extends Component {
                       <Button
                         className={"btn-primary"}
                         onClick={this.search}
-                        disabled={
-                          (!this.state.insensitiveGroupNameContains &&
-                            !this.state.insensitiveGroupIdContains) ||
-                          this.state.buttonSearch === "Searching..."
-                        }
+                        disabled={this.disabledButton()}
                       >
                         {this.state.buttonSearch}
                       </Button>
@@ -234,6 +233,21 @@ export class Groups extends Component {
       </React.Fragment>
     );
   }
+
+  disabledButton = () => {
+    return (
+      (!this.state.insensitiveGroupNameContains &&
+        !this.state.insensitiveGroupIdContains) ||
+      this.state.buttonSearch === "Searching..."
+    );
+  };
+
+  onEnterSearch = e => {
+    if (e.key === "Enter" && !this.disabledButton()) {
+      this.search();
+    }
+  };
+
   search = () => {
     const {
       insensitiveGroupNameContains,
