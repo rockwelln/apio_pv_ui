@@ -43,10 +43,14 @@ export class AddTrunkGroup extends Component {
     sipAuthenticationPassword: undefined,
     trunkGroupIdentity: undefined,
     otgDtgIdentity: undefined,
-    templateName: "",
+    templateName: "none",
     isLoadingTemplates: true,
     isNewTrukDevice: "",
     accessDevice: {
+      name: "",
+      level: ""
+    },
+    accessDeviceInfo: {
       deviceName: "",
       deviceType: ""
     },
@@ -251,15 +255,16 @@ export class AddTrunkGroup extends Component {
               <Radio
                 className={"margin-top-0"}
                 name="template"
-                value={""}
+                value={"none"}
                 onChange={e =>
                   this.setState({
                     templateName: e.target.value,
                     isNewTrukDevice: "",
-                    accessDevice: { deviceName: "", deviceType: "" }
+                    accessDevice: { name: "", level: "" },
+                    accessDeviceInfo: { deviceName: "", deviceType: "" }
                   })
                 }
-                checked={this.state.templateName === ""}
+                checked={this.state.templateName === "none"}
               >
                 <b>none</b>
               </Radio>
@@ -291,131 +296,141 @@ export class AddTrunkGroup extends Component {
                 </Col>
               </Row>
             ))}
-          {this.state.templateName &&
+          {((this.state.templateName &&
             this.state.isRecivedTemplate &&
             !get(
               this.props,
               "trunkGroupTemplate.data.default_values.accessDevice"
-            ) && (
-              <React.Fragment>
-                <Row className={"margin-top-1"}>
-                  <Col md={3}>Trunk device</Col>
+            )) ||
+            this.state.templateName === "none") && (
+            <React.Fragment>
+              <Row className={"margin-top-1"}>
+                <Col md={3}>Trunk device</Col>
+                <Col md={3}>
+                  <Radio
+                    className={"margin-top-0"}
+                    name="trunkDevice"
+                    value={"existing"}
+                    onChange={e =>
+                      this.setState(
+                        {
+                          isNewTrukDevice: e.target.value,
+                          accessDeviceInfo: { deviceName: "", deviceType: "" }
+                        },
+                        () =>
+                          this.props
+                            .fetchGetDevicesByGroupId(
+                              this.props.match.params.tenantId,
+                              this.props.match.params.groupId
+                            )
+                            .then(() =>
+                              this.setState({
+                                accessDevice: {
+                                  name: this.props.devices[0].deviceName,
+                                  level: "Group"
+                                }
+                              })
+                            )
+                      )
+                    }
+                    checked={this.state.isNewTrukDevice === "existing"}
+                  >
+                    <b>Existing</b>
+                  </Radio>
+                </Col>
+                {this.state.isNewTrukDevice === "existing" && (
                   <Col md={3}>
-                    <Radio
-                      className={"margin-top-0"}
-                      name="trunkDevice"
-                      value={"existing"}
-                      onChange={e =>
-                        this.setState({ isNewTrukDevice: e.target.value }, () =>
-                          this.props.fetchGetDevicesByGroupId(
-                            this.props.match.params.tenantId,
-                            this.props.match.params.groupId
-                          )
-                        )
-                      }
-                      checked={this.state.isNewTrukDevice === "existing"}
+                    <FormControl
+                      componentClass="select"
+                      onChange={e => {
+                        this.setState({
+                          accessDevice: {
+                            name: this.props.devices[e.target.value].deviceName,
+                            level: "Group"
+                          }
+                        });
+                      }}
                     >
-                      <b>Existing</b>
-                    </Radio>
+                      {this.props.devices.map((device, i) => (
+                        <option key={device.deviceName} value={i}>
+                          {device.deviceName}
+                        </option>
+                      ))}
+                    </FormControl>
                   </Col>
-                  {this.state.isNewTrukDevice === "existing" && (
+                )}
+              </Row>
+              <Row>
+                <Col mdOffset={3} md={3}>
+                  <Radio
+                    className={"margin-top-0"}
+                    name="trunkDevice"
+                    value={"new"}
+                    onChange={e =>
+                      this.setState({
+                        isNewTrukDevice: e.target.value,
+                        accessDevice: { name: "", level: "" }
+                      })
+                    }
+                    checked={this.state.isNewTrukDevice === "new"}
+                  >
+                    <b>New</b>
+                  </Radio>
+                </Col>
+              </Row>
+              {this.state.isNewTrukDevice === "new" && (
+                <React.Fragment>
+                  <Row className={"margin-top-1"}>
+                    <Col md={3}>Device Name</Col>
+                    <Col md={3}>
+                      <FormControl
+                        type="text"
+                        value={this.state.accessDeviceInfo.deviceName}
+                        onChange={e =>
+                          this.setState({
+                            accessDeviceInfo: {
+                              ...this.state.accessDeviceInfo,
+                              deviceName: e.target.value
+                            }
+                          })
+                        }
+                      />
+                    </Col>
+                  </Row>
+                  <Row className={"margin-top-1"}>
+                    <Col md={3}>Device Type</Col>
                     <Col md={3}>
                       <FormControl
                         componentClass="select"
+                        value={this.state.accessDeviceInfo.deviceType}
                         onChange={e =>
                           this.setState({
-                            accessDevice: {
-                              deviceName: e.target.value.deviceName,
-                              deviceType: e.target.value.deviceType
+                            accessDeviceInfo: {
+                              ...this.state.accessDeviceInfo,
+                              deviceType: e.target.value
                             }
                           })
                         }
                       >
-                        {!this.state.accessDevice && (
-                          <option key={"none"} value={{}}>
-                            {""}
-                          </option>
-                        )}
-                        {this.props.devices.map(device => (
-                          <option key={device.deviceName} value={device}>
-                            {device.deviceName}
+                        <option key={"none"} value={""}>
+                          {"none"}
+                        </option>
+
+                        {this.state.phoneTypes.map(type => (
+                          <option
+                            key={type.technicalName}
+                            value={type.technicalName}
+                          >
+                            {type.displayName}
                           </option>
                         ))}
                       </FormControl>
                     </Col>
-                  )}
-                </Row>
-                <Row>
-                  <Col mdOffset={3} md={3}>
-                    <Radio
-                      className={"margin-top-0"}
-                      name="trunkDevice"
-                      value={"new"}
-                      onChange={e =>
-                        this.setState({
-                          isNewTrukDevice: e.target.value,
-                          accessDevice: { deviceName: "", deviceType: "" }
-                        })
-                      }
-                      checked={this.state.isNewTrukDevice === "new"}
-                    >
-                      <b>New</b>
-                    </Radio>
-                  </Col>
-                </Row>
-                {this.state.isNewTrukDevice === "new" && (
-                  <React.Fragment>
-                    <Row className={"margin-top-1"}>
-                      <Col md={3}>Device Name</Col>
-                      <Col md={3}>
-                        <FormControl
-                          type="text"
-                          value={this.state.accessDevice.deviceName}
-                          onChange={e =>
-                            this.setState({
-                              accessDevice: {
-                                ...this.state.accessDevice,
-                                deviceName: e.target.value
-                              }
-                            })
-                          }
-                        />
-                      </Col>
-                    </Row>
-                    <Row className={"margin-top-1"}>
-                      <Col md={3}>Device Type</Col>
-                      <Col md={3}>
-                        <FormControl
-                          componentClass="select"
-                          value={this.state.accessDevice.deviceType}
-                          onChange={e =>
-                            this.setState({
-                              accessDevice: {
-                                ...this.state.accessDevice,
-                                deviceType: e.target.value
-                              }
-                            })
-                          }
-                        >
-                          <option key={"none"} value={""}>
-                            {"none"}
-                          </option>
-
-                          {this.state.phoneTypes.map(type => (
-                            <option
-                              key={type.technicalName}
-                              value={type.technicalName}
-                            >
-                              {type.displayName}
-                            </option>
-                          ))}
-                        </FormControl>
-                      </Col>
-                    </Row>
-                  </React.Fragment>
-                )}
-              </React.Fragment>
-            )}
+                  </Row>
+                </React.Fragment>
+              )}
+            </React.Fragment>
+          )}
           <Row className={"margin-top-1"}>
             <Col md={12}>
               <div className="button-row">
@@ -475,7 +490,13 @@ export class AddTrunkGroup extends Component {
   };
 
   createTrunk = () => {
-    const { name, maxActiveCalls, accessDevice, templateName } = this.state;
+    const {
+      name,
+      maxActiveCalls,
+      accessDevice,
+      templateName,
+      accessDeviceInfo
+    } = this.state;
     if (!name) {
       this.setState({ nameError: "error" });
       return;
@@ -486,7 +507,8 @@ export class AddTrunkGroup extends Component {
       maxActiveCalls,
       ...authenticationData,
       accessDevice,
-      templateName
+      accessDeviceInfo,
+      templateName: templateName === "none" ? "" : templateName
     });
     this.setState({ isDisabled: true }, () =>
       this.props
