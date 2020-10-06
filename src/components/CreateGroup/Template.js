@@ -45,20 +45,7 @@ export class Template extends Component {
         <div className={"panel-heading"}>
           <Row>
             <Col md={12}>
-              <div className={"header"}>
-                Add group: select template
-                <Link
-                  to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}`}
-                >
-                  <Button
-                    disabled={this.state.creating}
-                    className={"margin-left-1 btn-danger"}
-                    onClick={() => this.props.refuseCreateGroup()}
-                  >
-                    Cancel
-                  </Button>
-                </Link>
-              </div>
+              <div className={"header"}>Add group: select template</div>
             </Col>
           </Row>
         </div>
@@ -104,16 +91,6 @@ export class Template extends Component {
           </Row>
           <Row>
             <div className={"button-row"}>
-              <div className={"pull-left"}>
-                <Button
-                  onClick={this.backButtonClick}
-                  disabled={this.state.creating}
-                  className={"btn-primary"}
-                >
-                  <Glyphicon glyph="glyphicon glyphicon-backward" />
-                  &nbsp; BACK
-                </Button>
-              </div>
               <div className={"pull-right"}>
                 <Button
                   disabled={this.state.creating}
@@ -122,6 +99,15 @@ export class Template extends Component {
                 >
                   {this.state.creating ? this.state.creating : "CREATE"}
                 </Button>
+              </div>
+              <div className="pull-right link-button">
+                <Link
+                  to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}`}
+                >
+                  <div onClick={() => this.props.refuseCreateGroup()}>
+                    Quit wizard
+                  </div>
+                </Link>
               </div>
             </div>
           </Row>

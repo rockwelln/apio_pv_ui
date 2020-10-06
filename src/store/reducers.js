@@ -28,8 +28,7 @@ const initialState = {
   userServices: [],
   userServicePacks: [],
   groupTrunkErrorMassage: "",
-  createTenantStep: "Limits",
-  //createTenantStep: "Basic",
+  createTenantStep: "Admin",
   createTenant: {
     tenantId: "",
     type: "",
@@ -56,7 +55,7 @@ const initialState = {
   },
   templatesOfTenant: [],
   createdTenant: {},
-  createGroupStep: "Basic",
+  createGroupStep: "Admin",
   createGroup: {
     groupId: "",
     groupName: "",
@@ -120,7 +119,8 @@ const initialState = {
   trunkGroupsTemplates: [],
   trunkGroupNotAuthorisedGroup: true,
   trunkGroupTemplate: {},
-  selfcareUrl: {}
+  selfcareUrl: {},
+  timeZones: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -594,6 +594,12 @@ function mainReducer(state = initialState, action) {
         selfcareUrl
       };
     }
+    case actionType.GET_TIMEZONES: {
+      return {
+        ...state,
+        timeZones: action.data.timeZones
+      };
+    }
     case actionType.POST_CREATE_GROUP_ADMIN: {
       return {
         ...state,
@@ -1033,6 +1039,15 @@ function mainReducer(state = initialState, action) {
         createGroup: {
           ...state.createGroup,
           groupId: action.data
+        }
+      };
+    }
+    case actionType.CHANGE_TIME_ZONE_OF_GROUP: {
+      return {
+        ...state,
+        createGroup: {
+          ...state.createGroup,
+          timeZone: action.data
         }
       };
     }

@@ -292,3 +292,11 @@ textarea {
 .fake-link:hover {
   text-decoration: underline;
 }
+
+.link-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 34px;
+  margin-right: 10px;
+}
