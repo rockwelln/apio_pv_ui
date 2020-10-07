@@ -88,7 +88,7 @@ class TrunkGroupPage extends Component {
               <Authentication />
             </Tab>
 
-            <Tab eventKey={1} title="Users">
+            <Tab eventKey={1} title="DIDs">
               <Users />
             </Tab>
             <Tab eventKey={2} title="Trunk indentity">

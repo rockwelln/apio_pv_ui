@@ -714,6 +714,11 @@ function mainReducer(state = initialState, action) {
         ...state
       };
     }
+    case actionType.POST_CREATE_TRUNK_GROUP_USER: {
+      return {
+        ...state
+      };
+    }
     case actionType.PUT_UPDATE_USER: {
       return {
         ...state,
