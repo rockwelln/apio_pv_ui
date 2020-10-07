@@ -31,10 +31,12 @@ class CreateAdmin extends Component {
       firstName: "",
       lastName: "",
       language: "English",
-      password: ""
+      password: "",
+      emailAddress: ""
     },
     passwordConfirmation: "",
     passwordNotMatch: null,
+    requiredEmail: null,
     isLoading: true,
     isLoadingLang: true
   };
@@ -79,7 +81,8 @@ class CreateAdmin extends Component {
       passwordConfirmation,
       passwordNotMatch,
       isLoading,
-      isLoadingLang
+      isLoadingLang,
+      requiredEmail
     } = this.state;
 
     if (isLoading || isLoadingLang) {
@@ -118,6 +121,31 @@ class CreateAdmin extends Component {
                       : this.props.tenantDefaultDomain
                   }`}</InputGroup.Addon>
                 </InputGroup>
+              </Col>
+            </FormGroup>
+            <FormGroup controlId="email" validationState={requiredEmail}>
+              <Col componentClass={ControlLabel} md={3} className={"text-left"}>
+                Email*
+              </Col>
+              <Col md={9}>
+                <FormControl
+                  type="email"
+                  placeholder="Email"
+                  defaultValue={createAdminData.emailAddress}
+                  onChange={e => {
+                    this.setState({
+                      createAdminData: {
+                        ...this.state.createAdminData,
+                        emailAddress: e.target.value
+                      },
+                      requiredEmail: null
+                    });
+                    this.props.clearErrorMassage();
+                  }}
+                />
+                {requiredEmail && (
+                  <HelpBlock>Please fill in the field</HelpBlock>
+                )}
               </Col>
             </FormGroup>
             <FormGroup controlId="firstName">
@@ -259,6 +287,10 @@ class CreateAdmin extends Component {
 
   createAdmin = () => {
     const { createAdminData, passwordConfirmation } = this.state;
+    if (!createAdminData.emailAddress) {
+      this.setState({ requiredEmail: "error" });
+      return;
+    }
     if (createAdminData.password !== passwordConfirmation) {
       this.setState({ passwordNotMatch: "error" });
       return;

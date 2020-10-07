@@ -29,13 +29,15 @@ export class Admin extends Component {
       firstName: "",
       lastName: "",
       language: "English",
-      password: ""
+      password: "",
+      emailAddress: ""
     },
     passwordConfirmation: "",
     passwordNotMatch: null,
     userIdError: null,
     passwordLenthError: null,
-    emptyFieldError: ""
+    emptyFieldError: "",
+    requiredEmail: null
   };
 
   render() {
@@ -102,6 +104,35 @@ export class Admin extends Component {
                   <HelpBlock>
                     Must be greater than 6 and less than 80 characters
                   </HelpBlock>
+                )}
+              </Col>
+            </FormGroup>
+          </Row>
+          <Row className={"margin-1"}>
+            <FormGroup
+              controlId="email"
+              validationState={this.state.requiredEmail}
+            >
+              <Col componentClass={ControlLabel} md={2} className={"text-left"}>
+                Email*
+              </Col>
+              <Col md={10}>
+                <FormControl
+                  type="email"
+                  placeholder="Email"
+                  defaultValue={this.state.createAdminData.emailAddress}
+                  onChange={e => {
+                    this.setState({
+                      createAdminData: {
+                        ...this.state.createAdminData,
+                        emailAddress: e.target.value
+                      },
+                      requiredEmail: null
+                    });
+                  }}
+                />
+                {this.state.requiredEmail && (
+                  <HelpBlock>Please fill in the field</HelpBlock>
                 )}
               </Col>
             </FormGroup>
@@ -253,6 +284,10 @@ export class Admin extends Component {
     const { createAdminData, passwordConfirmation } = this.state;
     if (createAdminData.userId < 6 || createAdminData.userId > 80) {
       this.setState({ userIdError: "error" });
+      return;
+    }
+    if (!createAdminData.emailAddress) {
+      this.setState({ requiredEmail: "error" });
       return;
     }
     if (createAdminData.password.length < 6) {
