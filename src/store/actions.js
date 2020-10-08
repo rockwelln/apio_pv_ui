@@ -255,6 +255,11 @@ export const getTimezones = data => ({
   data
 });
 
+export const getGlobalSearchNumbers = data => ({
+  type: actionType.GET_GLOBAL_SEARCH_NUMBERS,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -624,6 +629,10 @@ export const showHideAdditionalServiceGroup = data => ({
 
 export const trunkNotAuthorisedGroup = () => ({
   type: actionType.TRUNK_NOT_AUTHORISED_GROUP
+});
+
+export const clearSearchNumber = () => ({
+  type: actionType.CLEAR_SEARCH_NUMBER
 });
 
 export function fetchGetTenants(cancelLoad) {
@@ -1491,6 +1500,24 @@ export function fetchGetTimezones() {
           <FormattedMessage
             id="fetch-timezones-failed"
             defaultMessage="Failed to fetch timezones!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchGetGlobalSearchNumbers(number) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/search/numbers/usages/${number}`
+    )
+      .then(data => dispatch(getGlobalSearchNumbers(data)))
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-number-failed"
+            defaultMessage="Failed to search number!"
           />,
           error.message
         );
