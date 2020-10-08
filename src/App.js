@@ -51,6 +51,7 @@ import SearchPage from "./components/SearchPage";
 import AddTrunkGroup from "./components/AddTrunkGroup";
 import AddDevicePage from "./components/AddDevicePage";
 import AddTrunkGroupUser from "./components/AddUserToTrunkGroup";
+import BWKSLicenses from "./components/BWKSLicenses";
 
 import "./App.css";
 import loading from "./loading.gif";
@@ -292,12 +293,22 @@ class App extends Component {
                 }
                 exact
               />
-              AddTrunkGroup
               <Route
                 path="/provisioning/:gwName/search"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <SearchPage />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/provisioning/:gwName/bwks-licenses"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <BWKSLicenses />
                   ) : (
                     <NotAllowed />
                   )

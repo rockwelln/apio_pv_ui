@@ -121,7 +121,8 @@ const initialState = {
   trunkGroupTemplate: {},
   selfcareUrl: {},
   timeZones: [],
-  globalSearchNumber: undefined
+  globalSearchNumber: undefined,
+  bwksLicenses: undefined
 };
 
 function mainReducer(state = initialState, action) {
@@ -602,10 +603,15 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.GET_GLOBAL_SEARCH_NUMBERS: {
-      console.log(action.data);
       return {
         ...state,
         globalSearchNumber: action.data
+      };
+    }
+    case actionType.GET_BWKS_LICENSES: {
+      return {
+        ...state,
+        bwksLicenses: action.data
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN: {

@@ -260,6 +260,11 @@ export const getGlobalSearchNumbers = data => ({
   data
 });
 
+export const getBWKSLicenses = data => ({
+  type: actionType.GET_BWKS_LICENSES,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -1518,6 +1523,24 @@ export function fetchGetGlobalSearchNumbers(number) {
           <FormattedMessage
             id="fetch-number-failed"
             defaultMessage="Failed to search number!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchGetBWKSLicenses() {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/system/licensing/`
+    )
+      .then(data => dispatch(getBWKSLicenses(data)))
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-bwks-licenses-failed"
+            defaultMessage="Failed to fetch bwks licenses!"
           />,
           error.message
         );
