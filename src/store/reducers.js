@@ -120,7 +120,8 @@ const initialState = {
   trunkGroupNotAuthorisedGroup: true,
   trunkGroupTemplate: {},
   selfcareUrl: {},
-  timeZones: []
+  timeZones: [],
+  globalSearchNumber: undefined
 };
 
 function mainReducer(state = initialState, action) {
@@ -598,6 +599,13 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         timeZones: action.data.timeZones
+      };
+    }
+    case actionType.GET_GLOBAL_SEARCH_NUMBERS: {
+      console.log(action.data);
+      return {
+        ...state,
+        globalSearchNumber: action.data
       };
     }
     case actionType.POST_CREATE_GROUP_ADMIN: {
@@ -1208,6 +1216,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         trunkGroupNotAuthorisedGroup: false
+      };
+    }
+    case actionType.CLEAR_SEARCH_NUMBER: {
+      return {
+        ...state,
+        globalSearchNumber: undefined
       };
     }
     default:
