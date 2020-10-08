@@ -58,6 +58,11 @@ export class Sidebar extends Component {
           >
             <NavItem eventKey={0}>LOCAL USERS</NavItem>
           </LinkContainer>
+          <LinkContainer
+            to={`/provisioning/${this.props.match.params.gwName}/bwks-licenses`}
+          >
+            <NavItem eventKey={5}>BWKS LICENSES</NavItem>
+          </LinkContainer>
         </Nav>
       </React.Fragment>
     );
