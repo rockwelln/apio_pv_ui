@@ -265,6 +265,16 @@ export const getBWKSLicenses = data => ({
   data
 });
 
+export const getMobileNumbersForTenant = data => ({
+  type: actionType.GET_MOBILE_NUMBERS_FOR_TENANT,
+  data
+});
+
+export const getMobileNumbersForGroup = data => ({
+  type: actionType.GET_MOBILE_NUMBERS_FOR_GROUP,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -344,6 +354,11 @@ export const postCreateDeviceInGroup = () => ({
 
 export const postCreateTrunkGroupUser = () => ({
   type: actionType.POST_CREATE_TRUNK_GROUP_USER
+});
+
+export const postAddMobileNumberToTenant = data => ({
+  type: actionType.POST_ADD_MOBILE_NUMBER_TO_TENANT,
+  data
 });
 
 export const putUpdateUser = data => ({
@@ -1548,6 +1563,42 @@ export function fetchGetBWKSLicenses() {
   };
 }
 
+export function fetchGetMobileNumbersForTenant(tenantId) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/mobile_numbers?available=true&assignement=true`
+    )
+      .then(data => dispatch(getMobileNumbersForTenant(data)))
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-numbers-failed"
+            defaultMessage="Failed to fetch numbers!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchGetMobileNumbersForGroup(tenantId, groupId) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/mobile_numbers?available=true&assignement=true`
+    )
+      .then(data => dispatch(getMobileNumbersForGroup(data)))
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-numbers-failed"
+            defaultMessage="Failed to fetch numbers!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
 export function fetchPostCreateGroupAdmin(tenantId, groupId, data) {
   return function(dispatch) {
     return fetch_post(
@@ -1689,6 +1740,26 @@ export function fetchPostAddPhoneNumbersToTenant(tenantId, data) {
     )
       .then(res => res.json())
       .then(data => dispatch(postAddPhoneNumbersToTenant(data)))
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-add-phone-numbers"
+            defaultMessage="Failed to add phone numbers!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchPostAddMobileNumbersToTenant(tenantId, data) {
+  return function(dispatch) {
+    return fetch_post(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/mobile_numbers/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => dispatch(postAddMobileNumberToTenant(data)))
       .catch(error => {
         NotificationsManager.error(
           <FormattedMessage
