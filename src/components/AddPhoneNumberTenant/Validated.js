@@ -13,7 +13,8 @@ import {
   changeStepOfAddPhoneTenant,
   refuseAddPhoneToTenant,
   fetchPostAddPhoneNumbersToTenant,
-  fetchPostAssignPhoneNumbersToGroup
+  fetchPostAssignPhoneNumbersToGroup,
+  fetchPostAddMobileNumbersToTenant
 } from "../../store/actions";
 
 import OkTab from "./Tabs/OK";
@@ -147,6 +148,8 @@ export class Basic extends Component {
   };
 
   addPhoneNumbers = () => {
+    const pathNameArr = this.props.location.pathname.split("/");
+    let mobileData = {};
     const data = this.props.validatedNumbersTenant.ok.reduce(
       (accamulator, phone) => {
         if (!phone.end) {
@@ -162,22 +165,41 @@ export class Basic extends Component {
       },
       { numbers: [] }
     );
+    if (pathNameArr[pathNameArr.length - 1] === "add-mobile-phone") {
+      mobileData = { phoneNumbers: data.numbers };
+    }
     this.setState({ buttomNameAdd: "Adding..." }, () => {
-      this.props
-        .fetchPostAddPhoneNumbersToTenant(
-          this.props.match.params.tenantId,
-          data
-        )
-        .then(res => {
-          if (res) {
-            this.props.changeStepOfAddPhoneTenant("Info");
-          }
-        })
-        .then(() =>
-          this.setState({
-            buttomNameAdd: "ADD"
-          })
-        );
+      pathNameArr[pathNameArr.length - 1] === "add-mobile-phone"
+        ? this.props
+            .fetchPostAddMobileNumbersToTenant(
+              this.props.match.params.tenantId,
+              mobileData
+            )
+            .then(res => {
+              if (res) {
+                this.props.changeStepOfAddPhoneTenant("Info");
+              }
+            })
+            .then(() =>
+              this.setState({
+                buttomNameAdd: "ADD"
+              })
+            )
+        : this.props
+            .fetchPostAddPhoneNumbersToTenant(
+              this.props.match.params.tenantId,
+              data
+            )
+            .then(res => {
+              if (res) {
+                this.props.changeStepOfAddPhoneTenant("Info");
+              }
+            })
+            .then(() =>
+              this.setState({
+                buttomNameAdd: "ADD"
+              })
+            );
     });
   };
 }
@@ -191,7 +213,8 @@ const mapDispatchToProps = {
   changeStepOfAddPhoneTenant,
   refuseAddPhoneToTenant,
   fetchPostAddPhoneNumbersToTenant,
-  fetchPostAssignPhoneNumbersToGroup
+  fetchPostAssignPhoneNumbersToGroup,
+  fetchPostAddMobileNumbersToTenant
 };
 
 export default withRouter(

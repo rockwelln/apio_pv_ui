@@ -1,10 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-
-import {
-  fetchGetGlobalSearchNumbers,
-  clearSearchNumber
-} from "../../store/actions";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 
 import Col from "react-bootstrap/lib/Col";
 import Row from "react-bootstrap/lib/Row";
@@ -15,10 +10,6 @@ import Title from "../../common/Title";
 import BWKSLicenses from "./BWKSLicenses";
 
 const BWKSLicensesPage = () => {
-  const [searchNumber, setSearchNumber] = useState("");
-
-  const dispatch = useDispatch();
-
   return (
     <React.Fragment>
       <Row className={"margin-bottom-4"}>

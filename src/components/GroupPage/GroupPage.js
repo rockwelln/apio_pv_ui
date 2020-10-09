@@ -15,6 +15,7 @@ import Details from "./Tabs/Details";
 import Devices from "./Tabs/Devices";
 import Admins from "./Tabs/Admins";
 import TrunksGroup from "./Tabs/TrunksGroup";
+import MobileNumbersTab from "./Tabs/MobileNumbers";
 
 import { get } from "../get";
 import { getCookie } from "../../utils";
@@ -149,6 +150,12 @@ class TenantPage extends Component {
               )}
             <Tab eventKey={3} title="PHONE NUMBERS">
               <PhoneNumbers
+                tenantId={this.props.match.params.tenantId}
+                groupId={this.props.match.params.groupId}
+              />
+            </Tab>
+            <Tab eventKey={7} title="MOBILE NUMBERS">
+              <MobileNumbersTab
                 tenantId={this.props.match.params.tenantId}
                 groupId={this.props.match.params.groupId}
               />

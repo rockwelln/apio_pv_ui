@@ -15,6 +15,7 @@ import Details from "./Tabs/Details";
 import DeleteModal from "./DeleteModal";
 import Licenses from "./Tabs/Licenses";
 import Trunking from "./Tabs/Trunking";
+import MobileNumbersTab from "./Tabs/MobileNumbers";
 
 import { get } from "../get";
 import { getCookie } from "../../utils";
@@ -102,6 +103,9 @@ class TenantPage extends Component {
             </Tab> */}
             <Tab eventKey={3} title="PHONE NUMBERS">
               <PhoneNumbersTab tenantId={this.props.match.params.tenantId} />
+            </Tab>
+            <Tab eventKey={7} title="MOBILE NUMBERS">
+              <MobileNumbersTab tenantId={this.props.match.params.tenantId} />
             </Tab>
             <Tab eventKey={4} title="ADMINISTRATORS">
               <Admins tenantId={this.props.match.params.tenantId} />

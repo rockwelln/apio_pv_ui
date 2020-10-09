@@ -442,6 +442,17 @@ class App extends Component {
                 exact
               />
               <Route
+                path="/provisioning/:gwName/tenants/:tenantId/add-mobile-phone"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <AddPhoneNumberTenant />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId"
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (

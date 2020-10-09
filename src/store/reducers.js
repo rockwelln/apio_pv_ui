@@ -122,7 +122,9 @@ const initialState = {
   selfcareUrl: {},
   timeZones: [],
   globalSearchNumber: undefined,
-  bwksLicenses: undefined
+  bwksLicenses: undefined,
+  tenantMobileNumbers: [],
+  groupMobileNumbers: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -614,6 +616,44 @@ function mainReducer(state = initialState, action) {
         bwksLicenses: action.data
       };
     }
+    case actionType.GET_MOBILE_NUMBERS_FOR_TENANT: {
+      const tenantMobileNumbers = [
+        ...action.data.assigned_numbers.map(num => ({
+          ...num,
+          phoneChecked: false
+        })),
+        ...action.data.available_numbers.map(num => ({
+          phoneNumber: num,
+          assignedToGroup: "",
+          canBeDeleted: true,
+          phoneChecked: false
+        }))
+      ];
+      return {
+        ...state,
+        tenantMobileNumbers
+      };
+    }
+    case actionType.GET_MOBILE_NUMBERS_FOR_GROUP: {
+      const groupMobileNumbers = [
+        ...action.data.assigned_numbers.map(num => ({
+          ...num,
+          phoneChecked: false
+        })),
+        ...action.data.available_numbers.map(num => ({
+          phoneNumber: num,
+          firstName: "",
+          lastName: "",
+          userId: "",
+          extension: "",
+          phoneChecked: false
+        }))
+      ];
+      return {
+        ...state,
+        groupMobileNumbers
+      };
+    }
     case actionType.POST_CREATE_GROUP_ADMIN: {
       return {
         ...state,
@@ -663,6 +703,23 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.POST_ADD_PHONE_NUMBERS_TO_TENANT: {
+      const warning = action.data.warning;
+      const added = action.data.result.filter(
+        number => number.status === "added"
+      );
+      const rejected = action.data.result.filter(
+        number => number.status === "rejected"
+      );
+      return {
+        ...state,
+        addedNumbersToTenant: {
+          warning,
+          added,
+          rejected
+        }
+      };
+    }
+    case actionType.POST_ADD_MOBILE_NUMBER_TO_TENANT: {
       const warning = action.data.warning;
       const added = action.data.result.filter(
         number => number.status === "added"
