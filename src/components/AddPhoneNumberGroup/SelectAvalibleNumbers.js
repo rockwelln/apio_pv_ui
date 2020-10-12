@@ -16,7 +16,10 @@ import { FormattedMessage } from "react-intl";
 import PhoneNumber from "./PhoneNumber";
 import { countsPerPages } from "../../constants";
 
-import { fetchPostAssignPhoneNumbersToGroup } from "../../store/actions";
+import {
+  fetchPostAssignPhoneNumbersToGroup,
+  fetchPostAddMobileNumbersToGroup
+} from "../../store/actions";
 
 export class PhoneNumbersTab extends Component {
   state = {
@@ -46,18 +49,40 @@ export class PhoneNumbersTab extends Component {
     );
   }
 
+  mobilePropsToState() {
+    this.setState(
+      {
+        phoneNumbers: this.props.phoneNumbers.sort((a, b) => {
+          if (a < b) return -1;
+          if (a > b) return 1;
+          return 0;
+        }),
+        isLoading: false,
+        sortedBy: "phoneNumber"
+      },
+      () => this.pagination()
+    );
+  }
+
   componentDidMount() {
-    this.propsToState();
+    const pathNameArr = this.props.location.pathname.split("/");
+    pathNameArr[pathNameArr.length - 1] === "add-mobile-phone"
+      ? this.mobilePropsToState()
+      : this.propsToState();
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.phoneNumbers.length !== this.props.phoneNumbers.length) {
-      this.propsToState();
+      const pathNameArr = this.props.location.pathname.split("/");
+      pathNameArr[pathNameArr.length - 1] === "add-mobile-phone"
+        ? this.mobilePropsToState()
+        : this.propsToState();
     }
   }
 
   render() {
     const { countPerPage, paginationPhoneNumbers, page } = this.state;
+    const pathNameArr = this.props.location.pathname.split("/");
 
     return (
       <React.Fragment>
@@ -69,7 +94,7 @@ export class PhoneNumbersTab extends Component {
               </InputGroup.Addon>
               <FormattedMessage
                 id="search_placeholder"
-                defaultMessage="Group ID or Name"
+                defaultMessage="Phone number"
               >
                 {placeholder => (
                   <FormControl
@@ -81,7 +106,11 @@ export class PhoneNumbersTab extends Component {
                         {
                           searchValue: e.target.value
                         },
-                        () => this.filterBySearchValue()
+                        () =>
+                          pathNameArr[pathNameArr.length - 1] ===
+                          "add-mobile-phone"
+                            ? this.filterBySearchValueMobile()
+                            : this.filterBySearchValue()
                       )
                     }
                   />
@@ -119,27 +148,43 @@ export class PhoneNumbersTab extends Component {
                 <Table hover>
                   <thead>
                     <tr>
-                      <th width="40%">
-                        <FormattedMessage
-                          id="tenant-id"
-                          defaultMessage="Range start"
-                        />
-                        <Glyphicon
-                          glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByRangeStart}
-                        />
-                      </th>
-                      <th width="40%">
-                        <FormattedMessage
-                          id="name"
-                          defaultMessage="Range end"
-                        />
-                        <Glyphicon
-                          glyph="glyphicon glyphicon-sort"
-                          onClick={this.sortByRangeEnd}
-                        />
-                      </th>
-                      <th />
+                      {pathNameArr[pathNameArr.length - 1] ===
+                      "add-mobile-phone" ? (
+                        <th>
+                          <FormattedMessage
+                            id="tenant-id"
+                            defaultMessage="Phone number"
+                          />
+                          <Glyphicon
+                            glyph="glyphicon glyphicon-sort"
+                            onClick={this.sortByPhoneNumber}
+                          />
+                        </th>
+                      ) : (
+                        <React.Fragment>
+                          <th width="40%">
+                            <FormattedMessage
+                              id="tenant-id"
+                              defaultMessage="Range start"
+                            />
+                            <Glyphicon
+                              glyph="glyphicon glyphicon-sort"
+                              onClick={this.sortByRangeStart}
+                            />
+                          </th>
+                          <th width="40%">
+                            <FormattedMessage
+                              id="name"
+                              defaultMessage="Range end"
+                            />
+                            <Glyphicon
+                              glyph="glyphicon glyphicon-sort"
+                              onClick={this.sortByRangeEnd}
+                            />
+                          </th>
+                        </React.Fragment>
+                      )}
+                      <th width="10%" />
                     </tr>
                   </thead>
                   <tbody>
@@ -205,13 +250,22 @@ export class PhoneNumbersTab extends Component {
   };
 
   assignNumbers = numbersToAssign => {
-    return this.props
-      .fetchPostAssignPhoneNumbersToGroup(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId,
-        numbersToAssign
-      )
-      .then(() => this.props.toUpdate());
+    const pathNameArr = this.props.location.pathname.split("/");
+    return pathNameArr[pathNameArr.length - 1] === "add-mobile-phone"
+      ? this.props
+          .fetchPostAddMobileNumbersToGroup(
+            this.props.match.params.tenantId,
+            this.props.match.params.groupId,
+            numbersToAssign
+          )
+          .then(() => this.props.toUpdate())
+      : this.props
+          .fetchPostAssignPhoneNumbersToGroup(
+            this.props.match.params.tenantId,
+            this.props.match.params.groupId,
+            numbersToAssign
+          )
+          .then(() => this.props.toUpdate());
   };
 
   changeCoutOnPage = e => {
@@ -262,16 +316,38 @@ export class PhoneNumbersTab extends Component {
 
   filterBySearchValue = () => {
     const { searchValue } = this.state;
-    const SearchArray = this.props.phoneNumbers
-      .filter(
-        phone =>
-          phone.rangeStart.toLowerCase().includes(searchValue.toLowerCase()) ||
-          phone.rangeEnd.toLowerCase().includes(searchValue.toLowerCase()) ||
-          phone.userId.toLowerCase().includes(searchValue.toLowerCase()) ||
-          phone.userType.toLowerCase().includes(searchValue.toLowerCase())
-      )
-      .map(phone => phone);
+    const SearchArray = this.props.phoneNumbers.filter(
+      phone =>
+        phone.rangeStart.toLowerCase().includes(searchValue.toLowerCase()) ||
+        phone.rangeEnd.toLowerCase().includes(searchValue.toLowerCase())
+    );
     this.setState({ phoneNumbers: SearchArray }, () => this.pagination());
+  };
+
+  filterBySearchValueMobile = () => {
+    const { searchValue } = this.state;
+    const SearchArray = this.props.phoneNumbers.filter(phone =>
+      phone.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    this.setState({ phoneNumbers: SearchArray }, () => this.pagination());
+  };
+
+  sortByPhoneNumber = () => {
+    const { phoneNumbers, sortedBy } = this.state;
+    if (sortedBy === "phoneNumber") {
+      const phonesSorted = phoneNumbers.reverse();
+      this.setState({ phoneNumbers: phonesSorted }, () => this.pagination());
+    } else {
+      const phonesSorted = phoneNumbers.sort((a, b) => {
+        if (a < b) return -1;
+        if (a > b) return 1;
+        return 0;
+      });
+      this.setState(
+        { phoneNumbers: phonesSorted, sortedBy: "phoneNumber" },
+        () => this.pagination()
+      );
+    }
   };
 
   sortByRangeStart = () => {
@@ -320,7 +396,10 @@ export class PhoneNumbersTab extends Component {
   };
 }
 
-const mapDispatchToProps = { fetchPostAssignPhoneNumbersToGroup };
+const mapDispatchToProps = {
+  fetchPostAssignPhoneNumbersToGroup,
+  fetchPostAddMobileNumbersToGroup
+};
 
 export default withRouter(
   connect(

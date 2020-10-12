@@ -5,7 +5,7 @@ import Modal from "react-bootstrap/lib/Modal";
 import Alert from "react-bootstrap/lib/Alert";
 import Button from "react-bootstrap/lib/Button";
 
-import { fetchDeletePhoneFromTenant } from "../../../../store/actions";
+import { fetchDeleteMobileNumberFromGroup } from "../../../../store/actions";
 
 import { getRange } from "../../../expandRangeOfPhoneNumber";
 
@@ -33,11 +33,15 @@ class DeleteModal extends Component {
     });
 
     const data = {
-      numbers: allNumbers.map(number => ({ phoneNumber: number }))
+      phoneNumbers: allNumbers.map(number => ({ phoneNumber: number }))
     };
 
     this.props
-      .fetchDeletePhoneFromTenant(this.props.tenantId, data)
+      .fetchDeleteMobileNumberFromGroup(
+        this.props.tenantId,
+        this.props.groupId,
+        data
+      )
       .then(() => {
         this.setState({ deleting: false });
         onClose && onClose(true);
@@ -96,7 +100,7 @@ class DeleteModal extends Component {
 }
 
 const mapDispatchToProps = {
-  fetchDeletePhoneFromTenant
+  fetchDeleteMobileNumberFromGroup
 };
 
 export default connect(

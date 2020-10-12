@@ -361,6 +361,11 @@ export const postAddMobileNumberToTenant = data => ({
   data
 });
 
+export const postAddMobileNumberToGroup = data => ({
+  type: actionType.POST_ADD_MOBILE_NUMBER_TO_GROUP,
+  data
+});
+
 export const putUpdateUser = data => ({
   type: actionType.PUT_UPDATE_USER,
   data
@@ -505,6 +510,14 @@ export const deletePhoneFromGroup = data => ({
 
 export const deleteTrunkGroupFromTenant = () => ({
   type: actionType.DELETE_TRUNK_GROUP_FROM_TENANT
+});
+
+export const deleteMobileNumberFromTenant = () => ({
+  type: actionType.DELETE_MOBILE_NUMBER_FROM_TENANT
+});
+
+export const deleteMobileNumberFromGroup = () => ({
+  type: actionType.DELETE_MOBILE_NUMBER_FROM_GROUP
 });
 
 export const clearErrorMassage = () => ({
@@ -1772,6 +1785,26 @@ export function fetchPostAddMobileNumbersToTenant(tenantId, data) {
   };
 }
 
+export function fetchPostAddMobileNumbersToGroup(tenantId, groupId, data) {
+  return function(dispatch) {
+    return fetch_post(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/mobile_numbers/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => dispatch(postAddMobileNumberToGroup(data)))
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-add-phone-numbers"
+            defaultMessage="Failed to add phone numbers!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
 export function fetchPostCreateUserToGroup(tenantId, groupId, data) {
   return function(dispatch) {
     return fetch_post(
@@ -2647,6 +2680,50 @@ export function fetchDeleteTrunkGroupFromTenant(tenantId, trunkName) {
           <FormattedMessage
             id="failed-to-delete-trunk-group"
             defaultMessage="Failed to delete trunk group!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchDeleteMobileNumberFromTenant(tenantId, data) {
+  return function(dispatch) {
+    return fetch_delete(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/mobile_numbers/`,
+      data
+    )
+      .then(res => res.json())
+      .then(() => {
+        dispatch(deleteMobileNumberFromTenant());
+      })
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-delete-mobile-number"
+            defaultMessage="Failed to delete mobile number!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchDeleteMobileNumberFromGroup(tenantId, groupId, data) {
+  return function(dispatch) {
+    return fetch_delete(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/mobile_numbers/`,
+      data
+    )
+      .then(res => res.json())
+      .then(() => {
+        dispatch(deleteMobileNumberFromGroup());
+      })
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-delete-mobile-number"
+            defaultMessage="Failed to delete mobile number!"
           />,
           error.message
         )

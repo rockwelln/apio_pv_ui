@@ -45,6 +45,7 @@ class PhoneNumber extends Component {
               number={number}
               show={showDelete}
               tenantId={this.props.tenantId}
+              groupId={this.props.groupId}
               onClose={e => {
                 onReload && onReload(number.rangeStart);
                 this.setState({ showDelete: false });
