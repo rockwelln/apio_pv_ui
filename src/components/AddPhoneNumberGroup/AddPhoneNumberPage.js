@@ -10,7 +10,8 @@ import Radio from "react-bootstrap/lib/Radio";
 import {
   fetchGetAvailableNumbersByTenantID,
   refuseAddPhoneToTenant,
-  changeStepOfAddPhoneTenant
+  changeStepOfAddPhoneTenant,
+  fetchGetMobileNumbersForTenant
 } from "../../store/actions";
 import Loading from "../../common/Loading";
 
@@ -27,20 +28,31 @@ export class AddPhoneNumberPage extends Component {
   componentDidUpdate(prevProps) {
     if (
       JSON.stringify(prevProps.availableNumbersTenant) !==
-      JSON.stringify(this.props.availableNumbersTenant)
+        JSON.stringify(this.props.availableNumbersTenant) ||
+      JSON.stringify(prevProps.availableMobileNumbers) !==
+        JSON.stringify(this.props.availableMobileNumbers)
     ) {
       this.fetchAvailableNumbers();
     }
   }
 
   fetchAvailableNumbers = () => {
-    this.setState({ isLoading: true }, () =>
-      this.props
-        .fetchGetAvailableNumbersByTenantID(this.props.match.params.tenantId)
-        .then(() => this.setState({ isLoading: false }))
-    );
+    this.setState({ isLoading: true }, () => {
+      const pathNameArr = this.props.location.pathname.split("/");
+      pathNameArr[pathNameArr.length - 1] === "add-mobile-phone"
+        ? this.props.fetchGetMobileNumbersForTenant(
+            this.props.match.params.tenantId
+          )
+        : this.props
+            .fetchGetAvailableNumbersByTenantID(
+              this.props.match.params.tenantId
+            )
+            .then(() => this.setState({ isLoading: false }));
+    });
   };
   render() {
+    const pathNameArr = this.props.location.pathname.split("/");
+
     return (
       <React.Fragment>
         <div className={"header panel-heading"}>Add phonenumbers for group</div>
@@ -63,12 +75,20 @@ export class AddPhoneNumberPage extends Component {
                       {
                         isLoadNewPhones: "not load"
                       },
-                      () =>
-                        this.props
-                          .fetchGetAvailableNumbersByTenantID(
-                            this.props.match.params.tenantId
-                          )
-                          .then(() => this.setState({ isLoading: false }))
+                      () => {
+                        pathNameArr[pathNameArr.length - 1] ===
+                        "add-mobile-phone"
+                          ? this.props
+                              .fetchGetMobileNumbersForTenant(
+                                this.props.match.params.tenantId
+                              )
+                              .then(() => this.setState({ isLoading: false }))
+                          : this.props
+                              .fetchGetAvailableNumbersByTenantID(
+                                this.props.match.params.tenantId
+                              )
+                              .then(() => this.setState({ isLoading: false }));
+                      }
                     );
                   }}
                 >
@@ -82,6 +102,9 @@ export class AddPhoneNumberPage extends Component {
                     this.setState({
                       isLoadNewPhones: "load"
                     })
+                  }
+                  disabled={
+                    pathNameArr[pathNameArr.length - 1] === "add-mobile-phone"
                   }
                 >
                   <div>
@@ -99,12 +122,20 @@ export class AddPhoneNumberPage extends Component {
                   <Loading />
                 ) : (
                   <SelectAvalibleNumbers
-                    phoneNumbers={this.props.availableNumbersTenant}
-                    toUpdate={() =>
-                      this.props.fetchGetAvailableNumbersByTenantID(
-                        this.props.match.params.tenantId
-                      )
+                    phoneNumbers={
+                      pathNameArr[pathNameArr.length - 1] === "add-mobile-phone"
+                        ? this.props.availableMobileNumbers
+                        : this.props.availableNumbersTenant
                     }
+                    toUpdate={() => {
+                      pathNameArr[pathNameArr.length - 1] === "add-mobile-phone"
+                        ? this.props.fetchGetMobileNumbersForTenant(
+                            this.props.match.params.tenantId
+                          )
+                        : this.props.fetchGetAvailableNumbersByTenantID(
+                            this.props.match.params.tenantId
+                          );
+                    }}
                   />
                 )}
               </Col>
@@ -124,13 +155,15 @@ export class AddPhoneNumberPage extends Component {
 }
 
 const mapStateToProps = state => ({
-  availableNumbersTenant: state.availableNumbersTenant
+  availableNumbersTenant: state.availableNumbersTenant,
+  availableMobileNumbers: state.availableMobileNumbers
 });
 
 const mapDispatchToProps = {
   fetchGetAvailableNumbersByTenantID,
   refuseAddPhoneToTenant,
-  changeStepOfAddPhoneTenant
+  changeStepOfAddPhoneTenant,
+  fetchGetMobileNumbersForTenant
 };
 
 export default withRouter(

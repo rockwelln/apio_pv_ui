@@ -118,7 +118,7 @@ export class PhoneNumbersTab extends Component {
           </Col>
           <Col md={1}>
             <Link
-              to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/addphone`}
+              to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/add-mobile-phone`}
             >
               <Glyphicon
                 className={"x-large"}
@@ -159,6 +159,7 @@ export class PhoneNumbersTab extends Component {
                         number => number.phoneNumbers || number.phoneNumber
                       )}
                       tenantId={this.props.tenantId}
+                      groupId={this.props.groupId}
                       show={this.state.showDelete}
                       onClose={e => {
                         this.fetchNumbers();
@@ -255,6 +256,7 @@ export class PhoneNumbersTab extends Component {
                         key={number.rangeStart}
                         number={number}
                         tenantId={tenantId}
+                        groupId={this.props.groupId}
                         handleSingleCheckboxClick={
                           this.handleSingleCheckboxClick
                         }

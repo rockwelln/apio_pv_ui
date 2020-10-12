@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { fetchDeletePhoneFromTenant } from "../../../../store/actions";
+import { fetchDeleteMobileNumberFromGroup } from "../../../../store/actions";
 
 import Modal from "react-bootstrap/lib/Modal";
 import Alert from "react-bootstrap/lib/Alert";
@@ -23,22 +23,18 @@ class DeleteModal extends Component {
     this.setState({ deleting: true });
 
     const allNumbers = [];
-
-    // if (this.props.number.rangeEnd) {
-    //   const expandedRange = getRange(
-    //     this.props.number.rangeStart,
-    //     this.props.number.rangeEnd
-    //   );
-    //   allNumbers.push(...expandedRange);
-    // } else
-    allNumbers.push(this.props.number.rangeStart);
+    allNumbers.push(this.props.number.phoneNumber);
 
     const data = {
-      numbers: allNumbers.map(number => ({ phoneNumber: number }))
+      phoneNumbers: allNumbers.map(number => ({ phoneNumber: number }))
     };
 
     this.props
-      .fetchDeletePhoneFromTenant(this.props.tenantId, data)
+      .fetchDeleteMobileNumberFromGroup(
+        this.props.tenantId,
+        this.props.groupId,
+        data
+      )
       .then(() => {
         this.setState({ deleting: false });
         onClose && onClose(true);
@@ -98,7 +94,7 @@ class DeleteModal extends Component {
 }
 
 const mapDispatchToProps = {
-  fetchDeletePhoneFromTenant
+  fetchDeleteMobileNumberFromGroup
 };
 
 export default connect(

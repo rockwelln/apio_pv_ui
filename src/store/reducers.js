@@ -124,7 +124,8 @@ const initialState = {
   globalSearchNumber: undefined,
   bwksLicenses: undefined,
   tenantMobileNumbers: [],
-  groupMobileNumbers: []
+  groupMobileNumbers: [],
+  availableMobileNumbers: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -631,7 +632,8 @@ function mainReducer(state = initialState, action) {
       ];
       return {
         ...state,
-        tenantMobileNumbers
+        tenantMobileNumbers,
+        availableMobileNumbers: action.data.available_numbers
       };
     }
     case actionType.GET_MOBILE_NUMBERS_FOR_GROUP: {
@@ -730,6 +732,23 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         addedNumbersToTenant: {
+          warning,
+          added,
+          rejected
+        }
+      };
+    }
+    case actionType.POST_ADD_MOBILE_NUMBER_TO_GROUP: {
+      const warning = action.data.warning;
+      const added = action.data.result.filter(
+        number => number.status === "added"
+      );
+      const rejected = action.data.result.filter(
+        number => number.status === "rejected"
+      );
+      return {
+        ...state,
+        addedNumbersToGroup: {
           warning,
           added,
           rejected
@@ -954,6 +973,18 @@ function mainReducer(state = initialState, action) {
     case actionType.DELETE_TRUNK_GROUP_FROM_TENANT: {
       return {
         ...state
+      };
+    }
+    case actionType.DELETE_MOBILE_NUMBER_FROM_TENANT: {
+      return {
+        ...state,
+        phoneDeleted: !state.phoneDeleted
+      };
+    }
+    case actionType.DELETE_MOBILE_NUMBER_FROM_GROUP: {
+      return {
+        ...state,
+        phoneDeleted: !state.phoneDeleted
       };
     }
     case actionType.CLEAR_ERROR_MASSAGE: {

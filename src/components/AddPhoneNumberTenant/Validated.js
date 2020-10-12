@@ -14,7 +14,8 @@ import {
   refuseAddPhoneToTenant,
   fetchPostAddPhoneNumbersToTenant,
   fetchPostAssignPhoneNumbersToGroup,
-  fetchPostAddMobileNumbersToTenant
+  fetchPostAddMobileNumbersToTenant,
+  fetchPostAddMobileNumbersToGroup
 } from "../../store/actions";
 
 import OkTab from "./Tabs/OK";
@@ -115,6 +116,8 @@ export class Basic extends Component {
   };
 
   addNumbersToGroup = () => {
+    const pathNameArr = this.props.location.pathname.split("/");
+    let mobileData = {};
     this.setState({ errorMessage: null, buttomNameAdd: "Adding..." });
     const data = this.props.validatedNumbersTenant.ok.reduce(
       (accamulator, phone) => {
@@ -131,20 +134,40 @@ export class Basic extends Component {
       },
       { numbers: [], auto_create: true }
     );
-    this.props
-      .fetchPostAssignPhoneNumbersToGroup(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId,
-        data
-      )
-      .then(res =>
-        res === "success"
-          ? this.props.changeStepOfAddPhoneTenant("Info")
-          : this.setState({
-              errorMessage: "Failed assign numbers",
+    if (pathNameArr[pathNameArr.length - 1] === "add-mobile-phone") {
+      mobileData = { phoneNumbers: data.numbers };
+    }
+    pathNameArr[pathNameArr.length - 1] === "add-mobile-phone"
+      ? this.props
+          .fetchPostAddMobileNumbersToGroup(
+            this.props.match.params.tenantId,
+            this.props.match.params.groupId,
+            mobileData
+          )
+          .then(res => {
+            if (res) {
+              this.props.changeStepOfAddPhoneTenant("Info");
+            }
+          })
+          .then(() =>
+            this.setState({
               buttomNameAdd: "ADD"
             })
-      );
+          )
+      : this.props
+          .fetchPostAssignPhoneNumbersToGroup(
+            this.props.match.params.tenantId,
+            this.props.match.params.groupId,
+            data
+          )
+          .then(res =>
+            res === "success"
+              ? this.props.changeStepOfAddPhoneTenant("Info")
+              : this.setState({
+                  errorMessage: "Failed assign numbers",
+                  buttomNameAdd: "ADD"
+                })
+          );
   };
 
   addPhoneNumbers = () => {
@@ -214,7 +237,8 @@ const mapDispatchToProps = {
   refuseAddPhoneToTenant,
   fetchPostAddPhoneNumbersToTenant,
   fetchPostAssignPhoneNumbersToGroup,
-  fetchPostAddMobileNumbersToTenant
+  fetchPostAddMobileNumbersToTenant,
+  fetchPostAddMobileNumbersToGroup
 };
 
 export default withRouter(
