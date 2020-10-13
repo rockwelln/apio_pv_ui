@@ -903,6 +903,12 @@ function mainReducer(state = initialState, action) {
         device: action.data
       };
     }
+    case actionType.PUT_UPDATE_TEMPLATE: {
+      return {
+        ...state,
+        templateDetails: action.data
+      };
+    }
     case actionType.DELETE_TENANT: {
       return {
         ...state

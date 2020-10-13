@@ -450,6 +450,11 @@ export const putUpdateTenantServicePacks = () => ({
   type: actionType.PUT_UPDATE_TENANT_SERVICE_PACKS
 });
 
+export const putUpdateTemplate = data => ({
+  type: actionType.PUT_UPDATE_TEMPLATE,
+  data
+});
+
 export const deleteTenant = data => ({
   type: actionType.DELETE_TENANT,
   data
@@ -2368,6 +2373,26 @@ export function fetchPutUpdateTenantServicePacks(tenantId, servicePack, data) {
           <FormattedMessage
             id="update-service-packs-failed"
             defaultMessage="Failed to update service packs!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchPutUpdateTemplate(instanceName, templateName, data) {
+  return function(dispatch) {
+    return fetch_put(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/configs/templates/categories/${instanceName}/templates/${templateName}/`,
+      data
+    )
+      .then(res => res.json())
+      .then(data => dispatch(putUpdateTemplate(data)))
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="update-template-failed"
+            defaultMessage="Failed to update template!"
           />,
           error.message
         )
