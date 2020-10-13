@@ -300,3 +300,11 @@ textarea {
   height: 34px;
   margin-right: 10px;
 }
+
+.template-text-area {
+  width: 100%;
+  height: 100%;
+  height: -moz-available;
+  height: -webkit-fill-available;
+  height: stretch;
+}
