@@ -162,6 +162,7 @@ class TenantPage extends Component {
               <MobileNumbersTab
                 tenantId={this.props.match.params.tenantId}
                 groupId={this.props.match.params.groupId}
+                isLoadingTenant={isLoadingTenant}
               />
             </Tab>
             <Tab eventKey={4} title="DEVICES">

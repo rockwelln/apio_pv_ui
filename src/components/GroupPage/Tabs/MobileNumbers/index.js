@@ -116,16 +116,18 @@ export class PhoneNumbersTab extends Component {
               </FormattedMessage>
             </InputGroup>
           </Col>
-          <Col md={1}>
-            <Link
-              to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/add-mobile-phone`}
-            >
-              <Glyphicon
-                className={"x-large"}
-                glyph="glyphicon glyphicon-plus-sign"
-              />
-            </Link>
-          </Col>
+          {this.props.tenant.type === "ServiceProvider" && (
+            <Col md={1}>
+              <Link
+                to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/add-mobile-phone`}
+              >
+                <Glyphicon
+                  className={"x-large"}
+                  glyph="glyphicon glyphicon-plus-sign"
+                />
+              </Link>
+            </Col>
+          )}
         </Row>
         {paginationPhoneNumbers.length ? (
           <React.Fragment>
@@ -428,7 +430,8 @@ export class PhoneNumbersTab extends Component {
 
 const mapStateToProps = state => ({
   phoneNumbers: state.groupMobileNumbers,
-  phoneDeleted: state.phoneDeleted
+  phoneDeleted: state.phoneDeleted,
+  tenant: state.tenant
 });
 
 const mapDispatchToProps = {
