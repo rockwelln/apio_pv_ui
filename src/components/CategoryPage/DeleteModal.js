@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { fetchDeleteTenantAdmin } from "../../store/actions";
+import { fetchDeleteTemplate } from "../../store/actions";
 
 import Modal from "react-bootstrap/lib/Modal";
 import Alert from "react-bootstrap/lib/Alert";
@@ -13,17 +13,16 @@ class DeleteModal extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.onDelete = this.onDelete.bind(this);
   }
 
-  onDelete(tenantId, adminId) {
-    const { onClose } = this.props;
+  onDelete = () => {
+    const { onClose, templateName, categoryName } = this.props;
     this.setState({ deleting: true });
-    this.props.fetchDeleteTenantAdmin(tenantId, adminId).then(() => {
+    this.props.fetchDeleteTemplate(categoryName, templateName).then(() => {
       this.setState({ deleting: false });
       onClose && onClose(true);
     });
-  }
+  };
 
   render() {
     const { templateName, show, onClose } = this.props;
@@ -56,7 +55,7 @@ class DeleteModal extends Component {
           </p>
         </Modal.Body>
         <Modal.Footer>
-          <Button bsStyle="danger" disabled>
+          <Button bsStyle="danger" disabled={deleting} onClick={this.onDelete}>
             <FormattedMessage id="delete" defaultMessage="Delete" />
           </Button>
           <Button onClick={() => onClose && onClose(false)} disabled={deleting}>
@@ -69,7 +68,7 @@ class DeleteModal extends Component {
 }
 
 const mapDispatchToProps = {
-  fetchDeleteTenantAdmin
+  fetchDeleteTemplate
 };
 
 export default connect(

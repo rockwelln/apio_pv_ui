@@ -809,6 +809,11 @@ function mainReducer(state = initialState, action) {
         ...state
       };
     }
+    case actionType.POST_CREATE_TEMPLATE: {
+      return {
+        ...state
+      };
+    }
     case actionType.PUT_UPDATE_USER: {
       return {
         ...state,
@@ -991,6 +996,11 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         phoneDeleted: !state.phoneDeleted
+      };
+    }
+    case actionType.DELETE_TEMPLATE: {
+      return {
+        ...state
       };
     }
     case actionType.CLEAR_ERROR_MASSAGE: {

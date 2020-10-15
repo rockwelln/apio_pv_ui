@@ -366,6 +366,10 @@ export const postAddMobileNumberToGroup = data => ({
   data
 });
 
+export const postCreateTemplate = () => ({
+  type: actionType.POST_CREATE_TEMPLATE
+});
+
 export const putUpdateUser = data => ({
   type: actionType.PUT_UPDATE_USER,
   data
@@ -523,6 +527,10 @@ export const deleteMobileNumberFromTenant = () => ({
 
 export const deleteMobileNumberFromGroup = () => ({
   type: actionType.DELETE_MOBILE_NUMBER_FROM_GROUP
+});
+
+export const deleteTemplate = () => ({
+  type: actionType.DELETE_TEMPLATE
 });
 
 export const clearErrorMassage = () => ({
@@ -1997,6 +2005,36 @@ export function fetchPostCreateTrunkGroupUser(
   };
 }
 
+export function fetchPostCreateTemplate(category, data) {
+  return function(dispatch) {
+    return fetch_post(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/configs/templates/categories/${category}/templates/`,
+      data
+    )
+      .then(res => res.json())
+      .then(() => {
+        dispatch(postCreateTemplate());
+        NotificationsManager.success(
+          <FormattedMessage
+            id="template-successfully-created"
+            defaultMessage="Template successfully created"
+          />,
+          "Created"
+        );
+        return "success";
+      })
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-create-template"
+            defaultMessage="Failed to create template!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
 export function fetchPutUpdateUser(tenantId, groupId, userName, data) {
   return function(dispatch) {
     return fetch_put(
@@ -2749,6 +2787,27 @@ export function fetchDeleteMobileNumberFromGroup(tenantId, groupId, data) {
           <FormattedMessage
             id="failed-to-delete-mobile-number"
             defaultMessage="Failed to delete mobile number!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchDeleteTemplate(category, templateName) {
+  return function(dispatch) {
+    return fetch_delete(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/configs/templates/categories/${category}/templates/${templateName}/`
+    )
+      .then(res => res.json())
+      .then(() => {
+        dispatch(deleteTemplate());
+      })
+      .catch(error =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-delete-template"
+            defaultMessage="Failed to delete template!"
           />,
           error.message
         )

@@ -54,6 +54,10 @@
   margin-right: 20px !important;
 }
 
+.margin-bottom-1 {
+  margin-bottom: 10px !important;
+}
+
 .indent-top-bottom-1 {
   margin-top: 10px !important;
   margin-bottom: 10px !important;
@@ -217,6 +221,10 @@ textarea {
 
 .flex-basis-66 {
   flex-basis: 66.66%;
+}
+
+.height-10 {
+  height: 100px !important;
 }
 
 .height-30 {

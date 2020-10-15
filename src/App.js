@@ -52,6 +52,7 @@ import AddTrunkGroup from "./components/AddTrunkGroup";
 import AddDevicePage from "./components/AddDevicePage";
 import AddTrunkGroupUser from "./components/AddUserToTrunkGroup";
 import BWKSLicenses from "./components/BWKSLicenses";
+import CreateTemplatePage from "./components/CreateTemplate";
 
 import "./App.css";
 import loading from "./loading.gif";
@@ -353,6 +354,17 @@ class App extends Component {
                 component={props =>
                   isAllowed(ui_profile, pages.data_tenants) ? (
                     <ConfigPage />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/provisioning/:gwName/templates/:categoryName/addtemplate"
+                component={props =>
+                  isAllowed(ui_profile, pages.data_tenants) ? (
+                    <CreateTemplatePage />
                   ) : (
                     <NotAllowed />
                   )
