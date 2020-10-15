@@ -110,6 +110,11 @@ export class CategoryPage extends Component {
               <Glyphicon
                 className={"x-large"}
                 glyph="glyphicon glyphicon-plus-sign"
+                onClick={() =>
+                  this.props.history.push(
+                    `/provisioning/${this.props.match.params.gwName}/templates/${this.props.match.params.categoryName}/addtemplate`
+                  )
+                }
               />
             </Col>
           </Row>

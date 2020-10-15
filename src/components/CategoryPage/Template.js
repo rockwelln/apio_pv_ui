@@ -16,9 +16,7 @@ class Admin extends Component {
       <tr>
         <td>
           <Link
-            to={`/provisioning/${this.props.match.params.gwName}/templates/${
-              this.props.match.params.categoryName
-            }/template/${template.name}`}
+            to={`/provisioning/${this.props.match.params.gwName}/templates/${this.props.match.params.categoryName}/template/${template.name}`}
           >
             {template.name}
           </Link>
@@ -33,6 +31,7 @@ class Admin extends Component {
           </ButtonToolbar>
           <DeleteModal
             templateName={template.name}
+            categoryName={this.props.match.params.categoryName}
             show={showDelete}
             onClose={e => {
               onReload && onReload();

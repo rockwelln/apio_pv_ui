@@ -29,6 +29,13 @@ const linkByCrumb = (item, lastItem, i, path, match) => {
       </Link>
     );
   }
+  if (path[i - 1] === "templates" && !lastItem.includes(crumb)) {
+    return (
+      <Link to={`/provisioning/${match.params.gwName}/templates/${crumb}`}>
+        {crumb}
+      </Link>
+    );
+  }
   if (path[i - 2] === "tenants" && !lastItem.includes(crumb)) {
     return (
       <Link
@@ -95,7 +102,8 @@ const BreadcrumbComponent = ({ location, match }) => {
   }
   if (
     path[indexForTenantLevel] === "groups" ||
-    path[indexForTenantLevel] === "admins"
+    path[indexForTenantLevel] === "admins" ||
+    path[indexForTenantLevel] === "template"
   ) {
     path.splice(indexForTenantLevel, 1);
   }
