@@ -28,9 +28,7 @@ export class AddPhoneNumberPage extends Component {
   componentDidUpdate(prevProps) {
     if (
       JSON.stringify(prevProps.availableNumbersTenant) !==
-        JSON.stringify(this.props.availableNumbersTenant) ||
-      JSON.stringify(prevProps.availableMobileNumbers) !==
-        JSON.stringify(this.props.availableMobileNumbers)
+      JSON.stringify(this.props.availableNumbersTenant)
     ) {
       this.fetchAvailableNumbers();
     }
@@ -40,9 +38,9 @@ export class AddPhoneNumberPage extends Component {
     this.setState({ isLoading: true }, () => {
       const pathNameArr = this.props.location.pathname.split("/");
       pathNameArr[pathNameArr.length - 1] === "add-mobile-phone"
-        ? this.props.fetchGetMobileNumbersForTenant(
-            this.props.match.params.tenantId
-          )
+        ? this.props
+            .fetchGetMobileNumbersForTenant(this.props.match.params.tenantId)
+            .then(() => this.setState({ isLoading: false }))
         : this.props
             .fetchGetAvailableNumbersByTenantID(
               this.props.match.params.tenantId

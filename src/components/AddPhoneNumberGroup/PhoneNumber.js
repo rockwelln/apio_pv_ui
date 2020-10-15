@@ -42,7 +42,7 @@ export class PhoneNumber extends Component {
                 onClick={() => {
                   pathNameArr[pathNameArr.length - 1] === "add-mobile-phone"
                     ? this.props.assignNumbers({
-                        numbers: [{ phoneNumber: number }]
+                        phoneNumbers: [{ phoneNumber: number }]
                       })
                     : this.props.assignNumbers({
                         numbers: [{ phoneNumber: number.rangeStart }]
