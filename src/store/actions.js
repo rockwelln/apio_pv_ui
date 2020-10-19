@@ -2042,7 +2042,16 @@ export function fetchPutUpdateUser(tenantId, groupId, userName, data) {
       data
     )
       .then(res => res.json())
-      .then(data => dispatch(putUpdateUser(data)))
+      .then(data => {
+        dispatch(putUpdateUser(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="user-successfully-updated"
+            defaultMessage="User successfully updated"
+          />,
+          "Updated"
+        );
+      })
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage
@@ -2062,7 +2071,16 @@ export function fetchPutUpdateGroupDetails(tenantId, groupId, data) {
       data
     )
       .then(res => res.json())
-      .then(data => dispatch(putUpdateGroupDetails(data)))
+      .then(data => {
+        dispatch(putUpdateGroupDetails(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="group-successfully-updated"
+            defaultMessage="Group successfully updated"
+          />,
+          "Updated"
+        );
+      })
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage
@@ -2082,7 +2100,16 @@ export function fetchPutUpdateGroupAdmin(tenantId, groupId, adminId, data) {
       data
     )
       .then(res => res.json())
-      .then(data => dispatch(putUpdateGroupAdmin(data)))
+      .then(data => {
+        dispatch(putUpdateGroupAdmin(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="group-admin-successfully-updated"
+            defaultMessage="Group admin successfully updated"
+          />,
+          "Updated"
+        );
+      })
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage
@@ -2102,7 +2129,16 @@ export function fetchPutUpdateTenantAdmin(tenantId, adminId, data) {
       data
     )
       .then(res => res.json())
-      .then(data => dispatch(putUpdateTenantAdmin(data)))
+      .then(data => {
+        dispatch(putUpdateTenantAdmin(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="tenant-admin-successfully-updated"
+            defaultMessage="Tenant admin successfully updated"
+          />,
+          "Updated"
+        );
+      })
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage
@@ -2122,7 +2158,16 @@ export function fetchPutUpdateTrunkByGroupId(tenantId, groupId, data) {
       data
     )
       .then(resp => resp.json())
-      .then(data => dispatch(putUpdateTrunkByGroupId(data)))
+      .then(data => {
+        dispatch(putUpdateTrunkByGroupId(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="trunk-group-successfully-updated"
+            defaultMessage="Trunk group successfully updated"
+          />,
+          "Updated"
+        );
+      })
       .catch(error => {
         if (error.response && error.response.status === 400) {
           NotificationsManager.error(
@@ -2154,6 +2199,13 @@ export function fetchPutUpdateServicePacksByGroupId(tenantId, groupId, data) {
       .then(res => res.json())
       .then(data => {
         dispatch(putUpdateServicePacksByGroupId(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="service-packs-successfully-updated"
+            defaultMessage="Service packs successfully updated"
+          />,
+          "Updated"
+        );
         return "updated";
       })
       .catch(error =>
@@ -2175,7 +2227,16 @@ export function fetchPutUpdateGroupServicesByGroupId(tenantId, groupId, data) {
       data
     )
       .then(res => res.json())
-      .then(data => dispatch(putUpdateGroupServicesByGroupId(data)))
+      .then(data => {
+        dispatch(putUpdateGroupServicesByGroupId(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="group-services-successfully-updated"
+            defaultMessage="Group services successfully updated"
+          />,
+          "Updated"
+        );
+      })
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage
@@ -2224,7 +2285,16 @@ export function fetchPutUpdateKey(appName, keyName, data) {
       data
     )
       .then(res => res.json())
-      .then(data => dispatch(putUpdateKey(data)))
+      .then(data => {
+        dispatch(putUpdateKey(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="config-successfully-updated"
+            defaultMessage="Config successfully updated"
+          />,
+          "Updated"
+        );
+      })
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage
@@ -2278,7 +2348,16 @@ export function fetchPutUpdateLocalUser(username, data) {
       data
     )
       .then(res => res.json())
-      .then(data => dispatch(putUpdateLocalUser(data)))
+      .then(data => {
+        dispatch(putUpdateLocalUser(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="local-user-successfully-updated"
+            defaultMessage="Local user successfully updated"
+          />,
+          "Updated"
+        );
+      })
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage
@@ -2332,7 +2411,16 @@ export function fetchPutUpdateTrunkByTenantId(tenantId, data) {
       data
     )
       .then(res => res.json())
-      .then(data => dispatch(putUpdateTrunkByTenantId(data)))
+      .then(data => {
+        dispatch(putUpdateTrunkByTenantId(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="trunk-successfully-updated"
+            defaultMessage="Trunk successfully updated"
+          />,
+          "Updated"
+        );
+      })
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage
@@ -2354,6 +2442,13 @@ export function fetchPutUpdateGroupServicesByTenantId(tenantId, data) {
       .then(res => res.json())
       .then(data => {
         dispatch(putUpdateGroupServicesByTenantId(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="group-services-successfully-updated"
+            defaultMessage="Group services successfully updated"
+          />,
+          "Updated"
+        );
         return "updated";
       })
       .catch(error =>
@@ -2405,7 +2500,16 @@ export function fetchPutUpdateTenantServicePacks(tenantId, servicePack, data) {
       data
     )
       .then(res => res.json())
-      .then(() => dispatch(putUpdateTenantServicePacks()))
+      .then(() => {
+        dispatch(putUpdateTenantServicePacks());
+        NotificationsManager.success(
+          <FormattedMessage
+            id="service-packs-successfully-updated"
+            defaultMessage="Service packs successfully updated"
+          />,
+          "Updated"
+        );
+      })
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage
@@ -2425,7 +2529,16 @@ export function fetchPutUpdateTemplate(instanceName, templateName, data) {
       data
     )
       .then(res => res.json())
-      .then(data => dispatch(putUpdateTemplate(data)))
+      .then(data => {
+        dispatch(putUpdateTemplate(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="template-successfully-updated"
+            defaultMessage="Template successfully updated"
+          />,
+          "Updated"
+        );
+      })
       .catch(error =>
         NotificationsManager.error(
           <FormattedMessage
