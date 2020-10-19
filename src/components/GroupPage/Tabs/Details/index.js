@@ -275,12 +275,10 @@ class Details extends Component {
     const data = {
       ...group
     };
-    this.setState({ updateMassage: "Loading..." }, () =>
-      this.props.fetchPutUpdateGroupDetails(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId,
-        data
-      )
+    this.props.fetchPutUpdateGroupDetails(
+      this.props.match.params.tenantId,
+      this.props.match.params.groupId,
+      data
     );
   };
 }

@@ -623,13 +623,11 @@ class Details extends Component {
       password
     };
 
-    this.setState({ updateMassage: "Loading..." }, () =>
-      this.props.fetchPutUpdateUser(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId,
-        this.props.match.params.userName,
-        data
-      )
+    this.props.fetchPutUpdateUser(
+      this.props.match.params.tenantId,
+      this.props.match.params.groupId,
+      this.props.match.params.userName,
+      data
     );
   };
 }
