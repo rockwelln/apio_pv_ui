@@ -202,23 +202,12 @@ class PhoneNumber extends Component {
     };
 
     this.setState({ updateMassage: "Loading..." }, () =>
-      this.props
-        .fetchPutUpdateUser(
-          this.props.match.params.tenantId,
-          this.props.match.params.groupId,
-          this.props.match.params.userName,
-          data
-        )
-        .then(() =>
-          this.setState(
-            { updateMassage: "User is updated" },
-            () =>
-              (this.timer = setTimeout(
-                () => this.setState({ updateMassage: "" }),
-                3000
-              ))
-          )
-        )
+      this.props.fetchPutUpdateUser(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId,
+        this.props.match.params.userName,
+        data
+      )
     );
   };
 }
