@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
+import Select from "react-select";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import FormControl from "react-bootstrap/lib/FormControl";
@@ -36,7 +37,13 @@ class Details extends Component {
       .then(() =>
         this.setState({
           group: this.props.group,
-          isLoading: false
+          isLoading: false,
+          cliNumber: {
+            value: this.props.group.cliPhoneNumber,
+            label: this.props.group.cliPhoneNumber
+              ? this.props.group.cliPhoneNumber
+              : "No number"
+          }
         })
       );
   }
@@ -207,7 +214,12 @@ class Details extends Component {
                 Calling Line Number
               </Col>
               <Col md={9}>
-                <FormControl
+                <Select
+                  value={this.state.cliNumber}
+                  onChange={selected => this.setState({ cliNumber: selected })}
+                  options={this.props.fullListGroupNumber}
+                />
+                {/* <FormControl
                   type="text"
                   placeholder="Calling Line Id Name"
                   defaultValue={
@@ -221,7 +233,7 @@ class Details extends Component {
                       }
                     });
                   }}
-                />
+                /> */}
               </Col>
             </FormGroup>
             <FormGroup controlId="cliName">
@@ -271,9 +283,10 @@ class Details extends Component {
   }
 
   updateGroupDetails = () => {
-    const { group } = this.state;
+    const { group, cliNumber } = this.state;
     const data = {
-      ...group
+      ...group,
+      cliPhoneNumber: cliNumber.value
     };
     this.props.fetchPutUpdateGroupDetails(
       this.props.match.params.tenantId,
@@ -289,7 +302,8 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = state => ({
-  group: state.group
+  group: state.group,
+  fullListGroupNumber: state.fullListGroupNumber
 });
 
 export default withRouter(

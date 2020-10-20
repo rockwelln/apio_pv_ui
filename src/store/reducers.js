@@ -125,7 +125,8 @@ const initialState = {
   bwksLicenses: undefined,
   tenantMobileNumbers: [],
   groupMobileNumbers: [],
-  availableMobileNumbers: []
+  availableMobileNumbers: [],
+  fullListGroupNumber: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -205,9 +206,31 @@ function mainReducer(state = initialState, action) {
           : "",
         phoneChecked: false
       }));
+      const fullListGroupNumber = [{ value: "", label: "No number" }];
+      phoneNumbers.forEach(el => {
+        if (el.rangeEnd) {
+          const length = Number(el.rangeEnd) - Number(el.rangeStart);
+          for (let i = 0; i <= length; i++) {
+            fullListGroupNumber.push({
+              value: `${el.rangeStart[0] === "+" ? "+" : ""}${Number(
+                el.rangeStart
+              ) + i}`,
+              label: `${el.rangeStart[0] === "+" ? "+" : ""}${Number(
+                el.rangeStart
+              ) + i}`
+            });
+          }
+        } else {
+          fullListGroupNumber.push({
+            value: el.rangeStart,
+            label: el.rangeStart
+          });
+        }
+      });
       return {
         ...state,
-        phoneNumbersByGroup: phoneNumbers
+        phoneNumbersByGroup: phoneNumbers,
+        fullListGroupNumber
       };
     }
     case actionType.GET_LICENSES_BY_GROUP_ID: {
