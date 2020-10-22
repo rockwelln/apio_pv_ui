@@ -49,9 +49,10 @@ const initialState = {
       postalCode: "",
       country: ""
     },
-    useTenantLanguages: false,
+    //useTenantLanguages: false,
     templateName: "",
-    accessDevice: {}
+    accessDevice: {},
+    sync: { ldap: "", ou: "" }
   },
   templatesOfTenant: [],
   createdTenant: {},
@@ -126,7 +127,9 @@ const initialState = {
   tenantMobileNumbers: [],
   groupMobileNumbers: [],
   availableMobileNumbers: [],
-  fullListGroupNumber: []
+  fullListGroupNumber: [],
+  ldapBackends: [],
+  tenantOU: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -679,6 +682,28 @@ function mainReducer(state = initialState, action) {
         groupMobileNumbers
       };
     }
+    case actionType.GET_EXISTING_BACKENDS: {
+      return {
+        ...state,
+        ldapBackends: action.data.ldapBackends
+      };
+    }
+    case actionType.GET_TENANT_OU: {
+      return {
+        ...state,
+        tenantOU: action.data.tenants,
+        createTenant: {
+          ...state.createTenant,
+          name: action.data.tenants.length
+            ? action.data.tenants[0].description
+            : "",
+          sync: {
+            ...state.createTenant.sync,
+            ou: action.data.tenants.length ? action.data.tenants[0].id : ""
+          }
+        }
+      };
+    }
     case actionType.POST_CREATE_GROUP_ADMIN: {
       return {
         ...state,
@@ -1135,8 +1160,9 @@ function mainReducer(state = initialState, action) {
             postalCode: "",
             country: ""
           },
-          useTenantLanguages: false,
-          templateName: ""
+          //useTenantLanguages: false,
+          templateName: "",
+          sync: { ldap: "", ou: "" }
         }
       };
     }
@@ -1146,6 +1172,31 @@ function mainReducer(state = initialState, action) {
         createTenant: {
           ...state.createTenant,
           defaultDomain: action.data
+        }
+      };
+    }
+    case actionType.CHANGE_BACKEND_OF_TENANT: {
+      return {
+        ...state,
+        createTenant: {
+          ...state.createTenant,
+          sync: {
+            ...state.createTenant.sync,
+            ldap: action.data
+          }
+        }
+      };
+    }
+    case actionType.CHANGE_DETAILS_OF_TENANT: {
+      return {
+        ...state,
+        createTenant: {
+          ...state.createTenant,
+          name: state.tenantOU.filter(el => el.id === action.data).description,
+          sync: {
+            ...state.createTenant.sync,
+            ou: action.data
+          }
         }
       };
     }

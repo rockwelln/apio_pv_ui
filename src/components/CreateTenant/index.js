@@ -6,6 +6,7 @@ import Template from "./Template";
 import Limits from "./Limits";
 import Admin from "./Admin";
 import Created from "./Created";
+import Parameters from "./Parameters";
 
 import Col from "react-bootstrap/lib/Col";
 import Row from "react-bootstrap/lib/Row";
@@ -52,6 +53,9 @@ export class CreateTenant extends Component {
       }
       case "Admin": {
         return <Admin />;
+      }
+      case "Parameters": {
+        return <Parameters />;
       }
       default:
         return <Basic />;

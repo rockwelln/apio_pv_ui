@@ -275,6 +275,16 @@ export const getMobileNumbersForGroup = data => ({
   data
 });
 
+export const getExistingBackends = data => ({
+  type: actionType.GET_EXISTING_BACKENDS,
+  data
+});
+
+export const getTenantOU = data => ({
+  type: actionType.GET_TENANT_OU,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -583,6 +593,16 @@ export const refuseCreateTenant = () => ({
 
 export const changeDomainOfTenant = data => ({
   type: actionType.CHANGE_DOMAIN_OF_TENANT,
+  data
+});
+
+export const changeBackendOfTenant = data => ({
+  type: actionType.CHANGE_BACKEND_OF_TENANT,
+  data
+});
+
+export const changeDetailsOfTenant = data => ({
+  type: actionType.CHANGE_DETAILS_OF_TENANT,
   data
 });
 
@@ -1618,6 +1638,40 @@ export function fetchGetMobileNumbersForGroup(tenantId, groupId) {
           <FormattedMessage
             id="fetch-numbers-failed"
             defaultMessage="Failed to fetch numbers!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchGetExistingBackends() {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/ldap/backends/`
+    )
+      .then(data => dispatch(getExistingBackends(data)))
+      .catch(error => {
+        console.error(error);
+      });
+  };
+}
+
+export function fetchGetTenantOU(backend) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/ldap/${backend}/tenants?custom_filter=not_in_bwks`
+    )
+      .then(data => dispatch(getTenantOU(data)))
+      .catch(error => {
+        const data = {
+          tenants: []
+        };
+        dispatch(getTenantOU(data));
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-tenant-ou-failed"
+            defaultMessage="Failed to fetch tenant OU!"
           />,
           error.message
         );

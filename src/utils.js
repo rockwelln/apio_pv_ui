@@ -1,7 +1,7 @@
 export const API_URL_PREFIX =
   process.env.NODE_ENV === "production"
     ? window.location.origin
-    : "https://apio-demo-stable.bxl.netaxis.be"; //"https://engo.netaxis.be"; //
+    : "https://apio-core-acud.bxl.netaxis.be"; //"https://engo.netaxis.be"; //
 export const API_URL_PROXY_PREFIX = "/api/v01/apio/sync";
 
 export const API_BASE_URL = "/api/v01/p1";

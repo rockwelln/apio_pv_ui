@@ -13,6 +13,7 @@ import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import Button from "react-bootstrap/lib/Button";
 import Radio from "react-bootstrap/lib/Radio";
 import FormGroup from "react-bootstrap/lib/FormGroup";
+import Checkbox from "react-bootstrap/lib/Checkbox";
 
 import {
   changeTypeOfTenant,
@@ -23,7 +24,11 @@ import {
   changeCityOfTenant,
   changeStepOfCreateTenant,
   refuseCreateTenant,
-  changeDomainOfTenant
+  changeDomainOfTenant,
+  fetchGetExistingBackends,
+  changeBackendOfTenant,
+  fetchGetTenantOU,
+  changeDetailsOfTenant
 } from "../../store/actions";
 
 export class Basic extends Component {
@@ -31,7 +36,9 @@ export class Basic extends Component {
     showMore: false,
     errorMessage: "",
     domainError: "",
-    isDefault: true
+    isDefault: true,
+    turnOnSyncLDAP: false,
+    overwriteID: false
   };
 
   render() {
@@ -59,19 +66,16 @@ export class Basic extends Component {
             </Col>
           </Row>
           <Row className={"margin-1"}>
-            <Col md={12}>
+            <Col md={4}>
               <ToggleButtonGroup
                 type="radio"
                 name="options"
-                defaultValue={this.props.createTenant.type}
+                value={this.props.createTenant.type}
+                onChange={this.changeTenantType}
               >
                 <ToggleButton
                   className={"radio-button"}
                   value={"ServiceProvider"}
-                  onClick={e => {
-                    this.props.changeTypeOfTenant(e.target.value);
-                    this.setState({ errorMessage: "" });
-                  }}
                 >
                   <div>
                     <Glyphicon
@@ -81,14 +85,7 @@ export class Basic extends Component {
                     <p>SERVICE PROVIDER</p>
                   </div>
                 </ToggleButton>
-                <ToggleButton
-                  className={"radio-button"}
-                  value={"Enterprise"}
-                  onClick={e => {
-                    this.props.changeTypeOfTenant(e.target.value);
-                    this.setState({ errorMessage: "" });
-                  }}
-                >
+                <ToggleButton className={"radio-button"} value={"Enterprise"}>
                   <div>
                     <Glyphicon
                       className={"font-24"}
@@ -99,178 +96,269 @@ export class Basic extends Component {
                 </ToggleButton>
               </ToggleButtonGroup>
             </Col>
-          </Row>
-          <Row className={"margin-1"}>
-            <Col md={12}>
-              <p className={"larger"}>Details</p>
-            </Col>
-          </Row>
-          <Row className={"margin-1"}>
-            <Col componentClass={ControlLabel} md={3}>
-              ID{"\u002a"}
-            </Col>
-            <Col md={9}>
-              <FormControl
-                type="text"
-                placeholder="Tenant ID"
-                defaultValue={this.props.createTenant.tenantId}
-                onChange={e => {
-                  this.props.changeIdOfTenant(e.target.value);
-                  this.setState({ errorMessage: "" });
-                }}
-              />
-            </Col>
-          </Row>
-          <Row className={"margin-1"}>
-            <Col componentClass={ControlLabel} md={3}>
-              Name
-            </Col>
-            <Col md={9}>
-              <FormControl
-                type="text"
-                placeholder="Tenant name"
-                defaultValue={this.props.createTenant.name}
-                onChange={e => {
-                  this.props.changeNameOfTenant(e.target.value);
-                  this.setState({ errorMessage: "" });
-                }}
-              />
-            </Col>
-          </Row>
-          <Row className={"margin-1"}>
-            <Col componentClass={ControlLabel} md={3}>
-              Domain
-            </Col>
-            <Col md={9}>
-              <FormGroup>
-                <Radio
-                  name="domain"
-                  checked={this.state.isDefault}
-                  onClick={() => {
-                    this.props.changeDomainOfTenant("");
-                    this.setState({
-                      isDefault: !this.state.isDefault
-                    });
-                  }}
-                >
-                  <div className="font-weight-bold flex">
-                    use default domain
-                  </div>
-                </Radio>
-                <div className={"flex align-items-center"}>
-                  <Radio
-                    name="domain"
-                    className={"nowrap margin-right-1"}
-                    checked={!this.state.isDefault}
-                    onClick={() =>
+            {this.props.ldapBackends.length &&
+            this.props.createTenant.type === "Enterprise" ? (
+              <Col>
+                <div>
+                  <Checkbox
+                    checked={this.state.turnOnSyncLDAP}
+                    onChange={e => {
                       this.setState({
-                        isDefault: !this.state.isDefault
-                      })
+                        turnOnSyncLDAP: e.target.checked
+                      });
+                      if (e.target.checked) {
+                        this.props.changeBackendOfTenant(
+                          this.props.ldapBackends[0]
+                        );
+                        this.props.changeDetailsOfTenant("");
+                        this.props.fetchGetTenantOU(this.props.ldapBackends[0]);
+                      } else {
+                        this.props.changeBackendOfTenant("");
+                      }
+                    }}
+                    className={"margin-top-0"}
+                  >
+                    Tenant synchronized with External LDAP
+                  </Checkbox>
+                  {this.state.turnOnSyncLDAP && (
+                    <div>
+                      <div className="flex space-between align-items-center margin-bottom-1">
+                        <div className="nowrap margin-right-1 width-12">
+                          External LDAP
+                        </div>
+                        <FormControl
+                          componentClass="select"
+                          value={this.props.createTenant.sync.ldap}
+                          onChange={e => {
+                            this.props.changeBackendOfTenant(e.target.value);
+                            this.props.fetchGetTenantOU(e.target.value);
+                          }}
+                        >
+                          {this.props.ldapBackends.map(el => (
+                            <option key={el} value={el}>
+                              {el}
+                            </option>
+                          ))}
+                        </FormControl>
+                      </div>
+                      <div className="flex space-between align-items-center ">
+                        <div className="nowrap margin-right-1 width-12">
+                          Tenant OU
+                        </div>
+                        <FormControl
+                          componentClass="select"
+                          value={this.props.createTenant.sync.ou}
+                          onChange={e =>
+                            this.props.changeDetailsOfTenant(e.target.value)
+                          }
+                        >
+                          {this.props.tenantOU.map(el => (
+                            <option key={el.id} value={el.id}>
+                              {el.id}
+                            </option>
+                          ))}
+                        </FormControl>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </Col>
+            ) : null}
+          </Row>
+          {(!this.props.createTenant.sync.ou ||
+            !this.props.createTenant.sync.ldap) && (
+            <React.Fragment>
+              <Row className={"margin-1"}>
+                <Col md={12}>
+                  <p className={"larger"}>Details</p>
+                </Col>
+              </Row>
+              <Row className={"margin-1"}>
+                <Col componentClass={ControlLabel} md={3}>
+                  ID
+                </Col>
+                <Col md={9}>
+                  <Checkbox
+                    className={"margin-top-0"}
+                    checked={this.state.overwriteID}
+                    onChange={e =>
+                      this.setState({ overwriteID: e.target.checked })
                     }
                   >
-                    <div className="font-weight-bold flex">specify domain</div>
-                  </Radio>
+                    Overwrite default tenant ID
+                  </Checkbox>
                   <FormControl
                     type="text"
-                    placeholder="Domain"
-                    disabled={this.state.isDefault}
-                    defaultValue={this.props.createTenant.defaultDomain}
+                    placeholder="Tenant ID"
+                    defaultValue={this.props.createTenant.tenantId}
+                    disabled={!this.state.overwriteID}
                     onChange={e => {
-                      this.validateDomain(e.target.value);
+                      this.props.changeIdOfTenant(e.target.value);
                       this.setState({ errorMessage: "" });
                     }}
                   />
-                </div>
-              </FormGroup>
-            </Col>
-          </Row>
-          {this.state.domainError && (
-            <Row className={"margin-1 color-error"}>
-              <Col md={12}>
-                <p>{this.state.domainError}</p>
-              </Col>
-            </Row>
-          )}
-          <Row className={"margin-1"}>
-            <Col mdOffset={0} md={2}>
-              {!this.state.showHideMore ? (
-                <Glyphicon
-                  className={"glyphicon-light"}
-                  glyph="glyphicon glyphicon-collapse-down"
-                  onClick={this.showHideMore}
-                  style={{ display: "flex", lineHeight: "20px" }}
-                >
-                  <div
-                    style={{
-                      fontFamily: `"Ubuntu, Helvetica Neue",Helvetica,Arial,sans-serif`
-                    }}
-                  >
-                    Add address
-                  </div>
-                </Glyphicon>
-              ) : (
-                <Glyphicon
-                  className={"glyphicon-light"}
-                  glyph="glyphicon glyphicon-collapse-down"
-                  onClick={this.showHideMore}
-                  style={{ display: "flex", lineHeight: "20px" }}
-                >
-                  <div
-                    style={{
-                      fontFamily: `"Helvetica Neue",Helvetica,Arial,sans-serif`
-                    }}
-                  >
-                    Hide
-                  </div>
-                </Glyphicon>
-              )}
-            </Col>
-          </Row>
-          {this.state.showHideMore && (
-            <React.Fragment>
+                </Col>
+              </Row>
               <Row className={"margin-1"}>
                 <Col componentClass={ControlLabel} md={3}>
-                  Addess
+                  Name
                 </Col>
                 <Col md={9}>
                   <FormControl
                     type="text"
-                    placeholder="Street"
-                    defaultValue={this.props.createTenant.address.addressLine1}
-                    onChange={e =>
-                      this.props.changeAddressOfTenant(e.target.value)
-                    }
+                    placeholder="Tenant name"
+                    defaultValue={this.props.createTenant.name}
+                    onChange={e => {
+                      this.props.changeNameOfTenant(e.target.value);
+                      this.setState({ errorMessage: "" });
+                    }}
                   />
                 </Col>
               </Row>
               <Row className={"margin-1"}>
-                <Col mdOffset={3} md={3}>
-                  <FormControl
-                    type="text"
-                    placeholder="ZIP"
-                    defaultValue={this.props.createTenant.address.postalCode}
-                    onChange={e => this.props.changeZIPOfTenant(e.target.value)}
-                  />
+                <Col componentClass={ControlLabel} md={3}>
+                  Domain
                 </Col>
-                <Col md={6}>
-                  <FormControl
-                    type="text"
-                    placeholder="City"
-                    defaultValue={this.props.createTenant.address.city}
-                    onChange={e =>
-                      this.props.changeCityOfTenant(e.target.value)
-                    }
-                  />
+                <Col md={9}>
+                  <FormGroup>
+                    <Radio
+                      name="domain"
+                      checked={this.state.isDefault}
+                      onClick={() => {
+                        this.props.changeDomainOfTenant("");
+                        this.setState({
+                          isDefault: !this.state.isDefault
+                        });
+                      }}
+                    >
+                      <div className="font-weight-bold flex">
+                        use default domain
+                      </div>
+                    </Radio>
+                    <div className={"flex align-items-center"}>
+                      <Radio
+                        name="domain"
+                        className={"nowrap margin-right-1"}
+                        checked={!this.state.isDefault}
+                        onClick={() =>
+                          this.setState({
+                            isDefault: !this.state.isDefault
+                          })
+                        }
+                      >
+                        <div className="font-weight-bold flex">
+                          specify domain
+                        </div>
+                      </Radio>
+                      <FormControl
+                        type="text"
+                        placeholder="Domain"
+                        disabled={this.state.isDefault}
+                        defaultValue={this.props.createTenant.defaultDomain}
+                        onChange={e => {
+                          this.validateDomain(e.target.value);
+                          this.setState({ errorMessage: "" });
+                        }}
+                      />
+                    </div>
+                  </FormGroup>
                 </Col>
               </Row>
+              {this.state.domainError && (
+                <Row className={"margin-1 color-error"}>
+                  <Col md={12}>
+                    <p>{this.state.domainError}</p>
+                  </Col>
+                </Row>
+              )}
+              <Row className={"margin-1"}>
+                <Col mdOffset={0} md={2}>
+                  {!this.state.showHideMore ? (
+                    <Glyphicon
+                      className={"glyphicon-light"}
+                      glyph="glyphicon glyphicon-collapse-down"
+                      onClick={this.showHideMore}
+                      style={{ display: "flex", lineHeight: "20px" }}
+                    >
+                      <div
+                        style={{
+                          fontFamily: `"Ubuntu, Helvetica Neue",Helvetica,Arial,sans-serif`
+                        }}
+                      >
+                        Add address
+                      </div>
+                    </Glyphicon>
+                  ) : (
+                    <Glyphicon
+                      className={"glyphicon-light"}
+                      glyph="glyphicon glyphicon-collapse-down"
+                      onClick={this.showHideMore}
+                      style={{ display: "flex", lineHeight: "20px" }}
+                    >
+                      <div
+                        style={{
+                          fontFamily: `"Helvetica Neue",Helvetica,Arial,sans-serif`
+                        }}
+                      >
+                        Hide
+                      </div>
+                    </Glyphicon>
+                  )}
+                </Col>
+              </Row>
+              {this.state.showHideMore && (
+                <React.Fragment>
+                  <Row className={"margin-1"}>
+                    <Col componentClass={ControlLabel} md={3}>
+                      Addess
+                    </Col>
+                    <Col md={9}>
+                      <FormControl
+                        type="text"
+                        placeholder="Street"
+                        defaultValue={
+                          this.props.createTenant.address.addressLine1
+                        }
+                        onChange={e =>
+                          this.props.changeAddressOfTenant(e.target.value)
+                        }
+                      />
+                    </Col>
+                  </Row>
+                  <Row className={"margin-1"}>
+                    <Col mdOffset={3} md={3}>
+                      <FormControl
+                        type="text"
+                        placeholder="ZIP"
+                        defaultValue={
+                          this.props.createTenant.address.postalCode
+                        }
+                        onChange={e =>
+                          this.props.changeZIPOfTenant(e.target.value)
+                        }
+                      />
+                    </Col>
+                    <Col md={6}>
+                      <FormControl
+                        type="text"
+                        placeholder="City"
+                        defaultValue={this.props.createTenant.address.city}
+                        onChange={e =>
+                          this.props.changeCityOfTenant(e.target.value)
+                        }
+                      />
+                    </Col>
+                  </Row>
+                </React.Fragment>
+              )}
+              {this.state.errorMessage && (
+                <Row className={"margin-1 color-error"}>
+                  <Col md={12}>
+                    <p>{this.state.errorMessage}</p>
+                  </Col>
+                </Row>
+              )}
             </React.Fragment>
-          )}
-          {this.state.errorMessage && (
-            <Row className={"margin-1 color-error"}>
-              <Col md={12}>
-                <p>{this.state.errorMessage}</p>
-              </Col>
-            </Row>
           )}
           <Row className={"margin-1"}>
             <div class="button-row">
@@ -296,15 +384,25 @@ export class Basic extends Component {
     );
   }
 
+  changeTenantType = value => {
+    this.props.changeTypeOfTenant(value);
+    if (
+      this.props.createTenant.type !== "Enterprise" &&
+      value === "Enterprise"
+    ) {
+      this.props.fetchGetExistingBackends();
+    }
+    if (value === "ServiceProvider") {
+      this.props.changeBackendOfTenant("");
+      this.props.changeDetailsOfTenant("");
+      this.setState({ turnOnSyncLDAP: false });
+    }
+    this.setState({ errorMessage: "" });
+  };
+
   nextStep = () => {
     const { tenantId, type } = this.props.createTenant;
-    if (tenantId && type) {
-      this.props.changeStepOfCreateTenant("Template");
-    } else {
-      this.setState({
-        errorMessage: "Tenant ID and type are required"
-      });
-    }
+    this.props.changeStepOfCreateTenant("Template");
   };
 
   validateDomain = value => {
@@ -326,7 +424,9 @@ export class Basic extends Component {
 }
 
 const mapStateToProps = state => ({
-  createTenant: state.createTenant
+  createTenant: state.createTenant,
+  ldapBackends: state.ldapBackends,
+  tenantOU: state.tenantOU
 });
 
 const mapDispatchToProps = {
@@ -338,7 +438,11 @@ const mapDispatchToProps = {
   changeCityOfTenant,
   changeStepOfCreateTenant,
   refuseCreateTenant,
-  changeDomainOfTenant
+  changeDomainOfTenant,
+  fetchGetExistingBackends,
+  changeBackendOfTenant,
+  fetchGetTenantOU,
+  changeDetailsOfTenant
 };
 
 export default withRouter(
