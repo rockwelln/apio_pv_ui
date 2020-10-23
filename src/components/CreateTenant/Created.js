@@ -46,7 +46,7 @@ export class Created extends Component {
               </div>
               <div className="pull-right link-button">
                 <Link
-                  to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}`}
+                  to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.createdTenant.tenantId}`}
                 >
                   <div onClick={() => this.props.refuseCreateTenant()}>
                     Quit wizard
