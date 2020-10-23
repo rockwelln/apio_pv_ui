@@ -18,16 +18,27 @@ import { removeEmpty } from "../remuveEmptyInObject";
 
 import {
   refuseCreateTenant,
-  changeStepOfCreateTenant
+  changeStepOfCreateTenant,
+  fetchGetListOfRoutingProfiles,
+  fetchPutUpdateTenantDetails,
+  fetchPutUpdateTenantRoutingProfile,
+  fetchPutUpdateTenantVoiceMessaging
 } from "../../store/actions";
 
 export class TenantParameters extends Component {
   state = {
     isLoading: true,
-    creating: ""
+    useCustomRouting: false,
+    selectedRoutingProfile: "",
+    enabledVoiceMessagingSettings: false,
+    voiceMessageNotification: "",
+    voiceMessageDelivery: "",
+    voicePortalPasscodeLockout: ""
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.props.fetchGetListOfRoutingProfiles();
+  }
 
   render() {
     // if (this.state.isLoading) {
@@ -46,41 +57,152 @@ export class TenantParameters extends Component {
         <div class="panel-body">
           <Row>
             <Col md={12} className={"flex-row"}>
-              <div>
-                <Checkbox className={"margin-top-0"}>
-                  Tenant synchronized with External LDAP
+              <div className={"width-100p"}>
+                <Checkbox
+                  className={"margin-top-0"}
+                  checked={this.state.useCustomRouting}
+                  onChange={e => {
+                    if (e.target.checked) {
+                      this.setState({
+                        useCustomRouting: e.target.checked,
+                        selectedRoutingProfile: this.props
+                          .listOfRoutingProfiles[0]
+                      });
+                    } else {
+                      this.setState({
+                        useCustomRouting: e.target.checked,
+                        selectedRoutingProfile: ""
+                      });
+                    }
+                  }}
+                >
+                  Use custom routing profile
                 </Checkbox>
-                <div className="flex space-between align-items-center margin-bottom-1">
-                  <div className="nowrap margin-right-1 width-12">
-                    External LDAP
-                  </div>
-                  <FormControl
-                    componentClass="select"
-                    // value={
-                    //   this.props.createTenant.synchronisation_info.backend
-                    // }
-                    // onChange={e => {
-                    //   this.props.changeBackendOfTenant(e.target.value);
-                    //   this.props.fetchGetTenantOU(e.target.value);
-                    // }}
-                  >
-                    {/* {this.props.ldapBackends.map(el => (
-                            <option key={el} value={el}>
-                              {el}
-                            </option>
-                          ))} */}
-                  </FormControl>
-                </div>
-                <div class="button-row margin-right-0">
-                  <div className="pull-right">
-                    <Button
-                      className={"btn-primary"}
-                      onClick={this.goToLicenses}
-                    >
-                      Save
-                    </Button>
-                  </div>
-                </div>
+                {this.state.useCustomRouting && (
+                  <React.Fragment>
+                    <div className="flex space-between align-items-center margin-bottom-1">
+                      <div className="nowrap margin-right-1 width-50p">
+                        Routing profile
+                      </div>
+                      <FormControl
+                        componentClass="select"
+                        value={this.state.selectedRoutingProfile}
+                        onChange={e => {
+                          this.setState({
+                            selectedRoutingProfile: e.target.value
+                          });
+                        }}
+                      >
+                        {this.props.listOfRoutingProfiles.map(el => (
+                          <option key={el} value={el}>
+                            {el}
+                          </option>
+                        ))}
+                      </FormControl>
+                    </div>
+                    <div class="button-row margin-right-0">
+                      <div className="pull-right">
+                        <Button
+                          className={"btn-primary"}
+                          onClick={this.saveRoutingProfile}
+                          disabled={!this.state.selectedRoutingProfile}
+                        >
+                          Save
+                        </Button>
+                      </div>
+                    </div>
+                  </React.Fragment>
+                )}
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={12} className={"flex-row"}>
+              <div className={"width-100p"}>
+                <Checkbox
+                  className={"margin-top-0"}
+                  checked={this.state.enabledVoiceMessagingSettings}
+                  onChange={e => {
+                    if (e.target.checked) {
+                      this.setState({
+                        enabledVoiceMessagingSettings: e.target.checked
+                      });
+                    } else {
+                      this.setState({
+                        enabledVoiceMessagingSettings: e.target.checked,
+                        voiceMessageNotification: "",
+                        voiceMessageDelivery: "",
+                        voicePortalPasscodeLockout: ""
+                      });
+                    }
+                  }}
+                >
+                  Voice messaging settings
+                </Checkbox>
+                {this.state.enabledVoiceMessagingSettings && (
+                  <React.Fragment>
+                    <div className="flex space-between align-items-center margin-bottom-1">
+                      <div className="nowrap margin-right-1 width-50p">
+                        Voicemail Notification
+                      </div>
+                      <FormControl
+                        type="text"
+                        placeholder="Voicemail Notification"
+                        value={this.state.voiceMessageNotification}
+                        onChange={e =>
+                          this.setState({
+                            voiceMessageNotification: e.target.value
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="flex space-between align-items-center margin-bottom-1">
+                      <div className="nowrap margin-right-1 width-50p">
+                        Voicemail Delivery
+                      </div>
+                      <FormControl
+                        type="text"
+                        placeholder="Voicemail Delivery"
+                        value={this.state.voiceMessageDelivery}
+                        onChange={e =>
+                          this.setState({
+                            voiceMessageDelivery: e.target.value
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="flex space-between align-items-center margin-bottom-1">
+                      <div className="nowrap margin-right-1 width-50p">
+                        Voice portal passcode lockout
+                      </div>
+                      <FormControl
+                        type="text"
+                        placeholder="Voice portal passcode lockout"
+                        value={this.state.voicePortalPasscodeLockout}
+                        onChange={e =>
+                          this.setState({
+                            voicePortalPasscodeLockout: e.target.value
+                          })
+                        }
+                      />
+                    </div>
+                    <div class="button-row margin-right-0">
+                      <div className="pull-right">
+                        <Button
+                          className={"btn-primary"}
+                          onClick={this.saveVoiceMessaging}
+                          disabled={
+                            !this.state.voiceMessageNotification &&
+                            !this.state.voiceMessageDelivery &&
+                            !this.state.voicePortalPasscodeLockout
+                          }
+                        >
+                          Save
+                        </Button>
+                      </div>
+                    </div>
+                  </React.Fragment>
+                )}
               </div>
             </Col>
           </Row>
@@ -108,16 +230,58 @@ export class TenantParameters extends Component {
     );
   }
 
+  saveVoiceMessaging = () => {
+    const data = {
+      voiceMessageDelivery: {
+        fromAddress: this.state.voiceMessageDelivery
+      },
+      voiceMessageNotification: {
+        fromAddress: this.state.voiceMessageNotification
+      },
+      voicePortalPasscodeLockout: {
+        fromAddress: this.state.voicePortalPasscodeLockout
+      }
+    };
+    const clearData = removeEmpty(data);
+    this.props.fetchPutUpdateTenantVoiceMessaging(
+      this.props.createdTenant.tenantId,
+      clearData
+    );
+  };
+
+  saveRoutingProfile = () => {
+    this.props
+      .fetchPutUpdateTenantDetails(this.props.createdTenant.tenantId, {
+        useCustomRoutingProfile: true
+      })
+      .then(() => {
+        this.props.fetchPutUpdateTenantRoutingProfile(
+          this.props.createdTenant.tenantId,
+          {
+            routingProfile: this.state.selectedRoutingProfile
+          }
+        );
+      });
+  };
+
   goToLicenses = () => {
     this.props.changeStepOfCreateTenant("Limits");
   };
 }
 
 const mapStateToProps = state => ({
-  createdTenant: state.createdTenant
+  createdTenant: state.createdTenant,
+  listOfRoutingProfiles: state.listOfRoutingProfiles
 });
 
-const mapDispatchToProps = { refuseCreateTenant, changeStepOfCreateTenant };
+const mapDispatchToProps = {
+  refuseCreateTenant,
+  changeStepOfCreateTenant,
+  fetchGetListOfRoutingProfiles,
+  fetchPutUpdateTenantDetails,
+  fetchPutUpdateTenantRoutingProfile,
+  fetchPutUpdateTenantVoiceMessaging
+};
 
 export default withRouter(
   connect(

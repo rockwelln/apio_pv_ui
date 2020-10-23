@@ -211,6 +211,10 @@ textarea {
   width: 100%;
 }
 
+.width-50p {
+  width: 50%;
+}
+
 .width-auto {
   width: auto;
 }

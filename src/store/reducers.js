@@ -129,7 +129,8 @@ const initialState = {
   availableMobileNumbers: [],
   fullListGroupNumber: [],
   ldapBackends: [],
-  tenantOU: []
+  tenantOU: [],
+  listOfRoutingProfiles: []
 };
 
 function mainReducer(state = initialState, action) {
@@ -704,6 +705,12 @@ function mainReducer(state = initialState, action) {
         }
       };
     }
+    case actionType.GET_LIST_OF_ROUTING_PROFILES: {
+      return {
+        ...state,
+        listOfRoutingProfiles: action.data.routingProfiles
+      };
+    }
     case actionType.POST_CREATE_GROUP_ADMIN: {
       return {
         ...state,
@@ -960,6 +967,16 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         templateDetails: action.data
+      };
+    }
+    case actionType.PUT_UPDATE_TENANT_ROUTING_PROFILE: {
+      return {
+        ...state
+      };
+    }
+    case actionType.PUT_UPDATE_TENANT_VOICE_MESSAGING: {
+      return {
+        ...state
       };
     }
     case actionType.DELETE_TENANT: {
