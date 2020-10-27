@@ -290,6 +290,16 @@ export const getListOfRoutingProfiles = data => ({
   data
 });
 
+export const getTenantRoutingProfile = data => ({
+  type: actionType.GET_TENANT_ROUTING_PROFILE,
+  data
+});
+
+export const getTenantVoiceMessaging = data => ({
+  type: actionType.GET_TENANT_VOICE_MESSAGING,
+  data
+});
+
 export const postCreateGroupAdmin = data => ({
   type: actionType.POST_CREATE_GROUP_ADMIN,
   data
@@ -1705,6 +1715,42 @@ export function fetchGetListOfRoutingProfiles() {
           <FormattedMessage
             id="fetch-routing-profiles-failed"
             defaultMessage="Failed to fetch routing profiles"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchGetTenantRoutingProfile(tenantId) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/routing_profile/`
+    )
+      .then(data => dispatch(getTenantRoutingProfile(data)))
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-routing-profile-failed"
+            defaultMessage="Failed to fetch routing profile"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchGetTenantVoiceMessaging(tenantId) {
+  return function(dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/services/voice_messaging/`
+    )
+      .then(data => dispatch(getTenantVoiceMessaging(data)))
+      .catch(error => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-voice-messaging-failed"
+            defaultMessage="Failed to fetch voice-messaging"
           />,
           error.message
         );

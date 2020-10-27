@@ -14,9 +14,16 @@ import Loading from "../../../../common/Loading";
 
 import { removeEmpty } from "../../../remuveEmptyInObject";
 
+import { get } from "../../../get";
+
 import {
   fetchPutUpdateTenantDetails,
-  fetchGetTenantById
+  fetchGetTenantById,
+  fetchGetListOfRoutingProfiles,
+  fetchGetTenantRoutingProfile,
+  fetchPutUpdateTenantRoutingProfile,
+  fetchGetTenantVoiceMessaging,
+  fetchPutUpdateTenantVoiceMessaging
 } from "../../../../store/actions";
 
 class Details extends Component {
@@ -27,23 +34,65 @@ class Details extends Component {
     useTenantLanguages: "",
     useCustomRoutingProfile: "",
     isLoading: true,
-    addressInformation: {}
+    addressInformation: {},
+    isLoadingRoutingProfile: true,
+    tenantRoutingProfile: "",
+
+    voiceMessageDelivery: "",
+    voiceMessageNotification: "",
+    voicePortalPasscodeLockout: ""
   };
 
   componentDidMount() {
-    this.props.fetchGetTenantById(this.props.tenantId).then(() =>
+    this.props.fetchGetTenantById(this.props.tenantId).then(() => {
+      this.props.fetchGetListOfRoutingProfiles().then(() => {
+        this.setState({
+          tenant: { ...this.props.tenant },
+          addressInformation: this.props.tenant.addressInformation
+            ? this.props.tenant.addressInformation
+            : {},
+          isLoading: false
+        });
+      });
+    });
+    this.props.fetchGetTenantRoutingProfile(this.props.tenantId).then(() => {
       this.setState({
-        tenant: this.props.tenant,
-        addressInformation: this.props.tenant.addressInformation
-          ? this.props.tenant.addressInformation
-          : {},
-        isLoading: false
-      })
-    );
+        isLoadingRoutingProfile: false,
+        tenantRoutingProfile: this.props.tenantRoutingProfile
+      });
+    });
+    this.props.fetchGetTenantVoiceMessaging(this.props.tenantId).then(() => {
+      this.setState({
+        isLoadingVM: false,
+        voiceMessageDelivery: get(
+          this.props,
+          "tenantVoiceMessaging.voiceMessageDelivery.fromAddress"
+        )
+          ? this.props.tenantVoiceMessaging.voiceMessageDelivery.fromAddress
+          : "",
+        voiceMessageNotification: get(
+          this.props,
+          "tenantVoiceMessaging.voiceMessageNotification.fromAddress"
+        )
+          ? this.props.tenantVoiceMessaging.voiceMessageNotification.fromAddress
+          : "",
+        voicePortalPasscodeLockout: get(
+          this.props,
+          "tenantVoiceMessaging.voicePortalPasscodeLockout.fromAddress"
+        )
+          ? this.props.tenantVoiceMessaging.voicePortalPasscodeLockout
+              .fromAddress
+          : ""
+      });
+    });
   }
 
   render() {
-    if (this.props.isLoading) {
+    if (
+      this.props.isLoading ||
+      this.state.isLoadingRoutingProfile ||
+      this.state.isLoadingVM
+    ) {
       return <Loading />;
     }
 
@@ -63,6 +112,49 @@ class Details extends Component {
                   disabled
                   defaultValue={this.state.tenant.tenantId}
                 />
+              </Col>
+            </FormGroup>
+            {this.state.tenant.sync && (
+              <React.Fragment>
+                <FormGroup controlId="ldap">
+                  <Col componentClass={ControlLabel} md={3}>
+                    External LDAP
+                  </Col>
+                  <Col md={9}>
+                    <FormControl value={this.state.tenant.sync.ldap} disabled />
+                  </Col>
+                </FormGroup>
+                <FormGroup controlId="ldap">
+                  <Col componentClass={ControlLabel} md={3}>
+                    Tenant OU
+                  </Col>
+                  <Col md={9}>
+                    <FormControl value={this.state.tenant.sync.ou} disabled />
+                  </Col>
+                </FormGroup>
+              </React.Fragment>
+            )}
+            <FormGroup controlId="useTenantLanguages">
+              <Col mdOffset={3} md={9}>
+                <Checkbox
+                //defaultChecked={this.state.tenant.useTenantLanguages}
+                // onChange={e =>
+                //   this.setState({ useTenantLanguages: e.target.checked })
+                // }
+                >
+                  Include the Tenant in next Synchronization cycle (Groups and
+                  Users)
+                </Checkbox>
+              </Col>
+            </FormGroup>
+            <FormGroup controlId="useTenantLanguages">
+              <Col mdOffset={1}>
+                <div>Last synchronization performed for this Tenant: </div>
+              </Col>
+            </FormGroup>
+            <FormGroup controlId="useTenantLanguages">
+              <Col mdOffset={1}>
+                <div>Next synchronization planned: </div>
               </Col>
             </FormGroup>
             <FormGroup controlId="tentantName">
@@ -104,18 +196,6 @@ class Details extends Component {
                   }
                 >
                   Use tenant languages
-                </Checkbox>
-              </Col>
-            </FormGroup>
-            <FormGroup controlId="useCustomRoutingProfile">
-              <Col mdOffset={3} md={9}>
-                <Checkbox
-                  defaultChecked={this.state.tenant.useCustomRoutingProfile}
-                  onChange={e =>
-                    this.setState({ useCustomRoutingProfile: e.target.checked })
-                  }
-                >
-                  Use custom routing profile
                 </Checkbox>
               </Col>
             </FormGroup>
@@ -171,13 +251,153 @@ class Details extends Component {
                 />
               </Col>
             </FormGroup>
+            <FormGroup controlId="useCustomRoutingProfile">
+              <Col mdOffset={3} md={9}>
+                <Checkbox
+                  defaultChecked={this.state.tenant.useCustomRoutingProfile}
+                  onChange={e =>
+                    this.setState({ useCustomRoutingProfile: e.target.checked })
+                  }
+                >
+                  Use custom routing profile
+                </Checkbox>
+              </Col>
+            </FormGroup>
+            {this.state.useCustomRoutingProfile && (
+              <FormGroup controlId="routingProfile">
+                <Col componentClass={ControlLabel} md={3}>
+                  Routing profile
+                </Col>
+                <Col md={9}>
+                  <FormControl
+                    componentClass="select"
+                    value={this.state.tenantRoutingProfile}
+                    onChange={e => {
+                      this.setState({
+                        tenantRoutingProfile: e.target.value
+                      });
+                    }}
+                  >
+                    {!this.state.tenantRoutingProfile && (
+                      <option key={"null"} value={""}>
+                        {""}
+                      </option>
+                    )}
+                    {this.props.listOfRoutingProfiles.map(el => (
+                      <option key={el} value={el}>
+                        {el}
+                      </option>
+                    ))}
+                  </FormControl>
+                </Col>
+                <Col md={12}>
+                  <div class="button-row margin-right-0">
+                    <div className="pull-right">
+                      <Button
+                        className={"btn-primary"}
+                        onClick={this.saveRoutingProfile}
+                        disabled={!this.state.tenantRoutingProfile}
+                      >
+                        Save
+                      </Button>
+                    </div>
+                  </div>
+                </Col>
+              </FormGroup>
+            )}
+            <FormGroup controlId="useCustomRoutingProfile">
+              <Col mdOffset={3} md={9}>
+                <Checkbox
+                  defaultChecked={this.state.enabledVoiceMessagingSettings}
+                  onChange={e =>
+                    this.setState({
+                      enabledVoiceMessagingSettings: e.target.checked
+                    })
+                  }
+                >
+                  Voice messaging settings
+                </Checkbox>
+              </Col>
+            </FormGroup>
+            {this.state.enabledVoiceMessagingSettings && (
+              <React.Fragment>
+                <FormGroup controlId="tentantID">
+                  <Col componentClass={ControlLabel} md={3}>
+                    Voicemail Notification
+                  </Col>
+                  <Col md={9}>
+                    <FormControl
+                      type="text"
+                      placeholder="Voicemail Notification"
+                      value={this.state.voiceMessageNotification}
+                      onChange={e =>
+                        this.setState({
+                          voiceMessageNotification: e.target.value
+                        })
+                      }
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup controlId="tentantID">
+                  <Col componentClass={ControlLabel} md={3}>
+                    Voicemail Delivery
+                  </Col>
+                  <Col md={9}>
+                    <FormControl
+                      type="text"
+                      placeholder="Voicemail Delivery"
+                      value={this.state.voiceMessageDelivery}
+                      onChange={e =>
+                        this.setState({
+                          voiceMessageDelivery: e.target.value
+                        })
+                      }
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup controlId="tentantID">
+                  <Col componentClass={ControlLabel} md={3}>
+                    Voice portal passcode lockout
+                  </Col>
+                  <Col md={9}>
+                    <FormControl
+                      type="text"
+                      placeholder="Voice portal passcode lockout"
+                      value={this.state.voicePortalPasscodeLockout}
+                      onChange={e =>
+                        this.setState({
+                          voicePortalPasscodeLockout: e.target.value
+                        })
+                      }
+                    />
+                  </Col>
+                  <Col md={12}>
+                    <div class="button-row margin-right-0">
+                      <div className="pull-right">
+                        <Button
+                          className={"btn-primary"}
+                          onClick={this.saveVoiceMessaging}
+                          disabled={
+                            !this.state.voiceMessageNotification &&
+                            !this.state.voiceMessageDelivery &&
+                            !this.state.voicePortalPasscodeLockout
+                          }
+                        >
+                          Save
+                        </Button>
+                      </div>
+                    </div>
+                  </Col>
+                </FormGroup>
+              </React.Fragment>
+            )}
+            <Col mdPush={10} md={1}>
+              <Button onClick={this.updateTenant}>
+                <Glyphicon glyph="glyphicon glyphicon-ok" />
+                {` UPDATE`}
+              </Button>
+            </Col>
           </FormGroup>
-          <Col mdPush={10} md={1}>
-            <Button onClick={this.updateTenant}>
-              <Glyphicon glyph="glyphicon glyphicon-ok" />
-              {` UPDATE`}
-            </Button>
-          </Col>
         </Form>
       </Col>
     );
@@ -212,15 +432,59 @@ class Details extends Component {
       clearData
     );
   };
+
+  saveRoutingProfile = () => {
+    this.props
+      .fetchPutUpdateTenantDetails(this.state.tenant.tenantId, {
+        useCustomRoutingProfile: true
+      })
+      .then(() => {
+        this.props.fetchPutUpdateTenantRoutingProfile(
+          this.state.tenant.tenantId,
+          {
+            routingProfile: this.state.tenantRoutingProfile
+          }
+        );
+      });
+  };
+
+  saveVoiceMessaging = () => {
+    const data = {
+      voiceMessageDelivery: {
+        fromAddress: this.state.voiceMessageDelivery
+      },
+      voiceMessageNotification: {
+        fromAddress: this.state.voiceMessageNotification
+      },
+      voicePortalPasscodeLockout: {
+        fromAddress: this.state.voicePortalPasscodeLockout
+      }
+    };
+    const clearData = removeEmpty(data);
+    this.props.fetchPutUpdateTenantVoiceMessaging(
+      this.state.tenant.tenantId,
+      clearData
+    );
+  };
 }
 
 const mapStateToProps = state => ({
-  tenant: state.tenant
+  tenant: state.tenant,
+  ldapBackends: state.ldapBackends,
+  tenantOU: state.tenantOU,
+  listOfRoutingProfiles: state.listOfRoutingProfiles,
+  tenantRoutingProfile: state.tenantRoutingProfile,
+  tenantVoiceMessaging: state.tenantVoiceMessaging
 });
 
 const mapDispatchToProps = {
   fetchGetTenantById,
-  fetchPutUpdateTenantDetails
+  fetchPutUpdateTenantDetails,
+  fetchGetListOfRoutingProfiles,
+  fetchGetTenantRoutingProfile,
+  fetchPutUpdateTenantRoutingProfile,
+  fetchGetTenantVoiceMessaging,
+  fetchPutUpdateTenantVoiceMessaging
 };
 
 export default connect(

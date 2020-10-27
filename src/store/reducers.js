@@ -130,7 +130,9 @@ const initialState = {
   fullListGroupNumber: [],
   ldapBackends: [],
   tenantOU: [],
-  listOfRoutingProfiles: []
+  listOfRoutingProfiles: [],
+  tenantRoutingProfile: "",
+  tenantVoiceMessaging: {}
 };
 
 function mainReducer(state = initialState, action) {
@@ -711,6 +713,18 @@ function mainReducer(state = initialState, action) {
         listOfRoutingProfiles: action.data.routingProfiles
       };
     }
+    case actionType.GET_TENANT_ROUTING_PROFILE: {
+      return {
+        ...state,
+        tenantRoutingProfile: action.data.routingProfile
+      };
+    }
+    case actionType.GET_TENANT_VOICE_MESSAGING: {
+      return {
+        ...state,
+        tenantVoiceMessaging: action.data
+      };
+    }
     case actionType.POST_CREATE_GROUP_ADMIN: {
       return {
         ...state,
@@ -1205,11 +1219,14 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.CHANGE_DETAILS_OF_TENANT: {
+      console.log(state.tenantOU.filter(el => el.id === action.data));
       return {
         ...state,
         createTenant: {
           ...state.createTenant,
-          name: state.tenantOU.filter(el => el.id === action.data).description,
+          name: state.tenantOU.filter(el => el.id === action.data)[0]
+            ? state.tenantOU.filter(el => el.id === action.data)[0].description
+            : "",
           sync: {
             ...state.createTenant.sync,
             ou: action.data
