@@ -10,7 +10,10 @@ import Col from "react-bootstrap/lib/Col";
 
 import Button from "react-bootstrap/lib/Button";
 
-import { changeStepOfCreateGroup } from "../../store/actions";
+import {
+  changeStepOfCreateGroup,
+  refuseCreateGroup
+} from "../../store/actions";
 
 export class Created extends Component {
   render() {
@@ -63,7 +66,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  changeStepOfCreateGroup
+  changeStepOfCreateGroup,
+  refuseCreateGroup
 };
 
 export default withRouter(
