@@ -33,6 +33,7 @@ class Tenant extends Component {
         </td>
         <td>{t.name}</td>
         <td>{t.type}</td>
+        {t.sync ? <td>{t.sync.ldap}</td> : <td />}
         <td>
           <ButtonToolbar>
             <Glyphicon
