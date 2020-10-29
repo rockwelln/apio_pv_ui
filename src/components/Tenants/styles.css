@@ -324,3 +324,22 @@ textarea {
   height: -webkit-fill-available;
   height: stretch;
 }
+
+.sync-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  border: solid 1px;
+  border-radius: 5px;
+  background-color: #eee;
+}
+
+.sync-group-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 5px;
+  border-right: solid 1px gray;
+  width: 100%;
+}

@@ -77,6 +77,30 @@ class Details extends Component {
                 />
               </Col>
             </FormGroup>
+            {this.props.group.sync && (
+              <FormGroup controlId="Sync">
+                <Col
+                  componentClass={ControlLabel}
+                  md={3}
+                  className={"text-left"}
+                >
+                  Sync
+                </Col>
+                <Col md={9}>
+                  <div className={"sync-group"}>
+                    <div className={"sync-group-item"}>
+                      {this.props.group.sync.ldap}
+                    </div>
+                    <div className={"sync-group-item"}>
+                      {this.props.tenant.sync.ou}
+                    </div>
+                    <div className={"sync-group-item"}>
+                      {this.props.group.sync.ou}
+                    </div>
+                  </div>
+                </Col>
+              </FormGroup>
+            )}
             <FormGroup controlId="groupName">
               <Col componentClass={ControlLabel} md={3} className={"text-left"}>
                 Name
@@ -303,6 +327,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = state => ({
   group: state.group,
+  tenant: state.tenant,
   fullListGroupNumber: state.fullListGroupNumber
 });
 
