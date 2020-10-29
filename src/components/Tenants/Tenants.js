@@ -41,21 +41,23 @@ class Tenants extends Component {
   }
 
   fetchRequsts = () => {
-    this.props.fetchGetTenants(this.cancelLoad).then(() => {
-      const sortedTenants = [...this.props.tenants];
-      this.setState(
-        {
-          tenants: sortedTenants.sort((a, b) => {
-            if (a.tenantId < b.tenantId) return -1;
-            if (a.tenantId > b.tenantId) return 1;
-            return 0;
-          }),
-          sortedBy: "id",
-          isLoading: false
-        },
-        () => this.pagination()
-      );
-    });
+    this.setState({ isLoading: true }, () =>
+      this.props.fetchGetTenants(this.cancelLoad).then(() => {
+        const sortedTenants = [...this.props.tenants];
+        this.setState(
+          {
+            tenants: sortedTenants.sort((a, b) => {
+              if (a.tenantId < b.tenantId) return -1;
+              if (a.tenantId > b.tenantId) return 1;
+              return 0;
+            }),
+            sortedBy: "id",
+            isLoading: false
+          },
+          () => this.pagination()
+        );
+      })
+    );
     this.props.refuseCreateTenant();
   };
 
@@ -64,24 +66,32 @@ class Tenants extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      prevProps.tenants.length !== this.props.tenants.length ||
-      prevProps.match.params.gwName !== this.props.match.params.gwName
-    ) {
+    if (prevProps.match.params.gwName !== this.props.match.params.gwName) {
       this.fetchRequsts();
+    }
+    if (prevProps.tenants.length !== this.props.tenants.length) {
+      const sortedTenants = [...this.props.tenants];
+      this.setState({ isLoading: true }, () =>
+        this.setState(
+          {
+            tenants: sortedTenants.sort((a, b) => {
+              if (a.tenantId < b.tenantId) return -1;
+              if (a.tenantId > b.tenantId) return 1;
+              return 0;
+            }),
+            sortedBy: "id",
+            isLoading: false
+          },
+          () => this.pagination()
+        )
+      );
     }
   }
 
   render() {
-    const {
-      isLoading,
-      countPerPage,
-      pagination,
-      paginationTenants,
-      page
-    } = this.state;
+    const { countPerPage, pagination, paginationTenants, page } = this.state;
 
-    if (isLoading && pagination) {
+    if (this.state.isLoading) {
       return <Loading />;
     }
 
@@ -157,7 +167,7 @@ class Tenants extends Component {
                   <Table hover>
                     <thead>
                       <tr>
-                        <th style={{ width: "32%" }}>
+                        <th style={{ width: "24%" }}>
                           <FormattedMessage
                             id="tenant-id"
                             defaultMessage="ID"
@@ -167,19 +177,22 @@ class Tenants extends Component {
                             onClick={this.sortByID}
                           />
                         </th>
-                        <th style={{ width: "32%" }}>
+                        <th style={{ width: "24%" }}>
                           <FormattedMessage id="name" defaultMessage="Name" />
                           <Glyphicon
                             glyph="glyphicon glyphicon-sort"
                             onClick={this.sortByName}
                           />
                         </th>
-                        <th style={{ width: "32%" }}>
+                        <th style={{ width: "24%" }}>
                           <FormattedMessage id="type" defaultMessage="Type" />
                           <Glyphicon
                             glyph="glyphicon glyphicon-sort"
                             onClick={this.sortByType}
                           />
+                        </th>
+                        <th style={{ width: "24%" }}>
+                          <FormattedMessage id="sync" defaultMessage="Sync" />
                         </th>
                         <th style={{ width: "4%" }} />
                       </tr>
@@ -189,7 +202,7 @@ class Tenants extends Component {
                         <Tenant
                           key={t.tenantId}
                           t={t}
-                          onReload={this.props.fetchGetTenants}
+                          onReload={this.fetchRequsts}
                           {...this.props}
                         />
                       ))}
