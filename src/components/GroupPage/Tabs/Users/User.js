@@ -37,23 +37,27 @@ class User extends Component {
         <td>{user.extension}</td>
         <td>{user.phoneNumber}</td>
         <td>{user.type}</td>
-        <td>
-          <ButtonToolbar>
-            <Glyphicon
-              glyph="glyphicon glyphicon-remove"
-              onClick={() => this.setState({ showDelete: true })}
+        {this.props.group.sync ? (
+          <td />
+        ) : (
+          <td>
+            <ButtonToolbar>
+              <Glyphicon
+                glyph="glyphicon glyphicon-remove"
+                onClick={() => this.setState({ showDelete: true })}
+              />
+            </ButtonToolbar>
+            <DeleteModal
+              userId={user.userId}
+              show={showDelete}
+              onClose={e => {
+                onReload && onReload(tenantId, groupId);
+                this.setState({ showDelete: false });
+              }}
+              {...this.props}
             />
-          </ButtonToolbar>
-          <DeleteModal
-            userId={user.userId}
-            show={showDelete}
-            onClose={e => {
-              onReload && onReload(tenantId, groupId);
-              this.setState({ showDelete: false });
-            }}
-            {...this.props}
-          />
-        </td>
+          </td>
+        )}
       </tr>
     );
   }
