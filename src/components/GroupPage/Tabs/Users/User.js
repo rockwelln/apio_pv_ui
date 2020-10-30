@@ -39,6 +39,8 @@ class User extends Component {
         <td>{user.type}</td>
         {this.props.group.sync ? (
           <td />
+        ) : user.sync ? (
+          <td>Sync</td>
         ) : (
           <td>
             <ButtonToolbar>
