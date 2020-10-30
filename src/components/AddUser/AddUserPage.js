@@ -515,13 +515,15 @@ export class AddUserPage extends Component {
         )
         .then(res =>
           this.setState({ buttonName: "Create" }, () =>
-            res === "success" && this.props.match.params.trunkGroupName
-              ? this.props.history.push(
-                  `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/trunkgroup/${this.props.match.params.trunkGroupName}/users/${this.props.createdUserInGroup.userId}`
-                )
-              : this.props.history.push(
-                  `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/users/${this.props.createdUserInGroup.userId}`
-                )
+            res === "success"
+              ? this.props.match.params.trunkGroupName
+                ? this.props.history.push(
+                    `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/trunkgroup/${this.props.match.params.trunkGroupName}/users/${this.props.createdUserInGroup.userId}`
+                  )
+                : this.props.history.push(
+                    `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/users/${this.props.createdUserInGroup.userId}`
+                  )
+              : () => {}
           )
         )
     );
