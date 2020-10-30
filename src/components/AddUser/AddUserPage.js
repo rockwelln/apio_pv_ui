@@ -19,7 +19,8 @@ import {
   fetchPostCreateUserToGroup,
   fetchGetGroupById,
   fetchGetAvailableNumbersByGroupId,
-  fetchGetLanguages
+  fetchGetLanguages,
+  fetchGetTenantById
 } from "../../store/actions";
 import { removeEmpty } from "../remuveEmptyInObject";
 
@@ -47,7 +48,8 @@ export class AddUserPage extends Component {
     buttonName: "Create",
     isLoadingGroup: true,
     phoneNumber: "",
-    isLoadingLanguages: true
+    isLoadingLanguages: true,
+    isLoadingTenant: true
   };
 
   componentDidMount = () => {
@@ -57,6 +59,9 @@ export class AddUserPage extends Component {
         isLoadingLanguages: false
       })
     );
+    this.props.fetchGetTenantById(this.props.match.params.tenantId).then(() => {
+      this.setState({ isLoadingTenant: false });
+    });
     this.props
       .fetchGetGroupById(
         this.props.match.params.tenantId,
@@ -93,10 +98,16 @@ export class AddUserPage extends Component {
       passwordError,
       templateName,
       buttonName,
-      isLoadingLanguages
+      isLoadingLanguages,
+      isLoadingTenant
     } = this.state;
 
-    if (isLoadingGroup || isLoadingTemplates || isLoadingLanguages) {
+    if (
+      isLoadingGroup ||
+      isLoadingTemplates ||
+      isLoadingLanguages ||
+      isLoadingTenant
+    ) {
       return <Loading />;
     }
 
@@ -300,7 +311,7 @@ export class AddUserPage extends Component {
                       md={3}
                       className={"text-left"}
                     >
-                      Password{"\u002a"}
+                      Password{this.props.tenant.sync ? "" : "\u002a"}
                     </Col>
                     <Col md={9}>
                       <FormControl
@@ -477,7 +488,7 @@ export class AddUserPage extends Component {
       this.setState({ lastNameError: "error" });
       return;
     }
-    if (!password || password.length < 6) {
+    if (!this.props.tenant.sync && (!password || password.length < 6)) {
       this.setState({ passwordError: "error" });
       return;
     }
@@ -513,17 +524,19 @@ export class AddUserPage extends Component {
           this.props.match.params.groupId,
           clearData
         )
-        .then(res =>
+        .then(res => {
           this.setState({ buttonName: "Create" }, () =>
-            res === "success" && this.props.match.params.trunkGroupName
-              ? this.props.history.push(
-                  `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/trunkgroup/${this.props.match.params.trunkGroupName}/users/${this.props.createdUserInGroup.userId}`
-                )
-              : this.props.history.push(
-                  `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/users/${this.props.createdUserInGroup.userId}`
-                )
-          )
-        )
+            res === "success"
+              ? this.props.match.params.trunkGroupName
+                ? this.props.history.push(
+                    `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/trunkgroup/${this.props.match.params.trunkGroupName}/users/${this.props.createdUserInGroup.userId}`
+                  )
+                : this.props.history.push(
+                    `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/users/${this.props.createdUserInGroup.userId}`
+                  )
+              : () => {}
+          );
+        })
     );
   };
 }
@@ -533,7 +546,8 @@ const mapStateToProps = state => ({
   group: state.group,
   createdUserInGroup: state.createdUserInGroup,
   availableNumbers: state.availableNumbers,
-  languages: state.languages
+  languages: state.languages,
+  tenant: state.tenant
 });
 
 const mapDispatchToProps = {
@@ -541,7 +555,8 @@ const mapDispatchToProps = {
   fetchPostCreateUserToGroup,
   fetchGetGroupById,
   fetchGetAvailableNumbersByGroupId,
-  fetchGetLanguages
+  fetchGetLanguages,
+  fetchGetTenantById
 };
 
 export default withRouter(

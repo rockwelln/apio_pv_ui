@@ -1960,6 +1960,7 @@ export function fetchPostCreateUserToGroup(tenantId, groupId, data) {
       .then(res => res.json())
       .then(data => {
         dispatch(postCreateUserToGroup(data));
+        console.log(121);
         return "success";
       })
       .catch(error => {
