@@ -793,15 +793,16 @@ export function fetchGetUsersByGroupId(tenantId, groupId) {
       `${ProvProxiesManager.getCurrentUrlPrefix()}/tenants/${tenantId}/groups/${groupId}/users`
     )
       .then(data => dispatch(getUsersByGroupId(data)))
-      .catch(error =>
+      .catch(error => {
+        dispatch(getUsersByGroupId({ users: [] }));
         NotificationsManager.error(
           <FormattedMessage
             id="fetch-users-failed"
             defaultMessage="Failed to fetch users!"
           />,
           error.message
-        )
-      );
+        );
+      });
   };
 }
 
