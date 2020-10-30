@@ -89,10 +89,12 @@ class TenantPage extends Component {
           <div className={"header flex space-between"}>
             <div>
               {`GROUP: ${group.groupName} (${this.props.match.params.groupId}) of tenant ${tenant.name} (${tenant.tenantId})`}
-              <Glyphicon
-                glyph="glyphicon glyphicon-trash"
-                onClick={() => this.setState({ showDelete: true })}
-              />
+              {!group.sync && (
+                <Glyphicon
+                  glyph="glyphicon glyphicon-trash"
+                  onClick={() => this.setState({ showDelete: true })}
+                />
+              )}
               <DeleteModal
                 groupId={this.props.match.params.groupId}
                 show={showDelete}
