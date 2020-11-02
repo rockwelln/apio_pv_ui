@@ -342,4 +342,5 @@ textarea {
   padding: 5px;
   border-right: solid 1px gray;
   width: 100%;
+  overflow-wrap: anywhere;
 }

@@ -123,6 +123,30 @@ class Details extends Component {
         <Form horizontal className={"margin-1"}>
           <FormGroup controlId="Details">
             <ControlLabel className={"margin-1"}>DETAILS</ControlLabel>
+            {this.props.user.sync && (
+              <FormGroup controlId="Sync">
+                <Col
+                  componentClass={ControlLabel}
+                  md={3}
+                  className={"text-left"}
+                >
+                  Sync
+                </Col>
+                <Col md={9}>
+                  <div className={"sync-group"}>
+                    <div className={"sync-group-item"}>
+                      {this.props.user.sync.ldap}
+                    </div>
+                    <div className={"sync-group-item"}>
+                      {this.props.user.sync.ou}
+                    </div>
+                    <div className={"sync-group-item"}>
+                      {this.props.user.sync.dn}
+                    </div>
+                  </div>
+                </Col>
+              </FormGroup>
+            )}
             <FormGroup controlId="userEmail" validationState={emailIsValid}>
               <Col componentClass={ControlLabel} md={3} className={"text-left"}>
                 Email
