@@ -50,32 +50,43 @@ export class Licenses extends Component {
   };
 
   fetchData = () => {
-    this.props
-      .fetchGetLicensesByGroupId(this.props.tenantId, this.props.groupId)
-      .then(data => {
-        this.setState(
-          {
-            groupServices: this.props.groupServices.groups,
-            servicePacks: this.props.servicePacks,
-            newUserLimit: this.props.group.userLimit,
-            isLoading: data ? false : true
-          },
-          () => this.props.showHideAdditionalServiceGroup(this.state.showMore)
-        );
-      });
-    this.props
-      .fetchGetTrunkByGroupID(this.props.tenantId, this.props.groupId)
-      .then(() => {
-        this.setState({
-          trunkGroups: this.props.trunkGroups,
-          newUserLimit: this.props.group.userLimit,
-          isLoadingTrunk: false
+    this.setState({ isLoading: true, isLoadingTrunk: true }, () => {
+      this.props
+        .fetchGetLicensesByGroupId(this.props.tenantId, this.props.groupId)
+        .then(data => {
+          this.setState(
+            {
+              groupServices: this.props.groupServices.groups,
+              servicePacks: this.props.servicePacks,
+              newUserLimit: this.props.group.userLimit,
+              isLoading: data ? false : true
+            },
+            () => this.props.showHideAdditionalServiceGroup(this.state.showMore)
+          );
         });
-      });
+      this.props
+        .fetchGetTrunkByGroupID(this.props.tenantId, this.props.groupId)
+        .then(() => {
+          this.setState({
+            trunkGroups: this.props.trunkGroups,
+            newUserLimit: this.props.group.userLimit,
+            isLoadingTrunk: false
+          });
+        });
+    });
   };
 
   componentDidMount() {
     this.fetchData();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.refreshTab !== prevProps.refreshTab &&
+      this.props.refreshTab
+    ) {
+      this.fetchData();
+    }
   }
 
   render() {

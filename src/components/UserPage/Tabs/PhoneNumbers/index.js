@@ -29,40 +29,51 @@ class PhoneNumber extends Component {
     updateMassage: ""
   };
 
-  componentDidMount() {
-    this.props
-      .fetchGetUserByName(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId,
-        this.props.match.params.userName
-      )
-      .then(() =>
-        this.setState({
-          phoneNumber: this.props.user.phoneNumber
-            ? {
-                value: this.props.user.phoneNumber,
-                label: this.props.user.phoneNumber
-              }
-            : { value: "", label: "none" },
-          cliPhoneNumber: this.props.user.cliPhoneNumber
-            ? {
-                value: this.props.user.cliPhoneNumber,
-                label: this.props.user.cliPhoneNumber
-              }
-            : { value: "", label: "none" },
-          extension: this.props.user.extension,
-          isLoadingUser: false
-        })
-      );
+  fetchReq = () => {
+    this.setState({ isLoadingUser: true }, () => {
+      this.props
+        .fetchGetUserByName(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          this.props.match.params.userName
+        )
+        .then(() =>
+          this.setState({
+            phoneNumber: this.props.user.phoneNumber
+              ? {
+                  value: this.props.user.phoneNumber,
+                  label: this.props.user.phoneNumber
+                }
+              : { value: "", label: "none" },
+            cliPhoneNumber: this.props.user.cliPhoneNumber
+              ? {
+                  value: this.props.user.cliPhoneNumber,
+                  label: this.props.user.cliPhoneNumber
+                }
+              : { value: "", label: "none" },
+            extension: this.props.user.extension,
+            isLoadingUser: false
+          })
+        );
 
-    this.props.fetchGetAvailableNumbersByGroupId(
-      this.props.match.params.tenantId,
-      this.props.match.params.groupId
-    );
+      this.props.fetchGetAvailableNumbersByGroupId(
+        this.props.match.params.tenantId,
+        this.props.match.params.groupId
+      );
+    });
+  };
+
+  componentDidMount() {
+    this.fetchReq();
   }
 
-  componentWillUnmount() {
-    clearTimeout(this.timer);
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.refreshTab !== prevProps.refreshTab &&
+      this.props.refreshTab
+    ) {
+      this.fetchReq();
+    }
   }
 
   render() {

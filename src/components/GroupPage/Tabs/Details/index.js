@@ -28,28 +28,39 @@ class Details extends Component {
     updateMassage: ""
   };
 
+  fetchReq = () => {
+    this.setState({ isLoading: true }, () =>
+      this.props
+        .fetchGetGroupById(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId
+        )
+        .then(() =>
+          this.setState({
+            group: this.props.group,
+            isLoading: false,
+            cliNumber: {
+              value: this.props.group.cliPhoneNumber,
+              label: this.props.group.cliPhoneNumber
+                ? this.props.group.cliPhoneNumber
+                : "No number"
+            }
+          })
+        )
+    );
+  };
+
   componentDidMount() {
-    this.props
-      .fetchGetGroupById(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId
-      )
-      .then(() =>
-        this.setState({
-          group: this.props.group,
-          isLoading: false,
-          cliNumber: {
-            value: this.props.group.cliPhoneNumber,
-            label: this.props.group.cliPhoneNumber
-              ? this.props.group.cliPhoneNumber
-              : "No number"
-          }
-        })
-      );
+    this.fetchReq();
   }
 
-  componentWillUnmount() {
-    clearTimeout(this.timer);
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.refreshTab !== prevProps.refreshTab &&
+      this.props.refreshTab
+    ) {
+      this.fetchReq();
+    }
   }
 
   render() {

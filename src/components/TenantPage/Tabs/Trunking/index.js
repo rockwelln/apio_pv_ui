@@ -57,6 +57,15 @@ const Trunking = props => {
     setPage(0);
   }, [searchValue]);
 
+  useEffect(() => {
+    if (props.refreshTab) {
+      setIsLoading(true);
+      dispatch(fetchGetTrunkGroupByTenant(props.match.params.tenantId)).then(
+        () => setIsLoading(false)
+      );
+    }
+  }, [props.refreshTab]);
+
   const pagination = () => {
     const calculatedCountPages = Math.ceil(trunkGroups.length / countPerPage);
 

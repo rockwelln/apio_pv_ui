@@ -43,7 +43,7 @@ export class Services extends Component {
     updateMessage: ""
   };
 
-  fetchSerivces = () => {
+  fetchServices = () => {
     return this.props
       .fetchGetUserServicesByUserId(
         this.props.match.params.tenantId,
@@ -67,7 +67,7 @@ export class Services extends Component {
   };
 
   componentDidMount() {
-    this.fetchSerivces();
+    this.fetchServices();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -75,37 +75,32 @@ export class Services extends Component {
       (!prevState.postServices && this.state.postServices) ||
       (!prevState.deleteServices && this.state.deleteServices)
     ) {
-      this.fetchSerivces().then(() =>
-        this.setState(
-          {
-            postServices: false,
-            deleteServices: false,
-            updateMessage: "Services is updated"
-          },
-          () =>
-            (this.timer = setTimeout(
-              () => this.setState({ updateMessage: "" }),
-              3000
-            ))
-        )
+      this.fetchServices().then(() =>
+        this.setState({
+          postServices: false,
+          deleteServices: false,
+          updateMessage: "Services is updated"
+        })
       );
     }
-  }
 
-  componentWillUnmount() {
-    clearTimeout(this.timer);
+    if (
+      this.props.refreshTab !== prevProps.refreshTab &&
+      this.props.refreshTab
+    ) {
+      this.setState({ isLoading: true }, () => this.fetchServices());
+    }
   }
 
   render() {
     const {
       isLoading,
       countPerPage,
-      pagination,
       paginationServices,
       page,
       updateMessage
     } = this.state;
-    if (isLoading && pagination) {
+    if (isLoading) {
       return <Loading />;
     }
 

@@ -43,48 +43,70 @@ class Details extends Component {
     voicePortalPasscodeLockout: ""
   };
 
+  fetchReq = () => {
+    this.setState(
+      { isLoading: true, isLoadingRoutingProfile: true, isLoadingVM: true },
+      () => {
+        this.props.fetchGetTenantById(this.props.tenantId).then(() =>
+          this.setState({
+            tenant: { ...this.props.tenant },
+            addressInformation: this.props.tenant.addressInformation
+              ? this.props.tenant.addressInformation
+              : {},
+            isLoading: false
+          })
+        );
+        this.props
+          .fetchGetTenantRoutingProfile(this.props.tenantId)
+          .then(() => {
+            this.setState({
+              isLoadingRoutingProfile: false,
+              tenantRoutingProfile: this.props.tenantRoutingProfile
+            });
+          });
+        this.props
+          .fetchGetTenantVoiceMessaging(this.props.tenantId)
+          .then(() => {
+            this.setState({
+              isLoadingVM: false,
+              voiceMessageDelivery: get(
+                this.props,
+                "tenantVoiceMessaging.voiceMessageDelivery.fromAddress"
+              )
+                ? this.props.tenantVoiceMessaging.voiceMessageDelivery
+                    .fromAddress
+                : "",
+              voiceMessageNotification: get(
+                this.props,
+                "tenantVoiceMessaging.voiceMessageNotification.fromAddress"
+              )
+                ? this.props.tenantVoiceMessaging.voiceMessageNotification
+                    .fromAddress
+                : "",
+              voicePortalPasscodeLockout: get(
+                this.props,
+                "tenantVoiceMessaging.voicePortalPasscodeLockout.fromAddress"
+              )
+                ? this.props.tenantVoiceMessaging.voicePortalPasscodeLockout
+                    .fromAddress
+                : ""
+            });
+          });
+      }
+    );
+  };
+
   componentDidMount() {
-    this.props.fetchGetTenantById(this.props.tenantId).then(() => {
-      this.props.fetchGetListOfRoutingProfiles().then(() => {
-        this.setState({
-          tenant: { ...this.props.tenant },
-          addressInformation: this.props.tenant.addressInformation
-            ? this.props.tenant.addressInformation
-            : {},
-          isLoading: false
-        });
-      });
-    });
-    this.props.fetchGetTenantRoutingProfile(this.props.tenantId).then(() => {
-      this.setState({
-        isLoadingRoutingProfile: false,
-        tenantRoutingProfile: this.props.tenantRoutingProfile
-      });
-    });
-    this.props.fetchGetTenantVoiceMessaging(this.props.tenantId).then(() => {
-      this.setState({
-        isLoadingVM: false,
-        voiceMessageDelivery: get(
-          this.props,
-          "tenantVoiceMessaging.voiceMessageDelivery.fromAddress"
-        )
-          ? this.props.tenantVoiceMessaging.voiceMessageDelivery.fromAddress
-          : "",
-        voiceMessageNotification: get(
-          this.props,
-          "tenantVoiceMessaging.voiceMessageNotification.fromAddress"
-        )
-          ? this.props.tenantVoiceMessaging.voiceMessageNotification.fromAddress
-          : "",
-        voicePortalPasscodeLockout: get(
-          this.props,
-          "tenantVoiceMessaging.voicePortalPasscodeLockout.fromAddress"
-        )
-          ? this.props.tenantVoiceMessaging.voicePortalPasscodeLockout
-              .fromAddress
-          : ""
-      });
-    });
+    this.fetchReq();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.refreshTab !== prevProps.refreshTab &&
+      this.props.refreshTab
+    ) {
+      this.fetchReq();
+    }
   }
 
   render() {

@@ -33,18 +33,20 @@ export class Admins extends Component {
   };
 
   fetchAdmins = () => {
-    this.props.fetchGetAdminsByTenantId(this.props.tenantId).then(() =>
-      this.setState(
-        {
-          admins: this.props.admins.sort((a, b) => {
-            if (a.userId < b.userId) return -1;
-            if (a.userId > b.userId) return 1;
-            return 0;
-          }),
-          isLoading: false,
-          sortedBy: "userId"
-        },
-        () => this.pagination()
+    this.setState({ isLoading: true }, () =>
+      this.props.fetchGetAdminsByTenantId(this.props.tenantId).then(() =>
+        this.setState(
+          {
+            admins: this.props.admins.sort((a, b) => {
+              if (a.userId < b.userId) return -1;
+              if (a.userId > b.userId) return 1;
+              return 0;
+            }),
+            isLoading: false,
+            sortedBy: "userId"
+          },
+          () => this.pagination()
+        )
       )
     );
   };
@@ -54,20 +56,17 @@ export class Admins extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.admins.length !== this.props.admins.length) {
+    if (
+      prevProps.admins.length !== this.props.admins.length ||
+      (this.props.refreshTab !== prevProps.refreshTab && this.props.refreshTab)
+    ) {
       this.fetchAdmins();
     }
   }
 
   render() {
-    const {
-      isLoading,
-      countPerPage,
-      pagination,
-      paginationAdmins,
-      page
-    } = this.state;
-    if (isLoading && pagination) {
+    const { isLoading, countPerPage, paginationAdmins, page } = this.state;
+    if (isLoading) {
       return <Loading />;
     }
     return (

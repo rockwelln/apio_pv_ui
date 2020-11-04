@@ -40,22 +40,24 @@ export class PhoneNumbersTab extends Component {
   };
 
   fetchNumbers = () => {
-    this.props
-      .fetchGetMobileNumbersForGroup(this.props.tenantId, this.props.groupId)
-      .then(() =>
-        this.setState(
-          {
-            phoneNumbers: this.props.phoneNumbers.sort((a, b) => {
-              if (a.phoneNumber < b.phoneNumber) return -1;
-              if (a.phoneNumber > b.phoneNumber) return 1;
-              return 0;
-            }),
-            isLoading: false,
-            sortedBy: "phoneNumber"
-          },
-          () => this.pagination()
+    this.setState({ isLoading: true }, () =>
+      this.props
+        .fetchGetMobileNumbersForGroup(this.props.tenantId, this.props.groupId)
+        .then(() =>
+          this.setState(
+            {
+              phoneNumbers: this.props.phoneNumbers.sort((a, b) => {
+                if (a.phoneNumber < b.phoneNumber) return -1;
+                if (a.phoneNumber > b.phoneNumber) return 1;
+                return 0;
+              }),
+              isLoading: false,
+              sortedBy: "phoneNumber"
+            },
+            () => this.pagination()
+          )
         )
-      );
+    );
   };
 
   componentDidMount() {
@@ -63,7 +65,10 @@ export class PhoneNumbersTab extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.phoneDeleted !== this.props.phoneDeleted) {
+    if (
+      prevProps.phoneDeleted !== this.props.phoneDeleted ||
+      (this.props.refreshTab !== prevProps.refreshTab && this.props.refreshTab)
+    ) {
       this.fetchNumbers();
     }
   }
@@ -73,14 +78,13 @@ export class PhoneNumbersTab extends Component {
       isLoading,
       numbersForDelete,
       countPerPage,
-      pagination,
       paginationPhoneNumbers,
       page
     } = this.state;
 
     const { tenantId } = this.props;
 
-    if (isLoading && pagination) {
+    if (isLoading) {
       return <Loading />;
     }
 
@@ -255,7 +259,7 @@ export class PhoneNumbersTab extends Component {
                     {paginationPhoneNumbers[page].map((number, i) => (
                       <PhoneNumber
                         index={i}
-                        key={number.rangeStart}
+                        key={i}
                         number={number}
                         tenantId={tenantId}
                         groupId={this.props.groupId}

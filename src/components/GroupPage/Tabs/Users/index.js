@@ -60,20 +60,17 @@ export class Users extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.users.length !== this.props.users.length) {
+    if (
+      prevProps.users.length !== this.props.users.length ||
+      (this.props.refreshTab !== prevProps.refreshTab && this.props.refreshTab)
+    ) {
       this.setState({ isLoading: true }, () => this.fetchReq());
     }
   }
 
   render() {
-    const {
-      isLoading,
-      page,
-      pagination,
-      countPerPage,
-      paginationUsers
-    } = this.state;
-    if ((isLoading, pagination)) {
+    const { isLoading, page, countPerPage, paginationUsers } = this.state;
+    if (isLoading) {
       return <Loading />;
     }
     return (

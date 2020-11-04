@@ -35,25 +35,27 @@ export class Trunks extends Component {
     showErrorCreate: false
   };
   fetchTrunks = () => {
-    this.props
-      .fetchGetTrunksGroupsByGroup(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId
-      )
-      .then(() =>
-        this.setState(
-          {
-            trunks: this.props.trunks.sort((a, b) => {
-              if (a.name < b.name) return -1;
-              if (a.name > b.name) return 1;
-              return 0;
-            }),
-            isLoading: false,
-            sortedBy: "name"
-          },
-          () => this.pagination()
+    this.setState({ isLoading: true }, () =>
+      this.props
+        .fetchGetTrunksGroupsByGroup(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId
         )
-      );
+        .then(() =>
+          this.setState(
+            {
+              trunks: this.props.trunks.sort((a, b) => {
+                if (a.name < b.name) return -1;
+                if (a.name > b.name) return 1;
+                return 0;
+              }),
+              isLoading: false,
+              sortedBy: "name"
+            },
+            () => this.pagination()
+          )
+        )
+    );
   };
 
   componentDidMount() {
@@ -61,7 +63,10 @@ export class Trunks extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.trunks.length !== this.props.trunks.length) {
+    if (
+      prevProps.trunks.length !== this.props.trunks.length ||
+      (this.props.refreshTab !== prevProps.refreshTab && this.props.refreshTab)
+    ) {
       this.fetchTrunks();
     }
   }
