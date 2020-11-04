@@ -40,18 +40,20 @@ export class PhoneNumbersTab extends Component {
   };
 
   fetchNumbers = () => {
-    this.props.fetchGetPhoneNumbersByTenantId(this.props.tenantId).then(() =>
-      this.setState(
-        {
-          phoneNumbers: this.props.phoneNumbers.sort((a, b) => {
-            if (a.rangeStart < b.rangeStart) return -1;
-            if (a.rangeStart > b.rangeStart) return 1;
-            return 0;
-          }),
-          isLoading: false,
-          sortedBy: "rangeStart"
-        },
-        () => this.pagination()
+    this.setState({ isLoading: true }, () =>
+      this.props.fetchGetPhoneNumbersByTenantId(this.props.tenantId).then(() =>
+        this.setState(
+          {
+            phoneNumbers: this.props.phoneNumbers.sort((a, b) => {
+              if (a.rangeStart < b.rangeStart) return -1;
+              if (a.rangeStart > b.rangeStart) return 1;
+              return 0;
+            }),
+            isLoading: false,
+            sortedBy: "rangeStart"
+          },
+          () => this.pagination()
+        )
       )
     );
   };
@@ -61,7 +63,10 @@ export class PhoneNumbersTab extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.phoneDeleted !== this.props.phoneDeleted) {
+    if (
+      prevProps.phoneDeleted !== this.props.phoneDeleted ||
+      (this.props.refreshTab !== prevProps.refreshTab && this.props.refreshTab)
+    ) {
       this.fetchNumbers();
     }
   }
@@ -71,14 +76,13 @@ export class PhoneNumbersTab extends Component {
       isLoading,
       numbersForDelete,
       countPerPage,
-      pagination,
       paginationPhoneNumbers,
       page
     } = this.state;
 
     const { tenantId } = this.props;
 
-    if (isLoading && pagination) {
+    if (isLoading) {
       return <Loading />;
     }
 

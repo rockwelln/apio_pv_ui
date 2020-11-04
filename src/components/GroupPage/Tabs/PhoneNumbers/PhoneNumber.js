@@ -15,7 +15,7 @@ export default class PhoneNumber extends Component {
     const { number, onReload, index } = this.props;
     const { showDelete } = this.state;
     return (
-      <tr key={number.groupId}>
+      <tr>
         {number.userId ? (
           <td />
         ) : (

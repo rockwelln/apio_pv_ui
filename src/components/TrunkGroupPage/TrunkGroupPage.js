@@ -25,7 +25,8 @@ import DeleteModal from "./DeleteModal";
 class TrunkGroupPage extends Component {
   state = {
     isLoading: true,
-    showDelete: false
+    showDelete: false,
+    activeKey: 0
   };
 
   fetchTrunk() {
@@ -53,9 +54,9 @@ class TrunkGroupPage extends Component {
 
   render() {
     const { isLoading } = this.state;
-    if (isLoading) {
-      return <Loading />;
-    }
+    // if (isLoading) {
+    //   return <Loading />;
+    // }
     return (
       <React.Fragment>
         <div className={"panel-heading"}>
@@ -80,37 +81,45 @@ class TrunkGroupPage extends Component {
           }`}</div>
         </div>
         <div className={"panel-body"}>
-          <Tabs defaultActiveKey={0} id="tenant_tabs">
+          <Tabs
+            activeKey={this.state.activeKey}
+            id="tenant_tabs"
+            onSelect={key => {
+              this.setState({ isLoading: true, activeKey: key }, () =>
+                this.fetchTrunk()
+              );
+            }}
+          >
             <Tab eventKey={0} title="Details">
-              <Details />
+              {isLoading ? <Loading /> : <Details />}
             </Tab>
             <Tab eventKey={9} title="Authentication">
-              <Authentication />
+              {isLoading ? <Loading /> : <Authentication />}
             </Tab>
 
             <Tab eventKey={1} title="DIDs">
-              <Users />
+              {isLoading ? <Loading /> : <Users />}
             </Tab>
             <Tab eventKey={2} title="Trunk indentity">
-              <TrunkIndenty />
+              {isLoading ? <Loading /> : <TrunkIndenty />}
             </Tab>
             <Tab eventKey={3} title="Backup">
-              <Backup />
+              {isLoading ? <Loading /> : <Backup />}
             </Tab>
             <Tab eventKey={4} title="Capacity">
-              <Capacity />
+              {isLoading ? <Loading /> : <Capacity />}
             </Tab>
             <Tab eventKey={5} title="Call screening">
-              <CallScreening />
+              {isLoading ? <Loading /> : <CallScreening />}
             </Tab>
             <Tab eventKey={6} title="Stateful rerouting">
-              <StatefulRerouting />
+              {isLoading ? <Loading /> : <StatefulRerouting />}
             </Tab>
             <Tab eventKey={7} title="Outgoing CLI overwrite">
-              <CLI />
+              {isLoading ? <Loading /> : <CLI />}
             </Tab>
             <Tab eventKey={8} title="Advanced">
-              <Advanced />
+              {isLoading ? <Loading /> : <Advanced />}
             </Tab>
           </Tabs>
         </div>

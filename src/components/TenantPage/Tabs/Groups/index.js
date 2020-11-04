@@ -32,18 +32,20 @@ export class GroupsTab extends Component {
   };
 
   fetchReq() {
-    this.props.fetchGetGroupsByTenantId(this.props.tenantId).then(() =>
-      this.setState(
-        {
-          groups: this.props.groups.sort((a, b) => {
-            if (a.groupId < b.groupId) return -1;
-            if (a.groupId > b.groupId) return 1;
-            return 0;
-          }),
-          isLoading: false,
-          sortedBy: "id"
-        },
-        () => this.pagination()
+    this.setState({ isLoading: true }, () =>
+      this.props.fetchGetGroupsByTenantId(this.props.tenantId).then(() =>
+        this.setState(
+          {
+            groups: this.props.groups.sort((a, b) => {
+              if (a.groupId < b.groupId) return -1;
+              if (a.groupId > b.groupId) return 1;
+              return 0;
+            }),
+            isLoading: false,
+            sortedBy: "id"
+          },
+          () => this.pagination()
+        )
       )
     );
   }
@@ -53,21 +55,18 @@ export class GroupsTab extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.groups.length !== this.props.groups.length) {
+    if (
+      prevProps.groups.length !== this.props.groups.length ||
+      (this.props.refreshTab !== prevProps.refreshTab && this.props.refreshTab)
+    ) {
       this.fetchReq();
     }
   }
 
   render() {
-    const {
-      isLoading,
-      countPerPage,
-      pagination,
-      paginationGroups,
-      page
-    } = this.state;
+    const { isLoading, countPerPage, paginationGroups, page } = this.state;
 
-    if (isLoading && pagination) {
+    if (isLoading) {
       return <Loading />;
     }
 

@@ -43,56 +43,63 @@ class Details extends Component {
     confirmPassword: ""
   };
 
-  fetchRequst = () => {
-    this.props.fetchGetLanguages().then(() =>
-      this.setState({
-        isLoadingLanguages: false
-      })
-    );
-    this.props
-      .fetchGetUserByName(
-        this.props.match.params.tenantId,
-        this.props.match.params.groupId,
-        this.props.match.params.userName
-      )
-      .then(() => {
-        this.props.user.accessDeviceEndpoint
-          ? this.props
-              .fetchGetAccessDeviceByName(
-                this.props.match.params.tenantId,
-                this.props.match.params.groupId,
-                this.props.user.accessDeviceEndpoint.accessDevice.name
-              )
-              .then(() =>
-                this.setState({
-                  emailAddress: this.props.user.emailAddress,
-                  firstName: this.props.user.firstName,
-                  lastName: this.props.user.lastName,
-                  cliFirstName: this.props.user.cliFirstName,
-                  cliLastName: this.props.user.cliLastName,
-                  accessDevice: this.props.accessDevice,
-                  language: this.props.user.language,
-                  isLoading: false
-                })
-              )
-          : this.setState({
-              emailAddress: this.props.user.emailAddress,
-              firstName: this.props.user.firstName,
-              lastName: this.props.user.lastName,
-              cliFirstName: this.props.user.cliFirstName,
-              cliLastName: this.props.user.cliLastName,
-              language: this.props.user.language,
-              isLoading: false
-            });
-      });
+  fetchRequest = () => {
+    this.setState({ isLoadingLanguages: true, isLoading: true }, () => {
+      this.props.fetchGetLanguages().then(() =>
+        this.setState({
+          isLoadingLanguages: false
+        })
+      );
+      this.props
+        .fetchGetUserByName(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          this.props.match.params.userName
+        )
+        .then(() => {
+          this.props.user.accessDeviceEndpoint
+            ? this.props
+                .fetchGetAccessDeviceByName(
+                  this.props.match.params.tenantId,
+                  this.props.match.params.groupId,
+                  this.props.user.accessDeviceEndpoint.accessDevice.name
+                )
+                .then(() =>
+                  this.setState({
+                    emailAddress: this.props.user.emailAddress,
+                    firstName: this.props.user.firstName,
+                    lastName: this.props.user.lastName,
+                    cliFirstName: this.props.user.cliFirstName,
+                    cliLastName: this.props.user.cliLastName,
+                    accessDevice: this.props.accessDevice,
+                    language: this.props.user.language,
+                    isLoading: false
+                  })
+                )
+            : this.setState({
+                emailAddress: this.props.user.emailAddress,
+                firstName: this.props.user.firstName,
+                lastName: this.props.user.lastName,
+                cliFirstName: this.props.user.cliFirstName,
+                cliLastName: this.props.user.cliLastName,
+                language: this.props.user.language,
+                isLoading: false
+              });
+        });
+    });
   };
 
   componentDidMount() {
-    this.fetchRequst();
+    this.fetchRequest();
   }
 
-  componentWillUnmount() {
-    clearTimeout(this.timer);
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.refreshTab !== prevProps.refreshTab &&
+      this.props.refreshTab
+    ) {
+      this.fetchRequest();
+    }
   }
 
   render() {

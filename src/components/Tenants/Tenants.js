@@ -89,7 +89,7 @@ class Tenants extends Component {
   }
 
   render() {
-    const { countPerPage, pagination, paginationTenants, page } = this.state;
+    const { countPerPage, paginationTenants, page } = this.state;
 
     if (this.state.isLoading) {
       return <Loading />;

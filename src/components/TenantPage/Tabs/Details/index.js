@@ -30,20 +30,35 @@ class Details extends Component {
     addressInformation: {}
   };
 
-  componentDidMount() {
-    this.props.fetchGetTenantById(this.props.tenantId).then(() =>
-      this.setState({
-        tenant: this.props.tenant,
-        addressInformation: this.props.tenant.addressInformation
-          ? this.props.tenant.addressInformation
-          : {},
-        isLoading: false
-      })
+  fetchReq = () => {
+    this.setState({ isLoading: true }, () =>
+      this.props.fetchGetTenantById(this.props.tenantId).then(() =>
+        this.setState({
+          tenant: this.props.tenant,
+          addressInformation: this.props.tenant.addressInformation
+            ? this.props.tenant.addressInformation
+            : {},
+          isLoading: false
+        })
+      )
     );
+  };
+
+  componentDidMount() {
+    this.fetchReq();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.refreshTab !== prevProps.refreshTab &&
+      this.props.refreshTab
+    ) {
+      this.fetchReq();
+    }
   }
 
   render() {
-    if (this.props.isLoading) {
+    if (this.props.isLoading || this.state.isLoading) {
       return <Loading />;
     }
 
