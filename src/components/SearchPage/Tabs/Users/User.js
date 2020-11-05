@@ -31,7 +31,7 @@ class User extends Component {
         </td>
         <td>{user.lastName}</td>
         <td>{user.firstName}</td>
-        <td>{user.department.fullPathName}</td>
+        <td>{user.department ? user.department.fullPathName : ""}</td>
         <td>{user.phoneNumber}</td>
         <td>{user.emailAddress}</td>
         <td>{user.inTrunkGroup ? "yes" : "no"}</td>
