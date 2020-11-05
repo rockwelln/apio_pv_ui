@@ -30,7 +30,8 @@ const SingleEdit = props => {
     isEditUserLimit,
     tenantId,
     apiRequest,
-    pack
+    pack,
+    trunkLicensesMax
   } = props;
 
   const [groupServiceMax, setGroupServiceMax] = useState();
@@ -54,6 +55,8 @@ const SingleEdit = props => {
     isEditPacks && isEditGroup && apiRequest(tenantId, licenseTitle);
   }, []);
 
+  console.log(isEditGroup, !isEditUserLimit);
+
   return (
     <Modal show={show} onHide={onClose}>
       <Modal.Header closeButton>
@@ -61,7 +64,7 @@ const SingleEdit = props => {
       </Modal.Header>
       <Modal.Body>
         <Table>
-          {!isEditTunkLicenses && (
+          {!isEditTunkLicenses ? (
             <thead>
               <tr>
                 <th width="50%" className={"licenses-th"} />
@@ -97,13 +100,25 @@ const SingleEdit = props => {
                 )}
               </tr>
             </thead>
+          ) : (
+            <thead>
+              <tr>
+                <th className={"licenses-th"} />
+                <th className={"licenses-th"} />
+                <th className={"licenses-th"}>
+                  <FormattedMessage id="max" defaultMessage="max" />
+                </th>
+              </tr>
+            </thead>
           )}
           <tbody>
             <tr>
               <td className={"vertical-middle"}>{licenseTitle}</td>
-              <td className={"text-right vertical-middle"}>
-                {(isEditPacks || isEditUserLimit) && allocated}
-              </td>
+              {!isEditTunkLicenses && (
+                <td className={"text-right vertical-middle"}>
+                  {(isEditPacks || isEditUserLimit) && allocated}
+                </td>
+              )}
               <td className={`${isEditPacks ? "text-center" : "text-right"}`}>
                 <FormControl
                   type="number"
@@ -119,6 +134,9 @@ const SingleEdit = props => {
                   }}
                 />
               </td>
+              {isEditTunkLicenses && (
+                <td className={"vertical-middle"}>{trunkLicensesMax}</td>
+              )}
               {isEditGroup && !isEditUserLimit && (
                 <td className={"vertical-middle"}>{groupServiceMax}</td>
               )}
