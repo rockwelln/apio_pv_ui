@@ -431,7 +431,7 @@ export class Limits extends Component {
                   className={"btn-primary"}
                 >
                   <Glyphicon glyph="glyphicon glyphicon-forward" />
-                  &nbsp; Assign licenses
+                  &nbsp; Next
                 </Button>
               </div>
               <div className="pull-right link-button">
