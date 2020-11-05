@@ -383,7 +383,7 @@ export class Services extends Component {
 
   filterBySearchValue = () => {
     const { searchValue } = this.state;
-    const SearchArray = this.props.userServices
+    const SearchArray = this.props.userServicePacks
       .filter(service =>
         service.name.toLowerCase().includes(searchValue.toLowerCase())
       )
