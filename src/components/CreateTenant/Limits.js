@@ -610,20 +610,14 @@ export class Limits extends Component {
       .then(() => this.setState({ editGroupServices: false }));
   };
 
-  updateServicePacks = () => {
-    const packs = [...this.state.servicePacks];
-    const arrayOfPromise = [];
-    packs.forEach(pack => {
-      const clearPack = removeEmpty(pack);
-      arrayOfPromise.push(
-        this.props.fetchPutUpdateTenantServicePacks(
-          this.props.createdTenant.tenantId,
-          clearPack.name,
-          clearPack
-        )
-      );
-    });
-    Promise.all(arrayOfPromise)
+  updateServicePacks = name => {
+    const pack = this.state.servicePacks.find(el => el.name === name);
+    this.props
+      .fetchPutUpdateTenantServicePacks(
+        this.props.createdTenant.tenantId,
+        pack.name,
+        pack
+      )
       .then(() => this.fetchData())
       .then(() => this.setState({ editServicePacks: false }));
   };
