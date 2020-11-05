@@ -221,6 +221,13 @@ export class Licenses extends Component {
                                 this.fetchData()
                               )
                             }
+                            trunkLicensesMax={
+                              this.props.trunkGroups.maxAvailableActiveCalls
+                                .unlimited
+                                ? String.fromCharCode(INFINITY)
+                                : this.props.trunkGroups.maxAvailableActiveCalls
+                                    .maximum
+                            }
                             value={this.state.trunkGroups.maxActiveCalls}
                             onChange={this.changeTrunkingLicenses}
                             onSave={this.updateTrunkCapacity}
