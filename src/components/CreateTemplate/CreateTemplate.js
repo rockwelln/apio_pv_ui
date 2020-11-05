@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
+import { FormattedMessage } from "react-intl";
+import { NotificationsManager } from "../../utils";
 
 import { fetchPostCreateTemplate } from "../../store/actions";
 
@@ -70,8 +72,22 @@ export class CreateTemplate extends Component {
 
   addTemplate = () => {
     const { templateData, name, description } = this.state;
+    let jsonData = "";
+    try {
+      jsonData = JSON.parse(templateData);
+    } catch (e) {
+      NotificationsManager.error(
+        <FormattedMessage
+          id="failed-parse-json"
+          defaultMessage="Failed to parse template data!"
+        />,
+        e.message
+      );
+      return;
+    }
+
     const data = {
-      data: JSON.parse(templateData),
+      data: jsonData,
       name,
       description
     };
