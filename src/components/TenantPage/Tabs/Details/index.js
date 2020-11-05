@@ -482,10 +482,9 @@ class Details extends Component {
         fromAddress: this.state.voicePortalPasscodeLockout
       }
     };
-    const clearData = removeEmpty(data);
     this.props.fetchPutUpdateTenantVoiceMessaging(
       this.state.tenant.tenantId,
-      clearData
+      data
     );
   };
 }
