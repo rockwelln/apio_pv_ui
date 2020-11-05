@@ -162,7 +162,10 @@ const SingleEdit = props => {
         >
           <FormattedMessage id="cancel" defaultMessage="Cancel" />
         </Button>
-        <Button className={"width-8 btn-success"} onClick={() => onSave()}>
+        <Button
+          className={"width-8 btn-success"}
+          onClick={() => onSave(licenseTitle)}
+        >
           <FormattedMessage id="save" defaultMessage="Save" />
         </Button>
       </Modal.Footer>
