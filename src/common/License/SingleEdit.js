@@ -55,8 +55,6 @@ const SingleEdit = props => {
     isEditPacks && isEditGroup && apiRequest(tenantId, licenseTitle);
   }, []);
 
-  console.log(isEditGroup, !isEditUserLimit);
-
   return (
     <Modal show={show} onHide={onClose}>
       <Modal.Header closeButton>

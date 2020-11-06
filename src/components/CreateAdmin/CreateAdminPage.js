@@ -90,198 +90,236 @@ class CreateAdmin extends Component {
     }
 
     return (
-      <Col md={8}>
-        <Form horizontal className={"margin-1"}>
-          <FormGroup controlId="Details">
-            <ControlLabel className={"margin-1"}>CREATE ADMIN</ControlLabel>
-            <FormGroup controlId="usernameGroupAdmin">
-              <Col componentClass={ControlLabel} md={3} className={"text-left"}>
-                Username
-              </Col>
-              <Col md={9}>
-                <InputGroup>
-                  <FormControl
-                    type="text"
-                    placeholder="User name"
-                    defaultValue={createAdminData.userId}
-                    autoComplete="new-username"
-                    onChange={e => {
-                      this.setState({
-                        createAdminData: {
-                          ...this.state.createAdminData,
-                          userId: e.target.value
-                        }
-                      });
-                      this.props.clearErrorMassage();
-                    }}
-                  />
-                  <InputGroup.Addon>{`@${
-                    this.props.match.params.groupId
-                      ? this.props.groupDefaultDomain
-                      : this.props.tenantDefaultDomain
-                  }`}</InputGroup.Addon>
-                </InputGroup>
-              </Col>
-            </FormGroup>
-            <FormGroup controlId="email" validationState={requiredEmail}>
-              <Col componentClass={ControlLabel} md={3} className={"text-left"}>
-                Email*
-              </Col>
-              <Col md={9}>
-                <FormControl
-                  type="email"
-                  placeholder="Email"
-                  defaultValue={createAdminData.emailAddress}
-                  onChange={e => {
-                    this.setState({
-                      createAdminData: {
-                        ...this.state.createAdminData,
-                        emailAddress: e.target.value
-                      },
-                      requiredEmail: null
-                    });
-                    this.props.clearErrorMassage();
-                  }}
-                />
-                {requiredEmail && (
-                  <HelpBlock>Please fill in the field</HelpBlock>
-                )}
-              </Col>
-            </FormGroup>
-            <FormGroup controlId="firstName">
-              <Col componentClass={ControlLabel} md={3} className={"text-left"}>
-                First Name
-              </Col>
-              <Col md={9}>
-                <FormControl
-                  type="text"
-                  placeholder="First name"
-                  defaultValue={createAdminData.firstName}
-                  onChange={e => {
-                    this.setState({
-                      createAdminData: {
-                        ...this.state.createAdminData,
-                        firstName: e.target.value
-                      }
-                    });
-                    this.props.clearErrorMassage();
-                  }}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup controlId="lastName">
-              <Col componentClass={ControlLabel} md={3} className={"text-left"}>
-                Last Name
-              </Col>
-              <Col md={9}>
-                <FormControl
-                  type="text"
-                  placeholder="Last name"
-                  defaultValue={createAdminData.lastName}
-                  onChange={e => {
-                    this.setState({
-                      createAdminData: {
-                        ...this.state.createAdminData,
-                        lastName: e.target.value
-                      }
-                    });
-                    this.props.clearErrorMassage();
-                  }}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup controlId="language">
-              <Col componentClass={ControlLabel} md={3} className={"text-left"}>
-                Language
-              </Col>
-              <Col md={9}>
-                <FormControl
-                  componentClass="select"
-                  defaultValue={createAdminData.language}
-                  onChange={e =>
-                    this.setState({
-                      createAdminData: {
-                        ...this.state.createAdminData,
-                        language: e.target.value
-                      }
-                    })
-                  }
-                >
-                  {this.props.languages.availableLanguages.map(lang => (
-                    <option key={`${lang.locale}`} value={lang.name}>
-                      {lang.name}
-                    </option>
-                  ))}
-                </FormControl>
-              </Col>
-            </FormGroup>
-            <FormGroup
-              controlId="passwordGroupAdmin"
-              validationState={passwordNotMatch}
-            >
-              <Col componentClass={ControlLabel} md={3} className={"text-left"}>
-                Password
-              </Col>
-              <Col md={9}>
-                <FormControl
-                  type="password"
-                  placeholder="Password"
-                  autoComplete="new-password"
-                  defaultValue={createAdminData.password}
-                  onChange={e => {
-                    this.setState({
-                      createAdminData: {
-                        ...this.state.createAdminData,
-                        password: e.target.value
-                      },
-                      passwordNotMatch: null
-                    });
-                    this.props.clearErrorMassage();
-                  }}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup
-              controlId="passwordConfirmation"
-              validationState={passwordNotMatch}
-            >
-              <Col componentClass={ControlLabel} md={3} className={"text-left"}>
-                Password confirmation
-              </Col>
-              <Col md={9}>
-                <FormControl
-                  type="password"
-                  placeholder="Password confirmation"
-                  autoComplete="new-password"
-                  defaultValue={passwordConfirmation}
-                  onChange={e => {
-                    this.setState({
-                      passwordConfirmation: e.target.value,
-                      passwordNotMatch: null
-                    });
-                    this.props.clearErrorMassage();
-                  }}
-                />
-                {passwordNotMatch && <HelpBlock>Passwords not match</HelpBlock>}
-              </Col>
-            </FormGroup>
-            <Col mdOffset={3} md={9}>
-              {this.props.errorMassage && (
-                <HelpBlock bsClass="color-error">
-                  {this.props.errorMassage}
-                </HelpBlock>
-              )}
-            </Col>
-          </FormGroup>
+      <React.Fragment>
+        <div className={"panel-heading"}>
+          <div className={"header"}>CREATE ADMIN</div>
+        </div>
+        <div className={"panel-body"}>
           <Row>
-            <Col mdPush={10} md={1}>
-              <Button onClick={this.createAdmin}>
-                <Glyphicon glyph="glyphicon glyphicon-ok" /> CREATE
-              </Button>
+            <Col md={8}>
+              <Form horizontal className={"margin-1"}>
+                <FormGroup controlId="Details">
+                  <FormGroup controlId="usernameGroupAdmin">
+                    <Col
+                      componentClass={ControlLabel}
+                      md={3}
+                      className={"text-left"}
+                    >
+                      Username
+                    </Col>
+                    <Col md={9}>
+                      <InputGroup>
+                        <FormControl
+                          type="text"
+                          placeholder="User name"
+                          defaultValue={createAdminData.userId}
+                          autoComplete="new-username"
+                          onChange={e => {
+                            this.setState({
+                              createAdminData: {
+                                ...this.state.createAdminData,
+                                userId: e.target.value
+                              }
+                            });
+                            this.props.clearErrorMassage();
+                          }}
+                        />
+                        <InputGroup.Addon>{`@${
+                          this.props.match.params.groupId
+                            ? this.props.groupDefaultDomain
+                            : this.props.tenantDefaultDomain
+                        }`}</InputGroup.Addon>
+                      </InputGroup>
+                    </Col>
+                  </FormGroup>
+                  <FormGroup controlId="email" validationState={requiredEmail}>
+                    <Col
+                      componentClass={ControlLabel}
+                      md={3}
+                      className={"text-left"}
+                    >
+                      Email*
+                    </Col>
+                    <Col md={9}>
+                      <FormControl
+                        type="email"
+                        placeholder="Email"
+                        defaultValue={createAdminData.emailAddress}
+                        onChange={e => {
+                          this.setState({
+                            createAdminData: {
+                              ...this.state.createAdminData,
+                              emailAddress: e.target.value
+                            },
+                            requiredEmail: null
+                          });
+                          this.props.clearErrorMassage();
+                        }}
+                      />
+                      {requiredEmail && (
+                        <HelpBlock>Please fill in the field</HelpBlock>
+                      )}
+                    </Col>
+                  </FormGroup>
+                  <FormGroup controlId="firstName">
+                    <Col
+                      componentClass={ControlLabel}
+                      md={3}
+                      className={"text-left"}
+                    >
+                      First Name
+                    </Col>
+                    <Col md={9}>
+                      <FormControl
+                        type="text"
+                        placeholder="First name"
+                        defaultValue={createAdminData.firstName}
+                        onChange={e => {
+                          this.setState({
+                            createAdminData: {
+                              ...this.state.createAdminData,
+                              firstName: e.target.value
+                            }
+                          });
+                          this.props.clearErrorMassage();
+                        }}
+                      />
+                    </Col>
+                  </FormGroup>
+                  <FormGroup controlId="lastName">
+                    <Col
+                      componentClass={ControlLabel}
+                      md={3}
+                      className={"text-left"}
+                    >
+                      Last Name
+                    </Col>
+                    <Col md={9}>
+                      <FormControl
+                        type="text"
+                        placeholder="Last name"
+                        defaultValue={createAdminData.lastName}
+                        onChange={e => {
+                          this.setState({
+                            createAdminData: {
+                              ...this.state.createAdminData,
+                              lastName: e.target.value
+                            }
+                          });
+                          this.props.clearErrorMassage();
+                        }}
+                      />
+                    </Col>
+                  </FormGroup>
+                  <FormGroup controlId="language">
+                    <Col
+                      componentClass={ControlLabel}
+                      md={3}
+                      className={"text-left"}
+                    >
+                      Language
+                    </Col>
+                    <Col md={9}>
+                      <FormControl
+                        componentClass="select"
+                        defaultValue={createAdminData.language}
+                        onChange={e =>
+                          this.setState({
+                            createAdminData: {
+                              ...this.state.createAdminData,
+                              language: e.target.value
+                            }
+                          })
+                        }
+                      >
+                        {this.props.languages.availableLanguages.map(lang => (
+                          <option key={`${lang.locale}`} value={lang.name}>
+                            {lang.name}
+                          </option>
+                        ))}
+                      </FormControl>
+                    </Col>
+                  </FormGroup>
+                  <FormGroup
+                    controlId="passwordGroupAdmin"
+                    validationState={passwordNotMatch}
+                  >
+                    <Col
+                      componentClass={ControlLabel}
+                      md={3}
+                      className={"text-left"}
+                    >
+                      Password
+                    </Col>
+                    <Col md={9}>
+                      <FormControl
+                        type="password"
+                        placeholder="Password"
+                        autoComplete="new-password"
+                        defaultValue={createAdminData.password}
+                        onChange={e => {
+                          this.setState({
+                            createAdminData: {
+                              ...this.state.createAdminData,
+                              password: e.target.value
+                            },
+                            passwordNotMatch: null
+                          });
+                          this.props.clearErrorMassage();
+                        }}
+                      />
+                    </Col>
+                  </FormGroup>
+                  <FormGroup
+                    controlId="passwordConfirmation"
+                    validationState={passwordNotMatch}
+                  >
+                    <Col
+                      componentClass={ControlLabel}
+                      md={3}
+                      className={"text-left"}
+                    >
+                      Password confirmation
+                    </Col>
+                    <Col md={9}>
+                      <FormControl
+                        type="password"
+                        placeholder="Password confirmation"
+                        autoComplete="new-password"
+                        defaultValue={passwordConfirmation}
+                        onChange={e => {
+                          this.setState({
+                            passwordConfirmation: e.target.value,
+                            passwordNotMatch: null
+                          });
+                          this.props.clearErrorMassage();
+                        }}
+                      />
+                      {passwordNotMatch && (
+                        <HelpBlock>Passwords not match</HelpBlock>
+                      )}
+                    </Col>
+                  </FormGroup>
+                  <Col mdOffset={3} md={9}>
+                    {this.props.errorMassage && (
+                      <HelpBlock bsClass="color-error">
+                        {this.props.errorMassage}
+                      </HelpBlock>
+                    )}
+                  </Col>
+                </FormGroup>
+                <Row>
+                  <Col mdPush={10} md={1}>
+                    <Button onClick={this.createAdmin}>
+                      <Glyphicon glyph="glyphicon glyphicon-ok" /> CREATE
+                    </Button>
+                  </Col>
+                </Row>
+              </Form>
             </Col>
           </Row>
-        </Form>
-      </Col>
+        </div>
+      </React.Fragment>
     );
   }
 
