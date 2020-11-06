@@ -191,9 +191,6 @@ class Tenants extends Component {
                             onClick={this.sortByType}
                           />
                         </th>
-                        <th style={{ width: "24%" }}>
-                          <FormattedMessage id="sync" defaultMessage="Sync" />
-                        </th>
                         <th style={{ width: "4%" }} />
                       </tr>
                     </thead>
