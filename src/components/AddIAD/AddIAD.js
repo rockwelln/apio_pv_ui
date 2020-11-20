@@ -688,6 +688,7 @@ export class AddIAD extends Component {
                     <FormControl
                       componentClass="select"
                       value={this.state.dtmf}
+                      disabled={this.props.group.virtual}
                       onChange={e =>
                         this.setState({
                           dtmf: e.target.value
@@ -845,6 +846,7 @@ export class AddIAD extends Component {
                         <FormControl
                           componentClass="select"
                           value={this.state.praByIad[pra].praID}
+                          disabled={this.props.group.virtual}
                           onChange={e => {
                             let selectedID = [...this.state.selectedID];
                             if (Number(e.target.value) !== 0) {
@@ -1047,6 +1049,7 @@ export class AddIAD extends Component {
                           name="transportMode"
                           value={type.value}
                           checked={type.value === this.state.transportMode}
+                          disabled={this.props.group.virtual}
                           onChange={e =>
                             this.setState({
                               transportMode: e.target.value
@@ -1092,6 +1095,7 @@ export class AddIAD extends Component {
                             name="ip1mode"
                             value={type.value}
                             checked={type.value === this.state.ip1mode}
+                            disabled={this.props.group.virtual}
                             onChange={e =>
                               this.setState({
                                 ip1mode: e.target.value
@@ -1135,6 +1139,7 @@ export class AddIAD extends Component {
                             type="text"
                             value={this.state.ipv4Address}
                             placeholder={"IPv4 address"}
+                            disabled={this.props.group.virtual}
                             onChange={e =>
                               this.setState({
                                 ipv4Address: e.target.value,
@@ -1188,6 +1193,7 @@ export class AddIAD extends Component {
                             className={"flex-basis-66"}
                             type="text"
                             value={this.state.ipv4Netmask}
+                            disabled={this.props.group.virtual}
                             placeholder={"IPv4 netmask"}
                             onChange={e =>
                               this.setState({
@@ -1246,6 +1252,7 @@ export class AddIAD extends Component {
                             className={"flex-basis-66"}
                             value={this.state.ipv6Address}
                             placeholder={"IPv6 address"}
+                            disabled={this.props.group.virtual}
                             onChange={e =>
                               this.setState({
                                 ipv6Address: e.target.value,
@@ -1300,6 +1307,7 @@ export class AddIAD extends Component {
                             className={"flex-basis-66"}
                             type="text"
                             value={this.state.ipv6Netmask}
+                            disabled={this.props.group.virtual}
                             placeholder={"IPv6 netmask"}
                             onChange={e =>
                               this.setState({
@@ -1374,6 +1382,7 @@ export class AddIAD extends Component {
                             type="text"
                             value={this.state.IPAddress}
                             placeholder={"IP Address"}
+                            disabled={this.props.group.virtual}
                             onChange={e =>
                               this.setState({
                                 IPAddress: e.target.value,
@@ -1403,6 +1412,7 @@ export class AddIAD extends Component {
                         type="text"
                         value={this.state.port}
                         placeholder={"Port"}
+                        disabled={this.props.group.virtual}
                         onChange={e => {
                           if (isNaN(e.target.value)) {
                             return;
@@ -1467,6 +1477,7 @@ export class AddIAD extends Component {
                     <div className={"margin-right-1 flex-basis-33"}>
                       <Checkbox
                         defaultChecked={this.state.clock_master}
+                        disabled={this.props.group.virtual}
                         onChange={e =>
                           this.setState({ clock_master: e.target.checked })
                         }
@@ -1494,6 +1505,7 @@ export class AddIAD extends Component {
                   <div className={"margin-right-1 flex-basis-33"}>
                     <Checkbox
                       checked={this.state.dual_power}
+                      disabled={this.props.group.virtual}
                       onChange={e =>
                         this.setState({ dual_power: e.target.checked })
                       }
@@ -1524,6 +1536,7 @@ export class AddIAD extends Component {
                       <FormControl
                         componentClass="select"
                         value={this.state.isdnTerminationSide}
+                        disabled={this.props.group.virtual}
                         onChange={e =>
                           this.setState({ isdnTerminationSide: e.target.value })
                         }
