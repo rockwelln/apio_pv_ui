@@ -31,7 +31,8 @@ const RebootWindow = props => {
 
     const objIads = iads.reduce((objIads, iad) => {
       const indexStartGRP = iad.indexOf("GRP");
-      let iadEntGr = iad.slice(0, indexStartGRP); // TG_ENTxxxxxxxGRPyy-IADzz
+      const indexStartIAD = iad.indexOf("-IAD");
+      let iadEntGr = iad.slice(0, indexStartIAD); // TG_ENTxxxxxxxGRPyy-IADzz
       objIads = {
         ...objIads,
         [iadEntGr]: objIads[iadEntGr] ? [...objIads[iadEntGr], iad] : [iad]
