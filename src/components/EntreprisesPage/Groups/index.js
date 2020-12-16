@@ -85,7 +85,7 @@ export class GroupsTab extends Component {
               </InputGroup.Addon>
               <FormattedMessage
                 id="search_placeholder"
-                defaultMessage="Site ID or Name"
+                defaultMessage="Site ID or Name or Tina Product ID"
               >
                 {placeholder => (
                   <FormControl
@@ -156,6 +156,16 @@ export class GroupsTab extends Component {
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
                           onClick={this.sortByID}
+                        />
+                      </th>
+                      <th>
+                        <FormattedMessage
+                          id="tenant-id"
+                          defaultMessage="Tina Product ID"
+                        />
+                        <Glyphicon
+                          glyph="glyphicon glyphicon-sort"
+                          onClick={this.sortByTinaPID}
                         />
                       </th>
                       <th>
@@ -302,7 +312,8 @@ export class GroupsTab extends Component {
       .filter(
         group =>
           group.groupId.toLowerCase().includes(searchValue.toLowerCase()) ||
-          group.groupName.toLowerCase().includes(searchValue.toLowerCase())
+          group.groupName.toLowerCase().includes(searchValue.toLowerCase()) ||
+          group.groupTpid.toLowerCase().includes(searchValue.toLowerCase())
       )
       .map(group => group);
     this.setState({ groups: SearchArray }, () => this.pagination());
@@ -389,6 +400,23 @@ export class GroupsTab extends Component {
         return 0;
       });
       this.setState({ groups: groupsSorted, sortedBy: "id" }, () =>
+        this.pagination()
+      );
+    }
+  };
+
+  sortByTinaPID = () => {
+    const { groups, sortedBy } = this.state;
+    if (sortedBy === "groupTpid") {
+      const groupsSorted = groups.reverse();
+      this.setState({ groups: groupsSorted }, () => this.pagination());
+    } else {
+      const groupsSorted = groups.sort((a, b) => {
+        if (a.groupTpid < b.groupTpid) return -1;
+        if (a.groupTpid > b.groupTpid) return 1;
+        return 0;
+      });
+      this.setState({ groups: groupsSorted, sortedBy: "groupTpid" }, () =>
         this.pagination()
       );
     }

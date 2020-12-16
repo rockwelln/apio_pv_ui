@@ -23,6 +23,7 @@ class Group extends Component {
             {group.groupId}
           </Link>
         </td>
+        <td>{group.groupTpid ? group.groupTpid : "-"}</td>
         <td>{group.groupName ? group.groupName : "-"}</td>
         <td>{group.productType ? group.productType : "-"}</td>
         <td>{group.accessType ? group.accessType : "-"}</td>

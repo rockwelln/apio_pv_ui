@@ -36,7 +36,8 @@ export class AddGroup extends Component {
     isLoading: true,
     channelHunting: "",
     np1Redundancy: false,
-    mainNumber: ""
+    mainNumber: "",
+    groupTpid: ""
   };
 
   componentDidMount = () => {
@@ -102,6 +103,25 @@ export class AddGroup extends Component {
                     value={this.state.siteName}
                     placeholder={"Site Name"}
                     onChange={e => this.setState({ siteName: e.target.value })}
+                  />
+                </div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  <FormattedMessage
+                    id="groupTpid"
+                    defaultMessage="Tina Product Id"
+                  />
+                  {"\u002a"}
+                </div>
+                <div className={"margin-right-1 flex-basis-33"}>
+                  <FormControl
+                    type="text"
+                    value={this.state.groupTpid}
+                    placeholder={"Site Name"}
+                    onChange={e => this.setState({ groupTpid: e.target.value })}
                   />
                 </div>
               </Col>
@@ -345,7 +365,8 @@ export class AddGroup extends Component {
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
-                  {this.state.typeOfIad === "PRA" || this.state.typeOfIad === "PRA_SIP" ? (
+                  {this.state.typeOfIad === "PRA" ||
+                  this.state.typeOfIad === "PRA_SIP" ? (
                     <FormattedMessage
                       id="numberOfPRA"
                       defaultMessage="Number of PRA"
@@ -366,7 +387,8 @@ export class AddGroup extends Component {
                       this.setState({ numberOfChannels: e.target.value })
                     }
                   >
-                    {this.state.typeOfIad === "PRA" || this.state.typeOfIad === "PRA_SIP"
+                    {this.state.typeOfIad === "PRA" ||
+                    this.state.typeOfIad === "PRA_SIP"
                       ? ~this.props.config.tenant.group.iad[
                           "2EDUsForServiceTypes"
                         ].indexOf(this.state.serviceType)
@@ -384,7 +406,8 @@ export class AddGroup extends Component {
                               </option>
                             )
                           )
-                      : this.state.typeOfIad === "SIP" || this.state.typeOfIad === "SIP_PRA"
+                      : this.state.typeOfIad === "SIP" ||
+                        this.state.typeOfIad === "SIP_PRA"
                       ? ~this.props.config.tenant.group.iad[
                           "2EDUsForServiceTypes"
                         ].indexOf(this.state.serviceType)
@@ -417,6 +440,7 @@ export class AddGroup extends Component {
                       className="btn-primary"
                       disabled={
                         !this.state.zipCode ||
+                        !this.state.groupTpid ||
                         this.state.buttonName === "Creating..."
                       }
                     >
@@ -451,7 +475,8 @@ export class AddGroup extends Component {
       virtual,
       channelHunting,
       np1Redundancy,
-      mainNumber
+      mainNumber,
+      groupTpid
     } = this.state;
 
     const data = {
@@ -465,7 +490,8 @@ export class AddGroup extends Component {
       virtual,
       channelHunting,
       //np1Redundancy,
-      cliPhoneNumber: mainNumber
+      cliPhoneNumber: mainNumber,
+      groupTpid
     };
     const clearData = removeEmpty(data);
     this.setState({ buttonName: "Creating..." }, () =>

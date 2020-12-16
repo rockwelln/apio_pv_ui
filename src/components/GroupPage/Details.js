@@ -105,6 +105,29 @@ export class index extends Component {
         <Row className={"margin-top-1"}>
           <Col md={12} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-16"}>
+              <FormattedMessage
+                id="groupTpid"
+                defaultMessage="Tina Product Id"
+              />
+            </div>
+            <div className={"margin-right-1 flex-basis-33"}>
+              <FormControl
+                type="text"
+                value={this.state.group.groupTpid}
+                placeholder={"Group Tina Product Id"}
+                onChange={e =>
+                  this.setState({
+                    group: { ...this.state.group, groupTpid: e.target.value }
+                  })
+                }
+                disabled={this.state.isDisabled || this.props.group.groupTpid}
+              />
+            </div>
+          </Col>
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={12} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-16"}>
               <FormattedMessage id="siteName" defaultMessage="Site Name" />
             </div>
             <div className={"margin-right-1 flex-basis-33"}>
@@ -289,13 +312,15 @@ export class index extends Component {
       groupName,
       //cliName,
       zipCode,
-      cliPhoneNumber
+      cliPhoneNumber,
+      groupTpid
     } = this.state.group;
     const data = {
       groupName,
       //cliName,
       cliPhoneNumber,
-      zipCode
+      zipCode,
+      groupTpid
     };
     this.setState({ disabledUpdateButton: true }, () =>
       this.props
