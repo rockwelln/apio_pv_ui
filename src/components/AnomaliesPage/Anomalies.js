@@ -358,7 +358,9 @@ export class Anomalies extends Component {
                     onChange={e => this.changeAssignedTeam(e.target.value)}
                     disabled={this.state.isDisabled}
                   >
-                    <option value="">none</option>
+                    {this.props.anomaly.assigned_team ? null : (
+                      <option value="">none</option>
+                    )}
                     {this.props.reconciliationTeams.map((team, i) => (
                       <option key={i} value={team.name}>
                         {team.name}
@@ -545,7 +547,11 @@ export class Anomalies extends Component {
           assigned_user: ""
         }
       },
-      () => this.props.fetchGetTeam(value)
+      () => {
+        if (value) {
+          this.props.fetchGetTeam(value);
+        }
+      }
     );
   };
 
@@ -565,13 +571,17 @@ export class Anomalies extends Component {
       comments
     };
     const clearData = removeEmpty(data);
+
     this.setState({ disableUpdateButton: true }, () =>
       this.props
         .fetchPutUpdateAnomaly(this.props.match.params.anomalyHash, clearData)
         .then(
           res =>
             res === "success" &&
-            this.setState({ isDisabled: true, disableUpdateButton: false })
+            this.setState(
+              { isDisabled: true, disableUpdateButton: false },
+              () => this.fetchReq()
+            )
         )
     );
   };
