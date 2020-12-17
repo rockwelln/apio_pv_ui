@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+import { Link } from "react-router-dom";
 
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
@@ -91,6 +92,19 @@ export class Anomalies extends Component {
                     value={this.state.anomaly.enterprise_id}
                   />
                 </div>
+                {this.state.anomaly.enterprise_id ? (
+                  <div className={"margin-right-1 flex-basis-33"}>
+                    <Link
+                      to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.state.anomaly.enterprise_id}`}
+                      target="_blank"
+                    >
+                      <FormattedMessage
+                        id="goToEnterprise"
+                        defaultMessage="Go to enterprise"
+                      />
+                    </Link>
+                  </div>
+                ) : null}
               </Col>
             </Row>
             <Row className={"margin-top-1"}>
@@ -105,6 +119,19 @@ export class Anomalies extends Component {
                     value={this.state.anomaly.group_id}
                   />
                 </div>
+                {this.state.anomaly.group_id ? (
+                  <div className={"margin-right-1 flex-basis-33"}>
+                    <Link
+                      to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.state.anomaly.enterprise_id}/groups/${this.state.anomaly.group_id}`}
+                      target="_blank"
+                    >
+                      <FormattedMessage
+                        id="goToGroup"
+                        defaultMessage="Go to group"
+                      />
+                    </Link>
+                  </div>
+                ) : null}
               </Col>
             </Row>
             <Row className={"margin-top-1"}>
@@ -119,6 +146,30 @@ export class Anomalies extends Component {
                     value={this.state.anomaly.iad_id}
                   />
                 </div>
+                {this.state.anomaly.iad_id ? (
+                  <div className={"margin-right-1 flex-basis-33"}>
+                    <Link
+                      to={`/provisioning/${
+                        this.props.match.params.gwName
+                      }/tenants/${this.state.anomaly.enterprise_id}/groups/${
+                        this.state.anomaly.group_id
+                      }/iad/${
+                        this.state.anomaly.iad_id.slice(0, 2) === "DP"
+                          ? `TG${this.state.anomaly.iad_id.slice(
+                              2,
+                              this.state.anomaly.iad_id.length
+                            )}`
+                          : this.state.anomaly.iad_id
+                      }`}
+                      target="_blank"
+                    >
+                      <FormattedMessage
+                        id="goToIAD"
+                        defaultMessage="Go to IAD"
+                      />
+                    </Link>
+                  </div>
+                ) : null}
               </Col>
             </Row>
             <Row className={"margin-top-1"}>
