@@ -91,7 +91,7 @@ export class Edu extends Component {
                   !isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.edit_iad_edu
-                  )
+                  ) || this.props.iad.virtual
                 }
               />
             </div>
@@ -114,7 +114,7 @@ export class Edu extends Component {
                   !isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.edit_iad_edu
-                  )
+                  ) || this.props.iad.virtual
                 }
               />
             </div>
@@ -136,7 +136,7 @@ export class Edu extends Component {
                     !isAllowed(
                       localStorage.getItem("userProfile"),
                       pages.edit_iad_edu
-                    )
+                    ) || this.props.iad.virtual
                   }
                 />
               </div>
@@ -165,7 +165,7 @@ export class Edu extends Component {
                   !isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.edit_iad_edu
-                  )
+                  ) || this.props.iad.virtual
                 }
               />
             </div>
@@ -192,7 +192,7 @@ export class Edu extends Component {
                     !isAllowed(
                       localStorage.getItem("userProfile"),
                       pages.edit_iad_edu
-                    )
+                    ) || this.props.iad.virtual
                   }
                 />
               </div>
@@ -218,7 +218,7 @@ export class Edu extends Component {
                   !isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.edit_iad_edu
-                  )
+                  ) || this.props.iad.virtual
                 }
               />
             </div>
@@ -242,7 +242,7 @@ export class Edu extends Component {
                     !isAllowed(
                       localStorage.getItem("userProfile"),
                       pages.edit_iad_edu
-                    )
+                    ) || this.props.iad.virtual
                   }
                 />
               </div>
@@ -275,7 +275,7 @@ export class Edu extends Component {
                   !isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.edit_iad_edu
-                  )
+                  ) || this.props.iad.virtual
                 }
               />
             </div>
@@ -309,7 +309,7 @@ export class Edu extends Component {
                     !isAllowed(
                       localStorage.getItem("userProfile"),
                       pages.edit_iad_edu
-                    )
+                    ) || this.props.iad.virtual
                   }
                 />
               </div>
@@ -333,7 +333,7 @@ export class Edu extends Component {
                   !isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.edit_iad_edu
-                  )
+                  ) || this.props.iad.virtual
                 }
               />
             </div>
@@ -355,7 +355,7 @@ export class Edu extends Component {
                     !isAllowed(
                       localStorage.getItem("userProfile"),
                       pages.edit_iad_edu
-                    )
+                    ) || this.props.iad.virtual
                   }
                 />
               </div>
@@ -379,7 +379,7 @@ export class Edu extends Component {
                   !isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.edit_iad_edu
-                  )
+                  ) || this.props.iad.virtual
                 }
               />
             </div>
@@ -401,7 +401,7 @@ export class Edu extends Component {
                     !isAllowed(
                       localStorage.getItem("userProfile"),
                       pages.edit_iad_edu
-                    )
+                    ) || this.props.iad.virtual
                   }
                 />
               </div>
@@ -730,7 +730,9 @@ export class Edu extends Component {
                     onClick={this.updateIAD}
                     type="submit"
                     className="btn-primary"
-                    disabled={this.state.disabledButton}
+                    disabled={
+                      this.state.disabledButton || this.props.iad.virtual
+                    }
                   >
                     <Glyphicon glyph="glyphicon glyphicon-ok" />
                     {this.state.disabledButton ? (

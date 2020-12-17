@@ -120,7 +120,7 @@ export class PraInfo extends Component {
                       !isAllowed(
                         localStorage.getItem("userProfile"),
                         pages.edit_iad_pra_info_pra_port
-                      )
+                      ) || this.props.iad.virtual
                     }
                   >
                     {this.state.arrayOfPraId.map((el, i) => (
@@ -169,7 +169,7 @@ export class PraInfo extends Component {
                       !isAllowed(
                         localStorage.getItem("userProfile"),
                         pages.edit_iad_pra_info_tpid
-                      )
+                      ) || this.props.iad.virtual
                     }
                   />
                 </div>
@@ -208,7 +208,7 @@ export class PraInfo extends Component {
                       !isAllowed(
                         localStorage.getItem("userProfile"),
                         pages.edit_iad_pra_info_circuit_id
-                      )
+                      ) || this.props.iad.virtual
                     }
                   />
                 </div>
@@ -243,7 +243,7 @@ export class PraInfo extends Component {
                       !isAllowed(
                         localStorage.getItem("userProfile"),
                         pages.edit_iad_pra_info_enabled
-                      )
+                      ) || this.props.iad.virtual
                     }
                   />
                 </div>
@@ -264,7 +264,7 @@ export class PraInfo extends Component {
                   onClick={this.updateIAD}
                   type="submit"
                   className="btn-primary"
-                  disabled={this.state.disabledButton}
+                  disabled={this.state.disabledButton || this.props.iad.virtual}
                 >
                   <Glyphicon glyph="glyphicon glyphicon-ok" />
                   {this.state.disabledButton ? (

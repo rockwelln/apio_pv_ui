@@ -63,7 +63,7 @@ export class Options extends Component {
                     !isAllowed(
                       localStorage.getItem("userProfile"),
                       pages.edit_iad_advanced_options
-                    )
+                    ) || this.props.iad.virtual
                   }
                 />
               </div>
@@ -85,7 +85,7 @@ export class Options extends Component {
                   !isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.edit_iad_advanced_options
-                  )
+                  ) || this.props.iad.virtual
                 }
               />
             </div>
@@ -113,7 +113,7 @@ export class Options extends Component {
                     !isAllowed(
                       localStorage.getItem("userProfile"),
                       pages.edit_iad_advanced_options
-                    )
+                    ) || this.props.iad.virtual
                   }
                 >
                   {this.props.config.tenant.group.iad.isdnTerminationSide.map(
@@ -128,9 +128,10 @@ export class Options extends Component {
             </Col>
           </Row>
         )}
-        {(isAllowed(
-            localStorage.getItem("userProfile"),
-            pages.access_iad_advanced_options_syslog)) && (
+        {isAllowed(
+          localStorage.getItem("userProfile"),
+          pages.access_iad_advanced_options_syslog
+        ) && (
           <Row className={"margin-top-1"}>
             <Col md={12} className={"flex align-items-center"}>
               <div className={"margin-right-1 flex flex-basis-16"}>
@@ -156,9 +157,10 @@ export class Options extends Component {
             </Col>
           </Row>
         )}
-        {(isAllowed(
-            localStorage.getItem("userProfile"),
-            pages.access_iad_advanced_options_syslog)) && (
+        {isAllowed(
+          localStorage.getItem("userProfile"),
+          pages.access_iad_advanced_options_syslog
+        ) && (
           <Row className={"margin-top-1"}>
             <Col md={12} className={"flex align-items-center"}>
               <div className={"margin-right-1 flex flex-basis-16"}>

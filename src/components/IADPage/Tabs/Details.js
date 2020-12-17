@@ -140,10 +140,14 @@ export class Details extends Component {
                   type="text"
                   value={this.state.macAddress}
                   placeholder={"MAC Address"}
-                  disabled={this.state.isDisabled || !isAllowed(
-                    localStorage.getItem("userProfile"),
-                    pages.edit_iad_details_mac
-                  )}
+                  disabled={
+                    this.state.isDisabled ||
+                    !isAllowed(
+                      localStorage.getItem("userProfile"),
+                      pages.edit_iad_details_mac
+                    ) ||
+                    this.props.iad.virtual
+                  }
                   onChange={this.upadateMacAddres}
                   onBlur={this.validateMacAddress}
                 />
@@ -206,10 +210,13 @@ export class Details extends Component {
                     cliPhoneNumber: e.target.value
                   })
                 }
-                disabled={this.state.isDisabled || !isAllowed(
+                disabled={
+                  this.state.isDisabled ||
+                  !isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.edit_iad_details_main_nbr
-                  )}
+                  )
+                }
                 onChange={this.upadateCliPhoneNumber}
               >
                 {!this.state.cliPhoneNumber && (
