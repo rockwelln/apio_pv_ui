@@ -13,7 +13,9 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import {
   fetchGetAnomaly,
   fetchPutUpdateAnomaly,
-  fetchGetConfig
+  fetchGetConfig,
+  fetchGetReconciliationTeams,
+  fetchGetTeam
 } from "../../store/actions";
 import { removeEmpty } from "../remuveEmptyInObject";
 import DeleteModal from "./DeleteModal";
@@ -29,22 +31,41 @@ export class Anomalies extends Component {
     anomaly: {},
     isLoading: true,
     isLoadingConfig: true,
-    disableUpdateButton: false
+    disableUpdateButton: false,
+    isLoadingRT: true,
+    isLoadingTeam: true
   };
-  componentDidMount() {
+
+  fetchReq = () => {
     this.props
       .fetchGetConfig()
       .then(() => this.setState({ isLoadingConfig: false }));
+    this.props.fetchGetAnomaly(this.props.match.params.anomalyHash).then(() => {
+      this.setState({ isLoading: false, anomaly: this.props.anomaly });
+      if (this.props.anomaly.assigned_team) {
+        this.props
+          .fetchGetTeam(this.props.anomaly.assigned_team)
+          .then(() => this.setState({ isLoadingTeam: false }));
+      }
+    });
     this.props
-      .fetchGetAnomaly(this.props.match.params.anomalyHash)
-      .then(() =>
-        this.setState({ isLoading: false, anomaly: this.props.anomaly })
-      );
+      .fetchGetReconciliationTeams()
+      .then(this.setState({ isLoadingRT: false }));
+  };
+
+  componentDidMount() {
+    this.fetchReq();
   }
   render() {
-    if (this.state.isLoading || this.state.isLoadingConfig) {
+    if (
+      this.state.isLoading ||
+      this.state.isLoadingConfig ||
+      this.state.isLoadingRT ||
+      (this.props.anomaly.assigned_team && this.state.isLoadingTeam)
+    ) {
       return <Loading />;
     }
+
     return (
       <React.Fragment>
         <Panel className={"margin-0"}>
@@ -332,18 +353,18 @@ export class Anomalies extends Component {
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
-                    type="text"
-                    disabled={this.state.isDisabled}
+                    componentClass="select"
                     value={this.state.anomaly.assigned_team}
-                    onChange={e =>
-                      this.setState({
-                        anomaly: {
-                          ...this.state.anomaly,
-                          assigned_team: e.target.value
-                        }
-                      })
-                    }
-                  />
+                    onChange={e => this.changeAssignedTeam(e.target.value)}
+                    disabled={this.state.isDisabled}
+                  >
+                    <option value="">none</option>
+                    {this.props.reconciliationTeams.map((team, i) => (
+                      <option key={i} value={team.name}>
+                        {team.name}
+                      </option>
+                    ))}
+                  </FormControl>
                 </div>
               </Col>
             </Row>
@@ -357,8 +378,7 @@ export class Anomalies extends Component {
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
-                    type="text"
-                    disabled={this.state.isDisabled}
+                    componentClass="select"
                     value={this.state.anomaly.assigned_user}
                     onChange={e =>
                       this.setState({
@@ -368,7 +388,17 @@ export class Anomalies extends Component {
                         }
                       })
                     }
-                  />
+                    disabled={
+                      this.state.isDisabled || !this.state.anomaly.assigned_team
+                    }
+                  >
+                    <option value="">none</option>
+                    {this.props.team.users.map((user, i) => (
+                      <option key={i} value={user.username}>
+                        {user.username}
+                      </option>
+                    ))}
+                  </FormControl>
                 </div>
               </Col>
             </Row>
@@ -486,7 +516,10 @@ export class Anomalies extends Component {
                     </div>
                     <div className="pull-right margin-right-1">
                       <Button
-                        onClick={() => this.setState({ isDisabled: true })}
+                        onClick={() => {
+                          this.setState({ isDisabled: true });
+                          this.fetchReq();
+                        }}
                         type="submit"
                         className="btn-primary"
                       >
@@ -502,6 +535,19 @@ export class Anomalies extends Component {
       </React.Fragment>
     );
   }
+
+  changeAssignedTeam = value => {
+    this.setState(
+      {
+        anomaly: {
+          ...this.state.anomaly,
+          assigned_team: value,
+          assigned_user: ""
+        }
+      },
+      () => this.props.fetchGetTeam(value)
+    );
+  };
 
   anomalyUpdate = () => {
     const {
@@ -533,13 +579,17 @@ export class Anomalies extends Component {
 
 const mapStateToProps = state => ({
   anomaly: state.anomaly,
-  config: state.config
+  config: state.config,
+  reconciliationTeams: state.reconciliationTeams,
+  team: state.team
 });
 
 const mapDispatchToProps = {
   fetchGetAnomaly,
   fetchPutUpdateAnomaly,
-  fetchGetConfig
+  fetchGetConfig,
+  fetchGetReconciliationTeams,
+  fetchGetTeam
 };
 
 export default withRouter(
