@@ -120,7 +120,7 @@ export class AddGroup extends Component {
                   <FormControl
                     type="text"
                     value={this.state.groupTpid}
-                    placeholder={"Site Name"}
+                    placeholder={"Tina Product Id"}
                     onChange={e => this.setState({ groupTpid: e.target.value })}
                   />
                 </div>
