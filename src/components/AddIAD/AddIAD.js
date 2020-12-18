@@ -1570,7 +1570,10 @@ export class AddIAD extends Component {
                       className="btn-primary"
                       disabled={
                         this.props.group.virtual
-                          ? !iadType || !pilotNumber || disabledButton
+                          ? !iadType ||
+                            !pilotNumber ||
+                            disabledButton ||
+                            !cliPhoneNumber
                           : disabledButton ||
                             errorMacAddress ||
                             errorPbxIpAdress ||
