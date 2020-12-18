@@ -394,7 +394,9 @@ export class Anomalies extends Component {
                       this.state.isDisabled || !this.state.anomaly.assigned_team
                     }
                   >
-                    <option value="">none</option>
+                    {!this.props.anomaly.assigned_user && (
+                      <option value="">none</option>
+                    )}
                     {this.props.team.users.map((user, i) => (
                       <option key={i} value={user.username}>
                         {user.username}
@@ -451,13 +453,17 @@ export class Anomalies extends Component {
                       this.setState({
                         anomaly: {
                           ...this.state.anomaly,
-                          result: Number(e.target.value)
+                          result: e.target.value
+                            ? Number(e.target.value)
+                            : e.target.value
                         }
                       })
                     }
                     disabled={this.state.isDisabled}
                   >
-                    <option value="">none</option>
+                    {isNaN(this.props.anomaly.result) && (
+                      <option value="">none</option>
+                    )}
                     {this.props.config.reconciliation.anomaly.result.map(
                       (type, i) => (
                         <option key={i} value={type.value}>
