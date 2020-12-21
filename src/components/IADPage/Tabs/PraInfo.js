@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+import { NotificationsManager } from "../../../utils";
 
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
@@ -10,11 +11,10 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import Checkbox from "react-bootstrap/lib/Checkbox";
 
-import { FormattedMessage } from "react-intl";
-
 import { changeIAD, fetchPutUpdateIAD } from "../../../store/actions";
 import { removeEmpty } from "../../remuveEmptyInObject";
 import RebootWindow from "../RebootWindow";
+import { FormattedMessage } from "react-intl";
 
 import { isAllowed, pages } from "../../../utils/user";
 
@@ -55,7 +55,9 @@ export class PraInfo extends Component {
     }
     this.setState({ praByIad, arrayOfPraId, selectedID });
   }
+
   render() {
+    console.log(this.state.praByIad);
     return (
       <React.Fragment>
         {Object.keys(this.state.praByIad).map((pra, i) => (
@@ -169,7 +171,9 @@ export class PraInfo extends Component {
                       !isAllowed(
                         localStorage.getItem("userProfile"),
                         pages.edit_iad_pra_info_tpid
-                      ) || this.props.iad.virtual
+                      ) ||
+                      this.props.iad.virtual ||
+                      !this.state.praByIad[pra].praID
                     }
                   />
                 </div>
@@ -208,7 +212,9 @@ export class PraInfo extends Component {
                       !isAllowed(
                         localStorage.getItem("userProfile"),
                         pages.edit_iad_pra_info_circuit_id
-                      ) || this.props.iad.virtual
+                      ) ||
+                      this.props.iad.virtual ||
+                      !this.state.praByIad[pra].praID
                     }
                   />
                 </div>
@@ -243,7 +249,9 @@ export class PraInfo extends Component {
                       !isAllowed(
                         localStorage.getItem("userProfile"),
                         pages.edit_iad_pra_info_enabled
-                      ) || this.props.iad.virtual
+                      ) ||
+                      this.props.iad.virtual ||
+                      !this.state.praByIad[pra].praID
                     }
                   />
                 </div>
@@ -308,6 +316,16 @@ export class PraInfo extends Component {
     let pra_info = {};
     Object.keys(praByIad).forEach(key => {
       if (praByIad[key].praID === 0) {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="pra-not-updated"
+            defaultMessage="PRA not updated"
+          />,
+          <FormattedMessage
+            id="you-need-to-provide-pra-ports"
+            defaultMessage="You need to provide pra ports"
+          />
+        );
         return;
       }
       pra_info = {
