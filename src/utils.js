@@ -76,6 +76,9 @@ const getErrorMessage = (errorsArray, response) => {
   /* only 1st error is important */
   const actualError = errorsArray[0];
 
+  if (!actualError.hasAttribute("details")) {
+      return `${actualError.message}. Status Code: ${response.status}`;
+  }
   return `${actualError.details.reason || actualError.message}. Status Code: ${
     response.status
   }`;
