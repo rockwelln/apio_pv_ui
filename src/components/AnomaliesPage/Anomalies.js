@@ -574,7 +574,8 @@ export class Anomalies extends Component {
       result,
       comments
     };
-    const clearData = removeEmpty(data);
+    //const clearData = removeEmpty(data);
+    const clearData = data;  // comments and assigned_user can be empty.
 
     this.setState({ disableUpdateButton: true }, () =>
       this.props
