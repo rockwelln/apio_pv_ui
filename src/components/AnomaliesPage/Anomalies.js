@@ -394,9 +394,7 @@ export class Anomalies extends Component {
                       this.state.isDisabled || !this.state.anomaly.assigned_team
                     }
                   >
-                    {!this.props.anomaly.assigned_user && (
-                      <option value="">none</option>
-                    )}
+                    <option value="">none</option>
                     {this.props.team.users.map((user, i) => (
                       <option key={i} value={user.username}>
                         {user.username}
