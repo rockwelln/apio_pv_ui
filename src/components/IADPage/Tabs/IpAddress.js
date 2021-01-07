@@ -399,19 +399,19 @@ export class IPAddress extends Component {
                     <div className={"flex align-items-center width-100p"}>
                       <ControlLabel className={"margin-0 margin-right-1"}>
                         <FormattedMessage
-                          id="IpAddress"
+                          id="ipAddress"
                           defaultMessage="IP Address"
                         />
                       </ControlLabel>
                       <FormControl
                         type="text"
-                        value={this.state.pbx.IpAddress}
+                        value={this.state.pbx.ipAddress}
                         placeholder={"IP Address"}
                         onChange={e =>
                           this.setState({
                             pbx: {
                               ...this.state.pbx,
-                              IpAddress: e.target.value
+                              ipAddress: e.target.value
                             },
                             errorPbxIpAdress: null
                           })

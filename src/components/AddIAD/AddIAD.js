@@ -65,7 +65,7 @@ export class AddIAD extends Component {
     ipv4Netmask: "",
     ipv6Address: "",
     ipv6Netmask: "",
-    IpAddress: "",
+    ipAddress: "",
     port: "",
     dtmf: "",
     direction: "",
@@ -1375,18 +1375,18 @@ export class AddIAD extends Component {
                         <div className={"flex align-items-center width-100p"}>
                           <ControlLabel className={"margin-0 margin-right-1"}>
                             <FormattedMessage
-                              id="IpAddress"
+                              id="ipAddress"
                               defaultMessage="IP Address"
                             />
                           </ControlLabel>
                           <FormControl
                             type="text"
-                            value={this.state.IpAddress}
+                            value={this.state.ipAddress}
                             placeholder={"IP Address"}
                             disabled={this.props.group.virtual}
                             onChange={e =>
                               this.setState({
-                                IpAddress: e.target.value,
+                                ipAddress: e.target.value,
                                 errorPbxIpAdress: null
                               })
                             }
@@ -1728,7 +1728,7 @@ export class AddIAD extends Component {
       ipv4Netmask,
       ipv6Address,
       ipv6Netmask,
-      IpAddress,
+      ipAddress,
       port,
       dtmf,
       direction,
@@ -1792,7 +1792,7 @@ export class AddIAD extends Component {
             }
           : null,
       pbx: {
-        IpAddress,
+        ipAddress,
         port
       },
       services: {
