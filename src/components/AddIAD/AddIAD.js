@@ -118,7 +118,8 @@ export class AddIAD extends Component {
           )
           .then(() =>
             this.props.group.pbxType === "PRA" ||
-            this.props.group.pbxType === "PRA_SIP"
+            this.props.group.pbxType === "PRA_SIP" ||
+            this.props.group.pbxType === "SIP_PRA"
               ? this.setPraByIad()
               : this.setState({ isloadingIADs: false })
           )
