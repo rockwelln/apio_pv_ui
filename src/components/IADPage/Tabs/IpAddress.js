@@ -39,7 +39,6 @@ export class IPAddress extends Component {
     errorNetMaskV4: null,
     errorIpAdressV6: null,
     errorNetMaskV6: null,
-    disabledButton: false,
     showRebootDialog: false
   };
 
@@ -400,19 +399,19 @@ export class IPAddress extends Component {
                     <div className={"flex align-items-center width-100p"}>
                       <ControlLabel className={"margin-0 margin-right-1"}>
                         <FormattedMessage
-                          id="IPAddress"
+                          id="IpAddress"
                           defaultMessage="IP Address"
                         />
                       </ControlLabel>
                       <FormControl
                         type="text"
-                        value={this.state.pbx.IPAddress}
+                        value={this.state.pbx.IpAddress}
                         placeholder={"IP Address"}
                         onChange={e =>
                           this.setState({
                             pbx: {
                               ...this.state.pbx,
-                              IPAddress: e.target.value
+                              IpAddress: e.target.value
                             },
                             errorPbxIpAdress: null
                           })
