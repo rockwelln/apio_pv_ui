@@ -60,7 +60,7 @@ export class AddIAD extends Component {
     srSAPB: "",
     eduVLANIDB: "",
     transportMode: "",
-    ip1mode: "",
+    ip1mode: "Disabled",
     ipv4Address: "",
     ipv4Netmask: "",
     ipv6Address: "",
