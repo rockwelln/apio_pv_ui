@@ -116,7 +116,7 @@ class App extends Component {
         this.props.onLanguageUpdate(data.language);
       })
       .catch(error => {
-        if (error.response !== undefined && error.response.status === 401) {
+        if (error.response !== undefined && (error.response.status === 401 || error.response.status === 403)) {
           // unauthorized
           auth_token && this.logout();
         } else {
