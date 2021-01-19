@@ -1,6 +1,6 @@
 {
   "name": "telenet_pra_gui",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "dependencies": {
     "babel-polyfill": "^6.26.0",
