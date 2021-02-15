@@ -313,61 +313,6 @@ export class IPAddress extends Component {
                     </Col>
                   </Row>
                 )}
-                <Row className={"margin-top-1"}>
-                  <Col md={6}>
-                    <FormGroup
-                      controlId="errorNetMaskV6"
-                      validationState={this.state.errorNetMaskV6}
-                      className={"ip-address-styles"}
-                    >
-                      <ControlLabel className={"margin-right-1 flex-basis-33"}>
-                        <FormattedMessage
-                          id="IPv6Netmask"
-                          defaultMessage="IPv6 netmask"
-                        />
-                      </ControlLabel>
-                      <FormControl
-                        className={"flex-basis-66"}
-                        type="text"
-                        value={this.state.ip1.ipv6Netmask}
-                        placeholder={"IPv6 netmask"}
-                        onChange={e =>
-                          this.setState({
-                            ip1: {
-                              ...this.state.ip1,
-                              ipv6Netmask: e.target.value
-                            },
-                            errorNetMaskV6: null
-                          })
-                        }
-                        onBlur={this.validateNetMaskV6}
-                        disabled={
-                          !isAllowed(
-                            localStorage.getItem("userProfile"),
-                            pages.edit_iad_ip_addressing
-                          )
-                        }
-                      />
-                    </FormGroup>
-                  </Col>
-                </Row>
-                {this.state.errorNetMaskV6 && (
-                  <Row className={"margin-top-1 "}>
-                    <Col md={6} className={"flex"}>
-                      <div
-                        className={"margin-right-1 flex flex-basis-33"}
-                      ></div>
-                      <div className={"flex-basis-66"}>
-                        <HelpBlock bsClass="color-error">
-                          <FormattedMessage
-                            id="errorNetMask"
-                            defaultMessage="Invalide Net Mask"
-                          />
-                        </HelpBlock>
-                      </div>
-                    </Col>
-                  </Row>
-                )}
               </React.Fragment>
             )}
           </React.Fragment>
@@ -582,11 +527,31 @@ export class IPAddress extends Component {
 
   validateIPAddressV6 = e => {
     let reg = /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/;
-    if (reg.test(e.target.value) || e.target.value === "") {
+    let parts =  e.target.value.split("/")
+    if (parts.length > 2) {
+      return this.setState({ errorIpAdressV6: "error" });
+    }
+    if (parts.length < 2) {
+      if (reg.test(e.target.value) || e.target.value === "") {
+        return;
+      } else {
+        return this.setState({ errorIpAdressV6: "error" });
+      }
+    }
+    // not > 2 and not 2 so automatically 2: ip + mask
+    if (reg.test(parts[0]) || parts[0] === "") {
+      if (!isNaN(parts[1])) { //mask is not a number
+        return this.setState({ errorIpAdressV6: "error" });
+      }
+      if (parseInt(parts[1]) > 128) { // mask value is too big
+        return this.setState({ errorIpAdressV6: "error" });
+      }
+      // other cases: the mask is ok
       return;
     } else {
       return this.setState({ errorIpAdressV6: "error" });
     }
+
   };
 
   validateNetMaskV4 = e => {
