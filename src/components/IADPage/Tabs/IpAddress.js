@@ -575,7 +575,7 @@ export class IPAddress extends Component {
     if (isNaN(e.target.value)) {
       return this.setState({ errorNetMaskV6: "error" });
     } else {
-      if (parseInt(parts[1]) > 128) { // mask value is too big
+      if (parseInt(e.target.value) > 128) { // mask value is too big
         return this.setState({ errorNetMaskV6: "error" });
       } else {
         return;
