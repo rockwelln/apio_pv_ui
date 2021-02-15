@@ -527,7 +527,7 @@ export class IPAddress extends Component {
 
   validateIPAddressV6 = e => {
     let reg = /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/;
-    let parts =  e.target.value.split("/")
+    let parts =  e.target.value.split("/");
     if (parts.length > 2) {
       return this.setState({ errorIpAdressV6: "error" });
     }
@@ -540,7 +540,7 @@ export class IPAddress extends Component {
     }
     // not > 2 and not 2 so automatically 2: ip + mask
     if (reg.test(parts[0]) || parts[0] === "") {
-      if (!isNaN(parts[1])) { //mask is not a number
+      if (isNaN(parts[1])) { //mask is not a number
         return this.setState({ errorIpAdressV6: "error" });
       }
       if (parseInt(parts[1]) > 128) { // mask value is too big
