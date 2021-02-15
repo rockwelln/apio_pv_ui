@@ -539,7 +539,7 @@ export class IPAddress extends Component {
         ? {
             mode: ip1.mode,
             ipv6Address: ip1.ipv6Address,
-            ipv4Netmask: ip1.ipv6Netmask
+            ipv6Netmask: ip1.ipv6Netmask
           }
         : null;
     const data = { transportMode, pbx, ip1: checkedIp };
