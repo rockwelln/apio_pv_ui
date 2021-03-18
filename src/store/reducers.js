@@ -13,8 +13,11 @@ const initialState = {
   iads: { iads: [], praByIad: {} },
   config: {
     tenant: {
-      group: { iad: { iadType: [] } }
-    }
+      group: { iad: { iadType: [] } },
+    },
+    iad_reboot: {
+      iadType: [],
+    },
   },
   createdIad: {},
   iad: {},
@@ -35,52 +38,52 @@ const initialState = {
   searchedIADs: [],
   transferedIADs: [],
   validationGroup: {},
-  validationGroupError: ""
+  validationGroupError: "",
 };
 
 function mainReducer(state = initialState, action) {
   switch (action.type) {
     case actionType.GET_IADS: {
-      const iadWithType = action.data.iads.map(el => {
+      const iadWithType = action.data.iads.map((el) => {
         const iadType = state.config.tenant.group.iad.iadType.filter(
-          type => type.value === el.iadType
+          (type) => type.value === el.iadType
         );
         return { ...el, type: iadType[0].label };
       });
       return {
         ...state,
-        iads: { ...action.data, iads: iadWithType }
+        iads: { ...action.data, iads: iadWithType },
       };
     }
     case actionType.GET_TENANTS: {
       return {
         ...state,
-        tenants: action.data.tenants
+        tenants: action.data.tenants,
       };
     }
     case actionType.GET_TENANT: {
       return {
         ...state,
         tenant: action.data,
-        shouldRedirect: false
+        shouldRedirect: false,
       };
     }
     case actionType.GET_GROUPS: {
       return {
         ...state,
-        groups: action.data.groups
+        groups: action.data.groups,
       };
     }
     case actionType.GET_GROUP: {
       return {
         ...state,
         group: action.data,
-        shouldRedirect: false
+        shouldRedirect: false,
       };
     }
     case actionType.GET_PHONE_NUMBERS_BY_GROUP_ID: {
       const phoneNumbers = action.data.numbers
-        .map(phone => ({
+        .map((phone) => ({
           ...phone,
           rangeStart: phone.phoneNumber.includes("-")
             ? phone.phoneNumber.split(" - ").slice(0)[0]
@@ -88,7 +91,7 @@ function mainReducer(state = initialState, action) {
           phoneChecked: false,
           preActive: phone.status === "preActive" ? true : false,
           active: phone.status === "active" ? true : false,
-          isChanged: false
+          isChanged: false,
         }))
         .sort((a, b) => {
           if (a.rangeStart < b.rangeStart) return -1;
@@ -114,27 +117,27 @@ function mainReducer(state = initialState, action) {
                 rangeStart: phoneNumbers[index - 1].rangeStart,
                 rangeEnd: phone.phoneNumber,
                 prevNum: phone.phoneNumber,
-                phoneNumbers: []
+                phoneNumbers: [],
               };
 
               arrPN[arrPN.length - 1].phoneNumbers.unshift({
                 ...phoneNumbers[index - 1],
-                inRange: true
+                inRange: true,
               });
 
               arrPN[arrPN.length - 1].phoneNumbers.push({
                 ...phone,
-                inRange: true
+                inRange: true,
               });
             } else {
               arrPN[arrPN.length - 1] = {
                 ...arrPN[arrPN.length - 1],
                 prevNum: phone.phoneNumber,
-                rangeEnd: phone.phoneNumber
+                rangeEnd: phone.phoneNumber,
               };
               arrPN[arrPN.length - 1].phoneNumbers.push({
                 ...phone,
-                inRange: true
+                inRange: true,
               });
             }
             count++;
@@ -150,12 +153,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         phoneNumbersByGroup: phoneNumbersWithRange,
-        destinationNumbers: phoneNumbers
+        destinationNumbers: phoneNumbers,
       };
     }
     case actionType.GET_PHONE_NUMBERS_WITH_REFRESH_DB: {
       const phoneNumbers = action.data.numbers
-        .map(phone => ({
+        .map((phone) => ({
           ...phone,
           rangeStart: phone.phoneNumber.includes("-")
             ? phone.phoneNumber.split(" - ").slice(0)[0]
@@ -163,7 +166,7 @@ function mainReducer(state = initialState, action) {
           phoneChecked: false,
           preActive: phone.status === "preActive" ? true : false,
           active: phone.status === "active" ? true : false,
-          isChanged: false
+          isChanged: false,
         }))
         .sort((a, b) => {
           if (a.rangeStart < b.rangeStart) return -1;
@@ -189,27 +192,27 @@ function mainReducer(state = initialState, action) {
                 rangeStart: phoneNumbers[index - 1].rangeStart,
                 rangeEnd: phone.phoneNumber,
                 prevNum: phone.phoneNumber,
-                phoneNumbers: []
+                phoneNumbers: [],
               };
 
               arrPN[arrPN.length - 1].phoneNumbers.unshift({
                 ...phoneNumbers[index - 1],
-                inRange: true
+                inRange: true,
               });
 
               arrPN[arrPN.length - 1].phoneNumbers.push({
                 ...phone,
-                inRange: true
+                inRange: true,
               });
             } else {
               arrPN[arrPN.length - 1] = {
                 ...arrPN[arrPN.length - 1],
                 prevNum: phone.phoneNumber,
-                rangeEnd: phone.phoneNumber
+                rangeEnd: phone.phoneNumber,
               };
               arrPN[arrPN.length - 1].phoneNumbers.push({
                 ...phone,
-                inRange: true
+                inRange: true,
               });
             }
             count++;
@@ -224,63 +227,63 @@ function mainReducer(state = initialState, action) {
       );
       return {
         ...state,
-        phoneNumbersByGroup: phoneNumbersWithRange
+        phoneNumbersByGroup: phoneNumbersWithRange,
       };
     }
     case actionType.GET_TRUNK_BY_GROUP_ID: {
       return {
         ...state,
-        trunkGroups: action.data
+        trunkGroups: action.data,
       };
     }
     case actionType.GET_CONFIG: {
       return {
         ...state,
-        config: action.data
+        config: action.data,
       };
     }
     case actionType.GET_IAD_BY_ID: {
       return {
         ...state,
-        iad: action.data
+        iad: action.data,
       };
     }
     case actionType.GET_ENTERPRISE_TRUNKS_BY_GROUP: {
       return {
         ...state,
-        enterpriseTrunks: action.data.enterpriseTrunks
+        enterpriseTrunks: action.data.enterpriseTrunks,
       };
     }
     case actionType.GET_IADS_BY_TRUNK: {
       const iadFromSite = [
-        ...action.data.iads_from_main_site.map(el => ({
+        ...action.data.iads_from_main_site.map((el) => ({
           ...el,
-          checked: true
+          checked: true,
         })),
-        ...action.data.main_iads_available.map(el => ({
+        ...action.data.main_iads_available.map((el) => ({
           ...el,
-          checked: false
-        }))
+          checked: false,
+        })),
       ];
       const iadNotFromSite = [
-        ...action.data.iads_from_other_sites.map(el => ({
+        ...action.data.iads_from_other_sites.map((el) => ({
           ...el,
-          checked: true
+          checked: true,
         })),
-        ...action.data.other_iads_available.map(el => ({
+        ...action.data.other_iads_available.map((el) => ({
           ...el,
-          checked: false
-        }))
+          checked: false,
+        })),
       ];
       return {
         ...state,
-        iadsByTrunk: { ...action.data, iadFromSite, iadNotFromSite }
+        iadsByTrunk: { ...action.data, iadFromSite, iadNotFromSite },
       };
     }
     case actionType.GET_PHONE_NUMBERS_BY_GROUP_ID_NOT_TP: {
       return {
         ...state,
-        phoneNumbersByGroupNotTP: action.data.numbers
+        phoneNumbersByGroupNotTP: action.data.numbers,
       };
     }
     case actionType.GET_ENTERPRISE_TRUNKS_BY_TENANT: {
@@ -296,17 +299,17 @@ function mainReducer(state = initialState, action) {
         "#f0f7ed",
         "e6e3da",
         "e612da",
-        "#21f8e4"
+        "#21f8e4",
       ];
       let tenantEnterpriseTrunks = [];
       Object.keys(action.data.enterpriseTrunks).map((trunk, index) => {
         if (Array.isArray(action.data.enterpriseTrunks[trunk])) {
           //if (action.data.enterpriseTrunks[trunk].length) {
-          action.data.enterpriseTrunks[trunk].map(el => {
+          action.data.enterpriseTrunks[trunk].map((el) => {
             tenantEnterpriseTrunks.push({
               ...el,
               color: colors[index],
-              entTrunk: trunk
+              entTrunk: trunk,
             });
           });
           // } else {
@@ -320,31 +323,31 @@ function mainReducer(state = initialState, action) {
       });
       return {
         ...state,
-        tenantEnterpriseTrunks
+        tenantEnterpriseTrunks,
       };
     }
     case actionType.GET_NUMBERS_BY_ENTERPRISE_TRUNK: {
       return {
         ...state,
-        numbersByEnterpriseTrunk: action.data
+        numbersByEnterpriseTrunk: action.data,
       };
     }
     case actionType.GET_LIST_OF_IADS: {
       return {
         ...state,
-        listOfIads: action.data
+        listOfIads: action.data,
       };
     }
     case actionType.GET_RECONCILIATION_TEAMS: {
       return {
         ...state,
-        reconciliationTeams: action.data.teams
+        reconciliationTeams: action.data.teams,
       };
     }
     case actionType.GET_TEAM: {
       return {
         ...state,
-        team: action.data
+        team: action.data,
       };
     }
     case actionType.GET_ANOMALIES: {
@@ -358,135 +361,135 @@ function mainReducer(state = initialState, action) {
       //   evnt => evnt.value === this.props.anomalies.result
       // );
       let anomalies = [];
-      action.data.anomalies.forEach(anomaly => {
+      action.data.anomalies.forEach((anomaly) => {
         const event = state.config.reconciliation.anomaly.event.find(
-          evnt => evnt.value === anomaly.anomaly_event
+          (evnt) => evnt.value === anomaly.anomaly_event
         );
         const status = state.config.reconciliation.anomaly.status.find(
-          evnt => evnt.value === anomaly.anomaly_status
+          (evnt) => evnt.value === anomaly.anomaly_status
         );
         const result = state.config.reconciliation.anomaly.result.find(
-          evnt => evnt.value === anomaly.result
+          (evnt) => evnt.value === anomaly.result
         );
         const newAnomaly = {
           ...anomaly,
           event: typeof event === "object" ? event.label : "",
           status: typeof status === "object" ? status.label : "",
-          resultText: typeof result === "object" ? result.label : ""
+          resultText: typeof result === "object" ? result.label : "",
         };
         anomalies.push(newAnomaly);
       });
       return {
         ...state,
-        anomalies
+        anomalies,
       };
     }
     case actionType.GET_ANOMALY: {
       return {
         ...state,
-        anomaly: action.data
+        anomaly: action.data,
       };
     }
     case actionType.GET_TIMER_FOR_IAD: {
       return {
         ...state,
-        iadTimer: action.data.timers
+        iadTimer: action.data.timers,
       };
     }
     case actionType.GET_SEARCH_IADS: {
-      const searchedIADs = action.data.results.map(iad => ({
+      const searchedIADs = action.data.results.map((iad) => ({
         iad: iad,
-        checked: true
+        checked: true,
       }));
       return {
         ...state,
-        searchedIADs
+        searchedIADs,
       };
     }
     case actionType.GET_VALIDATE_GROUP_UPDATE_SUCCESS: {
       return {
         ...state,
-        validationGroup: action.data
+        validationGroup: action.data,
       };
     }
     case actionType.GET_VALIDATE_GROUP_UPDATE_ERROR: {
       return {
         ...state,
-        validationGroupError: action.data.errors[0].details.reason
+        validationGroupError: action.data.errors[0].details.reason,
       };
     }
     case actionType.POST_CREATE_IAD: {
       return {
         ...state,
-        createdIad: action.data
+        createdIad: action.data,
       };
     }
     case actionType.POST_CREATE_TENANT: {
       return {
         ...state,
-        createdTenant: action.data
+        createdTenant: action.data,
       };
     }
     case actionType.POST_CREATE_GROUP: {
       return {
         ...state,
-        createdGroup: action.data
+        createdGroup: action.data,
       };
     }
     case actionType.POST_ASSIGN_PHONE_NUMBERS_TO_GROUP: {
       const warning = action.data.warning;
       const added = action.data.result.filter(
-        number => number.status === "added"
+        (number) => number.status === "added"
       );
       const rejected = action.data.result.filter(
-        number => number.status === "rejected"
+        (number) => number.status === "rejected"
       );
       return {
         ...state,
         addedNumbersToGroup: {
           warning,
           added,
-          rejected
-        }
+          rejected,
+        },
       };
     }
     case actionType.POST_CREATE_ENTERPRISE_TRUNK: {
       return {
-        ...state
+        ...state,
       };
     }
     case actionType.POST_EMERGENCY_ROUTING: {
       return {
         ...state,
-        emergencyRouting: action.data.results
+        emergencyRouting: action.data.results,
       };
     }
     case actionType.POST_CREATE_RECONCILIATION_TEAMS: {
       return {
         ...state,
-        createdReconciliationTeam: action.data
+        createdReconciliationTeam: action.data,
       };
     }
     case actionType.PUT_UPDATE_IAD: {
       return {
         ...state,
-        iad: action.data
+        iad: action.data,
       };
     }
     case actionType.PUT_UPDATE_GROUP_DETAILS: {
       return {
         ...state,
-        group: action.data
+        group: action.data,
       };
     }
     case actionType.PUT_UPDATE_TENANT_DETAILS: {
       return {
-        ...state
+        ...state,
       };
     }
     case actionType.PUT_UPDATE_NUMBERS_STATUS: {
       const phoneNumbers = action.data.numbers
-        .map(phone => ({
+        .map((phone) => ({
           ...phone,
           rangeStart: phone.phoneNumber.includes("-")
             ? phone.phoneNumber.split(" - ").slice(0)[0]
@@ -494,7 +497,7 @@ function mainReducer(state = initialState, action) {
           phoneChecked: false,
           preActive: phone.status === "preActive" ? true : false,
           active: phone.status === "active" ? true : false,
-          isChanged: false
+          isChanged: false,
         }))
         .sort((a, b) => {
           if (a.rangeStart < b.rangeStart) return -1;
@@ -519,27 +522,27 @@ function mainReducer(state = initialState, action) {
                 rangeStart: phoneNumbers[index - 1].rangeStart,
                 rangeEnd: phone.phoneNumber,
                 prevNum: phone.phoneNumber,
-                phoneNumbers: []
+                phoneNumbers: [],
               };
 
               arrPN[arrPN.length - 1].phoneNumbers.unshift({
                 ...phoneNumbers[index - 1],
-                inRange: true
+                inRange: true,
               });
 
               arrPN[arrPN.length - 1].phoneNumbers.push({
                 ...phone,
-                inRange: true
+                inRange: true,
               });
             } else {
               arrPN[arrPN.length - 1] = {
                 ...arrPN[arrPN.length - 1],
                 prevNum: phone.phoneNumber,
-                rangeEnd: phone.phoneNumber
+                rangeEnd: phone.phoneNumber,
               };
               arrPN[arrPN.length - 1].phoneNumbers.push({
                 ...phone,
-                inRange: true
+                inRange: true,
               });
             }
             count++;
@@ -554,75 +557,75 @@ function mainReducer(state = initialState, action) {
       );
       return {
         ...state,
-        phoneNumbersByGroup: phoneNumbersWithRange
+        phoneNumbersByGroup: phoneNumbersWithRange,
       };
     }
     case actionType.PUT_UPDATE_ENTERPRISE_TRNUK: {
       const iadFromSite = [
-        ...action.data.iads_from_main_site.map(el => ({
+        ...action.data.iads_from_main_site.map((el) => ({
           ...el,
-          checked: true
+          checked: true,
         })),
-        ...action.data.main_iads_available.map(el => ({
+        ...action.data.main_iads_available.map((el) => ({
           ...el,
-          checked: false
-        }))
+          checked: false,
+        })),
       ];
       const iadNotFromSite = [
-        ...action.data.iads_from_other_sites.map(el => ({
+        ...action.data.iads_from_other_sites.map((el) => ({
           ...el,
-          checked: true
+          checked: true,
         })),
-        ...action.data.other_iads_available.map(el => ({
+        ...action.data.other_iads_available.map((el) => ({
           ...el,
-          checked: false
-        }))
+          checked: false,
+        })),
       ];
       return {
         ...state,
-        iadsByTrunk: { ...action.data, iadFromSite, iadNotFromSite }
+        iadsByTrunk: { ...action.data, iadFromSite, iadNotFromSite },
       };
     }
     case actionType.PUT_UPDATE_TEAM: {
       return {
         ...state,
-        team: action.data
+        team: action.data,
       };
     }
     case actionType.PUT_UPDATE_ANOMALY: {
       return {
         ...state,
-        anomaly: action.data
+        anomaly: action.data,
       };
     }
     case actionType.DELETE_TENANT: {
       return {
-        ...state
+        ...state,
       };
     }
     case actionType.DELETE_GROUP_FROM_TENANT: {
       return {
-        ...state
+        ...state,
       };
     }
     case actionType.DELETE_TRUNK_GROUP: {
       return {
-        ...state
+        ...state,
       };
     }
     case actionType.DELETE_PHONE_FROM_GROUP: {
       return {
-        ...state
+        ...state,
       };
     }
     case actionType.DELETE_ENTERPRISE_TRUNK: {
       return {
-        ...state
+        ...state,
       };
     }
     case actionType.DELETE_ANOMALY: {
       return {
-        ...state
+        ...state,
       };
     }
     case actionType.CHANGE_IAD_FOR_UPDATE: {
@@ -630,8 +633,8 @@ function mainReducer(state = initialState, action) {
         ...state,
         iadForUpdate: {
           ...state.iadForUpdate,
-          [action.field]: action.value
-        }
+          [action.field]: action.value,
+        },
       };
     }
 
@@ -642,44 +645,44 @@ function mainReducer(state = initialState, action) {
           ...state.iadForUpdate,
           [action.object]: {
             ...state.iadForUpdate[action.object],
-            [action.field]: action.value
-          }
-        }
+            [action.field]: action.value,
+          },
+        },
       };
     }
 
     case actionType.CLEAR_CREATED_TENANT: {
       return {
         ...state,
-        createdTenant: {}
+        createdTenant: {},
       };
     }
 
     case actionType.CLEAR_IAD: {
       return {
         ...state,
-        iad: {}
+        iad: {},
       };
     }
 
     case actionType.CLEAR_SEARCHED_IADS: {
       return {
         ...state,
-        searchedIADs: []
+        searchedIADs: [],
       };
     }
 
     case actionType.SET_TRANSFERED_IADS: {
       return {
         ...state,
-        transferedIADs: action.data
+        transferedIADs: action.data,
       };
     }
 
     case actionType.CLEAR_TRANSFERED_IADS: {
       return {
         ...state,
-        transferedIADs: []
+        transferedIADs: [],
       };
     }
 
@@ -687,7 +690,7 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         validationGroup: {},
-        validationGroupError: ""
+        validationGroupError: "",
       };
     }
 
