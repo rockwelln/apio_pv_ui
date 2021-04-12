@@ -17,7 +17,7 @@ import {
   fetchPutUpdateIAD,
   fetchGetGroupById,
   fetchGetTimerForIAD,
-  clearIad
+  clearIad,
 } from "../../store/actions";
 
 import { removeEmpty } from "../remuveEmptyInObject";
@@ -39,7 +39,7 @@ export class IADPage extends Component {
     isLoading: true,
     disabledButton: false,
     showDelete: false,
-    showRebootDialog: false
+    showRebootDialog: false,
   };
   componentDidMount() {
     this.props.fetchGetTimerForIAD(this.props.match.params.iadId);
@@ -63,6 +63,12 @@ export class IADPage extends Component {
     this.props.clearIad();
   }
   render() {
+    const { group } = this.props;
+
+    const showDeleteButton = !(
+      group.accessType === "COAX" || group.accessType === "VDSL"
+    );
+
     if (this.state.isLoading) {
       return <Loading />;
     }
@@ -77,12 +83,13 @@ export class IADPage extends Component {
                   {isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.delete_iad
-                  ) && (
-                    <Glyphicon
-                      glyph="glyphicon glyphicon-trash"
-                      onClick={() => this.setState({ showDelete: true })}
-                    />
-                  )}
+                  ) &&
+                    showDeleteButton && (
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-trash"
+                        onClick={() => this.setState({ showDelete: true })}
+                      />
+                    )}
                   <DeleteModal
                     iadId={this.props.match.params.iadId}
                     show={this.state.showDelete}
@@ -124,7 +131,7 @@ export class IADPage extends Component {
             id="iads_tabs"
             className={"margin-top-1"}
             activeKey={this.returnActiveKey()}
-            onSelect={key => this.tabRouting(key)}
+            onSelect={(key) => this.tabRouting(key)}
           >
             {/* <Tab eventKey={0} title="Details">
               <Details />
@@ -166,7 +173,7 @@ export class IADPage extends Component {
     );
   }
 
-  tabRouting = key => {
+  tabRouting = (key) => {
     switch (key) {
       case 1:
         this.props.history.push("#edus");
@@ -212,13 +219,13 @@ export class IADPage extends Component {
         ? {
             mode: iadForUpdate.ip1.mode,
             ipv4Address: iadForUpdate.ip1.ipv4Address,
-            ipv4Netmask: iadForUpdate.ip1.ipv4Netmask
+            ipv4Netmask: iadForUpdate.ip1.ipv4Netmask,
           }
         : iadForUpdate.ip1.mode === "IPv6"
         ? {
             mode: iadForUpdate.ip1.mode,
             ipv6Address: iadForUpdate.ip1.ipv6Address,
-            ipv4Netmask: iadForUpdate.ip1.ipv6Netmask
+            ipv4Netmask: iadForUpdate.ip1.ipv6Netmask,
           }
         : null
       : null;
@@ -251,10 +258,10 @@ export class IADPage extends Component {
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   iadForUpdate: state.iadForUpdate,
   group: state.group,
-  iad: state.iad
+  iad: state.iad,
 });
 
 const mapDispatchToProps = {
@@ -263,12 +270,9 @@ const mapDispatchToProps = {
   fetchPutUpdateIAD,
   fetchGetGroupById,
   fetchGetTimerForIAD,
-  clearIad
+  clearIad,
 };
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(IADPage)
+  connect(mapStateToProps, mapDispatchToProps)(IADPage)
 );

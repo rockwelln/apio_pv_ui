@@ -31,7 +31,7 @@ export class IADs extends Component {
     page: 0,
     pagination: true,
     countPages: null,
-    searchValue: ""
+    searchValue: "",
   };
 
   fetchIADs = () => {
@@ -50,7 +50,7 @@ export class IADs extends Component {
                 if (a.iadId > b.iadId) return 1;
                 return 0;
               }),
-              sortedBy: "iadId"
+              sortedBy: "iadId",
             },
             () => this.pagination()
           )
@@ -73,6 +73,10 @@ export class IADs extends Component {
 
   render() {
     const { isLoading, countPerPage, paginationIads, page } = this.state;
+    const { group } = this.props;
+
+    const showAddButton = !(group.accessType === "COAX");
+
     if (isLoading) {
       return <Loading />;
     }
@@ -84,8 +88,9 @@ export class IADs extends Component {
               <Alert bsStyle="danger">
                 <FormattedMessage
                   id="moreIads"
-                  defaultMessage={`You still need to create ${this.props.iads
-                    .nbrIadsNeeded - this.props.iads.iads.length} IADs`}
+                  defaultMessage={`You still need to create ${
+                    this.props.iads.nbrIadsNeeded - this.props.iads.iads.length
+                  } IADs`}
                 />
               </Alert>
             ) : (
@@ -106,15 +111,15 @@ export class IADs extends Component {
                 id="search_placeholder"
                 defaultMessage="IAD ID or IAD Type or MAC Address"
               >
-                {placeholder => (
+                {(placeholder) => (
                   <FormControl
                     type="text"
                     value={this.state.searchValue}
                     placeholder={placeholder}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState(
                         {
-                          searchValue: e.target.value
+                          searchValue: e.target.value,
                         },
                         () => this.filterBySearchValue()
                       )
@@ -125,7 +130,8 @@ export class IADs extends Component {
             </InputGroup>
           </Col>
           {isAllowed(localStorage.getItem("userProfile"), pages.create_iad) &&
-            (this.props.iads.iads.length < this.props.iads.nbrIadsNeeded && (
+            showAddButton &&
+            this.props.iads.iads.length < this.props.iads.nbrIadsNeeded && (
               <Col md={1}>
                 <Link
                   to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/addiad`}
@@ -136,7 +142,7 @@ export class IADs extends Component {
                   />
                 </Link>
               </Col>
-            ))}
+            )}
         </Row>
         <Row>
           <Col md={11}>
@@ -154,7 +160,7 @@ export class IADs extends Component {
                 className={"margin-left-1"}
                 onChange={this.changeCoutOnPage}
               >
-                {countsPerPages.map(counts => (
+                {countsPerPages.map((counts) => (
                   <option key={counts.value} value={counts.value}>
                     {counts.title}
                   </option>
@@ -249,7 +255,7 @@ export class IADs extends Component {
     );
   }
 
-  changeCoutOnPage = e => {
+  changeCoutOnPage = (e) => {
     this.setState({ countPerPage: Number(e.target.value), page: 0 }, () =>
       this.pagination()
     );
@@ -291,7 +297,7 @@ export class IADs extends Component {
       paginationIads: paginationItems,
       pagination: false,
       countPages,
-      page: this.state.page
+      page: this.state.page,
     });
   };
 
@@ -299,12 +305,12 @@ export class IADs extends Component {
     const { searchValue } = this.state;
     const SearchArray = this.props.iads.iads
       .filter(
-        iad =>
+        (iad) =>
           iad.iadId.toLowerCase().includes(searchValue.toLowerCase()) ||
           iad.type.toLowerCase().includes(searchValue.toLowerCase()) ||
           iad.macAddress.toLowerCase().includes(searchValue.toLowerCase())
       )
-      .map(iad => iad);
+      .map((iad) => iad);
     this.setState({ iads: SearchArray }, () => this.pagination());
   };
 
@@ -360,20 +366,16 @@ export class IADs extends Component {
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   config: state.config,
   admins: state.adminsGroup,
-  iads: state.iads
+  group: state.group,
+  iads: state.iads,
 });
 
 const mapDispatchToProps = {
   fetchGetIADs,
-  fetchGetConfig
+  fetchGetConfig,
 };
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(IADs)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(IADs));
