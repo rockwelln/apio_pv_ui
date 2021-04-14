@@ -98,7 +98,8 @@ export class AddIAD extends Component {
             this.props.fetchGetConfig().then(() =>
               this.setState({
                 isLoadingConfig: false,
-                iadType: this.props.config.tenant.group.iad.iadType[0].value,
+                iadType: this.props.config.tenant.group.iad.iadTypeForCreate[0]
+                  .value,
                 dtmf: this.props.config.tenant.group.iad.dtmfOverride[0].value,
                 direction: this.props.config.tenant.group.iad
                   .directionOverride[0].value,
@@ -264,11 +265,13 @@ export class AddIAD extends Component {
                     value={this.state.iadType}
                     onChange={(e) => this.setState({ iadType: e.target.value })}
                   >
-                    {this.props.config.tenant.group.iad.iadType.map((el, i) => (
-                      <option key={i} value={el.value}>
-                        {el.label}
-                      </option>
-                    ))}
+                    {this.props.config.tenant.group.iad.iadTypeForCreate.map(
+                      (el, i) => (
+                        <option key={i} value={el.value}>
+                          {el.label}
+                        </option>
+                      )
+                    )}
                   </FormControl>
                 </div>
               </Col>
