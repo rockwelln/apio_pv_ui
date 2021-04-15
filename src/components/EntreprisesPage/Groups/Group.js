@@ -29,6 +29,7 @@ class Group extends Component {
         <td>{group.accessType ? group.accessType : "-"}</td>
         <td>{group.virtual ? "Yes" : "No"}</td>
         <td>{group.numberOfChannels ? group.numberOfChannels : "-"}</td>
+        <td>{group.networkIdentifier ? group.networkIdentifier : "-"}</td>
         {!(group.accessType === "COAX" || group.accessType === "VDSL") &&
           isAllowed(
             localStorage.getItem("userProfile"),
