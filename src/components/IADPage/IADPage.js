@@ -25,6 +25,7 @@ import { removeEmpty } from "../remuveEmptyInObject";
 import Details from "./Tabs/Details";
 import GroupService from "./Tabs/GroupService";
 import Edu from "./Tabs/Edu";
+import SR from "./Tabs/SR";
 import IPAddress from "./Tabs/IpAddress";
 import Advanced from "./Tabs/Advanced";
 import PraInfo from "./Tabs/PraInfo";
@@ -136,9 +137,17 @@ export class IADPage extends Component {
             {/* <Tab eventKey={0} title="Details">
               <Details />
             </Tab> */}
-            <Tab eventKey={1} title="EDUs">
-              <Edu />
-            </Tab>
+            {this.props.group.accessType === "FIBER" && (
+              <Tab eventKey={1} title="EDUs">
+                <Edu />
+              </Tab>
+            )}
+            {(this.props.group.accessType === "COAX" ||
+              this.props.group.accessType === "VDSL") && (
+              <Tab eventKey={1} title="SR">
+                <SR />
+              </Tab>
+            )}
             {(this.props.iad.protocolMode === "SIP" ||
               this.props.iad.protocolMode === "PRA_SIP" ||
               this.props.iad.protocolMode === "SIP_PRA") && (
