@@ -20,7 +20,7 @@ import {
   fetchGetGroupById,
   fetchPutUpdateGroupDetails,
   fetchGetPhoneNumbersByGroupNotTP,
-  fetchGetPhoneNumbersByGroupId
+  fetchGetPhoneNumbersByGroupId,
 } from "../../store/actions";
 
 export class index extends Component {
@@ -38,7 +38,7 @@ export class index extends Component {
     isLoading: true,
     isLoadingPN: true,
     group: {},
-    disabledUpdateButton: false
+    disabledUpdateButton: false,
   };
 
   fetchGroup = () => {
@@ -64,6 +64,7 @@ export class index extends Component {
     if (this.state.isLoading || this.state.isLoadingPN) {
       return <Loading />;
     }
+    const { group } = this.props;
     return (
       <React.Fragment>
         <Row>
@@ -115,9 +116,9 @@ export class index extends Component {
                 type="text"
                 value={this.state.group.groupTpid}
                 placeholder={"Group Tina Product Id"}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
-                    group: { ...this.state.group, groupTpid: e.target.value }
+                    group: { ...this.state.group, groupTpid: e.target.value },
                   })
                 }
                 disabled={this.state.isDisabled || this.props.group.groupTpid}
@@ -135,9 +136,9 @@ export class index extends Component {
                 type="text"
                 value={this.state.group.groupName}
                 placeholder={"Site Name"}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
-                    group: { ...this.state.group, groupName: e.target.value }
+                    group: { ...this.state.group, groupName: e.target.value },
                   })
                 }
                 disabled={this.state.isDisabled}
@@ -174,12 +175,12 @@ export class index extends Component {
               <FormControl
                 componentClass="select"
                 value={this.state.group.cliPhoneNumber}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
                     group: {
                       ...this.state.group,
-                      cliPhoneNumber: e.target.value
-                    }
+                      cliPhoneNumber: e.target.value,
+                    },
                   })
                 }
                 disabled={this.state.isDisabled}
@@ -208,12 +209,12 @@ export class index extends Component {
                 value={this.state.group.zipCode}
                 min={0}
                 placeholder={"ZIP code"}
-                onChange={e => {
+                onChange={(e) => {
                   if (e.target.value < 0) {
                     return;
                   }
                   this.setState({
-                    group: { ...this.state.group, zipCode: e.target.value }
+                    group: { ...this.state.group, zipCode: e.target.value },
                   });
                 }}
                 disabled={this.state.isDisabled}
@@ -236,12 +237,12 @@ export class index extends Component {
                   name="isVirtualSite"
                   checked={this.state.group.virtual}
                   disabled
-                  onChange={e =>
+                  onChange={(e) =>
                     this.setState({
                       group: {
                         ...this.state.group,
-                        virtual: e.target.checked
-                      }
+                        virtual: e.target.checked,
+                      },
                     })
                   }
                 >
@@ -254,9 +255,9 @@ export class index extends Component {
                   name="isVirtualSite"
                   checked={!this.state.group.virtual}
                   disabled
-                  onChange={e =>
+                  onChange={(e) =>
                     this.setState({
-                      virtual: false
+                      virtual: false,
                     })
                   }
                 >
@@ -313,14 +314,14 @@ export class index extends Component {
       //cliName,
       zipCode,
       cliPhoneNumber,
-      groupTpid
+      groupTpid,
     } = this.state.group;
     const data = {
       groupName,
       //cliName,
       cliPhoneNumber,
       zipCode,
-      groupTpid
+      groupTpid,
     };
     this.setState({ disabledUpdateButton: true }, () =>
       this.props
@@ -353,21 +354,16 @@ export class index extends Component {
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   group: state.group,
-  phoneNumbersByGroupNotTP: state.phoneNumbersByGroupNotTP
+  phoneNumbersByGroupNotTP: state.phoneNumbersByGroupNotTP,
 });
 
 const mapDispatchToProps = {
   fetchGetGroupById,
   fetchPutUpdateGroupDetails,
   fetchGetPhoneNumbersByGroupNotTP,
-  fetchGetPhoneNumbersByGroupId
+  fetchGetPhoneNumbersByGroupId,
 };
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(index)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(index));
