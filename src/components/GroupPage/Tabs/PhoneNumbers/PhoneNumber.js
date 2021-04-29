@@ -25,7 +25,6 @@ export default class PhoneNumber extends Component {
               className={"table-checkbox"}
               onChange={() => {
                 this.props.handleSingleCheckboxClick(
-                  index,
                   number.phoneNumber,
                   number.inRange
                 );
@@ -45,7 +44,6 @@ export default class PhoneNumber extends Component {
                 className={"table-checkbox"}
                 onChange={() => {
                   this.props.handleSingleCheckboxClickActive(
-                    index,
                     number.phoneNumber,
                     number.inRange
                   );
@@ -64,7 +62,6 @@ export default class PhoneNumber extends Component {
                 className={"table-checkbox"}
                 onChange={() => {
                   this.props.handleSingleCheckboxClickPreActive(
-                    index,
                     number.phoneNumber,
                     number.inRange
                   );
@@ -115,7 +112,7 @@ export default class PhoneNumber extends Component {
                   number={number}
                   show={showDelete}
                   tenantId={this.props.tenantId}
-                  onClose={e => {
+                  onClose={(e) => {
                     onReload && onReload(number.rangeStart);
                     this.setState({ showDelete: false });
                   }}
