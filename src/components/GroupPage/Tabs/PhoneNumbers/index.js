@@ -23,7 +23,7 @@ import deepEqual from "../../../deepEqual";
 import {
   fetchGetPhoneNumbersByGroupId,
   fetchPutUpdateNumbersStatus,
-  fetchGetPhoneNumbersWithRefreshDB
+  fetchGetPhoneNumbersWithRefreshDB,
 } from "../../../../store/actions";
 
 import Loading from "../../../../common/Loading";
@@ -56,7 +56,7 @@ export class PhoneNumbersTab extends Component {
     disableDialogButtons: false,
     disabledUpdateStatusActive: false,
     disabledUpdateStatusPreActive: false,
-    disableRefresInfo: false
+    disableRefresInfo: false,
   };
 
   fetchGetNumbers() {
@@ -71,7 +71,7 @@ export class PhoneNumbersTab extends Component {
               return 0;
             }),
             isLoading: false,
-            sortedBy: "rangeStart"
+            sortedBy: "rangeStart",
           },
           () => this.pagination()
         )
@@ -88,7 +88,7 @@ export class PhoneNumbersTab extends Component {
         {
           phoneNumbers: this.props.phoneNumbers,
           isLoading: false,
-          sortedBy: "rangeStart"
+          sortedBy: "rangeStart",
         },
         () => this.pagination()
       );
@@ -106,7 +106,7 @@ export class PhoneNumbersTab extends Component {
       countPerPage,
       pagination,
       paginationPhoneNumbers,
-      page
+      page,
     } = this.state;
 
     if (isLoading && pagination) {
@@ -125,15 +125,15 @@ export class PhoneNumbersTab extends Component {
                 id="search_placeholder_numbers"
                 defaultMessage="Numbers"
               >
-                {placeholder => (
+                {(placeholder) => (
                   <FormControl
                     type="text"
                     value={this.state.searchValue}
                     placeholder={placeholder}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState(
                         {
-                          searchValue: e.target.value
+                          searchValue: e.target.value,
                         },
                         () => this.filterBySearchValue()
                       )
@@ -192,10 +192,10 @@ export class PhoneNumbersTab extends Component {
                   )}
                   <DeleteModal
                     rangeStart={numbersForDelete.map(
-                      number => number.phoneNumbers || number.phoneNumber
+                      (number) => number.phoneNumbers || number.phoneNumber
                     )}
                     show={showDelete}
-                    onClose={e => {
+                    onClose={(e) => {
                       this.fetchGetNumbers();
                       this.setState({ showDelete: false });
                     }}
@@ -286,7 +286,7 @@ export class PhoneNumbersTab extends Component {
                     className={"margin-left-1"}
                     onChange={this.changeCoutOnPage}
                   >
-                    {countsPerPages.map(counts => (
+                    {countsPerPages.map((counts) => (
                       <option key={counts.value} value={counts.value}>
                         {counts.title}
                       </option>
@@ -400,6 +400,7 @@ export class PhoneNumbersTab extends Component {
                         handleSingleCheckboxClickInRange={
                           this.handleSingleCheckboxClickInRange
                         }
+                        page={page}
                         onReload={() => this.fetchGetNumbers()}
                       />
                     ))}
@@ -442,7 +443,7 @@ export class PhoneNumbersTab extends Component {
         .then(() =>
           this.setState({
             showRefreshAllDialog: false,
-            disableDialogButtons: false
+            disableDialogButtons: false,
           })
         )
     );
@@ -452,9 +453,9 @@ export class PhoneNumbersTab extends Component {
     const { phoneNumbers } = this.state;
     const numbersForRefresh = [];
 
-    phoneNumbers.forEach(phone => {
+    phoneNumbers.forEach((phone) => {
       if (phone.phoneNumbers) {
-        phone.phoneNumbers.forEach(number => {
+        phone.phoneNumbers.forEach((number) => {
           if (number.phoneChecked) {
             numbersForRefresh.push(number.phoneNumber);
           }
@@ -501,9 +502,9 @@ export class PhoneNumbersTab extends Component {
   updateStatus = () => {
     const activeNumbers = [];
     const preActiveNumbers = [];
-    this.state.phoneNumbers.forEach(phone => {
+    this.state.phoneNumbers.forEach((phone) => {
       if (phone.phoneNumbers) {
-        phone.phoneNumbers.forEach(number => {
+        phone.phoneNumbers.forEach((number) => {
           if (number.active && number.isChanged) {
             activeNumbers.push(number);
           }
@@ -517,9 +518,9 @@ export class PhoneNumbersTab extends Component {
     // const activeNumbers = this.state.phoneNumbers.filter(
     //   el => el.active && el.isChanged
     // );
-    this.state.phoneNumbers.forEach(phone => {
+    this.state.phoneNumbers.forEach((phone) => {
       if (phone.phoneNumbers) {
-        phone.phoneNumbers.forEach(number => {
+        phone.phoneNumbers.forEach((number) => {
           if (number.preActive && number.isChanged) {
             preActiveNumbers.push(number);
           }
@@ -535,25 +536,25 @@ export class PhoneNumbersTab extends Component {
     // );
     const allActiveNumbers = [];
     const allPreActiveNumbers = [];
-    activeNumbers.map(el => {
+    activeNumbers.map((el) => {
       allActiveNumbers.push(el.phoneNumber);
       return 0;
     });
-    preActiveNumbers.map(el => {
+    preActiveNumbers.map((el) => {
       allPreActiveNumbers.push(el.phoneNumber);
       return 0;
     });
     const activeData = {
-      numbers: allActiveNumbers.map(number => ({ phoneNumber: number })),
-      status: "active"
+      numbers: allActiveNumbers.map((number) => ({ phoneNumber: number })),
+      status: "active",
     };
     const preActiveData = {
-      numbers: allPreActiveNumbers.map(number => ({ phoneNumber: number })),
-      status: "preActive"
+      numbers: allPreActiveNumbers.map((number) => ({ phoneNumber: number })),
+      status: "preActive",
     };
     this.setState({
       disabledUpdateStatusActive: !!allActiveNumbers.length,
-      disabledUpdateStatusPreActive: !!allPreActiveNumbers.length
+      disabledUpdateStatusPreActive: !!allPreActiveNumbers.length,
     });
     allActiveNumbers.length &&
       this.props
@@ -590,14 +591,14 @@ export class PhoneNumbersTab extends Component {
             }),
             isLoading: false,
             sortedBy: "rangeStart",
-            showWithStatus: true
+            showWithStatus: true,
           },
           () => this.pagination()
         )
       );
   };
 
-  changeCoutOnPage = e => {
+  changeCoutOnPage = (e) => {
     this.setState({ countPerPage: Number(e.target.value), page: 0 }, () =>
       this.pagination()
     );
@@ -639,7 +640,7 @@ export class PhoneNumbersTab extends Component {
       paginationPhoneNumbers: paginationItems,
       pagination: false,
       countPages,
-      page: this.state.page
+      page: this.state.page,
     });
   };
 
@@ -647,10 +648,10 @@ export class PhoneNumbersTab extends Component {
     const { searchValue } = this.state;
     const SearchArray = this.props.phoneNumbers
       .filter(
-        phone =>
+        (phone) =>
           phone.rangeStart.toLowerCase().includes(searchValue.toLowerCase()) ||
           (phone.phoneNumbers &&
-            phone.phoneNumbers.some(el =>
+            phone.phoneNumbers.some((el) =>
               el.rangeStart.toLowerCase().includes(searchValue.toLowerCase())
             )) ||
           (phone.userId &&
@@ -658,7 +659,7 @@ export class PhoneNumbersTab extends Component {
           (phone.userType &&
             phone.userType.toLowerCase().includes(searchValue.toLowerCase()))
       )
-      .map(phone => phone);
+      .map((phone) => phone);
     this.setState({ phoneNumbers: SearchArray }, () => this.pagination());
   };
 
@@ -711,7 +712,7 @@ export class PhoneNumbersTab extends Component {
       this.setState(
         {
           phoneNumbers: phonesSorted,
-          sortedBy: "main_number"
+          sortedBy: "main_number",
         },
         () => this.pagination()
       );
@@ -732,7 +733,7 @@ export class PhoneNumbersTab extends Component {
       this.setState(
         {
           phoneNumbers: phonesSorted,
-          sortedBy: "maintenance_number"
+          sortedBy: "maintenance_number",
         },
         () => this.pagination()
       );
@@ -743,9 +744,9 @@ export class PhoneNumbersTab extends Component {
     const { phoneNumbers } = this.state;
     const numbersForDelete = [];
 
-    phoneNumbers.forEach(phone => {
+    phoneNumbers.forEach((phone) => {
       if (phone.phoneNumbers) {
-        phone.phoneNumbers.forEach(el => {
+        phone.phoneNumbers.forEach((el) => {
           if (el.phoneChecked) {
             numbersForDelete.push(el);
           }
@@ -759,93 +760,93 @@ export class PhoneNumbersTab extends Component {
     this.setState({ numbersForDelete, showDelete: true });
   };
 
-  handleSelectAllClickPreActive = e => {
+  handleSelectAllClickPreActive = (e) => {
     const isChecked = e.target.checked;
-    const newArr = this.state.phoneNumbers.map(el => {
+    const newArr = this.state.phoneNumbers.map((el) => {
       if (el.phoneNumbers) {
-        const arrayOfPhones = el.phoneNumbers.map(phone => ({
+        const arrayOfPhones = el.phoneNumbers.map((phone) => ({
           ...phone,
           preActive: isChecked,
           active: !isChecked,
-          isChanged: !el.isChanged
+          isChanged: !el.isChanged,
         }));
         return {
           ...el,
           preActive: isChecked,
           active: !isChecked,
           isChanged: !el.isChanged,
-          phoneNumbers: arrayOfPhones
+          phoneNumbers: arrayOfPhones,
         };
       }
       return {
         ...el,
         preActive: isChecked,
         active: !isChecked,
-        isChanged: !el.isChanged
+        isChanged: !el.isChanged,
       };
     });
     this.setState(
       {
         phoneNumbers: newArr,
         selectAllPreActive: !this.state.selectAllPreActive,
-        selectAllActive: this.state.selectAllPreActive
+        selectAllActive: this.state.selectAllPreActive,
       },
       () => this.pagination()
     );
   };
 
-  handleSelectAllClickActive = e => {
+  handleSelectAllClickActive = (e) => {
     const isChecked = e.target.checked;
-    const newArr = this.state.phoneNumbers.map(el => {
+    const newArr = this.state.phoneNumbers.map((el) => {
       if (el.phoneNumbers) {
-        const arrayOfPhones = el.phoneNumbers.map(phone => ({
+        const arrayOfPhones = el.phoneNumbers.map((phone) => ({
           ...phone,
           active: isChecked,
           preActive: !isChecked,
-          isChanged: !el.isChanged
+          isChanged: !el.isChanged,
         }));
         return {
           ...el,
           active: isChecked,
           preActive: !isChecked,
           isChanged: !el.isChanged,
-          phoneNumbers: arrayOfPhones
+          phoneNumbers: arrayOfPhones,
         };
       }
       return {
         ...el,
         active: isChecked,
         preActive: !isChecked,
-        isChanged: !el.isChanged
+        isChanged: !el.isChanged,
       };
     });
     this.setState(
       {
         phoneNumbers: newArr,
         selectAllActive: !this.state.selectAllActive,
-        selectAllPreActive: this.state.selectAllActive
+        selectAllPreActive: this.state.selectAllActive,
       },
       () => this.pagination()
     );
   };
 
-  handleSelectAllClick = e => {
+  handleSelectAllClick = (e) => {
     const isChecked = e.target.checked;
-    const newArr = this.state.phoneNumbers.map(el => {
+    const newArr = this.state.phoneNumbers.map((el) => {
       if (el.phoneNumbers) {
-        const arrayOfPhones = el.phoneNumbers.map(phone => ({
+        const arrayOfPhones = el.phoneNumbers.map((phone) => ({
           ...phone,
-          phoneChecked: isChecked
+          phoneChecked: isChecked,
         }));
         return {
           ...el,
           phoneChecked: isChecked,
-          phoneNumbers: arrayOfPhones
+          phoneNumbers: arrayOfPhones,
         };
       }
       return {
         ...el,
-        phoneChecked: isChecked
+        phoneChecked: isChecked,
       };
     });
     this.setState(
@@ -854,88 +855,93 @@ export class PhoneNumbersTab extends Component {
     );
   };
 
-  handleSingleCheckboxClick = (index, phone, inRange) => {
+  handleSingleCheckboxClick = (phone, inRange) => {
     let newArr = [];
+    const incomingPhone = phone;
     if (inRange) {
-      newArr = this.state.phoneNumbers.map(number => {
-        if (number.rangeStart <= phone && phone <= number.rangeEnd) {
+      newArr = this.state.phoneNumbers.map((number) => {
+        if (
+          number.rangeStart <= incomingPhone &&
+          incomingPhone <= number.rangeEnd
+        ) {
           return {
             ...number,
-            phoneNumbers: number.phoneNumbers.map(el => ({
+            phoneNumbers: number.phoneNumbers.map((el) => ({
               ...el,
               phoneChecked:
-                el.phoneNumber === phone ? !el.phoneChecked : el.phoneChecked
-            }))
+                el.phoneNumber === phone ? !el.phoneChecked : el.phoneChecked,
+            })),
           };
         } else {
           return number;
         }
       });
     } else {
-      newArr = this.state.phoneNumbers.map((el, i) => {
-        if (index === i && el.phoneNumbers) {
+      newArr = this.state.phoneNumbers.map((el) => {
+        if (el.phoneNumber === incomingPhone) {
           return {
             ...el,
             phoneChecked: !el.phoneChecked,
-            phoneNumbers: el.phoneNumbers.map(phone => ({
-              ...phone,
-              phoneChecked:
-                index === i ? !phone.phoneChecked : phone.phoneChecked
-            }))
+            phoneNumbers:
+              el.phoneNumbers &&
+              el.phoneNumbers.map((phone) => ({
+                ...phone,
+                phoneChecked: !phone.phoneChecked,
+              })),
           };
         }
-        return {
-          ...el,
-          phoneChecked: index === i ? !el.phoneChecked : el.phoneChecked
-        };
+        return el;
       });
     }
-    this.setState({ phoneNumbers: newArr, selectAll: false }, () =>
-      this.pagination()
-    );
+    this.setState({ phoneNumbers: newArr, selectAll: false }, () => {
+      console.log(this.state.phoneNumbers);
+      this.pagination();
+    });
   };
 
-  handleSingleCheckboxClickActive = (index, phone, inRange) => {
+  handleSingleCheckboxClickActive = (phone, inRange) => {
     let newArr = [];
+    const incomingPhone = phone;
     if (inRange) {
-      newArr = this.state.phoneNumbers.map(number => {
-        if (number.rangeStart <= phone && phone <= number.rangeEnd) {
+      newArr = this.state.phoneNumbers.map((number) => {
+        if (
+          number.rangeStart <= incomingPhone &&
+          incomingPhone <= number.rangeEnd
+        ) {
           return {
             ...number,
-            phoneNumbers: number.phoneNumbers.map(el => ({
+            phoneNumbers: number.phoneNumbers.map((el) => ({
               ...el,
-              active: el.phoneNumber === phone ? !el.active : el.active,
+              active: el.phoneNumber === incomingPhone ? !el.active : el.active,
               preActive:
-                el.phoneNumber === phone ? !el.preActive : el.preActive,
-              isChanged: el.phoneNumber === phone ? !el.isChanged : el.isChanged
-            }))
+                el.phoneNumber === incomingPhone ? !el.preActive : el.preActive,
+              isChanged:
+                el.phoneNumber === incomingPhone ? !el.isChanged : el.isChanged,
+            })),
           };
         } else {
           return number;
         }
       });
     } else {
-      newArr = this.state.phoneNumbers.map((el, i) => {
-        if (index === i && el.phoneNumbers) {
+      newArr = this.state.phoneNumbers.map((el) => {
+        if (el.phoneNumber === incomingPhone) {
           return {
             ...el,
             active: !el.active,
             preActive: !el.preActive,
             isChanged: !el.isChanged,
-            phoneNumbers: el.phoneNumbers.map(phone => ({
-              ...phone,
-              active: index === i ? !el.active : el.active,
-              preActive: index === i ? !el.preActive : el.preActive,
-              isChanged: index === i ? !el.isChanged : el.isChanged
-            }))
+            phoneNumbers:
+              el.phoneNumbers &&
+              el.phoneNumbers.map((phone) => ({
+                ...phone,
+                active: !el.active,
+                preActive: !el.preActive,
+                isChanged: !el.isChanged,
+              })),
           };
         }
-        return {
-          ...el,
-          active: index === i ? !el.active : el.active,
-          preActive: index === i ? !el.preActive : el.preActive,
-          isChanged: index === i ? !el.isChanged : el.isChanged
-        };
+        return el;
       });
     }
     this.setState({ phoneNumbers: newArr, selectAllPreActive: false }, () =>
@@ -943,47 +949,49 @@ export class PhoneNumbersTab extends Component {
     );
   };
 
-  handleSingleCheckboxClickPreActive = (index, phone, inRange) => {
+  handleSingleCheckboxClickPreActive = (phone, inRange) => {
     let newArr = [];
+    const incomingPhone = phone;
     if (inRange) {
-      newArr = this.state.phoneNumbers.map(number => {
-        if (number.rangeStart <= phone && phone <= number.rangeEnd) {
+      newArr = this.state.phoneNumbers.map((number) => {
+        if (
+          number.rangeStart <= incomingPhone &&
+          incomingPhone <= number.rangeEnd
+        ) {
           return {
             ...number,
-            phoneNumbers: number.phoneNumbers.map(el => ({
+            phoneNumbers: number.phoneNumbers.map((el) => ({
               ...el,
-              active: el.phoneNumber === phone ? !el.active : el.active,
+              active: el.phoneNumber === incomingPhone ? !el.active : el.active,
               preActive:
-                el.phoneNumber === phone ? !el.preActive : el.preActive,
-              isChanged: el.phoneNumber === phone ? !el.isChanged : el.isChanged
-            }))
+                el.phoneNumber === incomingPhone ? !el.preActive : el.preActive,
+              isChanged:
+                el.phoneNumber === incomingPhone ? !el.isChanged : el.isChanged,
+            })),
           };
         } else {
           return number;
         }
       });
     } else {
-      newArr = this.state.phoneNumbers.map((el, i) => {
-        if (index === i && el.phoneNumbers) {
+      newArr = this.state.phoneNumbers.map((el) => {
+        if (el.phoneNumber === incomingPhone) {
           return {
             ...el,
             active: !el.active,
             preActive: !el.preActive,
             isChanged: !el.isChanged,
-            phoneNumbers: el.phoneNumbers.map(phone => ({
-              ...phone,
-              preActive: index === i ? !el.preActive : el.preActive,
-              active: index === i ? !el.active : el.active,
-              isChanged: index === i ? !el.isChanged : el.isChanged
-            }))
+            phoneNumbers:
+              el.phoneNumbers &&
+              el.phoneNumbers.map((phone) => ({
+                ...phone,
+                preActive: !el.preActive,
+                active: !el.active,
+                isChanged: !el.isChanged,
+              })),
           };
         }
-        return {
-          ...el,
-          preActive: index === i ? !el.preActive : el.preActive,
-          active: index === i ? !el.active : el.active,
-          isChanged: index === i ? !el.isChanged : el.isChanged
-        };
+        return el;
       });
     }
     this.setState({ phoneNumbers: newArr, selectAllActive: false }, () =>
@@ -992,19 +1000,16 @@ export class PhoneNumbersTab extends Component {
   };
 }
 
-const mapStateToProps = state => ({
-  phoneNumbers: state.phoneNumbersByGroup
+const mapStateToProps = (state) => ({
+  phoneNumbers: state.phoneNumbersByGroup,
 });
 
 const mapDispatchToProps = {
   fetchGetPhoneNumbersByGroupId,
   fetchPutUpdateNumbersStatus,
-  fetchGetPhoneNumbersWithRefreshDB
+  fetchGetPhoneNumbersWithRefreshDB,
 };
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(PhoneNumbersTab)
+  connect(mapStateToProps, mapDispatchToProps)(PhoneNumbersTab)
 );
