@@ -39,6 +39,7 @@ const initialState = {
   transferedIADs: [],
   validationGroup: {},
   validationGroupError: "",
+  iadSpecialCustomTags: [],
 };
 
 function mainReducer(state = initialState, action) {
@@ -416,6 +417,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         validationGroupError: action.data.errors[0].details.reason,
+      };
+    }
+    case actionType.GET_IAD_SPECIAL_CUSTOM_TAGS: {
+      return {
+        ...state,
+        iadSpecialCustomTags: action.data,
       };
     }
     case actionType.POST_CREATE_IAD: {

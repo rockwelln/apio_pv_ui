@@ -236,9 +236,6 @@ export class GroupsTab extends Component {
                         onReload={() => this.fetchReq()}
                       />
                     ))}
-                    {/* {this.state.fakeGroups.map(group => (
-                      <Group key={group.groupId} group={group} />
-                    ))} */}
                   </tbody>
                 </Table>
               </Col>
