@@ -170,6 +170,11 @@ export const postEmergencyRouting = (data) => ({
   data,
 });
 
+export const postAddIADSpecialCustomTags = (data) => ({
+  type: actionType.POST_ADD_IAD_SPECIAL_CUSTOM_TAGS,
+  data,
+});
+
 export const putUpdateEnterpriseTrunk = (data) => ({
   type: actionType.PUT_UPDATE_ENTERPRISE_TRNUK,
   data,
@@ -212,6 +217,14 @@ export const putUpdateAnomaly = (data) => ({
 
 export const putMassIADsReboot = () => ({
   type: actionType.PUT_MASS_IADS_REBOOT,
+});
+
+export const putUpdateIADCustomTagsComment = () => ({
+  type: actionType.PUT_UPDATE_IAD_CUSTOM_TAGS_COMMENT,
+});
+
+export const putUpdateIADCustomTag = () => ({
+  type: actionType.PUT_UPDATE_IAD_CUSTOM_TAG,
 });
 
 export const deleteTenant = (data) => ({
@@ -707,14 +720,21 @@ export function fetchGetValidateGroupUpdate(tenantId, groupId, validateData) {
   };
 }
 
-export function fetchGetIADSpecialCustomTags(tenantId, groupId, iadId) {
+export function fetchGetIADSpecialCustomTags(
+  tenantId,
+  groupId,
+  iadId,
+  callback
+) {
   /////////////////////////////////
+  callback && callback(true);
   return function (dispatch) {
     return fetch_get(
       `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/trunk_groups/${iadId}/special_custom_tags/`
     )
       .then((data) => dispatch(getIadSpecialCustomTags(data)))
       .catch((error) => {
+        dispatch(getIadSpecialCustomTags({ customTags: [], comment: "" }));
         NotificationsManager.error(
           <FormattedMessage
             id="fetch-iads-spt-failed"
@@ -722,7 +742,8 @@ export function fetchGetIADSpecialCustomTags(tenantId, groupId, iadId) {
           />,
           error.message
         );
-      });
+      })
+      .finally(() => callback && callback(false));
   };
 }
 
@@ -921,6 +942,36 @@ export function fetchPostCreateEnterpriseTrunk(tenantId, groupId, data) {
           <FormattedMessage
             id="failed-to-create-enterprise-trunk"
             defaultMessage="Failed to create enterprise trunk!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchPostAddIADSpecialCustomTags(
+  tenantId,
+  groupId,
+  iadId,
+  data,
+  callBack
+) {
+  //////////////////////////////////////////////////
+  return function (dispatch) {
+    return fetch_post(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/trunk_groups/${iadId}/special_custom_tags/`,
+      data
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        dispatch(postAddIADSpecialCustomTags(data));
+        callBack && callBack();
+      })
+      .catch((error) => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-create-special-custom-tag"
+            defaultMessage="Failed to create special custom tag!"
           />,
           error.message
         );
@@ -1163,6 +1214,84 @@ export function fetchPutMassIADsReboot(iadsForUpdate) {
           <FormattedMessage
             id="reboot-iads-failed"
             defaultMessage="Reboot request failed"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchPutUpdateIADCustomTagsComment(
+  tenantId,
+  groupId,
+  iadId,
+  data,
+  callback
+) {
+  /////////////////////////////
+  return function (dispatch) {
+    return fetch_put(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/trunk_groups/${iadId}/special_custom_tags/`,
+      data
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        dispatch(putUpdateIADCustomTagsComment(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="specialCustomTagCommentUpdated"
+            defaultMessage="Successfully updated special custom tag comment!"
+          />,
+          "Successfully updated anomaly!"
+        );
+        callback && callback();
+      })
+      .catch((error) =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="updateSpecialCustomTagCommentFailed"
+            defaultMessage="Failed to update special custom tag comment!"
+          />,
+          error.message
+        )
+      );
+  };
+}
+
+export function fetchPutUpdateIADCustomTag(
+  tenantId,
+  groupId,
+  iadId,
+  tagName,
+  data,
+  callback
+) {
+  /////////////////////////////
+  return function (dispatch) {
+    return fetch_put(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/trunk_groups/${iadId}/special_custom_tags/${tagName.replaceAll(
+        "%",
+        "%25"
+      )}/`,
+      data
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        dispatch(putUpdateIADCustomTag(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="specialCustomTagUpdated"
+            defaultMessage="Successfully updated special custom tag!"
+          />,
+          "Successfully updated anomaly!"
+        );
+        callback && callback();
+      })
+      .catch((error) =>
+        NotificationsManager.error(
+          <FormattedMessage
+            id="updateSpecialCustomTagFailed"
+            defaultMessage="Failed to update special custom tag!"
           />,
           error.message
         )

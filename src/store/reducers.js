@@ -422,7 +422,8 @@ function mainReducer(state = initialState, action) {
     case actionType.GET_IAD_SPECIAL_CUSTOM_TAGS: {
       return {
         ...state,
-        iadSpecialCustomTags: action.data,
+        iadSpecialCustomTagsComment: action.data.comment,
+        iadSpecialCustomTags: action.data.customTags,
       };
     }
     case actionType.POST_CREATE_IAD: {
@@ -475,6 +476,11 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         createdReconciliationTeam: action.data,
+      };
+    }
+    case actionType.POST_ADD_IAD_SPECIAL_CUSTOM_TAGS: {
+      return {
+        ...state,
       };
     }
     case actionType.PUT_UPDATE_IAD: {
@@ -603,6 +609,16 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         anomaly: action.data,
+      };
+    }
+    case actionType.PUT_UPDATE_IAD_CUSTOM_TAGS_COMMENT: {
+      return {
+        ...state,
+      };
+    }
+    case actionType.PUT_UPDATE_IAD_CUSTOM_TAG: {
+      return {
+        ...state,
       };
     }
     case actionType.DELETE_TENANT: {

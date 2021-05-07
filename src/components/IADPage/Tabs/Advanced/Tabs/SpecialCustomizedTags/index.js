@@ -10,167 +10,72 @@ import InputGroup from "react-bootstrap/lib/InputGroup";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import Pagination from "react-bootstrap/lib/Pagination";
+import Button from "react-bootstrap/lib/Button";
 import { FormattedMessage } from "react-intl";
 
 import { countsPerPages } from "../../../../../../constants";
 import {
   fetchGetIADSpecialCustomTags,
-  clearCreatedTenant,
+  fetchPutUpdateIADCustomTagsComment,
 } from "../../../../../../store/actions";
-import { removeEmpty } from "../../../../../remuveEmptyInObject";
 
 import Tags from "./Tags";
-
-const fakeTags = [
-  {
-    name: "foo",
-    value: "bar",
-  },
-  {
-    name: "foo",
-    value: "bar",
-  },
-  {
-    name: "foo",
-    value: "bar",
-  },
-  {
-    name: "%foo%",
-    value: "%bar%",
-  },
-  {
-    name: "foo",
-    value: "bar",
-  },
-  {
-    name: "asf",
-    value: "sadf",
-  },
-  {
-    name: "12312",
-    value: "sad342323f",
-  },
-  {
-    name: "foo",
-    value: "bar",
-  },
-  {
-    name: "foo",
-    value: "bar",
-  },
-  {
-    name: "foo",
-    value: "bar",
-  },
-  {
-    name: "%foo%",
-    value: "%bar%",
-  },
-  {
-    name: "foo",
-    value: "bar",
-  },
-  {
-    name: "asf",
-    value: "sadf",
-  },
-  {
-    name: "12312",
-    value: "sad342323f",
-  },
-  {
-    name: "foo",
-    value: "bar",
-  },
-  {
-    name: "foo",
-    value: "bar",
-  },
-  {
-    name: "foo",
-    value: "bar",
-  },
-  {
-    name: "%foo%",
-    value: "%bar%",
-  },
-  {
-    name: "foo",
-    value: "bar",
-  },
-  {
-    name: "asf",
-    value: "sadf",
-  },
-  {
-    name: "12312",
-    value: "sad342323f",
-  },
-  {
-    name: "foo",
-    value: "bar",
-  },
-  {
-    name: "foo",
-    value: "bar",
-  },
-  {
-    name: "foo",
-    value: "bar",
-  },
-  {
-    name: "%foo%",
-    value: "%bar%",
-  },
-  {
-    name: "foo",
-    value: "bar",
-  },
-  {
-    name: "asf",
-    value: "sadf",
-  },
-  {
-    name: "12312",
-    value: "sad342323f",
-  },
-];
+import AddTagModal from "./AddTagModal";
+import Loading from "../../../../../../common/Loading";
 
 const SpecialCustomizedTagsTable = (props) => {
   const [searchValue, setSearchValue] = useState("");
   const [countPerPage, setCountPrePage] = useState(25);
-  const [tags, setTags] = useState(fakeTags);
+  const [tags, setTags] = useState([]);
   const [paginationTags, setPaginationTags] = useState([]);
   const [countPages, setCountPages] = useState(null);
   const [page, setPage] = useState(0);
+  const [isOpenAddModal, setIsOpenAddModal] = useState(false);
+  const [comment, setComment] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [commentButtonName, setCommentButtonName] = useState("Update");
+  const [isUpdatingComment, setIsUpdatingComment] = useState(false);
 
   const {
     match: {
       params: { tenantId, groupId, iadId },
     },
   } = props;
-  const createdTenant = useSelector((state) => state.createdTenant);
+  const iadSpecialCustomTags = useSelector(
+    (state) => state.iadSpecialCustomTags
+  );
+  const iadSpecialCustomTagsComment = useSelector(
+    (state) => state.iadSpecialCustomTagsComment
+  );
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     pagination();
-  }, [tags, countPages]);
+  }, [tags, countPages, countPerPage]);
+
+  useEffect(() => {
+    setTags(iadSpecialCustomTags);
+  }, [iadSpecialCustomTags]);
+
+  useEffect(() => {
+    setComment(iadSpecialCustomTagsComment);
+  }, [iadSpecialCustomTagsComment]);
 
   const filterBySearchValue = (value) => {
     setSearchValue(value);
-    const SearchArray = fakeTags.filter(
+    const SearchArray = iadSpecialCustomTags.filter(
       (tag) =>
         tag.name.toLowerCase().includes(value.toLowerCase()) ||
         tag.value.toLowerCase().includes(value.toLowerCase())
     );
-    console.log(SearchArray);
     setTags(SearchArray);
   };
 
   useEffect(() => {
-    dispatch(fetchGetIADSpecialCustomTags(tenantId, groupId, iadId)).then(() =>
-      pagination()
-    );
+    dispatch(
+      fetchGetIADSpecialCustomTags(tenantId, groupId, iadId, setIsLoading)
+    ).then(() => pagination());
   }, []);
 
   const pagination = () => {
@@ -214,6 +119,38 @@ const SpecialCustomizedTagsTable = (props) => {
     setPage(page - 1);
   };
 
+  const handleCloseAddModal = () => {
+    setIsOpenAddModal(false);
+    dispatch(
+      fetchGetIADSpecialCustomTags(tenantId, groupId, iadId, setIsLoading)
+    ).then(() => pagination());
+  };
+
+  const handleUpdateComment = () => {
+    const data = {
+      comment,
+    };
+    setIsUpdatingComment(true);
+    setCommentButtonName("Updating");
+    const callback = () => {
+      setIsUpdatingComment(false);
+      setCommentButtonName("Update");
+    };
+    dispatch(
+      fetchPutUpdateIADCustomTagsComment(
+        tenantId,
+        groupId,
+        iadId,
+        data,
+        callback
+      )
+    );
+  };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <React.Fragment>
       <Row className={"margin-top-2"}>
@@ -241,14 +178,11 @@ const SpecialCustomizedTagsTable = (props) => {
         </Col>
         {/* {isAllowed(localStorage.getItem("userProfile"), pages.create_group) && ( */}
         <Col md={1}>
-          <Link
-          //to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/addgroup`}
-          >
-            <Glyphicon
-              className={"x-large"}
-              glyph="glyphicon glyphicon-plus-sign"
-            />
-          </Link>
+          <Glyphicon
+            className={"x-large"}
+            glyph="glyphicon glyphicon-plus-sign"
+            onClick={() => setIsOpenAddModal(true)}
+          />
         </Col>
         {/* )} */}
       </Row>
@@ -258,7 +192,7 @@ const SpecialCustomizedTagsTable = (props) => {
             <div>Item per page</div>
             <FormControl
               componentClass="select"
-              defaultValue={countPerPage}
+              value={countPerPage}
               style={{ display: "inline", width: "auto" }}
               className={"margin-left-1"}
               onChange={changeCoutOnPage}
@@ -272,6 +206,31 @@ const SpecialCustomizedTagsTable = (props) => {
           </div>
         </Col>
       </Row>
+      <Row className={"margin-top-1"}>
+        <Col mdOffset={1} md={10} className={"flex align-items-center"}>
+          <div className={"margin-right-1 flex flex-basis-16"}>
+            <FormattedMessage id="comment" defaultMessage="Comment" />
+          </div>
+          <div className={"margin-right-1 width-100p"}>
+            <FormControl
+              type="text"
+              placeholder="Comment"
+              value={comment}
+              onChange={(e) => {
+                setComment(e.target.value);
+              }}
+              disabled={isUpdatingComment}
+            />
+          </div>
+          <Button
+            onClick={handleUpdateComment}
+            bsStyle="primary"
+            disabled={isUpdatingComment}
+          >
+            <FormattedMessage id="update" defaultMessage={commentButtonName} />
+          </Button>
+        </Col>
+      </Row>
       {paginationTags.length ? (
         <React.Fragment>
           <Row>
@@ -279,22 +238,22 @@ const SpecialCustomizedTagsTable = (props) => {
               <Table hover>
                 <thead>
                   <tr>
-                    <th>
+                    <th style={{ width: "42%" }}>
                       <FormattedMessage id="tag-name" defaultMessage="Name" />
                       {/* <Glyphicon
                         glyph="glyphicon glyphicon-sort"
                         onClick={this.sortByID}
                       /> */}
                     </th>
-                    <th>
+                    <th style={{ width: "42%" }}>
                       <FormattedMessage id="tag-value" defaultMessage="Value" />
                       {/* <Glyphicon
                         glyph="glyphicon glyphicon-sort"
                         onClick={this.sortByTinaPID}
                       /> */}
                     </th>
-                    <th />
-                    <th />
+                    <th style={{ width: "8%" }} />
+                    <th style={{ width: "8%" }} />
                   </tr>
                 </thead>
                 <tbody>
@@ -329,33 +288,12 @@ const SpecialCustomizedTagsTable = (props) => {
           />
         </Col>
       )}
-      <Row>
-        <Col md={12}>
-          <Table hover>
-            <thead>
-              <tr>
-                <th>
-                  <FormattedMessage id="name" defaultMessage="Name" />
-                </th>
-                <th>
-                  <FormattedMessage id="value" defaultMessage="Value" />
-                </th>
-                <th />
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {[{ name: 123, value: 321 }].map((tag) => (
-                <Tags
-                  key={tag.value}
-                  tag={tag}
-                  //onReload={() => this.fetchReq()}
-                />
-              ))}
-            </tbody>
-          </Table>
-        </Col>
-      </Row>
+      {isOpenAddModal && (
+        <AddTagModal
+          isOpen={isOpenAddModal}
+          handleClose={handleCloseAddModal}
+        />
+      )}
     </React.Fragment>
   );
 };
