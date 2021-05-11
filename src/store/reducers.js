@@ -651,6 +651,11 @@ function mainReducer(state = initialState, action) {
         ...state,
       };
     }
+    case actionType.DELETE_SPECIAL_CUSTOM_TAG: {
+      return {
+        ...state,
+      };
+    }
     case actionType.CHANGE_IAD_FOR_UPDATE: {
       return {
         ...state,

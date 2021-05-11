@@ -262,6 +262,11 @@ export const deleteAnomaly = (data) => ({
   data,
 });
 
+export const deleteSpecialCustomTag = (data) => ({
+  type: actionType.DELETE_SPECIAL_CUSTOM_TAG,
+  data,
+});
+
 export const changeIAD = (field, value) => ({
   type: actionType.CHANGE_IAD_FOR_UPDATE,
   field,
@@ -1264,7 +1269,8 @@ export function fetchPutUpdateIADCustomTag(
   iadId,
   tagName,
   data,
-  callback
+  callback,
+  errorCallback
 ) {
   /////////////////////////////
   return function (dispatch) {
@@ -1287,15 +1293,16 @@ export function fetchPutUpdateIADCustomTag(
         );
         callback && callback();
       })
-      .catch((error) =>
+      .catch((error) => {
         NotificationsManager.error(
           <FormattedMessage
             id="updateSpecialCustomTagFailed"
             defaultMessage="Failed to update special custom tag!"
           />,
           error.message
-        )
-      );
+        );
+        errorCallback && errorCallback();
+      });
   };
 }
 
@@ -1452,5 +1459,40 @@ export function fetchDeleteAnomaly(hash, data) {
           error.message
         )
       );
+  };
+}
+
+export function fetchDeleteSpecialCustomTags(
+  tenantId,
+  groupId,
+  iadId,
+  tagName,
+  data,
+  callback,
+  errorCallback
+) {
+  /////////////////////////////////
+  return function (dispatch) {
+    return fetch_delete(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/trunk_groups/${iadId}/special_custom_tags/${tagName.replaceAll(
+        "%",
+        "%25"
+      )}/`,
+      data
+    )
+      .then((data) => {
+        dispatch(deleteSpecialCustomTag(data));
+        callback && callback();
+      })
+      .catch((error) => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-delete-special-custom-tag"
+            defaultMessage="Failed to delete special custom tag!"
+          />,
+          error.message
+        );
+        errorCallback && errorCallback();
+      });
   };
 }

@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import FormControl from "react-bootstrap/lib/FormControl";
+import Checkbox from "react-bootstrap/lib/Checkbox";
 
 import { fetchPutUpdateIADCustomTag } from "../../../../../../store/actions";
 //import DeleteModal from "./DeleteModal";
@@ -15,23 +16,17 @@ import { isAllowed, pages } from "../../../../../../utils/user";
 const SpecialCustomizedTagsTable = (props) => {
   const {
     tag,
+    isEditAll,
     match: {
       params: { tenantId, groupId, iadId },
     },
+    singleEdit,
+    editValue,
+    setAllIADs,
+    handleDelete,
   } = props;
-  const [tagValue, setTagValue] = useState(tag.value);
-  const [isEdit, setIsEdit] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
-  const createdTenant = useSelector((state) => state.createdTenant);
   const dispatch = useDispatch();
-
-  const handleCancelEdit = () => {
-    if (isUpdating) {
-      return;
-    }
-    setTagValue(tag.value);
-    setIsEdit(false);
-  };
 
   const handleUpdate = () => {
     if (isUpdating) {
@@ -39,10 +34,14 @@ const SpecialCustomizedTagsTable = (props) => {
     }
     setIsUpdating(true);
     const data = {
-      value: tagValue,
+      value: tag.value,
+      allIADs: tag.allIADs,
     };
     const callback = () => {
-      setIsEdit(false);
+      setIsUpdating(false);
+      singleEdit(tag.name, false);
+    };
+    const errorCallback = () => {
       setIsUpdating(false);
     };
     dispatch(
@@ -52,53 +51,72 @@ const SpecialCustomizedTagsTable = (props) => {
         iadId,
         tag.name,
         data,
-        callback
+        callback,
+        errorCallback
       )
     );
+  };
+
+  const handleCancel = (tagName) => {
+    if (isUpdating) {
+      return;
+    }
+    singleEdit(tagName, false);
   };
 
   return (
     <tr style={{ height: 51 }}>
       <td style={{ verticalAlign: "middle" }}>{tag.name}</td>
-      {isEdit ? (
+      {isEditAll || tag.isEdit ? (
         <td style={{ verticalAlign: "middle" }}>
           <FormControl
             type="text"
             placeholder={"Value"}
-            value={tagValue}
+            value={tag.value}
             onChange={(e) => {
               if (e.target.value.length > 256) {
                 return;
               }
-              setTagValue(e.target.value);
+              editValue(tag.name, e.target.value);
             }}
           />
         </td>
       ) : (
-        <td style={{ verticalAlign: "middle" }}>{tagValue}</td>
+        <td style={{ verticalAlign: "middle" }}>{tag.value}</td>
       )}
-      {isEdit ? (
+      <td style={{ verticalAlign: "middle" }}>
+        <Checkbox
+          checked={tag.allIADs}
+          disabled={!isEditAll && !tag.isEdit}
+          onChange={(e) => setAllIADs(tag.name, e.target.checked)}
+        />
+      </td>
+      {tag.isEdit ? (
         <td style={{ verticalAlign: "middle" }}>
           <Glyphicon
-            className={"margin-right-1"}
+            className={`margin-right-1 ${isUpdating ? "opacity-50" : ""}`}
             glyph="glyphicon glyphicon-ok"
             onClick={handleUpdate}
           />
           <Glyphicon
+            className={isUpdating ? "opacity-50" : ""}
             glyph="glyphicon glyphicon-ban-circle"
-            onClick={handleCancelEdit}
+            onClick={() => handleCancel(tag.name)}
           />
         </td>
       ) : (
         <td style={{ verticalAlign: "middle" }}>
           <Glyphicon
             glyph="glyphicon glyphicon-pencil"
-            onClick={() => setIsEdit(true)}
+            onClick={() => !isEditAll && singleEdit(tag.name, true)}
           />
         </td>
       )}
       <td style={{ verticalAlign: "middle" }}>
-        <Glyphicon glyph="glyphicon glyphicon-remove" />
+        <Glyphicon
+          glyph="glyphicon glyphicon-remove"
+          onClick={() => handleDelete(tag.name)}
+        />
       </td>
     </tr>
   );

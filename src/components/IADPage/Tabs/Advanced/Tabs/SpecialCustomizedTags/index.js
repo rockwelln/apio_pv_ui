@@ -17,11 +17,13 @@ import { countsPerPages } from "../../../../../../constants";
 import {
   fetchGetIADSpecialCustomTags,
   fetchPutUpdateIADCustomTagsComment,
+  fetchPutUpdateIADCustomTag,
 } from "../../../../../../store/actions";
 
 import Tags from "./Tags";
 import AddTagModal from "./AddTagModal";
 import Loading from "../../../../../../common/Loading";
+import DeleteModal from "./DeleteModal";
 
 const SpecialCustomizedTagsTable = (props) => {
   const [searchValue, setSearchValue] = useState("");
@@ -35,12 +37,16 @@ const SpecialCustomizedTagsTable = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [commentButtonName, setCommentButtonName] = useState("Update");
   const [isUpdatingComment, setIsUpdatingComment] = useState(false);
+  const [isEditAll, setIsEditAll] = useState(false);
+  const [showDeleteWindow, setShowDeleteWindow] = useState(false);
+  const [deleteValue, setDeleteValue] = useState("");
 
   const {
     match: {
       params: { tenantId, groupId, iadId },
     },
   } = props;
+
   const iadSpecialCustomTags = useSelector(
     (state) => state.iadSpecialCustomTags
   );
@@ -55,8 +61,68 @@ const SpecialCustomizedTagsTable = (props) => {
   }, [tags, countPages, countPerPage]);
 
   useEffect(() => {
-    setTags(iadSpecialCustomTags);
-  }, [iadSpecialCustomTags]);
+    if (!isLoading) {
+      const customTags = iadSpecialCustomTags.map((el) => ({
+        ...el,
+        allIADs: false,
+        isEdit: false,
+      }));
+      setTags(customTags);
+    }
+  }, [isLoading, iadSpecialCustomTags]);
+
+  const multipleEdit = (value) => {
+    const newCustomTags = [
+      ...tags.map((el) => ({
+        ...el,
+        isEdit: value,
+        allIADs: value ? el.allIADs : false,
+      })),
+    ];
+    setIsEditAll(value);
+    setTags(newCustomTags);
+  };
+
+  const singleEdit = (tagName, value) => {
+    const index = iadSpecialCustomTags.findIndex((el) => el.name === tagName);
+    const newCustomTags = [...tags];
+    newCustomTags[index].isEdit = value;
+    if (!value) {
+      newCustomTags[index].value = iadSpecialCustomTags[index].value;
+      newCustomTags[index].allIADs = false;
+    }
+    setTags(newCustomTags);
+  };
+
+  const editValue = (tagName, value) => {
+    const index = iadSpecialCustomTags.findIndex((el) => el.name === tagName);
+    const newCustomTags = [...tags];
+    newCustomTags[index].value = value;
+    setTags(newCustomTags);
+  };
+
+  const setAllIADs = (tagName, value) => {
+    const index = iadSpecialCustomTags.findIndex((el) => el.name === tagName);
+    const newCustomTags = [...tags];
+    newCustomTags[index].allIADs = value;
+    setTags(newCustomTags);
+  };
+
+  const multipleUpdate = () => {
+    let requestArray = [];
+    tags.forEach((el) => {
+      const { name, value, allIADs } = el;
+      const data = { value, allIADs };
+
+      requestArray.push(
+        dispatch(
+          fetchPutUpdateIADCustomTag(tenantId, groupId, iadId, name, data)
+        )
+      );
+    });
+
+    Promise.all(requestArray).then(() => multipleEdit(false));
+  };
 
   useEffect(() => {
     setComment(iadSpecialCustomTagsComment);
@@ -145,6 +211,18 @@ const SpecialCustomizedTagsTable = (props) => {
         callback
       )
     );
+  };
+
+  const handleOpenDeleteWindow = (tagName) => {
+    setDeleteValue(tagName);
+    setShowDeleteWindow(true);
+  };
+
+  const handleCloseDeleteWindow = () => {
+    setShowDeleteWindow(false);
+    dispatch(
+      fetchGetIADSpecialCustomTags(tenantId, groupId, iadId, setIsLoading)
+    ).then(() => pagination());
   };
 
   if (isLoading) {
@@ -238,30 +316,53 @@ const SpecialCustomizedTagsTable = (props) => {
               <Table hover>
                 <thead>
                   <tr>
-                    <th style={{ width: "42%" }}>
+                    <th style={{ width: "35%" }}>
                       <FormattedMessage id="tag-name" defaultMessage="Name" />
-                      {/* <Glyphicon
-                        glyph="glyphicon glyphicon-sort"
-                        onClick={this.sortByID}
-                      /> */}
                     </th>
-                    <th style={{ width: "42%" }}>
+                    <th style={{ width: "35%" }}>
                       <FormattedMessage id="tag-value" defaultMessage="Value" />
-                      {/* <Glyphicon
-                        glyph="glyphicon glyphicon-sort"
-                        onClick={this.sortByTinaPID}
-                      /> */}
                     </th>
-                    <th style={{ width: "8%" }} />
-                    <th style={{ width: "8%" }} />
+                    <th style={{ width: "14%" }}>
+                      <FormattedMessage
+                        id="allIADs"
+                        defaultMessage="All IADs"
+                      />
+                    </th>
+                    <th style={{ width: "8%" }}>
+                      {isEditAll ? (
+                        <>
+                          <Glyphicon
+                            className={"margin-right-1"}
+                            glyph="glyphicon glyphicon-ok"
+                            onClick={multipleUpdate}
+                          />
+                          <Glyphicon
+                            glyph="glyphicon glyphicon-ban-circle"
+                            onClick={() => multipleEdit(false)}
+                          />
+                        </>
+                      ) : (
+                        <Glyphicon
+                          glyph="glyphicon glyphicon-pencil"
+                          onClick={() => multipleEdit(true)}
+                        />
+                      )}
+                    </th>
+                    <th style={{ width: "8%" }}>
+                      <Glyphicon glyph="glyphicon glyphicon-remove" />{" "}
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {paginationTags[page].map((tag) => (
                     <Tags
-                      key={Math.random()}
+                      key={tag.name}
                       tag={tag}
-                      //onReload={() => this.fetchReq()}
+                      isEditAll={isEditAll}
+                      singleEdit={singleEdit}
+                      editValue={editValue}
+                      setAllIADs={setAllIADs}
+                      handleDelete={handleOpenDeleteWindow}
                     />
                   ))}
                 </tbody>
@@ -292,6 +393,13 @@ const SpecialCustomizedTagsTable = (props) => {
         <AddTagModal
           isOpen={isOpenAddModal}
           handleClose={handleCloseAddModal}
+        />
+      )}
+      {showDeleteWindow && (
+        <DeleteModal
+          show={showDeleteWindow}
+          onClose={handleCloseDeleteWindow}
+          tagName={deleteValue}
         />
       )}
     </React.Fragment>

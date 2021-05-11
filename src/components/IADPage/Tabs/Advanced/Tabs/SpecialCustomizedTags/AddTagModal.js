@@ -56,7 +56,7 @@ const addTagModal = (props) => {
   };
 
   return (
-    <Modal show={isOpen} onHide={handleClose}>
+    <Modal show={isOpen} onHide={handleClose} backdrop={false}>
       <Modal.Header closeButton>
         <Modal.Title>
           <FormattedMessage
