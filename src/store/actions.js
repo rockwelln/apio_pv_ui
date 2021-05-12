@@ -959,7 +959,8 @@ export function fetchPostAddIADSpecialCustomTags(
   groupId,
   iadId,
   data,
-  callBack
+  callBack,
+  errorCallback
 ) {
   //////////////////////////////////////////////////
   return function (dispatch) {
@@ -980,6 +981,7 @@ export function fetchPostAddIADSpecialCustomTags(
           />,
           error.message
         );
+        errorCallback && errorCallback();
       });
   };
 }
@@ -1292,6 +1294,7 @@ export function fetchPutUpdateIADCustomTag(
           "Successfully updated anomaly!"
         );
         callback && callback();
+        return "success";
       })
       .catch((error) => {
         NotificationsManager.error(
@@ -1302,6 +1305,7 @@ export function fetchPutUpdateIADCustomTag(
           error.message
         );
         errorCallback && errorCallback();
+        return "failed";
       });
   };
 }
@@ -1483,6 +1487,7 @@ export function fetchDeleteSpecialCustomTags(
       .then((data) => {
         dispatch(deleteSpecialCustomTag(data));
         callback && callback();
+        return "success";
       })
       .catch((error) => {
         NotificationsManager.error(
@@ -1493,6 +1498,7 @@ export function fetchDeleteSpecialCustomTags(
           error.message
         );
         errorCallback && errorCallback();
+        return "failed";
       });
   };
 }

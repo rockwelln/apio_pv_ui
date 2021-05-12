@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
 
 import Table from "react-bootstrap/lib/Table";
@@ -18,12 +17,16 @@ import {
   fetchGetIADSpecialCustomTags,
   fetchPutUpdateIADCustomTagsComment,
   fetchPutUpdateIADCustomTag,
+  fetchGetIADs,
 } from "../../../../../../store/actions";
 
 import Tags from "./Tags";
 import AddTagModal from "./AddTagModal";
 import Loading from "../../../../../../common/Loading";
 import DeleteModal from "./DeleteModal";
+import RebootWindow from "../../../../../MassIADReboot/RebootWindow";
+
+import { isAllowed, pages } from "../../../../../../utils/user";
 
 const SpecialCustomizedTagsTable = (props) => {
   const [searchValue, setSearchValue] = useState("");
@@ -40,6 +43,8 @@ const SpecialCustomizedTagsTable = (props) => {
   const [isEditAll, setIsEditAll] = useState(false);
   const [showDeleteWindow, setShowDeleteWindow] = useState(false);
   const [deleteValue, setDeleteValue] = useState("");
+  const [showRebootWindow, setShowRebootWindow] = useState(false);
+  const [rebootIads, setRebootIads] = useState([]);
 
   const {
     match: {
@@ -53,6 +58,8 @@ const SpecialCustomizedTagsTable = (props) => {
   const iadSpecialCustomTagsComment = useSelector(
     (state) => state.iadSpecialCustomTagsComment
   );
+
+  const iads = useSelector((state) => state.iads);
 
   const dispatch = useDispatch();
 
@@ -121,7 +128,15 @@ const SpecialCustomizedTagsTable = (props) => {
       );
     });
 
-    Promise.all(requestArray).then(() => multipleEdit(false));
+    Promise.all(requestArray).then((res) => {
+      if (res.every((el) => el === "success")) {
+        rebootCallBack(
+          tags.some((el) => el.allIADs),
+          iadId
+        );
+        multipleEdit(false);
+      }
+    });
   };
 
   useEffect(() => {
@@ -142,6 +157,7 @@ const SpecialCustomizedTagsTable = (props) => {
     dispatch(
       fetchGetIADSpecialCustomTags(tenantId, groupId, iadId, setIsLoading)
     ).then(() => pagination());
+    dispatch(fetchGetIADs(tenantId, groupId));
   }, []);
 
   const pagination = () => {
@@ -187,9 +203,6 @@ const SpecialCustomizedTagsTable = (props) => {
 
   const handleCloseAddModal = () => {
     setIsOpenAddModal(false);
-    dispatch(
-      fetchGetIADSpecialCustomTags(tenantId, groupId, iadId, setIsLoading)
-    ).then(() => pagination());
   };
 
   const handleUpdateComment = () => {
@@ -218,11 +231,25 @@ const SpecialCustomizedTagsTable = (props) => {
     setShowDeleteWindow(true);
   };
 
+  const handleOpenMultipleDeleteWindow = () => {
+    setDeleteValue(tags.map((el) => el.name));
+    setShowDeleteWindow(true);
+  };
+
   const handleCloseDeleteWindow = () => {
     setShowDeleteWindow(false);
+  };
+
+  const rebootCallBack = (isAllIads, iad) => {
+    setRebootIads(isAllIads ? iads.iads.map((el) => el.iadId) : [iad]);
+    setShowRebootWindow(true);
+  };
+
+  const handleCloseRebootWindow = () => {
     dispatch(
       fetchGetIADSpecialCustomTags(tenantId, groupId, iadId, setIsLoading)
     ).then(() => pagination());
+    setShowRebootWindow(false);
   };
 
   if (isLoading) {
@@ -254,15 +281,18 @@ const SpecialCustomizedTagsTable = (props) => {
             </FormattedMessage>
           </InputGroup>
         </Col>
-        {/* {isAllowed(localStorage.getItem("userProfile"), pages.create_group) && ( */}
-        <Col md={1}>
-          <Glyphicon
-            className={"x-large"}
-            glyph="glyphicon glyphicon-plus-sign"
-            onClick={() => setIsOpenAddModal(true)}
-          />
-        </Col>
-        {/* )} */}
+        {isAllowed(
+          localStorage.getItem("userProfile"),
+          pages.edit_iad_advanced_customized_tags
+        ) && (
+          <Col md={1}>
+            <Glyphicon
+              className={"x-large"}
+              glyph="glyphicon glyphicon-plus-sign"
+              onClick={() => setIsOpenAddModal(true)}
+            />
+          </Col>
+        )}
       </Row>
       <Row>
         <Col md={11}>
@@ -297,16 +327,30 @@ const SpecialCustomizedTagsTable = (props) => {
               onChange={(e) => {
                 setComment(e.target.value);
               }}
-              disabled={isUpdatingComment}
+              disabled={
+                isUpdatingComment ||
+                !isAllowed(
+                  localStorage.getItem("userProfile"),
+                  pages.edit_iad_advanced_customized_tags
+                )
+              }
             />
           </div>
-          <Button
-            onClick={handleUpdateComment}
-            bsStyle="primary"
-            disabled={isUpdatingComment}
-          >
-            <FormattedMessage id="update" defaultMessage={commentButtonName} />
-          </Button>
+          {isAllowed(
+            localStorage.getItem("userProfile"),
+            pages.edit_iad_advanced_customized_tags
+          ) && (
+            <Button
+              onClick={handleUpdateComment}
+              bsStyle="primary"
+              disabled={isUpdatingComment}
+            >
+              <FormattedMessage
+                id="update"
+                defaultMessage={commentButtonName}
+              />
+            </Button>
+          )}
         </Col>
       </Row>
       {paginationTags.length ? (
@@ -322,35 +366,45 @@ const SpecialCustomizedTagsTable = (props) => {
                     <th style={{ width: "35%" }}>
                       <FormattedMessage id="tag-value" defaultMessage="Value" />
                     </th>
-                    <th style={{ width: "14%" }}>
-                      <FormattedMessage
-                        id="allIADs"
-                        defaultMessage="All IADs"
-                      />
-                    </th>
-                    <th style={{ width: "8%" }}>
-                      {isEditAll ? (
-                        <>
-                          <Glyphicon
-                            className={"margin-right-1"}
-                            glyph="glyphicon glyphicon-ok"
-                            onClick={multipleUpdate}
+                    {isAllowed(
+                      localStorage.getItem("userProfile"),
+                      pages.edit_iad_advanced_customized_tags
+                    ) && (
+                      <>
+                        <th style={{ width: "14%" }}>
+                          <FormattedMessage
+                            id="allIADs"
+                            defaultMessage="All IADs"
                           />
+                        </th>
+                        <th style={{ width: "8%" }}>
+                          {isEditAll ? (
+                            <>
+                              <Glyphicon
+                                className={"margin-right-1"}
+                                glyph="glyphicon glyphicon-ok"
+                                onClick={multipleUpdate}
+                              />
+                              <Glyphicon
+                                glyph="glyphicon glyphicon-ban-circle"
+                                onClick={() => multipleEdit(false)}
+                              />
+                            </>
+                          ) : (
+                            <Glyphicon
+                              glyph="glyphicon glyphicon-pencil"
+                              onClick={() => multipleEdit(true)}
+                            />
+                          )}
+                        </th>
+                        <th style={{ width: "8%" }}>
                           <Glyphicon
-                            glyph="glyphicon glyphicon-ban-circle"
-                            onClick={() => multipleEdit(false)}
+                            glyph="glyphicon glyphicon-remove"
+                            onClick={handleOpenMultipleDeleteWindow}
                           />
-                        </>
-                      ) : (
-                        <Glyphicon
-                          glyph="glyphicon glyphicon-pencil"
-                          onClick={() => multipleEdit(true)}
-                        />
-                      )}
-                    </th>
-                    <th style={{ width: "8%" }}>
-                      <Glyphicon glyph="glyphicon glyphicon-remove" />{" "}
-                    </th>
+                        </th>
+                      </>
+                    )}
                   </tr>
                 </thead>
                 <tbody>
@@ -363,6 +417,7 @@ const SpecialCustomizedTagsTable = (props) => {
                       editValue={editValue}
                       setAllIADs={setAllIADs}
                       handleDelete={handleOpenDeleteWindow}
+                      rebootCallBack={rebootCallBack}
                     />
                   ))}
                 </tbody>
@@ -393,6 +448,7 @@ const SpecialCustomizedTagsTable = (props) => {
         <AddTagModal
           isOpen={isOpenAddModal}
           handleClose={handleCloseAddModal}
+          rebootCallBack={rebootCallBack}
         />
       )}
       {showDeleteWindow && (
@@ -400,6 +456,14 @@ const SpecialCustomizedTagsTable = (props) => {
           show={showDeleteWindow}
           onClose={handleCloseDeleteWindow}
           tagName={deleteValue}
+          rebootCallBack={rebootCallBack}
+        />
+      )}
+      {showRebootWindow && (
+        <RebootWindow
+          show={showRebootWindow}
+          onClose={handleCloseRebootWindow}
+          iads={rebootIads}
         />
       )}
     </React.Fragment>

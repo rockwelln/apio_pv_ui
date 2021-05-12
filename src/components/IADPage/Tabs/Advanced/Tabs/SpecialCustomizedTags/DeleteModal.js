@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import Modal from "react-bootstrap/lib/Modal";
 import Alert from "react-bootstrap/lib/Alert";
@@ -21,6 +21,7 @@ const DeleteModal = (props) => {
     match: {
       params: { tenantId, groupId, iadId },
     },
+    rebootCallBack,
   } = props;
   const dispatch = useDispatch();
   const [deleting, setDeleting] = useState(false);
@@ -34,6 +35,7 @@ const DeleteModal = (props) => {
     const callback = () => {
       setDeleting(false);
       onClose();
+      rebootCallBack(allIADs, tagName);
     };
     const errorCallback = () => {
       setDeleting(false);
@@ -49,6 +51,32 @@ const DeleteModal = (props) => {
         errorCallback
       )
     );
+  };
+
+  const multipleDelete = () => {
+    setDeleting(true);
+    const data = {
+      allIADs,
+    };
+    let requestArray = [];
+
+    tagName.forEach((name) => {
+      requestArray.push(
+        dispatch(
+          fetchDeleteSpecialCustomTags(tenantId, groupId, iadId, name, data)
+        )
+      );
+    });
+
+    Promise.all(requestArray).then((res) => {
+      if (res.every((el) => el === "success")) {
+        rebootCallBack(allIADs, iadId);
+        setDeleting(false);
+        onClose();
+      } else {
+        setDeleting(false);
+      }
+    });
   };
 
   return (
@@ -86,12 +114,20 @@ const DeleteModal = (props) => {
         <p>
           <FormattedMessage
             id="confirm-delete-warning"
-            defaultMessage={`You are about to delete the special customized tag ${tagName}!`}
+            defaultMessage={`You are about to delete the ${
+              Array.isArray(tagName) && "ALL"
+            } special customized tag${
+              Array.isArray(tagName) ? "s" : ` ${tagName}`
+            }!`}
           />
         </p>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={onDelete} bsStyle="danger" disabled={deleting}>
+        <Button
+          onClick={Array.isArray(tagName) ? multipleDelete : onDelete}
+          bsStyle="danger"
+          disabled={deleting}
+        >
           <FormattedMessage id="delete" defaultMessage="Delete" />
         </Button>
         <Button disabled={deleting} onClick={onClose}>

@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { withRouter } from "react-router";
 
-import { Link } from "react-router-dom";
-import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import FormControl from "react-bootstrap/lib/FormControl";
 import Checkbox from "react-bootstrap/lib/Checkbox";
 
 import { fetchPutUpdateIADCustomTag } from "../../../../../../store/actions";
-//import DeleteModal from "./DeleteModal";
 
 import { isAllowed, pages } from "../../../../../../utils/user";
 
@@ -24,6 +21,7 @@ const SpecialCustomizedTagsTable = (props) => {
     editValue,
     setAllIADs,
     handleDelete,
+    rebootCallBack,
   } = props;
   const [isUpdating, setIsUpdating] = useState(false);
   const dispatch = useDispatch();
@@ -40,6 +38,7 @@ const SpecialCustomizedTagsTable = (props) => {
     const callback = () => {
       setIsUpdating(false);
       singleEdit(tag.name, false);
+      rebootCallBack(tag.allIADs, iadId);
     };
     const errorCallback = () => {
       setIsUpdating(false);
@@ -84,40 +83,47 @@ const SpecialCustomizedTagsTable = (props) => {
       ) : (
         <td style={{ verticalAlign: "middle" }}>{tag.value}</td>
       )}
-      <td style={{ verticalAlign: "middle" }}>
-        <Checkbox
-          checked={tag.allIADs}
-          disabled={!isEditAll && !tag.isEdit}
-          onChange={(e) => setAllIADs(tag.name, e.target.checked)}
-        />
-      </td>
-      {tag.isEdit ? (
-        <td style={{ verticalAlign: "middle" }}>
-          <Glyphicon
-            className={`margin-right-1 ${isUpdating ? "opacity-50" : ""}`}
-            glyph="glyphicon glyphicon-ok"
-            onClick={handleUpdate}
-          />
-          <Glyphicon
-            className={isUpdating ? "opacity-50" : ""}
-            glyph="glyphicon glyphicon-ban-circle"
-            onClick={() => handleCancel(tag.name)}
-          />
-        </td>
-      ) : (
-        <td style={{ verticalAlign: "middle" }}>
-          <Glyphicon
-            glyph="glyphicon glyphicon-pencil"
-            onClick={() => !isEditAll && singleEdit(tag.name, true)}
-          />
-        </td>
+      {isAllowed(
+        localStorage.getItem("userProfile"),
+        pages.edit_iad_advanced_customized_tags
+      ) && (
+        <>
+          <td style={{ verticalAlign: "middle" }}>
+            <Checkbox
+              checked={tag.allIADs}
+              disabled={!isEditAll && !tag.isEdit}
+              onChange={(e) => setAllIADs(tag.name, e.target.checked)}
+            />
+          </td>
+          {!isEditAll && tag.isEdit ? (
+            <td style={{ verticalAlign: "middle" }}>
+              <Glyphicon
+                className={`margin-right-1 ${isUpdating ? "opacity-50" : ""}`}
+                glyph="glyphicon glyphicon-ok"
+                onClick={handleUpdate}
+              />
+              <Glyphicon
+                className={isUpdating ? "opacity-50" : ""}
+                glyph="glyphicon glyphicon-ban-circle"
+                onClick={() => handleCancel(tag.name)}
+              />
+            </td>
+          ) : (
+            <td style={{ verticalAlign: "middle" }}>
+              <Glyphicon
+                glyph="glyphicon glyphicon-pencil"
+                onClick={() => !isEditAll && singleEdit(tag.name, true)}
+              />
+            </td>
+          )}
+          <td style={{ verticalAlign: "middle" }}>
+            <Glyphicon
+              glyph="glyphicon glyphicon-remove"
+              onClick={() => handleDelete(tag.name)}
+            />
+          </td>
+        </>
       )}
-      <td style={{ verticalAlign: "middle" }}>
-        <Glyphicon
-          glyph="glyphicon glyphicon-remove"
-          onClick={() => handleDelete(tag.name)}
-        />
-      </td>
     </tr>
   );
 };

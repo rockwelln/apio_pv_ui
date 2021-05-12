@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { withRouter } from "react-router";
 
-import { Link } from "react-router-dom";
 import Button from "react-bootstrap/lib/Button";
 import Modal from "react-bootstrap/lib/Modal";
 import FormControl from "react-bootstrap/lib/FormControl";
@@ -11,12 +10,9 @@ import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import Checkbox from "react-bootstrap/lib/Checkbox";
 
-import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import { FormattedMessage } from "react-intl";
 
 import { fetchPostAddIADSpecialCustomTags } from "../../../../../../store/actions";
-
-import { isAllowed, pages } from "../../../../../../utils/user";
 
 const addTagModal = (props) => {
   const {
@@ -25,6 +21,7 @@ const addTagModal = (props) => {
     match: {
       params: { tenantId, groupId, iadId },
     },
+    rebootCallBack,
   } = props;
 
   const [name, setName] = useState("");
@@ -44,6 +41,11 @@ const addTagModal = (props) => {
       setCreating(false);
       setButtonName("Create");
       handleClose();
+      rebootCallBack(allIADs, iadId);
+    };
+    const errorCallback = () => {
+      setCreating(false);
+      setButtonName("Create");
     };
     const data = {
       name: startName + name + endName,
@@ -51,7 +53,14 @@ const addTagModal = (props) => {
       allIADs,
     };
     dispatch(
-      fetchPostAddIADSpecialCustomTags(tenantId, groupId, iadId, data, callBack)
+      fetchPostAddIADSpecialCustomTags(
+        tenantId,
+        groupId,
+        iadId,
+        data,
+        callBack,
+        errorCallback
+      )
     );
   };
 
