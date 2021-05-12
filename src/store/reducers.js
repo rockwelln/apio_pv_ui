@@ -39,6 +39,7 @@ const initialState = {
   transferedIADs: [],
   validationGroup: {},
   validationGroupError: "",
+  iadSpecialCustomTags: [],
 };
 
 function mainReducer(state = initialState, action) {
@@ -418,6 +419,13 @@ function mainReducer(state = initialState, action) {
         validationGroupError: action.data.errors[0].details.reason,
       };
     }
+    case actionType.GET_IAD_SPECIAL_CUSTOM_TAGS: {
+      return {
+        ...state,
+        iadSpecialCustomTagsComment: action.data.comment,
+        iadSpecialCustomTags: action.data.customTags,
+      };
+    }
     case actionType.POST_CREATE_IAD: {
       return {
         ...state,
@@ -468,6 +476,11 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         createdReconciliationTeam: action.data,
+      };
+    }
+    case actionType.POST_ADD_IAD_SPECIAL_CUSTOM_TAGS: {
+      return {
+        ...state,
       };
     }
     case actionType.PUT_UPDATE_IAD: {
@@ -598,6 +611,16 @@ function mainReducer(state = initialState, action) {
         anomaly: action.data,
       };
     }
+    case actionType.PUT_UPDATE_IAD_CUSTOM_TAGS_COMMENT: {
+      return {
+        ...state,
+      };
+    }
+    case actionType.PUT_UPDATE_IAD_CUSTOM_TAG: {
+      return {
+        ...state,
+      };
+    }
     case actionType.DELETE_TENANT: {
       return {
         ...state,
@@ -624,6 +647,11 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.DELETE_ANOMALY: {
+      return {
+        ...state,
+      };
+    }
+    case actionType.DELETE_SPECIAL_CUSTOM_TAG: {
       return {
         ...state,
       };
