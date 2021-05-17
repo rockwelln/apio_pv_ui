@@ -13,11 +13,11 @@ import { fetchPostCreateTenant, clearCreatedTenant } from "../../store/actions";
 import { removeEmpty } from "../remuveEmptyInObject";
 import { FormattedMessage } from "react-intl";
 
-const AddEntreprises = props => {
+const AddEntreprises = (props) => {
   const [entrerpriseName, setEntrerpriseName] = useState("");
   const [tinaId, setTinaId] = useState("");
   const [buttonName, setButtonName] = useState("Create");
-  const createdTenant = useSelector(state => state.createdTenant);
+  const createdTenant = useSelector((state) => state.createdTenant);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const AddEntreprises = props => {
   const addEntreprise = () => {
     const data = {
       name: entrerpriseName,
-      tina_id: tinaId
+      tina_id: tinaId,
     };
     const clearData = removeEmpty(data);
     setButtonName("Creating...");
@@ -100,7 +100,7 @@ const AddEntreprises = props => {
                   type="text"
                   value={entrerpriseName}
                   placeholder={"Customer name"}
-                  onChange={e => setEntrerpriseName(e.target.value)}
+                  onChange={(e) => setEntrerpriseName(e.target.value)}
                 />
               </div>
             </Col>
@@ -119,7 +119,7 @@ const AddEntreprises = props => {
                   type="text"
                   value={tinaId}
                   placeholder={"Customer ID"}
-                  onChange={e => setTinaId(e.target.value)}
+                  onChange={(e) => setTinaId(e.target.value)}
                 />
               </div>
             </Col>

@@ -25,7 +25,7 @@ import {
   fetchPutUpdateGroupDetails,
   fetchGetIADs,
   fetchGetValidateGroupUpdate,
-  clearValidationGroup
+  clearValidationGroup,
 } from "../../../../store/actions";
 
 export class Product extends Component {
@@ -35,7 +35,7 @@ export class Product extends Component {
     disableButton: false,
     seviceTypeError: null,
     textSerivceTypeError: "",
-    updatingButton: false
+    updatingButton: false,
   };
 
   fetchReq = () => {
@@ -60,13 +60,13 @@ export class Product extends Component {
                 serviceType:
                   this.state.group.serviceType ||
                   this.props.config.tenant.group.serviceType[0].value,
-                np1Redundancy: this.state.group.np1Redundancy || false
+                np1Redundancy: this.state.group.np1Redundancy || false,
               },
               isRedundant: ~this.props.config.tenant.group.iad[
                 "2EDUsForServiceTypes"
               ].indexOf(this.state.group.serviceType)
                 ? "redundant"
-                : "nonRedundant"
+                : "nonRedundant",
             })
           )
         )
@@ -103,7 +103,7 @@ export class Product extends Component {
               >
                 {this.props.validationGroupError
                   ? this.props.validationGroupError
-                  : this.props.validationGroup.warnings.map(el => (
+                  : this.props.validationGroup.warnings.map((el) => (
                       <p key={el}>{el}</p>
                     ))}
                 <div className="button-row">
@@ -128,12 +128,12 @@ export class Product extends Component {
               <FormControl
                 componentClass="select"
                 value={this.state.group.pbxType}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
                     group: {
                       ...this.state.group,
-                      pbxType: e.target.value
-                    }
+                      pbxType: e.target.value,
+                    },
                   })
                 }
                 disabled
@@ -161,12 +161,12 @@ export class Product extends Component {
               <FormControl
                 componentClass="select"
                 value={this.state.group.accessType}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
                     group: {
                       ...this.state.group,
-                      accessType: e.target.value
-                    }
+                      accessType: e.target.value,
+                    },
                   })
                 }
                 disabled
@@ -180,79 +180,117 @@ export class Product extends Component {
             </div>
           </Col>
         </Row>
-        <FormGroup
-          controlId="channelIn"
-          validationState={this.state.seviceTypeError}
-        >
-          <Row className={"margin-top-1"}>
-            <Col md={12} className={"flex align-items-center"}>
-              <div className={"margin-right-1 flex flex-basis-16"}>
-                <ControlLabel>
-                  <FormattedMessage
-                    id="serviceType"
-                    defaultMessage="Service Type"
-                  />
-                </ControlLabel>
-              </div>
-              <div className={"margin-right-1 flex-basis-33"}>
-                <FormControl
-                  componentClass="select"
-                  value={this.state.group.serviceType}
-                  onChange={this.updateServiceType}
-                  disabled={
-                    (get(this.props, "validationGroup.warnings") &&
-                      !!this.props.validationGroup.warnings.length) ||
-                    this.props.validationGroupError ||
-                    !isAllowed(
-                      localStorage.getItem("userProfile"),
-                      pages.edit_group_product_service_type
-                    )
-                  }
-                >
-                  {this.props.config.tenant.group.serviceType.map((el, i) => (
-                    <option key={i} value={el.value}>
-                      {el.label}
-                    </option>
-                  ))}
-                </FormControl>
-              </div>
-            </Col>
-          </Row>
-          {this.state.seviceTypeError && (
+        {this.props.group.accessType !== "COAX" &&
+          this.props.group.accessType !== "VDSL" && (
+            <FormGroup
+              controlId="channelIn"
+              validationState={this.state.seviceTypeError}
+            >
+              <Row className={"margin-top-1"}>
+                <Col md={12} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex flex-basis-16"}>
+                    <ControlLabel>
+                      <FormattedMessage
+                        id="serviceType"
+                        defaultMessage="Service Type"
+                      />
+                    </ControlLabel>
+                  </div>
+                  <div className={"margin-right-1 flex-basis-33"}>
+                    <FormControl
+                      componentClass="select"
+                      value={this.state.group.serviceType}
+                      onChange={this.updateServiceType}
+                      disabled={
+                        (get(this.props, "validationGroup.warnings") &&
+                          !!this.props.validationGroup.warnings.length) ||
+                        this.props.validationGroupError ||
+                        !isAllowed(
+                          localStorage.getItem("userProfile"),
+                          pages.edit_group_product_service_type
+                        )
+                      }
+                    >
+                      {this.props.config.tenant.group.serviceType.map(
+                        (el, i) => (
+                          <option key={i} value={el.value}>
+                            {el.label}
+                          </option>
+                        )
+                      )}
+                    </FormControl>
+                  </div>
+                </Col>
+              </Row>
+              {this.state.seviceTypeError && (
+                <Row className={"margin-top-1"}>
+                  <Col md={12} className={"flex align-items-center"}>
+                    <div className={"margin-right-1 flex flex-basis-16"}></div>
+                    <div className={"margin-right-1 flex-basis-33"}>
+                      <HelpBlock>{this.state.textSerivceTypeError}</HelpBlock>
+                    </div>
+                  </Col>
+                </Row>
+              )}
+            </FormGroup>
+          )}
+        {this.props.group.accessType !== "COAX" &&
+          this.props.group.accessType !== "VDSL" &&
+          (this.state.group.pbxType === "SIP" ||
+            this.state.group.pbxType === "SIP_PRA") && (
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}></div>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  <ControlLabel>
+                    <FormattedMessage
+                      id="np1Redundancy"
+                      defaultMessage="N+1 Redundancy"
+                    />
+                  </ControlLabel>
+                </div>
                 <div className={"margin-right-1 flex-basis-33"}>
-                  <HelpBlock>{this.state.textSerivceTypeError}</HelpBlock>
+                  <Checkbox
+                    defaultChecked={this.state.group.np1Redundancy}
+                    onChange={(e) => {
+                      this.setState({
+                        group: {
+                          ...this.state.group,
+                          np1Redundancy: e.target.checked,
+                        },
+                      });
+                    }}
+                    disabled
+                  />
                 </div>
               </Col>
             </Row>
           )}
-        </FormGroup>
-        {(this.state.group.pbxType === "SIP" ||
-          this.state.group.pbxType === "SIP_PRA") && (
+        {(this.props.group.accessType === "COAX" ||
+          this.props.group.accessType === "VDSL") && (
           <Row className={"margin-top-1"}>
             <Col md={12} className={"flex align-items-center"}>
               <div className={"margin-right-1 flex flex-basis-16"}>
                 <ControlLabel>
-                  <FormattedMessage
-                    id="np1Redundancy"
-                    defaultMessage="N+1 Redundancy"
-                  />
+                  {this.props.group.accessType === "COAX" && (
+                    <FormattedMessage
+                      id="VLAN_UUID"
+                      defaultMessage="VLAN UUID"
+                    />
+                  )}
+                  {this.props.group.accessType === "VDSL" && (
+                    <FormattedMessage
+                      id="SPEC CFS ID"
+                      defaultMessage="SPEC CFS ID"
+                    />
+                  )}
                 </ControlLabel>
               </div>
               <div className={"margin-right-1 flex-basis-33"}>
-                <Checkbox
-                  defaultChecked={this.state.group.np1Redundancy}
-                  onChange={e => {
-                    this.setState({
-                      group: {
-                        ...this.state.group,
-                        np1Redundancy: e.target.checked
-                      }
-                    });
-                  }}
+                <FormControl
+                  type="text"
+                  placeholder={"ID"}
                   disabled
+                  value={this.props.group.networkIdentifier}
                 />
               </div>
             </Col>
@@ -270,9 +308,9 @@ export class Product extends Component {
                   className={"btn-primary"}
                   disabled={
                     this.state.disableButton ||
-                    ((get(this.props, "validationGroup.warnings") &&
+                    (get(this.props, "validationGroup.warnings") &&
                       !!this.props.validationGroup.warnings.length) ||
-                      this.props.validationGroupError) ||
+                    this.props.validationGroupError ||
                     this.state.updatingButton
                   }
                 >
@@ -301,7 +339,7 @@ export class Product extends Component {
     this.props.clearValidationGroup();
   };
 
-  updateServiceType = e => {
+  updateServiceType = (e) => {
     const targetValue = e.target.value;
     this.setState({ disableButton: true }, () =>
       this.props
@@ -316,10 +354,10 @@ export class Product extends Component {
     this.setState({
       group: {
         ...this.state.group,
-        serviceType: targetValue
+        serviceType: targetValue,
       },
       seviceTypeError: null,
-      textSerivceTypeError: ""
+      textSerivceTypeError: "",
     });
   };
 
@@ -328,12 +366,12 @@ export class Product extends Component {
       pbxType,
       accessType,
       serviceType,
-      np1Redundancy
+      np1Redundancy,
     } = this.state.group;
     const data = {
       //pbxType,
       //accessType,
-      serviceType
+      serviceType,
       //np1Redundancy
     };
     const clearData = removeEmpty(data);
@@ -355,11 +393,11 @@ export class Product extends Component {
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   group: state.group,
   config: state.config,
   validationGroup: state.validationGroup,
-  validationGroupError: state.validationGroupError
+  validationGroupError: state.validationGroupError,
 });
 
 const mapDispatchToProps = {
@@ -368,12 +406,9 @@ const mapDispatchToProps = {
   fetchPutUpdateGroupDetails,
   fetchGetIADs,
   fetchGetValidateGroupUpdate,
-  clearValidationGroup
+  clearValidationGroup,
 };
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Product)
+  connect(mapStateToProps, mapDispatchToProps)(Product)
 );

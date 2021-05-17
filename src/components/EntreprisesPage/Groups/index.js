@@ -30,7 +30,7 @@ export class GroupsTab extends Component {
     countPerPage: 25,
     page: 0,
     pagination: true,
-    countPages: null
+    countPages: null,
   };
 
   fetchReq() {
@@ -45,7 +45,7 @@ export class GroupsTab extends Component {
               return 0;
             }),
             isLoading: false,
-            sortedBy: "id"
+            sortedBy: "id",
           },
           () => this.pagination()
         )
@@ -68,7 +68,7 @@ export class GroupsTab extends Component {
       countPerPage,
       pagination,
       paginationGroups,
-      page
+      page,
     } = this.state;
 
     if (isLoading && pagination) {
@@ -87,15 +87,15 @@ export class GroupsTab extends Component {
                 id="search_placeholder"
                 defaultMessage="Site ID or Name or Tina Product ID"
               >
-                {placeholder => (
+                {(placeholder) => (
                   <FormControl
                     type="text"
                     value={this.state.searchValue}
                     placeholder={placeholder}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState(
                         {
-                          searchValue: e.target.value
+                          searchValue: e.target.value,
                         },
                         () => this.filterBySearchValue()
                       )
@@ -132,7 +132,7 @@ export class GroupsTab extends Component {
                 className={"margin-left-1"}
                 onChange={this.changeCoutOnPage}
               >
-                {countsPerPages.map(counts => (
+                {countsPerPages.map((counts) => (
                   <option key={counts.value} value={counts.value}>
                     {counts.title}
                   </option>
@@ -169,10 +169,7 @@ export class GroupsTab extends Component {
                         />
                       </th>
                       <th>
-                        <FormattedMessage
-                          id="name"
-                          defaultMessage="Site name"
-                        />
+                        <FormattedMessage id="name" defaultMessage="Name" />
                         <Glyphicon
                           glyph="glyphicon glyphicon-sort"
                           onClick={this.sortByName}
@@ -218,20 +215,27 @@ export class GroupsTab extends Component {
                           onClick={this.sortByNumberOfChannels}
                         />
                       </th>
+                      <th>
+                        <FormattedMessage
+                          id="networkIdentifier"
+                          defaultMessage="Network Identifier"
+                        />
+                        <Glyphicon
+                          glyph="glyphicon glyphicon-sort"
+                          onClick={this.sortByNetworkIdentifier}
+                        />
+                      </th>
                       <th />
                     </tr>
                   </thead>
                   <tbody>
-                    {paginationGroups[page].map(group => (
+                    {paginationGroups[page].map((group) => (
                       <Group
                         key={group.groupId}
                         group={group}
                         onReload={() => this.fetchReq()}
                       />
                     ))}
-                    {/* {this.state.fakeGroups.map(group => (
-                      <Group key={group.groupId} group={group} />
-                    ))} */}
                   </tbody>
                 </Table>
               </Col>
@@ -260,7 +264,7 @@ export class GroupsTab extends Component {
     );
   }
 
-  changeCoutOnPage = e => {
+  changeCoutOnPage = (e) => {
     this.setState({ countPerPage: Number(e.target.value), page: 0 }, () =>
       this.pagination()
     );
@@ -302,7 +306,7 @@ export class GroupsTab extends Component {
       paginationGroups: paginationItems,
       pagination: false,
       countPages,
-      page: this.state.page
+      page: this.state.page,
     });
   };
 
@@ -310,12 +314,12 @@ export class GroupsTab extends Component {
     const { searchValue } = this.state;
     const SearchArray = this.props.groups
       .filter(
-        group =>
+        (group) =>
           group.groupId.toLowerCase().includes(searchValue.toLowerCase()) ||
           group.groupName.toLowerCase().includes(searchValue.toLowerCase()) ||
           group.groupTpid.toLowerCase().includes(searchValue.toLowerCase())
       )
-      .map(group => group);
+      .map((group) => group);
     this.setState({ groups: SearchArray }, () => this.pagination());
   };
 
@@ -438,19 +442,34 @@ export class GroupsTab extends Component {
       );
     }
   };
+
+  sortByNetworkIdentifier = () => {
+    const { groups, sortedBy } = this.state;
+    if (sortedBy === "networkIdentifier") {
+      const groupsSorted = groups.reverse();
+      this.setState({ groups: groupsSorted }, () => this.pagination());
+    } else {
+      const groupsSorted = groups.sort((a, b) => {
+        if (a.networkIdentifier < b.networkIdentifier) return -1;
+        if (a.networkIdentifier > b.networkIdentifier) return 1;
+        return 0;
+      });
+      this.setState(
+        { groups: groupsSorted, sortedBy: "networkIdentifier" },
+        () => this.pagination()
+      );
+    }
+  };
 }
 
-const mapStateToProps = state => ({
-  groups: state.groups
+const mapStateToProps = (state) => ({
+  groups: state.groups,
 });
 
 const mapDispatchToProps = {
-  fetchGetGroupsByTenantId
+  fetchGetGroupsByTenantId,
 };
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(GroupsTab)
+  connect(mapStateToProps, mapDispatchToProps)(GroupsTab)
 );

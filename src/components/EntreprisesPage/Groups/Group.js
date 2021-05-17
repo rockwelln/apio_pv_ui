@@ -29,25 +29,30 @@ class Group extends Component {
         <td>{group.accessType ? group.accessType : "-"}</td>
         <td>{group.virtual ? "Yes" : "No"}</td>
         <td>{group.numberOfChannels ? group.numberOfChannels : "-"}</td>
-        {isAllowed(localStorage.getItem("userProfile"), pages.delete_group) && (
-          <td>
-            <ButtonToolbar>
-              <Glyphicon
-                glyph="glyphicon glyphicon-remove"
-                onClick={() => this.setState({ showDelete: true })}
+        <td>{group.networkIdentifier ? group.networkIdentifier : "-"}</td>
+        {!(group.accessType === "COAX" || group.accessType === "VDSL") &&
+          isAllowed(
+            localStorage.getItem("userProfile"),
+            pages.delete_group
+          ) && (
+            <td>
+              <ButtonToolbar>
+                <Glyphicon
+                  glyph="glyphicon glyphicon-remove"
+                  onClick={() => this.setState({ showDelete: true })}
+                />
+              </ButtonToolbar>
+              <DeleteModal
+                groupId={group.groupId}
+                show={showDelete}
+                onClose={(e) => {
+                  onReload && onReload();
+                  this.setState({ showDelete: false });
+                }}
+                {...this.props}
               />
-            </ButtonToolbar>
-            <DeleteModal
-              groupId={group.groupId}
-              show={showDelete}
-              onClose={e => {
-                onReload && onReload();
-                this.setState({ showDelete: false });
-              }}
-              {...this.props}
-            />
-          </td>
-        )}
+            </td>
+          )}
       </tr>
     );
   }

@@ -16,7 +16,7 @@ import { isAllowed, pages } from "../../../../../utils/user";
 
 import {
   changeObjectIAD,
-  fetchPutUpdateIAD
+  fetchPutUpdateIAD,
 } from "../../../../../store/actions";
 import { removeEmpty } from "../../../../remuveEmptyInObject";
 import RebootWindow from "../../../RebootWindow";
@@ -26,7 +26,7 @@ export class Options extends Component {
     advanced: {},
     disabledButton: false,
     showRebootDialog: false,
-    data: {}
+    data: {},
   };
   componentDidMount() {
     this.setState({
@@ -36,12 +36,16 @@ export class Options extends Component {
             dual_power: this.props.iad.advanced.dual_power,
             isdnTerminationSide: this.props.iad.advanced.isdnTerminationSide,
             sysLogEnabled: this.props.iad.advanced.sysLogEnabled,
-            sysLogIp: this.props.iad.advanced.sysLogIp
+            sysLogIp: this.props.iad.advanced.sysLogIp,
           }
-        : {}
+        : {},
     });
   }
   render() {
+    const iadType = this.props.config.tenant.group.iad.iadType.filter(
+      (el) => el.value === this.props.iad.iadType
+    );
+
     return (
       <React.Fragment>
         {this.props.iad.protocolMode !== "SIP" && (
@@ -70,27 +74,34 @@ export class Options extends Component {
             </Col>
           </Row>
         )}
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage id="dualPower" defaultMessage="Dual Power" />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex-basis-33"}>
-              <Checkbox
-                checked={this.state.advanced.dual_power}
-                onChange={this.changeDualPower}
-                disabled={
-                  !isAllowed(
-                    localStorage.getItem("userProfile"),
-                    pages.edit_iad_advanced_options
-                  ) || this.props.iad.virtual
-                }
-              />
-            </div>
-          </Col>
-        </Row>
+        {this.props.config.tenant.group.iad.iadTypeOptions.dualPower[
+          this.props.iad.iadType
+        ] && (
+          <Row className={"margin-top-1"}>
+            <Col md={12} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-16"}>
+                <ControlLabel>
+                  <FormattedMessage
+                    id="dualPower"
+                    defaultMessage="Dual Power"
+                  />
+                </ControlLabel>
+              </div>
+              <div className={"margin-right-1 flex-basis-33"}>
+                <Checkbox
+                  checked={this.state.advanced.dual_power}
+                  onChange={this.changeDualPower}
+                  disabled={
+                    !isAllowed(
+                      localStorage.getItem("userProfile"),
+                      pages.edit_iad_advanced_options
+                    ) || this.props.iad.virtual
+                  }
+                />
+              </div>
+            </Col>
+          </Row>
+        )}
         {(this.props.iad.protocolMode === "PRA" ||
           this.props.iad.protocolMode === "PRA_SIP" ||
           this.props.iad.protocolMode === "SIP_PRA") && (
@@ -236,7 +247,7 @@ export class Options extends Component {
       dual_power: this.props.iad.advanced.dual_power,
       isdnTerminationSide: this.props.iad.advanced.isdnTerminationSide,
       sysLogEnabled: this.props.iad.advanced.sysLogEnabled,
-      sysLogIp: this.props.iad.advanced.sysLogIp
+      sysLogIp: this.props.iad.advanced.sysLogIp,
     };
 
     if (
@@ -269,12 +280,12 @@ export class Options extends Component {
     // }
   };
 
-  changeIsdnTerminationSide = e => {
+  changeIsdnTerminationSide = (e) => {
     this.setState({
       advanced: {
         ...this.state.advanced,
-        isdnTerminationSide: e.target.value
-      }
+        isdnTerminationSide: e.target.value,
+      },
     });
     this.props.changeObjectIAD(
       "advanced",
@@ -283,57 +294,54 @@ export class Options extends Component {
     );
   };
 
-  changeDualPower = e => {
+  changeDualPower = (e) => {
     this.setState({
       advanced: {
         ...this.state.advanced,
-        dual_power: e.target.checked
-      }
+        dual_power: e.target.checked,
+      },
     });
     this.props.changeObjectIAD("advanced", "dual_power", e.target.checked);
   };
 
-  changeSysLogEnabled = e => {
+  changeSysLogEnabled = (e) => {
     this.setState({
       advanced: {
         ...this.state.advanced,
-        sysLogEnabled: e.target.checked
-      }
+        sysLogEnabled: e.target.checked,
+      },
     });
     this.props.changeObjectIAD("advanced", "sysLogEnabled", e.target.checked);
   };
 
-  changeSysLogIp = e => {
+  changeSysLogIp = (e) => {
     this.setState({
       advanced: {
         ...this.state.advanced,
-        sysLogIp: e.target.value
-      }
+        sysLogIp: e.target.value,
+      },
     });
     this.props.changeObjectIAD("advanced", "sysLogIp", e.target.value);
   };
 
-  changeClockMaster = e => {
+  changeClockMaster = (e) => {
     this.setState({
       advanced: {
         ...this.state.advanced,
-        clock_master: e.target.checked
-      }
+        clock_master: e.target.checked,
+      },
     });
     this.props.changeObjectIAD("advanced", "clock_master", e.target.checked);
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   iad: state.iad,
-  config: state.config
+  config: state.config,
 });
 
 const mapDispatchToProps = { changeObjectIAD, fetchPutUpdateIAD };
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Options)
+  connect(mapStateToProps, mapDispatchToProps)(Options)
 );

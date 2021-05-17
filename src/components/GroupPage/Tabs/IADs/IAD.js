@@ -16,16 +16,21 @@ class IAD extends Component {
   state = { showDelete: false, timers: [] };
 
   componentDidMount() {
-    this.props.fetchGetTimerForIAD(this.props.iad.iadId).then(data =>
+    this.props.fetchGetTimerForIAD(this.props.iad.iadId).then((data) =>
       this.setState({
-        timers: data.timers.filter(timer => timer.status === "WAIT")
+        timers: data.timers.filter((timer) => timer.status === "WAIT"),
       })
     );
   }
 
   render() {
-    const { onReload, iad } = this.props;
+    const { onReload, iad, group } = this.props;
     const { showDelete } = this.state;
+
+    const showDeleteButton = !(
+      group.accessType === "COAX" || group.accessType === "VDSL"
+    );
+
     return (
       <tr>
         <td>
@@ -39,51 +44,48 @@ class IAD extends Component {
         <td>{iad.macAddress}</td>
         {this.state.timers.length ? (
           <td>
-            {this.state.timers.map(timer => (
+            {this.state.timers.map((timer) => (
               <p key={timer.id}>{timer.at}</p>
             ))}
           </td>
         ) : (
           <td>-</td>
         )}
-        {isAllowed(localStorage.getItem("userProfile"), pages.delete_iad) && (
-          <td>
-            <ButtonToolbar>
-              <Glyphicon
-                glyph="glyphicon glyphicon-remove"
-                onClick={() => this.setState({ showDelete: true })}
+        {isAllowed(localStorage.getItem("userProfile"), pages.delete_iad) &&
+          showDeleteButton && (
+            <td>
+              <ButtonToolbar>
+                <Glyphicon
+                  glyph="glyphicon glyphicon-remove"
+                  onClick={() => this.setState({ showDelete: true })}
+                />
+              </ButtonToolbar>
+              <DeleteModal
+                notifications={this.props.notifications}
+                iadId={iad.iadId}
+                tenantId={this.props.match.params.tenantId}
+                groupId={this.props.match.params.groupId}
+                show={showDelete}
+                onClose={(e) => {
+                  onReload && onReload();
+                  this.setState({ showDelete: false });
+                }}
+                {...this.props}
               />
-            </ButtonToolbar>
-            <DeleteModal
-              notifications={this.props.notifications}
-              iadId={iad.iadId}
-              tenantId={this.props.match.params.tenantId}
-              groupId={this.props.match.params.groupId}
-              show={showDelete}
-              onClose={e => {
-                onReload && onReload();
-                this.setState({ showDelete: false });
-              }}
-              {...this.props}
-            />
-          </td>
-        )}
+            </td>
+          )}
       </tr>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  iadTimer: state.iadTimer
+const mapStateToProps = (state) => ({
+  iadTimer: state.iadTimer,
+  group: state.group,
 });
 
 const mapDispatchToProps = {
-  fetchGetTimerForIAD
+  fetchGetTimerForIAD,
 };
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(IAD)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(IAD));

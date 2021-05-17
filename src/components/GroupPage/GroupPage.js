@@ -24,14 +24,12 @@ import Product from "./Tabs/Product";
 import { isAllowed, pages } from "../../utils/user";
 
 class TenantPage extends Component {
-  tabsIdSuffix = Math.random()
-    .toString(36)
-    .replace(".", "");
+  tabsIdSuffix = Math.random().toString(36).replace(".", "");
 
   state = {
     isLoadingTenant: true,
     isLoadingGroup: true,
-    showDelete: false
+    showDelete: false,
   };
 
   fetchTennant = () => {
@@ -69,15 +67,16 @@ class TenantPage extends Component {
         <div className={"panel-heading"}>
           <p className={"header"}>
             {`Site: ${group.groupName} (${this.props.match.params.groupId}) of customer ${tenant.name} (${tenant.tenantId})`}
-            {isAllowed(
-              localStorage.getItem("userProfile"),
-              pages.delete_group
-            ) && (
-              <Glyphicon
-                glyph="glyphicon glyphicon-trash"
-                onClick={() => this.setState({ showDelete: true })}
-              />
-            )}
+            {!(group.accessType === "COAX" || group.accessType === "VDSL") &&
+              isAllowed(
+                localStorage.getItem("userProfile"),
+                pages.delete_group
+              ) && (
+                <Glyphicon
+                  glyph="glyphicon glyphicon-trash"
+                  onClick={() => this.setState({ showDelete: true })}
+                />
+              )}
             <DeleteModal
               groupId={this.props.match.params.groupId}
               show={showDelete}
@@ -98,7 +97,7 @@ class TenantPage extends Component {
                 : this.returnActiveKey()
             }
             id={`group_tabs${this.tabsIdSuffix}`}
-            onSelect={key => this.tabRouting(key)}
+            onSelect={(key) => this.tabRouting(key)}
           >
             <Tab eventKey={0} title="Product type">
               <Product />
@@ -130,7 +129,7 @@ class TenantPage extends Component {
     );
   }
 
-  tabRouting = key => {
+  tabRouting = (key) => {
     switch (key) {
       case 0:
         this.props.history.push("#productType");
@@ -180,18 +179,15 @@ class TenantPage extends Component {
 
 const mapDispatchToProps = {
   fetchGetTenantById,
-  fetchGetGroupById
+  fetchGetGroupById,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   tenant: state.tenant,
   group: state.group,
-  fetchTrunksGroupsFail: state.fetchTrunksGroupsFail
+  fetchTrunksGroupsFail: state.fetchTrunksGroupsFail,
 });
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(TenantPage)
+  connect(mapStateToProps, mapDispatchToProps)(TenantPage)
 );

@@ -20,7 +20,7 @@ import {
   fetchGetGroupById,
   fetchPostCreateIAD,
   fetchGetIADs,
-  fetchGetPhoneNumbersByGroupNotTP
+  fetchGetPhoneNumbersByGroupNotTP,
 } from "../../store/actions";
 import { removeEmpty } from "../remuveEmptyInObject";
 import { validateInputPhoneNumber } from "../validateInputPhoneNumber";
@@ -80,7 +80,7 @@ export class AddIAD extends Component {
     clock_master: true,
     dual_power: false,
     isdnTerminationSide: "Network",
-    isLoadingPN: true
+    isLoadingPN: true,
   };
   componentDidMount() {
     this.props
@@ -92,20 +92,21 @@ export class AddIAD extends Component {
         this.setState(
           {
             cliPhoneNumber: this.props.group.cliPhoneNumber,
-            isLoadingGroup: false
+            isLoadingGroup: false,
           },
           () =>
             this.props.fetchGetConfig().then(() =>
               this.setState({
                 isLoadingConfig: false,
-                iadType: this.props.config.tenant.group.iad.iadType[0].value,
+                iadType: this.props.config.tenant.group.iad.iadTypeForCreate[0]
+                  .value,
                 dtmf: this.props.config.tenant.group.iad.dtmfOverride[0].value,
                 direction: this.props.config.tenant.group.iad
                   .directionOverride[0].value,
                 secondEDU:
                   this.props.config.tenant.group.iad[
                     "2EDUsForServiceTypes"
-                  ].indexOf(this.props.group.serviceType) !== -1
+                  ].indexOf(this.props.group.serviceType) !== -1,
               })
             )
         )
@@ -132,7 +133,7 @@ export class AddIAD extends Component {
       .then(() =>
         this.setState({
           isLoadingPN: false,
-          cliPhoneNumber: this.props.phoneNumbersByGroupNotTP[0]
+          cliPhoneNumber: this.props.phoneNumbersByGroupNotTP[0],
         })
       );
   }
@@ -161,7 +162,7 @@ export class AddIAD extends Component {
       errorNetMaskV4,
       errorIpAdressV6,
       errorNetMaskV6,
-      cliPhoneNumber
+      cliPhoneNumber,
     } = this.state;
     if (
       this.state.isLoadingConfig ||
@@ -262,13 +263,15 @@ export class AddIAD extends Component {
                   <FormControl
                     componentClass="select"
                     value={this.state.iadType}
-                    onChange={e => this.setState({ iadType: e.target.value })}
+                    onChange={(e) => this.setState({ iadType: e.target.value })}
                   >
-                    {this.props.config.tenant.group.iad.iadType.map((el, i) => (
-                      <option key={i} value={el.value}>
-                        {el.label}
-                      </option>
-                    ))}
+                    {this.props.config.tenant.group.iad.iadTypeForCreate.map(
+                      (el, i) => (
+                        <option key={i} value={el.value}>
+                          {el.label}
+                        </option>
+                      )
+                    )}
                   </FormControl>
                 </div>
               </Col>
@@ -292,10 +295,10 @@ export class AddIAD extends Component {
                       type="text"
                       value={this.state.macAddress}
                       placeholder={"MAC Address"}
-                      onChange={e =>
+                      onChange={(e) =>
                         this.setState({
                           macAddress: e.target.value,
-                          errorMacAddress: false
+                          errorMacAddress: false,
                         })
                       }
                       disabled={this.props.group.virtual}
@@ -337,7 +340,7 @@ export class AddIAD extends Component {
                     value={this.state.pilotNumber}
                     placeholder={"Maintenance number"}
                     onKeyDown={validateInputPhoneNumber}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState({ pilotNumber: e.target.value })
                     }
                   />
@@ -359,9 +362,9 @@ export class AddIAD extends Component {
                   <FormControl
                     componentClass="select"
                     value={this.state.cliPhoneNumber}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState({
-                        cliPhoneNumber: e.target.value
+                        cliPhoneNumber: e.target.value,
                       })
                     }
                   >
@@ -401,7 +404,9 @@ export class AddIAD extends Component {
                     type="text"
                     value={this.state.nameEDUA}
                     placeholder={"EDU Name"}
-                    onChange={e => this.setState({ nameEDUA: e.target.value })}
+                    onChange={(e) =>
+                      this.setState({ nameEDUA: e.target.value })
+                    }
                     disabled={this.props.group.virtual}
                   />
                 </div>
@@ -422,7 +427,7 @@ export class AddIAD extends Component {
                       type="text"
                       value={this.state.nameEDUB}
                       placeholder={"EDU Name"}
-                      onChange={e =>
+                      onChange={(e) =>
                         this.setState({ nameEDUB: e.target.value })
                       }
                       disabled={this.props.group.virtual}
@@ -444,7 +449,7 @@ export class AddIAD extends Component {
                     type="text"
                     value={this.state.lanPortA}
                     placeholder={"LAN port"}
-                    onChange={e => {
+                    onChange={(e) => {
                       if (isNaN(e.target.value)) {
                         return;
                       }
@@ -470,7 +475,7 @@ export class AddIAD extends Component {
                       type="text"
                       value={this.state.lanPortB}
                       placeholder={"LAN port"}
-                      onChange={e => {
+                      onChange={(e) => {
                         if (isNaN(e.target.value)) {
                           return;
                         }
@@ -495,7 +500,7 @@ export class AddIAD extends Component {
                     type="text"
                     value={this.state.wanPortA}
                     placeholder={"WAN port"}
-                    onChange={e => {
+                    onChange={(e) => {
                       this.setState({ wanPortA: e.target.value });
                     }}
                     disabled={this.props.group.virtual}
@@ -518,7 +523,7 @@ export class AddIAD extends Component {
                       type="text"
                       value={this.state.wanPortB}
                       placeholder={"WAN port"}
-                      onChange={e => {
+                      onChange={(e) => {
                         this.setState({ wanPortB: e.target.value });
                       }}
                       disabled={this.props.group.virtual}
@@ -543,7 +548,7 @@ export class AddIAD extends Component {
                     type="text"
                     value={this.state.eduVLANIDA}
                     placeholder={"EDU VLAN ID"}
-                    onChange={e => {
+                    onChange={(e) => {
                       if (
                         isNaN(e.target.value) ||
                         e.target.value < 0 ||
@@ -573,7 +578,7 @@ export class AddIAD extends Component {
                       type="text"
                       value={this.state.eduVLANIDB}
                       placeholder={"EDU VLAN ID"}
-                      onChange={e => {
+                      onChange={(e) => {
                         if (
                           isNaN(e.target.value) ||
                           e.target.value < 0 ||
@@ -602,7 +607,7 @@ export class AddIAD extends Component {
                     type="text"
                     value={this.state.srNameA}
                     placeholder={"SR name"}
-                    onChange={e => this.setState({ srNameA: e.target.value })}
+                    onChange={(e) => this.setState({ srNameA: e.target.value })}
                     disabled={this.props.group.virtual}
                   />
                 </div>
@@ -620,7 +625,9 @@ export class AddIAD extends Component {
                       type="text"
                       value={this.state.srNameB}
                       placeholder={"SR name"}
-                      onChange={e => this.setState({ srNameB: e.target.value })}
+                      onChange={(e) =>
+                        this.setState({ srNameB: e.target.value })
+                      }
                       disabled={this.props.group.virtual}
                     />
                   </div>
@@ -640,7 +647,7 @@ export class AddIAD extends Component {
                     type="text"
                     value={this.state.srSAPA}
                     placeholder={"SR SAP"}
-                    onChange={e => this.setState({ srSAPA: e.target.value })}
+                    onChange={(e) => this.setState({ srSAPA: e.target.value })}
                     disabled={this.props.group.virtual}
                   />
                 </div>
@@ -658,7 +665,9 @@ export class AddIAD extends Component {
                       type="text"
                       value={this.state.srSAPB}
                       placeholder={"SR SAP"}
-                      onChange={e => this.setState({ srSAPB: e.target.value })}
+                      onChange={(e) =>
+                        this.setState({ srSAPB: e.target.value })
+                      }
                       disabled={this.props.group.virtual}
                     />
                   </div>
@@ -690,9 +699,9 @@ export class AddIAD extends Component {
                       componentClass="select"
                       value={this.state.dtmf}
                       disabled={this.props.group.virtual}
-                      onChange={e =>
+                      onChange={(e) =>
                         this.setState({
-                          dtmf: e.target.value
+                          dtmf: e.target.value,
                         })
                       }
                       //disabled={
@@ -728,9 +737,9 @@ export class AddIAD extends Component {
                   <FormControl
                     componentClass="select"
                     value={this.state.direction}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState({
-                        direction: e.target.value
+                        direction: e.target.value,
                       })
                     }
                   >
@@ -769,9 +778,9 @@ export class AddIAD extends Component {
                           type="text"
                           value={this.state.channelsIn}
                           placeholder={"In"}
-                          onChange={e =>
+                          onChange={(e) =>
                             this.setState({
-                              channelsIn: Number(e.target.value)
+                              channelsIn: Number(e.target.value),
                             })
                           }
                         />
@@ -786,9 +795,9 @@ export class AddIAD extends Component {
                           type="text"
                           value={this.state.channelsOut}
                           placeholder={"Out"}
-                          onChange={e =>
+                          onChange={(e) =>
                             this.setState({
-                              channelsOut: Number(e.target.value)
+                              channelsOut: Number(e.target.value),
                             })
                           }
                         />
@@ -848,7 +857,7 @@ export class AddIAD extends Component {
                           componentClass="select"
                           value={this.state.praByIad[pra].praID}
                           disabled={this.props.group.virtual}
-                          onChange={e => {
+                          onChange={(e) => {
                             let selectedID = [...this.state.selectedID];
                             if (Number(e.target.value) !== 0) {
                               selectedID.push(Number(e.target.value));
@@ -875,9 +884,11 @@ export class AddIAD extends Component {
                                 [pra]: {
                                   ...this.state.praByIad[pra],
                                   praID: Number(e.target.value),
-                                  enabled: Number(e.target.value) ? true : false
-                                }
-                              }
+                                  enabled: Number(e.target.value)
+                                    ? true
+                                    : false,
+                                },
+                              },
                             });
                           }}
                           //disabled={
@@ -923,15 +934,15 @@ export class AddIAD extends Component {
                             //  pages.edit_iad_pra_info_tpid
                             //)
                           }
-                          onChange={e =>
+                          onChange={(e) =>
                             this.setState({
                               praByIad: {
                                 ...this.state.praByIad,
                                 [pra]: {
                                   ...this.state.praByIad[pra],
-                                  tpid: e.target.value
-                                }
-                              }
+                                  tpid: e.target.value,
+                                },
+                              },
                             })
                           }
                         />
@@ -961,15 +972,15 @@ export class AddIAD extends Component {
                             //  pages.edit_iad_pra_info_circuit_id
                             //)
                           }
-                          onChange={e =>
+                          onChange={(e) =>
                             this.setState({
                               praByIad: {
                                 ...this.state.praByIad,
                                 [pra]: {
                                   ...this.state.praByIad[pra],
-                                  circuit_id: e.target.value
-                                }
-                              }
+                                  circuit_id: e.target.value,
+                                },
+                              },
                             })
                           }
                         />
@@ -997,15 +1008,15 @@ export class AddIAD extends Component {
                             //  pages.edit_iad_pra_info_enabled
                             //)
                           }
-                          onChange={e =>
+                          onChange={(e) =>
                             this.setState({
                               praByIad: {
                                 ...this.state.praByIad,
                                 [pra]: {
                                   ...this.state.praByIad[pra],
-                                  enabled: e.target.checked
-                                }
-                              }
+                                  enabled: e.target.checked,
+                                },
+                              },
                             })
                           }
                         />
@@ -1051,9 +1062,9 @@ export class AddIAD extends Component {
                           value={type.value}
                           checked={type.value === this.state.transportMode}
                           disabled={this.props.group.virtual}
-                          onChange={e =>
+                          onChange={(e) =>
                             this.setState({
-                              transportMode: e.target.value
+                              transportMode: e.target.value,
                             })
                           }
                           //disabled={
@@ -1097,9 +1108,9 @@ export class AddIAD extends Component {
                             value={type.value}
                             checked={type.value === this.state.ip1mode}
                             disabled={this.props.group.virtual}
-                            onChange={e =>
+                            onChange={(e) =>
                               this.setState({
-                                ip1mode: e.target.value
+                                ip1mode: e.target.value,
                               })
                             }
                             //disabled={
@@ -1141,10 +1152,10 @@ export class AddIAD extends Component {
                             value={this.state.ipv4Address}
                             placeholder={"IPv4 address"}
                             disabled={this.props.group.virtual}
-                            onChange={e =>
+                            onChange={(e) =>
                               this.setState({
                                 ipv4Address: e.target.value,
-                                errorIpAdressV4: null
+                                errorIpAdressV4: null,
                               })
                             }
                             onBlur={this.validateIPAddressV4}
@@ -1196,10 +1207,10 @@ export class AddIAD extends Component {
                             value={this.state.ipv4Netmask}
                             disabled={this.props.group.virtual}
                             placeholder={"IPv4 netmask"}
-                            onChange={e =>
+                            onChange={(e) =>
                               this.setState({
                                 ipv4Netmask: e.target.value,
-                                errorNetMaskV4: null
+                                errorNetMaskV4: null,
                               })
                             }
                             onBlur={this.validateNetMaskV4}
@@ -1254,10 +1265,10 @@ export class AddIAD extends Component {
                             value={this.state.ipv6Address}
                             placeholder={"IPv6 address"}
                             disabled={this.props.group.virtual}
-                            onChange={e =>
+                            onChange={(e) =>
                               this.setState({
                                 ipv6Address: e.target.value,
-                                errorIpAdressV6: null
+                                errorIpAdressV6: null,
                               })
                             }
                             type="text"
@@ -1310,10 +1321,10 @@ export class AddIAD extends Component {
                             value={this.state.ipv6Netmask}
                             disabled={this.props.group.virtual}
                             placeholder={"IPv6 netmask"}
-                            onChange={e =>
+                            onChange={(e) =>
                               this.setState({
                                 ipv6Netmask: e.target.value,
-                                errorNetMaskV6: null
+                                errorNetMaskV6: null,
                               })
                             }
                             onBlur={this.validateNetMaskV6}
@@ -1384,10 +1395,10 @@ export class AddIAD extends Component {
                             value={this.state.ipAddress}
                             placeholder={"IP Address"}
                             disabled={this.props.group.virtual}
-                            onChange={e =>
+                            onChange={(e) =>
                               this.setState({
                                 ipAddress: e.target.value,
-                                errorPbxIpAdress: null
+                                errorPbxIpAdress: null,
                               })
                             }
                             onBlur={this.validatePbxIPAddress}
@@ -1414,7 +1425,7 @@ export class AddIAD extends Component {
                         value={this.state.port}
                         placeholder={"Port"}
                         disabled={this.props.group.virtual}
-                        onChange={e => {
+                        onChange={(e) => {
                           if (isNaN(e.target.value)) {
                             return;
                           }
@@ -1479,7 +1490,7 @@ export class AddIAD extends Component {
                       <Checkbox
                         defaultChecked={this.state.clock_master}
                         disabled={this.props.group.virtual}
-                        onChange={e =>
+                        onChange={(e) =>
                           this.setState({ clock_master: e.target.checked })
                         }
                         // disabled={
@@ -1493,33 +1504,37 @@ export class AddIAD extends Component {
                   </Col>
                 </Row>
               )}
-              <Row className={"margin-top-1"}>
-                <Col md={12} className={"flex align-items-center"}>
-                  <div className={"margin-right-1 flex flex-basis-16"}>
-                    <ControlLabel>
-                      <FormattedMessage
-                        id="dualPower"
-                        defaultMessage="Dual Power"
+              {this.props.config.tenant.group.iad.iadTypeOptions.dualPower[
+                this.state.iadType
+              ] && (
+                <Row className={"margin-top-1"}>
+                  <Col md={12} className={"flex align-items-center"}>
+                    <div className={"margin-right-1 flex flex-basis-16"}>
+                      <ControlLabel>
+                        <FormattedMessage
+                          id="dualPower"
+                          defaultMessage="Dual Power"
+                        />
+                      </ControlLabel>
+                    </div>
+                    <div className={"margin-right-1 flex-basis-33"}>
+                      <Checkbox
+                        checked={this.state.dual_power}
+                        disabled={this.props.group.virtual}
+                        onChange={(e) =>
+                          this.setState({ dual_power: e.target.checked })
+                        }
+                        // disabled={
+                        //   !isAllowed(
+                        //     localStorage.getItem("userProfile"),
+                        //     pages.edit_group_iad_advanced_dual_power
+                        //   )
+                        // }
                       />
-                    </ControlLabel>
-                  </div>
-                  <div className={"margin-right-1 flex-basis-33"}>
-                    <Checkbox
-                      checked={this.state.dual_power}
-                      disabled={this.props.group.virtual}
-                      onChange={e =>
-                        this.setState({ dual_power: e.target.checked })
-                      }
-                      // disabled={
-                      //   !isAllowed(
-                      //     localStorage.getItem("userProfile"),
-                      //     pages.edit_group_iad_advanced_dual_power
-                      //   )
-                      // }
-                    />
-                  </div>
-                </Col>
-              </Row>
+                    </div>
+                  </Col>
+                </Row>
+              )}
               {(this.props.group.pbxType === "PRA" ||
                 this.props.group.pbxType === "PRA_SIP" ||
                 this.props.group.pbxType === "SIP_PRA") && (
@@ -1538,7 +1553,7 @@ export class AddIAD extends Component {
                         componentClass="select"
                         value={this.state.isdnTerminationSide}
                         disabled={this.props.group.virtual}
-                        onChange={e =>
+                        onChange={(e) =>
                           this.setState({ isdnTerminationSide: e.target.value })
                         }
                         // disabled={
@@ -1620,30 +1635,31 @@ export class AddIAD extends Component {
       { value: 1, label: 1 },
       { value: 2, label: 2 },
       { value: 3, label: 3 },
-      { value: 4, label: 4 }
+      { value: 4, label: 4 },
     ];
-    const createdIADs = this.props.iads.iads.map(el =>
+    const createdIADs = this.props.iads.iads.map((el) =>
       Number(el.iadId.slice(-2))
     );
     const unic = Object.keys(this.props.iads.praByIad).filter(
-      el => createdIADs.indexOf(Number(el)) === -1
+      (el) => createdIADs.indexOf(Number(el)) === -1
     );
     if (Object.keys(praByIad).length < unic[0]) {
       for (let i = 0; i < this.props.iads.praByIad[unic[0]]; i++) {
         praByIad = {
           ...praByIad,
-          [i + 1]: { tpid: "", circuit_id: "", praID: "", enabled: "" }
+          [i + 1]: { tpid: "", circuit_id: "", praID: "", enabled: "" },
         };
       }
     }
     this.setState({ praByIad, arrayOfPraId, isloadingIADs: false });
   };
 
-  validateNetMaskV6 = e => {
+  validateNetMaskV6 = (e) => {
     if (isNaN(e.target.value)) {
       return this.setState({ errorNetMaskV6: "error" });
     } else {
-      if (parseInt(e.target.value) > 128) { // mask value is too big
+      if (parseInt(e.target.value) > 128) {
+        // mask value is too big
         return this.setState({ errorNetMaskV6: "error" });
       } else {
         return;
@@ -1651,7 +1667,7 @@ export class AddIAD extends Component {
     }
   };
 
-  validateIPAddressV6 = e => {
+  validateIPAddressV6 = (e) => {
     let reg = /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/;
     if (reg.test(e.target.value) || e.target.value === "") {
       return;
@@ -1660,7 +1676,7 @@ export class AddIAD extends Component {
     }
   };
 
-  validateNetMaskV4 = e => {
+  validateNetMaskV4 = (e) => {
     let reg = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
     if (reg.test(e.target.value) || e.target.value === "") {
       return;
@@ -1669,7 +1685,7 @@ export class AddIAD extends Component {
     }
   };
 
-  validateIPAddressV4 = e => {
+  validateIPAddressV4 = (e) => {
     let reg = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
     if (reg.test(e.target.value) || e.target.value === "") {
       return;
@@ -1678,7 +1694,7 @@ export class AddIAD extends Component {
     }
   };
 
-  validatePbxIPAddress = e => {
+  validatePbxIPAddress = (e) => {
     let reg = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
     if (reg.test(e.target.value) || e.target.value === "") {
       return;
@@ -1687,7 +1703,7 @@ export class AddIAD extends Component {
     }
   };
 
-  validateMacAddress = e => {
+  validateMacAddress = (e) => {
     let regDots = /^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$/;
     let reg = /^([0-9A-Fa-f]{2}){5}([0-9A-Fa-f]{2})$/;
     if (
@@ -1740,10 +1756,10 @@ export class AddIAD extends Component {
       clock_master,
       dual_power,
       isdnTerminationSide,
-      cliPhoneNumber
+      cliPhoneNumber,
     } = this.state;
     let pra_info = {};
-    Object.keys(this.state.praByIad).forEach(key => {
+    Object.keys(this.state.praByIad).forEach((key) => {
       if (this.state.praByIad[key].praID === 0) {
         return;
       }
@@ -1752,8 +1768,8 @@ export class AddIAD extends Component {
         [this.state.praByIad[key].praID]: {
           tpid: this.state.praByIad[key].tpid,
           circuit_id: this.state.praByIad[key].circuit_id,
-          enabled: this.state.praByIad[key].enabled
-        }
+          enabled: this.state.praByIad[key].enabled,
+        },
       };
     });
     const data = {
@@ -1767,7 +1783,7 @@ export class AddIAD extends Component {
         wanPort: wanPortA,
         srName: srNameA,
         srSap: srSAPA,
-        vlan: eduVLANIDA
+        vlan: eduVLANIDA,
       },
       edu2: secondEDU
         ? {
@@ -1776,7 +1792,7 @@ export class AddIAD extends Component {
             wanPort: wanPortB,
             srName: srNameB,
             srSap: srSAPB,
-            vlan: eduVLANIDB
+            vlan: eduVLANIDB,
           }
         : null,
       transportMode,
@@ -1785,18 +1801,18 @@ export class AddIAD extends Component {
           ? {
               mode: ip1mode,
               ipv4Address,
-              ipv4Netmask
+              ipv4Netmask,
             }
           : ip1mode === "IPv6"
           ? {
               mode: ip1mode,
               ipv6Address,
-              ipv6Netmask
+              ipv6Netmask,
             }
           : null,
       pbx: {
         ipAddress,
-        port
+        port,
       },
       services: {
         dtmf:
@@ -1809,15 +1825,15 @@ export class AddIAD extends Component {
             : "",
         direction: direction === "useGroupSettings" ? null : direction,
         channelsIn,
-        channelsOut
+        channelsOut,
       },
       virtual: this.props.group.virtual,
       pra_info,
       advanced: {
         clock_master,
         dual_power,
-        isdnTerminationSide
-      }
+        isdnTerminationSide,
+      },
     };
     const clearData = removeEmpty(data);
     this.setState({ disabledButton: true, buttonName: "Creating..." });
@@ -1827,7 +1843,7 @@ export class AddIAD extends Component {
         this.props.match.params.groupId,
         clearData
       )
-      .then(res => {
+      .then((res) => {
         if (res === "created") {
           this.props.history.push(
             `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}`,
@@ -1841,11 +1857,11 @@ export class AddIAD extends Component {
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   config: state.config,
   group: state.group,
   iads: state.iads,
-  phoneNumbersByGroupNotTP: state.phoneNumbersByGroupNotTP
+  phoneNumbersByGroupNotTP: state.phoneNumbersByGroupNotTP,
 });
 
 const mapDispatchToProps = {
@@ -1853,12 +1869,7 @@ const mapDispatchToProps = {
   fetchGetGroupById,
   fetchPostCreateIAD,
   fetchGetIADs,
-  fetchGetPhoneNumbersByGroupNotTP
+  fetchGetPhoneNumbersByGroupNotTP,
 };
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(AddIAD)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddIAD));

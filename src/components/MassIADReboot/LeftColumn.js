@@ -16,7 +16,8 @@ import {
   fetchGetSearchIADs,
   clearSearchedIADs,
   setTransferedIADs,
-  clearTransferedIADs
+  clearTransferedIADs,
+  fetchGetConfig,
 } from "../../store/actions";
 
 import { FormattedMessage } from "react-intl";
@@ -38,8 +39,13 @@ const LeftColumn = () => {
   const [sortedBy, setSortedBy] = useState("");
   const [notFound, setNotFound] = useState("");
 
-  const propsSearchedIADs = useSelector(state => state.searchedIADs);
+  const propsSearchedIADs = useSelector((state) => state.searchedIADs);
+  const config = useSelector((state) => state.config);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchGetConfig());
+  }, []);
 
   useEffect(() => {
     setIADs(propsSearchedIADs);
@@ -51,7 +57,7 @@ const LeftColumn = () => {
   }, [propsSearchedIADs]);
 
   useEffect(() => {
-    const searchArray = propsSearchedIADs.filter(iad =>
+    const searchArray = propsSearchedIADs.filter((iad) =>
       iad.iad.toLowerCase().includes(searchValue.toLowerCase())
     );
     setIADs(searchArray);
@@ -64,14 +70,14 @@ const LeftColumn = () => {
     };
   }, []);
 
-  const handleSearchButton = newButtomName => {
+  const handleSearchButton = (newButtomName) => {
     if (buttonName === "Search") {
       setNotFound("");
       const data = {
         allIADs: allIads ? allIads : "",
-        insensitiveTenantIdEquals: enterpriseId,
-        insensitiveGroupIdEquals: groupId,
-        sensitiveDeviceTypeEquals: deviceType
+        insensitiveTenantIdContains: enterpriseId,
+        insensitiveGroupIdContains: groupId,
+        sensitiveDeviceTypeEquals: deviceType,
       };
       const clearData = removeEmpty(data);
       const querySearch = Object.keys(clearData).reduce(
@@ -92,23 +98,25 @@ const LeftColumn = () => {
     dispatch(clearSearchedIADs());
   };
 
-  const handleSelectAllClick = e => {
+  const handleSelectAllClick = (e) => {
     const isChecked = e.target.checked;
-    const newArr = IADs.map(el => ({
+    const newArr = IADs.map((el) => ({
       ...el,
-      checked: isChecked
+      checked: isChecked,
     }));
     setIADs(newArr);
     setSelectAll(isChecked);
   };
 
   const handleSingleCheckboxClick = (iad, checked) => {
-    const newArr = IADs.map(el => ({
+    const newArr = IADs.map((el) => ({
       ...el,
-      checked: el.iad === iad ? checked : el.checked
+      checked: el.iad === iad ? checked : el.checked,
     }));
     setIADs(newArr);
-    newArr.every(iad => iad.checked) ? setSelectAll(true) : setSelectAll(false);
+    newArr.every((iad) => iad.checked)
+      ? setSelectAll(true)
+      : setSelectAll(false);
   };
 
   const sortByIadType = () => {
@@ -150,7 +158,7 @@ const LeftColumn = () => {
             <Checkbox
               checked={allIads}
               disabled={!!enterpriseId || !!groupId || !!deviceType} //expects only boolean value
-              onChange={e => setAllIads(e.target.checked)}
+              onChange={(e) => setAllIads(e.target.checked)}
             />
           </div>
         </Col>
@@ -170,7 +178,7 @@ const LeftColumn = () => {
               type="text"
               disabled={allIads || groupId || deviceType}
               value={enterpriseId}
-              onChange={e => setEnterpriseId(e.target.value)}
+              onChange={(e) => setEnterpriseId(e.target.value)}
             />
           </div>
         </Col>
@@ -187,25 +195,34 @@ const LeftColumn = () => {
               type="text"
               disabled={allIads || enterpriseId || deviceType}
               value={groupId}
-              onChange={e => setGroupId(e.target.value)}
+              onChange={(e) => setGroupId(e.target.value)}
             />
           </div>
         </Col>
       </Row>
       <Row className={"margin-top-1"}>
         <Col md={12} className={"flex align-items-center"}>
-          <div className={"margin-right-1 flex flex-basis-33"}>
-            <ControlLabel>
-              <FormattedMessage id="deviceType" defaultMessage="Device Type" />
-            </ControlLabel>
+          <div
+            className={"margin-right-1 flex flex-basis-33 font-weight-bold "}
+          >
+            <FormattedMessage id="deviceType" defaultMessage="Device Type" />
           </div>
-          <div className={"margin-right-1 flex-basis-66"}>
+          <div className={"margin-right-1 flex flex-basis-66"}>
             <FormControl
-              type="text"
-              disabled={allIads || enterpriseId || groupId}
+              componentClass="select"
               value={deviceType}
-              onChange={e => setDeviceType(e.target.value)}
-            />
+              disabled={allIads || enterpriseId || groupId}
+              onChange={(e) => setDeviceType(e.target.value)}
+            >
+              <option key={"null"} value={""}>
+                None
+              </option>
+              {config.iad_reboot.iadType.map((type, i) => (
+                <option key={i} value={type.value}>
+                  {type.label}
+                </option>
+              ))}
+            </FormControl>
           </div>
         </Col>
       </Row>
@@ -241,12 +258,12 @@ const LeftColumn = () => {
                   id="search_placeholder"
                   defaultMessage="IAD ID"
                 >
-                  {placeholder => (
+                  {(placeholder) => (
                     <FormControl
                       type="text"
                       value={searchValue}
                       placeholder={placeholder}
-                      onChange={e => setSearchValue(e.target.value)}
+                      onChange={(e) => setSearchValue(e.target.value)}
                     />
                   )}
                 </FormattedMessage>
@@ -262,7 +279,7 @@ const LeftColumn = () => {
                       <Checkbox
                         className={"margin-0"}
                         checked={selectAll}
-                        onChange={e => handleSelectAllClick(e)}
+                        onChange={(e) => handleSelectAllClick(e)}
                       >
                         <div className={"font-weight-bold"}>
                           <FormattedMessage
@@ -282,7 +299,7 @@ const LeftColumn = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {IADs.map(iad => (
+                  {IADs.map((iad) => (
                     <TableOfFetchedIADs
                       key={iad.iad}
                       iad={iad}

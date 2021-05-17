@@ -9,6 +9,7 @@ import Tab from "react-bootstrap/lib/Tab";
 import Options from "./Tabs/Options";
 //import TrunlId from "./Tabs/TrunkId"; // This page is obsolte it is now integrated in Destination Numbers
 import DestinationNumbers from "./Tabs/DestinationNumbers";
+import SpecialCustomizedTags from "./Tabs/SpecialCustomizedTags";
 
 import { isAllowed, pages } from "../../../../utils/user";
 
@@ -17,7 +18,7 @@ export class AdvancedTab extends Component {
     return (
       <Row className={"margin-top-1"}>
         <Col md={12}>
-          <Tabs defaultActiveKey={0} id="iads_tabs">
+          <Tabs defaultActiveKey={3} id="iads_tabs">
             <Tab eventKey={0} title="Options">
               <Options />
             </Tab>
@@ -35,6 +36,9 @@ export class AdvancedTab extends Component {
                   </Tab>
                 )
               : null}
+            <Tab eventKey={3} title="Special Customized Tags">
+              <SpecialCustomizedTags />
+            </Tab>
           </Tabs>
         </Col>
       </Row>
@@ -42,13 +46,10 @@ export class AdvancedTab extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  iad: state.iad
+const mapStateToProps = (state) => ({
+  iad: state.iad,
 });
 
 const mapDispatchToProps = {};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AdvancedTab);
+export default connect(mapStateToProps, mapDispatchToProps)(AdvancedTab);

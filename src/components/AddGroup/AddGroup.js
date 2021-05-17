@@ -37,7 +37,7 @@ export class AddGroup extends Component {
     channelHunting: "",
     np1Redundancy: false,
     mainNumber: "",
-    groupTpid: ""
+    groupTpid: "",
   };
 
   componentDidMount = () => {
@@ -45,11 +45,12 @@ export class AddGroup extends Component {
       this.setState({
         isLoading: false,
         typeOfIad: this.props.config.tenant.group.pbxType[0].value,
-        typeOfAccess: this.props.config.tenant.group.accessType[0].value,
+        typeOfAccess: this.props.config.tenant.group.accessTypeForCreate[0]
+          .value,
         serviceType: this.props.config.tenant.group.serviceType[0].value,
         channelHunting: this.props.config.tenant.group.channelHunting[0].value,
         numberOfChannels: this.props.config.tenant.group.capacity.PRA
-          .nonRedundant[0].value
+          .nonRedundant[0].value,
       })
     );
   };
@@ -102,7 +103,9 @@ export class AddGroup extends Component {
                     type="text"
                     value={this.state.siteName}
                     placeholder={"Site Name"}
-                    onChange={e => this.setState({ siteName: e.target.value })}
+                    onChange={(e) =>
+                      this.setState({ siteName: e.target.value })
+                    }
                   />
                 </div>
               </Col>
@@ -121,7 +124,9 @@ export class AddGroup extends Component {
                     type="text"
                     value={this.state.groupTpid}
                     placeholder={"Tina Product Id"}
-                    onChange={e => this.setState({ groupTpid: e.target.value })}
+                    onChange={(e) =>
+                      this.setState({ groupTpid: e.target.value })
+                    }
                   />
                 </div>
               </Col>
@@ -153,7 +158,7 @@ export class AddGroup extends Component {
                     type="number"
                     value={this.state.zipCode}
                     placeholder={"ZIP code"}
-                    onChange={e => {
+                    onChange={(e) => {
                       if (e.target.value < 0) {
                         return;
                       }
@@ -177,9 +182,9 @@ export class AddGroup extends Component {
                       className={"margin-0 flex margin-right-2"}
                       name="isVirtualSite"
                       checked={this.state.virtual}
-                      onChange={e =>
+                      onChange={(e) =>
                         this.setState({
-                          virtual: true
+                          virtual: true,
                         })
                       }
                     >
@@ -191,9 +196,9 @@ export class AddGroup extends Component {
                       className={"margin-0 flex margin-right-2"}
                       name="isVirtualSite"
                       checked={!this.state.virtual}
-                      onChange={e =>
+                      onChange={(e) =>
                         this.setState({
-                          virtual: false
+                          virtual: false,
                         })
                       }
                     >
@@ -221,7 +226,7 @@ export class AddGroup extends Component {
                     value={this.state.mainNumber}
                     placeholder={"Main number"}
                     onKeyDown={validateInputPhoneNumber}
-                    onChange={e => {
+                    onChange={(e) => {
                       this.setState({ mainNumber: e.target.value });
                     }}
                   />
@@ -247,7 +252,9 @@ export class AddGroup extends Component {
                   <FormControl
                     componentClass="select"
                     defaultValue={this.state.typeOfIad}
-                    onChange={e => this.setState({ typeOfIad: e.target.value })}
+                    onChange={(e) =>
+                      this.setState({ typeOfIad: e.target.value })
+                    }
                   >
                     {this.props.config.tenant.group.pbxType.map((type, i) => (
                       <option key={i} value={type.value}>
@@ -270,11 +277,11 @@ export class AddGroup extends Component {
                   <FormControl
                     componentClass="select"
                     value={this.state.typeOfAccess}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState({ typeOfAccess: e.target.value })
                     }
                   >
-                    {this.props.config.tenant.group.accessType.map(
+                    {this.props.config.tenant.group.accessTypeForCreate.map(
                       (type, i) => (
                         <option key={i} value={type.value}>
                           {type.label}
@@ -297,7 +304,7 @@ export class AddGroup extends Component {
                   <FormControl
                     componentClass="select"
                     value={this.state.serviceType}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState({ serviceType: e.target.value })
                     }
                   >
@@ -347,7 +354,7 @@ export class AddGroup extends Component {
                   <FormControl
                     componentClass="select"
                     value={this.state.channelHunting}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState({ channelHunting: e.target.value })
                     }
                   >
@@ -383,7 +390,7 @@ export class AddGroup extends Component {
                   <FormControl
                     componentClass="select"
                     value={this.state.numberOfChannels}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState({ numberOfChannels: e.target.value })
                     }
                   >
@@ -476,7 +483,7 @@ export class AddGroup extends Component {
       channelHunting,
       np1Redundancy,
       mainNumber,
-      groupTpid
+      groupTpid,
     } = this.state;
 
     const data = {
@@ -491,13 +498,13 @@ export class AddGroup extends Component {
       channelHunting,
       //np1Redundancy,
       cliPhoneNumber: mainNumber,
-      groupTpid
+      groupTpid,
     };
     const clearData = removeEmpty(data);
     this.setState({ buttonName: "Creating..." }, () =>
       this.props
         .fetchPostCreateGroup(this.props.match.params.tenantId, clearData)
-        .then(res =>
+        .then((res) =>
           res === "created"
             ? this.props.history.push(
                 `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}`
@@ -508,15 +515,12 @@ export class AddGroup extends Component {
   };
 }
 
-const mapStateToProps = state => ({
-  config: state.config
+const mapStateToProps = (state) => ({
+  config: state.config,
 });
 
 const mapDispatchToProps = { fetchPostCreateGroup, fetchGetConfig };
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(AddGroup)
+  connect(mapStateToProps, mapDispatchToProps)(AddGroup)
 );
