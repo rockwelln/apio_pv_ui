@@ -53,7 +53,13 @@ function mainReducer(state = initialState, action) {
       });
       return {
         ...state,
-        iads: { ...action.data, iads: iadWithType },
+        iads: {
+          ...action.data,
+          iads: iadWithType,
+          iadType: action.data.iads.length
+            ? action.data.iads[0].iadType
+            : "None",
+        },
       };
     }
     case actionType.GET_TENANTS: {
