@@ -1,4 +1,6 @@
 import * as actionType from "./constants";
+import defaultConfig from "../config.json";
+import deepMerge from "../components/deepMerge";
 
 const initialState = {
   tenants: [],
@@ -244,9 +246,10 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.GET_CONFIG: {
+      console.log(defaultConfig);
       return {
         ...state,
-        config: action.data,
+        config: deepMerge(defaultConfig, action.data),
       };
     }
     case actionType.GET_IAD_BY_ID: {
