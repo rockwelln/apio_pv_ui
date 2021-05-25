@@ -246,7 +246,6 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.GET_CONFIG: {
-      console.log(defaultConfig);
       return {
         ...state,
         config: deepMerge(defaultConfig, action.data),

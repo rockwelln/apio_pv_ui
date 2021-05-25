@@ -25,7 +25,7 @@ export class PraInfo extends Component {
     arrayOfPraId: [],
     selectedID: [],
     data: {},
-    showRebootDialog: false
+    showRebootDialog: false,
   };
 
   componentDidMount() {
@@ -36,20 +36,20 @@ export class PraInfo extends Component {
       { value: 1, label: 1 },
       { value: 2, label: 2 },
       { value: 3, label: 3 },
-      { value: 4, label: 4 }
+      { value: 4, label: 4 },
     ];
-    Object.keys(this.props.iad.pra_info).forEach(key => {
+    Object.keys(this.props.iad.pra_info).forEach((key) => {
       selectedID.push(Number(key));
       praByIad = {
         ...praByIad,
-        [key]: { ...this.props.iad.pra_info[key], praID: key }
+        [key]: { ...this.props.iad.pra_info[key], praID: key },
       };
     });
     for (let i = 0; i < this.props.iad.pra_needed; i++) {
       if (Object.keys(praByIad).length < this.props.iad.pra_needed) {
         praByIad = {
           ...praByIad,
-          [i + 5]: { tpid: "", circuit_id: "", praID: "", enabled: "" }
+          [i + 5]: { tpid: "", circuit_id: "", praID: "", enabled: "" },
         };
       }
     }
@@ -57,7 +57,6 @@ export class PraInfo extends Component {
   }
 
   render() {
-    console.log(this.state.praByIad);
     return (
       <React.Fragment>
         {Object.keys(this.state.praByIad).map((pra, i) => (
@@ -83,7 +82,7 @@ export class PraInfo extends Component {
                   <FormControl
                     componentClass="select"
                     value={this.state.praByIad[pra].praID}
-                    onChange={e => {
+                    onChange={(e) => {
                       let selectedID = [...this.state.selectedID];
                       if (Number(e.target.value) !== 0) {
                         selectedID.push(Number(e.target.value));
@@ -111,9 +110,9 @@ export class PraInfo extends Component {
                             [pra]: {
                               ...this.state.praByIad[pra],
                               praID: Number(e.target.value),
-                              enabled: Number(e.target.value) ? true : false
-                            }
-                          }
+                              enabled: Number(e.target.value) ? true : false,
+                            },
+                          },
                         },
                         () => this.storeUpdate()
                       );
@@ -153,16 +152,16 @@ export class PraInfo extends Component {
                     type="text"
                     value={this.state.praByIad[pra].tpid}
                     placeholder={"Tina Product ID"}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState(
                         {
                           praByIad: {
                             ...this.state.praByIad,
                             [pra]: {
                               ...this.state.praByIad[pra],
-                              tpid: e.target.value
-                            }
-                          }
+                              tpid: e.target.value,
+                            },
+                          },
                         },
                         () => this.storeUpdate()
                       )
@@ -194,16 +193,16 @@ export class PraInfo extends Component {
                     type="text"
                     value={this.state.praByIad[pra].circuit_id}
                     placeholder={"Prefix followed by national phone number"}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState(
                         {
                           praByIad: {
                             ...this.state.praByIad,
                             [pra]: {
                               ...this.state.praByIad[pra],
-                              circuit_id: e.target.value
-                            }
-                          }
+                              circuit_id: e.target.value,
+                            },
+                          },
                         },
                         () => this.storeUpdate()
                       )
@@ -231,16 +230,16 @@ export class PraInfo extends Component {
                   <Checkbox
                     className={"table-checkbox"}
                     checked={this.state.praByIad[pra].enabled}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState(
                         {
                           praByIad: {
                             ...this.state.praByIad,
                             [pra]: {
                               ...this.state.praByIad[pra],
-                              enabled: e.target.checked
-                            }
-                          }
+                              enabled: e.target.checked,
+                            },
+                          },
                         },
                         () => this.storeUpdate()
                       )
@@ -295,7 +294,7 @@ export class PraInfo extends Component {
   storeUpdate = () => {
     const { praByIad } = this.state;
     let pra_info = {};
-    Object.keys(praByIad).forEach(key => {
+    Object.keys(praByIad).forEach((key) => {
       if (praByIad[key].praID === 0) {
         return;
       }
@@ -304,8 +303,8 @@ export class PraInfo extends Component {
         [praByIad[key].praID]: {
           tpid: praByIad[key].tpid,
           circuit_id: praByIad[key].circuit_id,
-          enabled: praByIad[key].enabled
-        }
+          enabled: praByIad[key].enabled,
+        },
       };
     });
     this.props.changeIAD("pra_info", pra_info);
@@ -314,7 +313,7 @@ export class PraInfo extends Component {
   updateIAD = () => {
     const { praByIad } = this.state;
     let pra_info = {};
-    Object.keys(praByIad).forEach(key => {
+    Object.keys(praByIad).forEach((key) => {
       if (praByIad[key].praID === 0) {
         NotificationsManager.error(
           <FormattedMessage
@@ -333,8 +332,8 @@ export class PraInfo extends Component {
         [praByIad[key].praID]: {
           tpid: praByIad[key].tpid,
           circuit_id: praByIad[key].circuit_id,
-          enabled: praByIad[key].enabled
-        }
+          enabled: praByIad[key].enabled,
+        },
       };
     });
     const data = { pra_info };
@@ -368,13 +367,10 @@ export class PraInfo extends Component {
   };
 }
 
-const mapStateToProps = state => ({ iad: state.iad });
+const mapStateToProps = (state) => ({ iad: state.iad });
 
 const mapDispatchToProps = { changeIAD, fetchPutUpdateIAD };
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(PraInfo)
+  connect(mapStateToProps, mapDispatchToProps)(PraInfo)
 );
