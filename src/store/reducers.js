@@ -1,4 +1,6 @@
 import * as actionType from "./constants";
+import defaultConfig from "../config.json";
+import deepMerge from "../components/deepMerge";
 
 const initialState = {
   tenants: [],
@@ -53,7 +55,13 @@ function mainReducer(state = initialState, action) {
       });
       return {
         ...state,
-        iads: { ...action.data, iads: iadWithType },
+        iads: {
+          ...action.data,
+          iads: iadWithType,
+          iadType: action.data.iads.length
+            ? action.data.iads[0].iadType
+            : "None",
+        },
       };
     }
     case actionType.GET_TENANTS: {
@@ -240,7 +248,7 @@ function mainReducer(state = initialState, action) {
     case actionType.GET_CONFIG: {
       return {
         ...state,
-        config: action.data,
+        config: deepMerge(defaultConfig, action.data),
       };
     }
     case actionType.GET_IAD_BY_ID: {

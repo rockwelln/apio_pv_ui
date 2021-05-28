@@ -17,7 +17,7 @@ import {
   fetchPutUpdateGroupDetails,
   fetchGetIADs,
   fetchGetValidateGroupUpdate,
-  clearValidationGroup
+  clearValidationGroup,
 } from "../../../../store/actions";
 
 import { FormattedMessage } from "react-intl";
@@ -41,7 +41,7 @@ export class Channels extends Component {
     numberOfChannelsError: null,
     channelHuntingOptions: [],
     data: {},
-    showRebootDialog: false
+    showRebootDialog: false,
   };
 
   fetchReq = () => {
@@ -62,13 +62,13 @@ export class Channels extends Component {
                   this.props.config.tenant.group.direction[0].value,
                 channelHunting:
                   this.state.group.channelHunting ||
-                  this.props.config.tenant.group.channelHunting[0].value
+                  this.props.config.tenant.group.channelHunting[0].value,
               },
               channelsOut:
                 this.state.group.channelsOut || this.state.channelsOut,
               channelsIn: this.state.group.channelsIn || this.state.channelsIn,
-              channelHuntingOptions: this.props.config.tenant.group.channelHunting.map(
-                el => ({
+              channelHuntingOptions:
+                this.props.config.tenant.group.channelHunting.map((el) => ({
                   ...el,
                   disabled:
                     this.state.group.channelHunting === "Loadbalanced"
@@ -77,9 +77,8 @@ export class Channels extends Component {
                         : true
                       : el.value === "Loadbalanced"
                       ? true
-                      : false
-                })
-              )
+                      : false,
+                })),
             })
           )
         )
@@ -99,7 +98,7 @@ export class Channels extends Component {
     this.fetchReq();
   }
   render() {
-    if (this.state.isLoading) {
+    if (this.state.isLoading || !this.props.iads.iadType) {
       return <Loading />;
     }
 
@@ -116,7 +115,7 @@ export class Channels extends Component {
               >
                 {this.props.validationGroupError
                   ? this.props.validationGroupError
-                  : this.props.validationGroup.warnings.map(el => (
+                  : this.props.validationGroup.warnings.map((el) => (
                       <p key={el}>{el}</p>
                     ))}
                 <div className="button-row">
@@ -172,39 +171,55 @@ export class Channels extends Component {
                     ? ~this.props.config.tenant.group.iad[
                         "2EDUsForServiceTypes"
                       ].indexOf(this.state.group.serviceType)
-                      ? this.props.config.tenant.group.capacity.PRA.redundant.map(
-                          (type, i) => (
-                            <option key={i} value={type.value}>
-                              {type.label}
-                            </option>
-                          )
-                        )
-                      : this.props.config.tenant.group.capacity.PRA.nonRedundant.map(
-                          (type, i) => (
-                            <option key={i} value={type.value}>
-                              {type.label}
-                            </option>
-                          )
-                        )
+                      ? this.props.config.tenant.group.capacity[
+                          this.state.group.accessType
+                        ].PRA[
+                          this.state.group.accessType === "FIBER"
+                            ? "redundant"
+                            : this.props.iads.iadType
+                        ].map((type, i) => (
+                          <option key={i} value={type.value}>
+                            {type.label}
+                          </option>
+                        ))
+                      : this.props.config.tenant.group.capacity[
+                          this.state.group.accessType
+                        ].PRA[
+                          this.state.group.accessType === "FIBER"
+                            ? "nonRedundant"
+                            : this.props.iads.iadType
+                        ].map((type, i) => (
+                          <option key={i} value={type.value}>
+                            {type.label}
+                          </option>
+                        ))
                     : this.state.group.pbxType === "SIP" ||
                       this.state.group.pbxType === "SIP_PRA"
                     ? ~this.props.config.tenant.group.iad[
                         "2EDUsForServiceTypes"
                       ].indexOf(this.state.group.serviceType)
-                      ? this.props.config.tenant.group.capacity.SIP.redundant.map(
-                          (type, i) => (
-                            <option key={i} value={type.value}>
-                              {type.label}
-                            </option>
-                          )
-                        )
-                      : this.props.config.tenant.group.capacity.SIP.nonRedundant.map(
-                          (type, i) => (
-                            <option key={i} value={type.value}>
-                              {type.label}
-                            </option>
-                          )
-                        )
+                      ? this.props.config.tenant.group.capacity[
+                          this.state.group.accessType
+                        ].SIP[
+                          this.state.group.accessType === "FIBER"
+                            ? "redundant"
+                            : this.props.iads.iadType
+                        ].map((type, i) => (
+                          <option key={i} value={type.value}>
+                            {type.label}
+                          </option>
+                        ))
+                      : this.props.config.tenant.group.capacity[
+                          this.state.group.accessType
+                        ].SIP[
+                          this.state.group.accessType === "FIBER"
+                            ? "nonRedundant"
+                            : this.props.iads.iadType
+                        ].map((type, i) => (
+                          <option key={i} value={type.value}>
+                            {type.label}
+                          </option>
+                        ))
                     : null}
                 </FormControl>
               </div>
@@ -237,9 +252,9 @@ export class Channels extends Component {
               <FormControl
                 componentClass="select"
                 value={this.state.group.direction}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
-                    group: { ...this.state.group, direction: e.target.value }
+                    group: { ...this.state.group, direction: e.target.value },
                   })
                 }
                 disabled={
@@ -387,12 +402,12 @@ export class Channels extends Component {
               <FormControl
                 componentClass="select"
                 value={this.state.group.channelHunting}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
                     group: {
                       ...this.state.group,
-                      channelHunting: e.target.value
-                    }
+                      channelHunting: e.target.value,
+                    },
                   })
                 }
                 disabled={
@@ -431,9 +446,9 @@ export class Channels extends Component {
                     !!this.state.channelsOutError ||
                     !!this.state.channelsInError ||
                     this.state.disableButton ||
-                    ((get(this.props, "validationGroup.warnings") &&
+                    (get(this.props, "validationGroup.warnings") &&
                       !!this.props.validationGroup.warnings.length) ||
-                      this.props.validationGroupError) ||
+                    this.props.validationGroupError ||
                     this.state.updatingButton
                   }
                 >
@@ -467,7 +482,7 @@ export class Channels extends Component {
     this.props.clearValidationGroup();
   };
 
-  changeNumberOfChannels = e => {
+  changeNumberOfChannels = (e) => {
     const targetValue = e.target.value;
     this.setState({ disableButton: true }, () =>
       this.props
@@ -482,9 +497,9 @@ export class Channels extends Component {
     this.setState({
       group: {
         ...this.state.group,
-        numberOfChannels: Number(targetValue)
+        numberOfChannels: Number(targetValue),
       },
-      numberOfChannelsError: null
+      numberOfChannelsError: null,
     });
   };
 
@@ -494,14 +509,14 @@ export class Channels extends Component {
       channelHunting,
       direction,
       channelsIn,
-      channelsOut
+      channelsOut,
     } = this.state.group;
     const data = {
       numberOfChannels,
       channelHunting,
       direction,
       channelsIn,
-      channelsOut
+      channelsOut,
     };
     const clearData = removeEmpty(data);
 
@@ -513,7 +528,7 @@ export class Channels extends Component {
       this.setState({
         showRebootDialog: true,
         data: clearData,
-        disableButton: false
+        disableButton: false,
       });
       return;
     }
@@ -535,7 +550,7 @@ export class Channels extends Component {
     );
   };
 
-  changeChannelsIn = e => {
+  changeChannelsIn = (e) => {
     const { channelsOut, numberOfChannels } = this.state.group;
     this.setState({ channelsInError: null, channelsOutError: null });
     if (
@@ -546,20 +561,20 @@ export class Channels extends Component {
         channelsInError: "error",
         group: {
           ...this.state.group,
-          channelsIn: Number(e.target.value)
-        }
+          channelsIn: Number(e.target.value),
+        },
       });
       return;
     }
     this.setState({
       group: {
         ...this.state.group,
-        channelsIn: Number(e.target.value)
-      }
+        channelsIn: Number(e.target.value),
+      },
     });
   };
 
-  changeChannelsOut = e => {
+  changeChannelsOut = (e) => {
     const { channelsIn, numberOfChannels } = this.state.group;
     this.setState({ channelsOutError: null, channelsInError: null });
     if (
@@ -570,25 +585,26 @@ export class Channels extends Component {
         channelsOutError: "error",
         group: {
           ...this.state.group,
-          channelsOut: Number(e.target.value)
-        }
+          channelsOut: Number(e.target.value),
+        },
       });
       return;
     }
     this.setState({
       group: {
         ...this.state.group,
-        channelsOut: Number(e.target.value)
-      }
+        channelsOut: Number(e.target.value),
+      },
     });
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   group: state.group,
   config: state.config,
   validationGroup: state.validationGroup,
-  validationGroupError: state.validationGroupError
+  validationGroupError: state.validationGroupError,
+  iads: state.iads,
 });
 
 const mapDispatchToProps = {
@@ -597,12 +613,9 @@ const mapDispatchToProps = {
   fetchPutUpdateGroupDetails,
   fetchGetIADs,
   fetchGetValidateGroupUpdate,
-  clearValidationGroup
+  clearValidationGroup,
 };
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Channels)
+  connect(mapStateToProps, mapDispatchToProps)(Channels)
 );

@@ -1,0 +1,371 @@
+{
+  "tenant": {
+    "group": {
+      "serviceType": [
+        { "value": "1", "label": "Service Type 1" },
+        { "value": "2", "label": "Service Type 2" },
+        { "value": "3", "label": "Service Type 3" },
+        { "value": "4", "label": "Service Type 4" },
+        { "value": "D2", "label": "Service Dual Type 2" },
+        { "value": "D2b", "label": "Service Dual Type 2 bis" },
+        { "value": "5", "label": "Service Dual Type 5" },
+        { "value": "5b", "label": "Service Dual Type 5 bis" },
+        { "value": "6", "label": "Service Dual Type 6" },
+        { "value": "7", "label": "Service Type 7" }
+      ],
+      "direction": [
+        { "value": "Uni", "label": "Uni-directional" },
+        { "value": "Bi", "label": "Bi-directional" }
+      ],
+      "channelHunting": [
+        {
+          "value": "Lowest available channel first",
+          "label": "Lowest available channel first"
+        },
+        {
+          "value": "Highest available channel first",
+          "label": "Highest available channel first"
+        },
+        { "value": "Loadbalanced", "label": "Loadbalanced" },
+        { "value": "Circular clockwise", "label": "Circular clockwise" },
+        {
+          "value": "Circular counter clockwise",
+          "label": "Circular counter clockwise"
+        }
+      ],
+      "pbxType": [
+        { "value": "PRA", "label": "PRA" },
+        { "value": "SIP", "label": "SIP" },
+        { "value": "PRA_SIP", "label": "PRA then SIP" },
+        { "value": "SIP_PRA", "label": "SIP then PRA" }
+      ],
+      "ncos": [
+        { "value": 0, "label": "NCOS 0" },
+        { "value": 1, "label": "NCOS 1" },
+        { "value": 2, "label": "NCOS 2" },
+        { "value": 3, "label": "NCOS 3" },
+        { "value": 4, "label": "NCOS 4" },
+        { "value": 5, "label": "NCOS 5" },
+        { "value": 6, "label": "NCOS 6" },
+        { "value": 7, "label": "NCOS 7" },
+        { "value": 8, "label": "NCOS 8" },
+        { "value": 9, "label": "NCOS 9" },
+        { "value": 10, "label": "NCOS 10" },
+        { "value": 11, "label": "NCOS 11" },
+        { "value": 12, "label": "NCOS 12" },
+        { "value": 13, "label": "NCOS 13" },
+        { "value": 15, "label": "NCOS 15" },
+        { "value": 16, "label": "NCOS 16" },
+        { "value": 18, "label": "NCOS 18" },
+        { "value": 31, "label": "NCOS 31" },
+        { "value": 33, "label": "NCOS 33" },
+        { "value": 34, "label": "NCOS 34" },
+        { "value": 35, "label": "NCOS 35" }
+      ],
+      "accessTypeForCreate": [{ "value": "FIBER", "label": "FIBER" }],
+      "accessType": [
+        { "value": "FIBER", "label": "FIBER" },
+        { "value": "COAX", "label": "COAX" },
+        { "value": "VDSL", "label": "VDSL" }
+      ],
+      "dtmf": [
+        { "value": "RFC2833", "label": "RFC2833" },
+        { "value": "G711 inband", "label": "G711 inband" }
+      ],
+      "aoc": [
+        { "value": false, "label": "No AOC" },
+        { "value": "AOC-D", "label": "AOC-D+E" },
+        { "value": "AOC-E", "label": "AOC-E" }
+      ],
+      "pra_nat_dst": [
+        {
+          "value": "nationalWithoutZero",
+          "label": "national format without 0"
+        },
+        { "value": "nationalWithZero", "label": "national format with 0" },
+        {
+          "value": "internationalWithoutPlus",
+          "label": "international format without +"
+        }
+      ],
+      "pra_nat_src": [
+        {
+          "value": "nationalWithoutZero",
+          "label": "national format without 0"
+        },
+        { "value": "nationalWithZero", "label": "national format with 0" },
+        {
+          "value": "internationalWithoutPlus",
+          "label": "international format without +"
+        }
+      ],
+      "pra_int_src": [
+        {
+          "value": "internationalWithoutPlus",
+          "label": "international format without +"
+        },
+        {
+          "value": "internationalWithDoubleZero",
+          "label": "international format with 00"
+        }
+      ],
+      "sip_nat_dst": [
+        { "value": "international", "label": "international format with +" },
+        {
+          "value": "internationalWithoutPlus",
+          "label": "international format without +"
+        },
+        { "value": "nationalWithZero", "label": "national format with 0" },
+        { "value": "nationalWithoutZero", "label": "national format without 0" }
+      ],
+      "sip_nat_src": [
+        { "value": "international", "label": "international format with +" },
+        {
+          "value": "internationalWithoutPlus",
+          "label": "international format without +"
+        },
+        { "value": "nationalWithZero", "label": "national format with 0" },
+        { "value": "nationalWithoutZero", "label": "national format without 0" }
+      ],
+      "sip_int_src": [
+        { "value": "international", "label": "international format with +" },
+        {
+          "value": "internationalWithoutPlus",
+          "label": "international format without +"
+        },
+        {
+          "value": "internationalWithDoubleZero",
+          "label": "international format with 00"
+        }
+      ],
+      "capacity": {
+        "FIBER": {
+          "PRA": {
+            "redundant": [
+              { "value": 2, "label": "2 PRA" },
+              { "value": 4, "label": "4 PRA" },
+              { "value": 6, "label": "6 PRA" },
+              { "value": 8, "label": "8 PRA" },
+              { "value": 10, "label": "10 PRA" }
+            ],
+            "nonRedundant": [
+              { "value": 1, "label": "1 PRA" },
+              { "value": 2, "label": "2 PRA" },
+              { "value": 3, "label": "3 PRA" },
+              { "value": 4, "label": "4 PRA" },
+              { "value": 5, "label": "5 PRA" },
+              { "value": 6, "label": "6 PRA" },
+              { "value": 7, "label": "7 PRA" },
+              { "value": 8, "label": "8 PRA" }
+            ]
+          },
+          "SIP": {
+            "redundant": [
+              { "value": 1, "label": "1 SIP channels" },
+              { "value": 2, "label": "2 SIP channels" },
+              { "value": 3, "label": "3 SIP channels" },
+              { "value": 4, "label": "4 SIP channels" },
+              { "value": 5, "label": "5 SIP channels" },
+              { "value": 6, "label": "6 SIP channels" },
+              { "value": 7, "label": "7 SIP channels" },
+              { "value": 8, "label": "8 SIP channels" },
+              { "value": 9, "label": "9 SIP channels" },
+              { "value": 10, "label": "10 SIP channels" },
+              { "value": 11, "label": "11 SIP channels" },
+              { "value": 12, "label": "12 SIP channels" },
+              { "value": 13, "label": "13 SIP channels" },
+              { "value": 14, "label": "14 SIP channels" },
+              { "value": 15, "label": "15 SIP channels" },
+              { "value": 16, "label": "16 SIP channels" },
+              { "value": 17, "label": "17 SIP channels" },
+              { "value": 18, "label": "18 SIP channels" },
+              { "value": 19, "label": "19 SIP channels" },
+              { "value": 20, "label": "20 SIP channels" },
+              { "value": 21, "label": "21 SIP channels" }
+            ],
+            "nonRedundant": [
+              { "value": 1, "label": "1 SIP channels" },
+              { "value": 2, "label": "2 SIP channels" },
+              { "value": 3, "label": "3 SIP channels" },
+              { "value": 4, "label": "4 SIP channels" },
+              { "value": 5, "label": "5 SIP channels" },
+              { "value": 6, "label": "6 SIP channels" },
+              { "value": 7, "label": "7 SIP channels" },
+              { "value": 8, "label": "8 SIP channels" },
+              { "value": 9, "label": "9 SIP channels" },
+              { "value": 10, "label": "10 SIP channels" },
+              { "value": 11, "label": "11 SIP channels" },
+              { "value": 12, "label": "12 SIP channels" },
+              { "value": 13, "label": "13 SIP channels" },
+              { "value": 14, "label": "14 SIP channels" },
+              { "value": 15, "label": "15 SIP channels" },
+              { "value": 16, "label": "16 SIP channels" },
+              { "value": 17, "label": "17 SIP channels" },
+              { "value": 18, "label": "18 SIP channels" },
+              { "value": 19, "label": "19 SIP channels" },
+              { "value": 20, "label": "20 SIP channels" },
+              { "value": 21, "label": "21 SIP channels" },
+              { "value": 22, "label": "22 SIP channels" },
+              { "value": 23, "label": "23 SIP channels" },
+              { "value": 24, "label": "24 SIP channels" }
+            ]
+          }
+        },
+        "COAX": {
+          "SIP": {
+            "None": [
+              { "value": 2, "label": "2 SIP channels" },
+              { "value": 4, "label": "4 SIP channels" },
+              { "value": 6, "label": "6 SIP channels" },
+              { "value": 8, "label": "8 SIP channels" },
+              { "value": 10, "label": "10 SIP channels" },
+              { "value": 12, "label": "12 SIP channels" },
+              { "value": 14, "label": "14 SIP channels" },
+              { "value": 16, "label": "16 SIP channels" },
+              { "value": 15, "label": "15 SIP channels" },
+              { "value": 20, "label": "20 SIP channels" },
+              { "value": 25, "label": "25 SIP channels" },
+              { "value": 30, "label": "30 SIP channels" },
+              { "value": 35, "label": "35 SIP channels" },
+              { "value": 40, "label": "40 SIP channels" },
+              { "value": 45, "label": "45 SIP channels" },
+              { "value": 50, "label": "50 SIP channels" },
+              { "value": 55, "label": "55 SIP channels" },
+              { "value": 60, "label": "60 SIP channels" }
+            ],
+            "Yealink-T42G": [
+              { "value": 2, "label": "2 SIP channels" },
+              { "value": 4, "label": "4 SIP channels" },
+              { "value": 6, "label": "6 SIP channels" },
+              { "value": 8, "label": "8 SIP channels" },
+              { "value": 10, "label": "10 SIP channels" },
+              { "value": 12, "label": "12 SIP channels" },
+              { "value": 14, "label": "14 SIP channels" },
+              { "value": 16, "label": "16 SIP channels" }
+            ],
+            "CTYealink-T40G": [
+              { "value": 15, "label": "15 SIP channels" },
+              { "value": 20, "label": "20 SIP channels" },
+              { "value": 25, "label": "25 SIP channels" },
+              { "value": 30, "label": "30 SIP channels" },
+              { "value": 35, "label": "35 SIP channels" },
+              { "value": 40, "label": "40 SIP channels" },
+              { "value": 45, "label": "45 SIP channels" },
+              { "value": 50, "label": "50 SIP channels" },
+              { "value": 55, "label": "55 SIP channels" },
+              { "value": 60, "label": "60 SIP channels" }
+            ]
+          }
+        }
+      },
+      "iad": {
+        "directionOverride": [
+          { "value": "groupValue", "label": "No override: use Site settings" },
+          { "value": "Uni", "label": "Uni-directional" },
+          { "value": "Bi", "label": "Bi-directional" }
+        ],
+        "iadTypeForCreate": [
+          { "value": "CTYealink-T40G", "label": "M800C Fake" }
+        ],
+        "iadType": [
+          { "value": "CTYealink-T40G", "label": "M800C Fake" },
+          { "value": "Yealink-T42G", "label": "M500L_SIP Fake" }
+        ],
+        "2EDUsForServiceTypes": ["D2", "D2b", "5", "5b", "6", "7"],
+        "dtmfOverride": [
+          { "value": "groupValue", "label": "No override: use Site settings" },
+          { "value": "RFC2833", "label": "Override: RFC2833" },
+          { "value": "G711 inband", "label": "Override: G711 inband" }
+        ],
+        "channelHuntingOverride": [
+          { "value": "groupValue", "label": "No override: use Site settings" },
+          {
+            "value": "Lowest available channel first",
+            "label": "Lowest available channel first"
+          },
+          {
+            "value": "Highest available channel first",
+            "label": "Highest available channel first"
+          },
+          { "value": "Loadbalanced", "label": "Loadbalanced" },
+          { "value": "Circular clockwise", "label": "Circular clockwise" },
+          {
+            "value": "Circular counter clockwise",
+            "label": "Circular counter clockwise"
+          }
+        ],
+        "isdnTerminationSide": [
+          { "value": "Network", "label": "Network termination side" },
+          { "value": "User", "label": "User termination side" }
+        ],
+        "trunkId": [
+          { "value": -1, "label": "None" },
+          { "value": 0, "label": "0" },
+          { "value": 1, "label": "1" },
+          { "value": 2, "label": "2" },
+          { "value": 3, "label": "3" }
+        ],
+        "destnr": [
+          { "value": "None", "label": "None" },
+          { "value": "All", "label": "All" }
+        ],
+        "praSelected": [
+          { "value": 0, "label": "All" },
+          { "value": 1, "label": "1" },
+          { "value": 2, "label": "2" },
+          { "value": 3, "label": "3" },
+          { "value": 4, "label": "4" }
+        ],
+        "iadTypeOptions": {
+          "dualPower": {
+            "CTYealink-T40G": true,
+            "Yealink-T42G": false
+          }
+        }
+      }
+    }
+  },
+  "reconciliation": {
+    "anomaly": {
+      "event": [
+        { "value": 0, "label": "Generic" },
+        { "value": 1, "label": "Enterprise not in NORM" },
+        { "value": 2, "label": "Enterprise not in Broadsoft" },
+        { "value": 3, "label": "Enterprise not in APIO" },
+        { "value": 4, "label": "Group not in NORM" },
+        { "value": 5, "label": "Group not in Broadsoft" },
+        { "value": 6, "label": "EDU not in NORM" },
+        { "value": 7, "label": "EDU data mismatch" },
+        { "value": 8, "label": "EDU not in APIO" },
+        { "value": 9, "label": "SR not in NORM" },
+        { "value": 10, "label": "SR data mismatch" },
+        { "value": 11, "label": "SR not in APIO" },
+        { "value": 12, "label": "Custom Tag mismatch" },
+        { "value": 13, "label": "NORM data without external ids" }
+      ],
+      "status": [
+        { "value": 0, "label": "New" },
+        { "value": 1, "label": "Assigned" },
+        { "value": 2, "label": "In Progress" },
+        { "value": 3, "label": "Complete" },
+        { "value": 4, "label": "On Hold" }
+      ],
+      "result": [
+        { "value": 0, "label": "Rejected" },
+        { "value": 1, "label": "NORM updated" },
+        { "value": 2, "label": "APIO updated" },
+        { "value": 3, "label": "Broadsoft updated" },
+        { "value": 4, "label": "NORM & APIO updated" },
+        { "value": 5, "label": "NORM & Broadsoft updated" },
+        { "value": 6, "label": "APIO & Broadsoft updated" },
+        { "value": 7, "label": "NORM & APIO & Broadsoft updated" }
+      ]
+    }
+  },
+  "iad_reboot": {
+    "iadType": [
+      { "value": "CTYealink-T40G", "label": "M800C Fake" },
+      { "value": "Yealink-T42G", "label": "M500L_SIP Fake" }
+    ]
+  }
+}

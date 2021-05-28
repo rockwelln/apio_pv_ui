@@ -45,12 +45,14 @@ export class AddGroup extends Component {
       this.setState({
         isLoading: false,
         typeOfIad: this.props.config.tenant.group.pbxType[0].value,
-        typeOfAccess: this.props.config.tenant.group.accessTypeForCreate[0]
-          .value,
+        typeOfAccess:
+          this.props.config.tenant.group.accessTypeForCreate[0].value,
         serviceType: this.props.config.tenant.group.serviceType[0].value,
         channelHunting: this.props.config.tenant.group.channelHunting[0].value,
-        numberOfChannels: this.props.config.tenant.group.capacity.PRA
-          .nonRedundant[0].value,
+        numberOfChannels:
+          this.props.config.tenant.group.capacity[
+            this.props.config.tenant.group.accessTypeForCreate[0].value
+          ].PRA.nonRedundant[0].value,
       })
     );
   };
@@ -399,39 +401,39 @@ export class AddGroup extends Component {
                       ? ~this.props.config.tenant.group.iad[
                           "2EDUsForServiceTypes"
                         ].indexOf(this.state.serviceType)
-                        ? this.props.config.tenant.group.capacity.PRA.redundant.map(
-                            (type, i) => (
-                              <option key={i} value={type.value}>
-                                {type.label}
-                              </option>
-                            )
-                          )
-                        : this.props.config.tenant.group.capacity.PRA.nonRedundant.map(
-                            (type, i) => (
-                              <option key={i} value={type.value}>
-                                {type.label}
-                              </option>
-                            )
-                          )
+                        ? this.props.config.tenant.group.capacity[
+                            this.state.typeOfAccess
+                          ].PRA.redundant.map((type, i) => (
+                            <option key={i} value={type.value}>
+                              {type.label}
+                            </option>
+                          ))
+                        : this.props.config.tenant.group.capacity[
+                            this.state.typeOfAccess
+                          ].PRA.nonRedundant.map((type, i) => (
+                            <option key={i} value={type.value}>
+                              {type.label}
+                            </option>
+                          ))
                       : this.state.typeOfIad === "SIP" ||
                         this.state.typeOfIad === "SIP_PRA"
                       ? ~this.props.config.tenant.group.iad[
                           "2EDUsForServiceTypes"
                         ].indexOf(this.state.serviceType)
-                        ? this.props.config.tenant.group.capacity.SIP.redundant.map(
-                            (type, i) => (
-                              <option key={i} value={type.value}>
-                                {type.label}
-                              </option>
-                            )
-                          )
-                        : this.props.config.tenant.group.capacity.SIP.nonRedundant.map(
-                            (type, i) => (
-                              <option key={i} value={type.value}>
-                                {type.label}
-                              </option>
-                            )
-                          )
+                        ? this.props.config.tenant.group.capacity[
+                            this.state.typeOfAccess
+                          ].SIP.redundant.map((type, i) => (
+                            <option key={i} value={type.value}>
+                              {type.label}
+                            </option>
+                          ))
+                        : this.props.config.tenant.group.capacity[
+                            this.state.typeOfAccess
+                          ].SIP.nonRedundant.map((type, i) => (
+                            <option key={i} value={type.value}>
+                              {type.label}
+                            </option>
+                          ))
                       : null}
                   </FormControl>
                 </div>
