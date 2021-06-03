@@ -248,7 +248,8 @@ function mainReducer(state = initialState, action) {
     case actionType.GET_CONFIG: {
       return {
         ...state,
-        config: deepMerge(defaultConfig, action.data),
+        //config: deepMerge(defaultConfig, action.data),
+        config: action.data,
       };
     }
     case actionType.GET_IAD_BY_ID: {
