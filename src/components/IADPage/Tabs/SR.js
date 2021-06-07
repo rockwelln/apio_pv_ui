@@ -118,6 +118,100 @@ export class SR extends Component {
           <Col md={6} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-33"}>
               <ControlLabel>
+                <FormattedMessage id="ip_iad" defaultMessage="IP IAD" />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-66"}>
+              <FormControl
+                type="text"
+                value={this.state.sr.ip_iad}
+                placeholder={"IP IAD"}
+                disabled
+              />
+            </div>
+          </Col>
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={6} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-33"}>
+              <ControlLabel>
+                <FormattedMessage id="ip_sr" defaultMessage="IP SR" />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-66"}>
+              <FormControl
+                type="text"
+                value={this.state.sr.ip_sr}
+                placeholder={"IP SR"}
+                disabled
+              />
+            </div>
+          </Col>
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={6} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-33"}>
+              <ControlLabel>
+                <FormattedMessage
+                  id="network_identifier"
+                  defaultMessage="Network identifier"
+                />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-66"}>
+              <FormControl
+                type="text"
+                value={this.state.sr.network_identifier}
+                placeholder={"Network identifier"}
+                disabled
+              />
+            </div>
+          </Col>
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={6} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-33"}>
+              <ControlLabel>
+                <FormattedMessage
+                  id="norm_error_sr"
+                  defaultMessage="NORM error SR"
+                />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-66"}>
+              <FormControl
+                type="text"
+                value={this.state.sr.norm_error_sr}
+                placeholder={"NORM error SR"}
+                disabled
+              />
+            </div>
+          </Col>
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={6} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-33"}>
+              <ControlLabel>
+                <FormattedMessage
+                  id="norm_status_sr"
+                  defaultMessage="NORM status SR"
+                />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex-basis-66"}>
+              <FormControl
+                type="text"
+                value={this.state.sr.norm_status_sr}
+                placeholder={"NORM status SR"}
+                disabled
+              />
+            </div>
+          </Col>
+        </Row>
+        <Row className={"margin-top-1"}>
+          <Col md={6} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-33"}>
+              <ControlLabel>
                 <FormattedMessage
                   id="iadLoopbackIP"
                   defaultMessage="IAD Loopback IP"
