@@ -1,11 +1,16 @@
 const deepMerge = (target, source) => {
-  for (const key of Object.keys(source)) {
-    if (source[key] instanceof Object) {
-      Object.assign(source[key], deepMerge(target[key], source[key]));
+  const copiedTarget = { ...target };
+  const copiedSource = { ...source };
+  for (const key of Object.keys(copiedSource)) {
+    if (copiedSource[key] instanceof Object) {
+      Object.assign(
+        copiedSource[key],
+        deepMerge(copiedTarget[key], copiedSource[key])
+      );
     }
   }
-  Object.assign(target || {}, source);
-  return target;
+  Object.assign(copiedTarget || {}, copiedSource);
+  return copiedTarget;
 };
 
 export default deepMerge;
