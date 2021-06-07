@@ -19,7 +19,7 @@ import { FormattedMessage } from "react-intl";
 import {
   changeIAD,
   fetchPutUpdateIAD,
-  changeObjectIAD
+  changeObjectIAD,
 } from "../../../store/actions";
 import { removeEmpty } from "../../remuveEmptyInObject";
 
@@ -39,16 +39,18 @@ export class IPAddress extends Component {
     errorNetMaskV4: null,
     errorIpAdressV6: null,
     errorNetMaskV6: null,
-    showRebootDialog: false
+    showRebootDialog: false,
   };
 
   componentDidMount() {
     this.setState({
-      ip1: this.props.iad.ip1 ? this.props.iad.ip1 : {},
+      ip1: Object.keys(this.props.iad.ip1).length
+        ? this.props.iad.ip1
+        : { mode: "Disabled" },
       pbx: this.props.iad.pbx ? this.props.iad.pbx : {},
       transportMode: this.props.iad.transportMode
         ? this.props.iad.transportMode
-        : ""
+        : "",
     });
   }
   render() {
@@ -58,8 +60,9 @@ export class IPAddress extends Component {
       errorIpAdressV4,
       errorNetMaskV4,
       errorIpAdressV6,
-      errorNetMaskV6
+      errorNetMaskV6,
     } = this.state;
+
     return (
       <React.Fragment>
         {(this.props.iad.protocolMode === "SIP" ||
@@ -123,9 +126,9 @@ export class IPAddress extends Component {
                         name="ip1mode"
                         value={type.value}
                         checked={type.value === this.state.ip1.mode}
-                        onChange={e =>
+                        onChange={(e) =>
                           this.setState({
-                            ip1: { ...this.state.ip1, mode: e.target.value }
+                            ip1: { ...this.state.ip1, mode: e.target.value },
                           })
                         }
                         disabled={
@@ -162,13 +165,13 @@ export class IPAddress extends Component {
                         type="text"
                         value={this.state.ip1.ipv4Address}
                         placeholder={"IPv4 address"}
-                        onChange={e =>
+                        onChange={(e) =>
                           this.setState({
                             ip1: {
                               ...this.state.ip1,
-                              ipv4Address: e.target.value
+                              ipv4Address: e.target.value,
                             },
-                            errorIpAdressV4: null
+                            errorIpAdressV4: null,
                           })
                         }
                         onBlur={this.validateIPAddressV4}
@@ -217,13 +220,13 @@ export class IPAddress extends Component {
                         type="text"
                         value={this.state.ip1.ipv4Netmask}
                         placeholder={"IPv4 netmask"}
-                        onChange={e =>
+                        onChange={(e) =>
                           this.setState({
                             ip1: {
                               ...this.state.ip1,
-                              ipv4Netmask: e.target.value
+                              ipv4Netmask: e.target.value,
                             },
-                            errorNetMaskV4: null
+                            errorNetMaskV4: null,
                           })
                         }
                         onBlur={this.validateNetMaskV4}
@@ -275,13 +278,13 @@ export class IPAddress extends Component {
                         className={"flex-basis-66"}
                         value={this.state.ip1.ipv6Address}
                         placeholder={"IPv6 address"}
-                        onChange={e =>
+                        onChange={(e) =>
                           this.setState({
                             ip1: {
                               ...this.state.ip1,
-                              ipv6Address: e.target.value
+                              ipv6Address: e.target.value,
                             },
-                            errorIpAdressV6: null
+                            errorIpAdressV6: null,
                           })
                         }
                         type="text"
@@ -331,13 +334,13 @@ export class IPAddress extends Component {
                         type="text"
                         value={this.state.ip1.ipv6Netmask}
                         placeholder={"IPv6 netmask"}
-                        onChange={e =>
+                        onChange={(e) =>
                           this.setState({
                             ip1: {
                               ...this.state.ip1,
-                              ipv6Netmask: e.target.value
+                              ipv6Netmask: e.target.value,
                             },
-                            errorNetMaskV6: null
+                            errorNetMaskV6: null,
                           })
                         }
                         onBlur={this.validateNetMaskV6}
@@ -374,216 +377,218 @@ export class IPAddress extends Component {
         )}
         {(this.props.iad.protocolMode === "SIP" ||
           this.props.iad.protocolMode === "PRA_SIP" ||
-          this.props.iad.protocolMode === "SIP_PRA") && this.state.ip1.mode === "IPv4" && (
-          <React.Fragment>
-            <Row className={"margin-top-1 "}>
-              <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-16"}>
-                  <ControlLabel>
-                    <FormattedMessage
-                      id="IPPBXAddress"
-                      defaultMessage="IP-PBX address"
-                    />
-                  </ControlLabel>
-                </div>
-                <div
-                  className={
-                    "margin-right-1 flex flex-basis-33 align-items-center"
-                  }
-                >
-                  <FormGroup
-                    controlId="errorPbxIpAdress"
-                    validationState={this.state.errorPbxIpAdress}
-                    className={"margin-0 flex width-100p"}
-                  >
-                    <div className={"flex align-items-center width-100p"}>
-                      <ControlLabel className={"margin-0 margin-right-1"}>
-                        <FormattedMessage
-                          id="ipAddress"
-                          defaultMessage="IP Address"
-                        />
-                      </ControlLabel>
-                      <FormControl
-                        type="text"
-                        value={this.state.pbx.ipAddress}
-                        placeholder={"IP Address"}
-                        onChange={e =>
-                          this.setState({
-                            pbx: {
-                              ...this.state.pbx,
-                              ipAddress: e.target.value
-                            },
-                            errorPbxIpAdress: null
-                          })
-                        }
-                        onBlur={this.validatePbxIPAddress}
-                        disabled={
-                          !isAllowed(
-                            localStorage.getItem("userProfile"),
-                            pages.edit_iad_ip_addressing
-                          )
-                        }
-                      />
-                    </div>
-                  </FormGroup>
-                </div>
-                <div
-                  className={
-                    "margin-right-1 flex flex-basis-33 align-items-center"
-                  }
-                >
-                  <ControlLabel className={"margin-0 margin-right-1"}>
-                    <FormattedMessage id="port" defaultMessage="Port" />
-                  </ControlLabel>
-                  <FormControl
-                    type="text"
-                    value={this.state.pbx.port}
-                    placeholder={"Port"}
-                    onChange={e => {
-                      if (isNaN(e.target.value)) {
-                        return;
-                      }
-                      this.setState({
-                        pbx: { ...this.state.pbx, port: e.target.value }
-                      });
-                    }}
-                    disabled={
-                      !isAllowed(
-                        localStorage.getItem("userProfile"),
-                        pages.edit_iad_ip_addressing
-                      )
-                    }
-                  />
-                </div>
-              </Col>
-            </Row>
-            {this.state.errorPbxIpAdress && (
-              <Row className={"margin-top-1 "}>
-                <Col md={12} className={"flex align-items-center"}>
-                  <div className={"margin-right-1 flex flex-basis-16"}></div>
-                  <div
-                    className={
-                      "margin-right-1 flex flex-basis-33 align-items-center"
-                    }
-                  >
-                    <HelpBlock bsClass="color-error">
-                      <FormattedMessage
-                        id="errorIpAdress"
-                        defaultMessage="Invalide IP address"
-                      />
-                    </HelpBlock>
-                  </div>
-                </Col>
-              </Row>
-            )}
-          </React.Fragment>
-        )}
-        {(this.props.iad.protocolMode === "SIP" ||
-            this.props.iad.protocolMode === "PRA_SIP" ||
-            this.props.iad.protocolMode === "SIP_PRA") && this.state.ip1.mode === "IPv6" && (
+          this.props.iad.protocolMode === "SIP_PRA") &&
+          this.state.ip1.mode === "IPv4" && (
             <React.Fragment>
               <Row className={"margin-top-1 "}>
                 <Col md={12} className={"flex align-items-center"}>
                   <div className={"margin-right-1 flex flex-basis-16"}>
                     <ControlLabel>
                       <FormattedMessage
-                          id="IPPBXAddress"
-                          defaultMessage="IP-PBX address"
+                        id="IPPBXAddress"
+                        defaultMessage="IP-PBX address"
                       />
                     </ControlLabel>
                   </div>
                   <div
-                      className={
-                        "margin-right-1 flex flex-basis-33 align-items-center"
-                      }
+                    className={
+                      "margin-right-1 flex flex-basis-33 align-items-center"
+                    }
                   >
                     <FormGroup
-                        controlId="errorPbxIpAdress"
-                        validationState={this.state.errorPbxIpAdress}
-                        className={"margin-0 flex width-100p"}
+                      controlId="errorPbxIpAdress"
+                      validationState={this.state.errorPbxIpAdress}
+                      className={"margin-0 flex width-100p"}
                     >
                       <div className={"flex align-items-center width-100p"}>
                         <ControlLabel className={"margin-0 margin-right-1"}>
                           <FormattedMessage
-                              id="ipAddress"
-                              defaultMessage="IP Address"
+                            id="ipAddress"
+                            defaultMessage="IP Address"
                           />
                         </ControlLabel>
                         <FormControl
-                            type="text"
-                            value={this.state.pbx.ipAddress}
-                            placeholder={"IP Address"}
-                            onChange={e =>
-                                this.setState({
-                                  pbx: {
-                                    ...this.state.pbx,
-                                    ipAddress: e.target.value
-                                  },
-                                  errorPbxIpAdress: null
-                                })
-                            }
-                            onBlur={this.validatePbxIPv6Address}
-                            disabled={
-                              !isAllowed(
-                                  localStorage.getItem("userProfile"),
-                                  pages.edit_iad_ip_addressing
-                              )
-                            }
+                          type="text"
+                          value={this.state.pbx.ipAddress}
+                          placeholder={"IP Address"}
+                          onChange={(e) =>
+                            this.setState({
+                              pbx: {
+                                ...this.state.pbx,
+                                ipAddress: e.target.value,
+                              },
+                              errorPbxIpAdress: null,
+                            })
+                          }
+                          onBlur={this.validatePbxIPAddress}
+                          disabled={
+                            !isAllowed(
+                              localStorage.getItem("userProfile"),
+                              pages.edit_iad_ip_addressing
+                            )
+                          }
                         />
                       </div>
                     </FormGroup>
                   </div>
                   <div
-                      className={
-                        "margin-right-1 flex flex-basis-33 align-items-center"
-                      }
+                    className={
+                      "margin-right-1 flex flex-basis-33 align-items-center"
+                    }
                   >
                     <ControlLabel className={"margin-0 margin-right-1"}>
                       <FormattedMessage id="port" defaultMessage="Port" />
                     </ControlLabel>
                     <FormControl
-                        type="text"
-                        value={this.state.pbx.port}
-                        placeholder={"Port"}
-                        onChange={e => {
-                          if (isNaN(e.target.value)) {
-                            return;
-                          }
-                          this.setState({
-                            pbx: { ...this.state.pbx, port: e.target.value }
-                          });
-                        }}
-                        disabled={
-                          !isAllowed(
-                              localStorage.getItem("userProfile"),
-                              pages.edit_iad_ip_addressing
-                          )
+                      type="text"
+                      value={this.state.pbx.port}
+                      placeholder={"Port"}
+                      onChange={(e) => {
+                        if (isNaN(e.target.value)) {
+                          return;
                         }
+                        this.setState({
+                          pbx: { ...this.state.pbx, port: e.target.value },
+                        });
+                      }}
+                      disabled={
+                        !isAllowed(
+                          localStorage.getItem("userProfile"),
+                          pages.edit_iad_ip_addressing
+                        )
+                      }
                     />
                   </div>
                 </Col>
               </Row>
               {this.state.errorPbxIpAdress && (
-                  <Row className={"margin-top-1 "}>
-                    <Col md={12} className={"flex align-items-center"}>
-                      <div className={"margin-right-1 flex flex-basis-16"}></div>
-                      <div
-                          className={
-                            "margin-right-1 flex flex-basis-33 align-items-center"
-                          }
-                      >
-                        <HelpBlock bsClass="color-error">
-                          <FormattedMessage
-                              id="errorIpAdress"
-                              defaultMessage="Invalide IP address"
-                          />
-                        </HelpBlock>
-                      </div>
-                    </Col>
-                  </Row>
+                <Row className={"margin-top-1 "}>
+                  <Col md={12} className={"flex align-items-center"}>
+                    <div className={"margin-right-1 flex flex-basis-16"}></div>
+                    <div
+                      className={
+                        "margin-right-1 flex flex-basis-33 align-items-center"
+                      }
+                    >
+                      <HelpBlock bsClass="color-error">
+                        <FormattedMessage
+                          id="errorIpAdress"
+                          defaultMessage="Invalide IP address"
+                        />
+                      </HelpBlock>
+                    </div>
+                  </Col>
+                </Row>
               )}
             </React.Fragment>
-        )}
+          )}
+        {(this.props.iad.protocolMode === "SIP" ||
+          this.props.iad.protocolMode === "PRA_SIP" ||
+          this.props.iad.protocolMode === "SIP_PRA") &&
+          this.state.ip1.mode === "IPv6" && (
+            <React.Fragment>
+              <Row className={"margin-top-1 "}>
+                <Col md={12} className={"flex align-items-center"}>
+                  <div className={"margin-right-1 flex flex-basis-16"}>
+                    <ControlLabel>
+                      <FormattedMessage
+                        id="IPPBXAddress"
+                        defaultMessage="IP-PBX address"
+                      />
+                    </ControlLabel>
+                  </div>
+                  <div
+                    className={
+                      "margin-right-1 flex flex-basis-33 align-items-center"
+                    }
+                  >
+                    <FormGroup
+                      controlId="errorPbxIpAdress"
+                      validationState={this.state.errorPbxIpAdress}
+                      className={"margin-0 flex width-100p"}
+                    >
+                      <div className={"flex align-items-center width-100p"}>
+                        <ControlLabel className={"margin-0 margin-right-1"}>
+                          <FormattedMessage
+                            id="ipAddress"
+                            defaultMessage="IP Address"
+                          />
+                        </ControlLabel>
+                        <FormControl
+                          type="text"
+                          value={this.state.pbx.ipAddress}
+                          placeholder={"IP Address"}
+                          onChange={(e) =>
+                            this.setState({
+                              pbx: {
+                                ...this.state.pbx,
+                                ipAddress: e.target.value,
+                              },
+                              errorPbxIpAdress: null,
+                            })
+                          }
+                          onBlur={this.validatePbxIPv6Address}
+                          disabled={
+                            !isAllowed(
+                              localStorage.getItem("userProfile"),
+                              pages.edit_iad_ip_addressing
+                            )
+                          }
+                        />
+                      </div>
+                    </FormGroup>
+                  </div>
+                  <div
+                    className={
+                      "margin-right-1 flex flex-basis-33 align-items-center"
+                    }
+                  >
+                    <ControlLabel className={"margin-0 margin-right-1"}>
+                      <FormattedMessage id="port" defaultMessage="Port" />
+                    </ControlLabel>
+                    <FormControl
+                      type="text"
+                      value={this.state.pbx.port}
+                      placeholder={"Port"}
+                      onChange={(e) => {
+                        if (isNaN(e.target.value)) {
+                          return;
+                        }
+                        this.setState({
+                          pbx: { ...this.state.pbx, port: e.target.value },
+                        });
+                      }}
+                      disabled={
+                        !isAllowed(
+                          localStorage.getItem("userProfile"),
+                          pages.edit_iad_ip_addressing
+                        )
+                      }
+                    />
+                  </div>
+                </Col>
+              </Row>
+              {this.state.errorPbxIpAdress && (
+                <Row className={"margin-top-1 "}>
+                  <Col md={12} className={"flex align-items-center"}>
+                    <div className={"margin-right-1 flex flex-basis-16"}></div>
+                    <div
+                      className={
+                        "margin-right-1 flex flex-basis-33 align-items-center"
+                      }
+                    >
+                      <HelpBlock bsClass="color-error">
+                        <FormattedMessage
+                          id="errorIpAdress"
+                          defaultMessage="Invalide IP address"
+                        />
+                      </HelpBlock>
+                    </div>
+                  </Col>
+                </Row>
+              )}
+            </React.Fragment>
+          )}
         <Row>
           <Col md={12}>
             <div className="button-row">
@@ -639,13 +644,13 @@ export class IPAddress extends Component {
         ? {
             mode: ip1.mode,
             ipv4Address: ip1.ipv4Address,
-            ipv4Netmask: ip1.ipv4Netmask
+            ipv4Netmask: ip1.ipv4Netmask,
           }
         : ip1.mode === "IPv6"
         ? {
             mode: ip1.mode,
             ipv6Address: ip1.ipv6Address,
-            ipv6Netmask: ip1.ipv6Netmask
+            ipv6Netmask: ip1.ipv6Netmask,
           }
         : null;
     const data = { transportMode, pbx, ip1: checkedIp };
@@ -677,11 +682,12 @@ export class IPAddress extends Component {
     // }
   };
 
-  validateNetMaskV6 = e => {
+  validateNetMaskV6 = (e) => {
     if (isNaN(e.target.value)) {
       return this.setState({ errorNetMaskV6: "error" });
     } else {
-      if (parseInt(e.target.value) > 128) { // mask value is too big
+      if (parseInt(e.target.value) > 128) {
+        // mask value is too big
         return this.setState({ errorNetMaskV6: "error" });
       } else {
         return;
@@ -689,8 +695,9 @@ export class IPAddress extends Component {
     }
   };
 
-  validateIPAddressV6 = e => {
-    let reg = /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/;
+  validateIPAddressV6 = (e) => {
+    let reg =
+      /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/;
     if (reg.test(e.target.value) || e.target.value === "") {
       return;
     } else {
@@ -698,8 +705,9 @@ export class IPAddress extends Component {
     }
   };
 
-  validateNetMaskV4 = e => {
-    let reg = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
+  validateNetMaskV4 = (e) => {
+    let reg =
+      /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
     if (reg.test(e.target.value) || e.target.value === "") {
       return;
     } else {
@@ -707,8 +715,9 @@ export class IPAddress extends Component {
     }
   };
 
-  validateIPAddressV4 = e => {
-    let reg = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
+  validateIPAddressV4 = (e) => {
+    let reg =
+      /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
     if (reg.test(e.target.value) || e.target.value === "") {
       return;
     } else {
@@ -716,8 +725,9 @@ export class IPAddress extends Component {
     }
   };
 
-  validatePbxIPAddress = e => {
-    let reg = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
+  validatePbxIPAddress = (e) => {
+    let reg =
+      /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
     if (reg.test(e.target.value) || e.target.value === "") {
       return;
     } else {
@@ -725,8 +735,9 @@ export class IPAddress extends Component {
     }
   };
 
-  validatePbxIPV6Address = e => {
-    let reg = /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/;
+  validatePbxIPV6Address = (e) => {
+    let reg =
+      /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/;
     if (reg.test(e.target.value) || e.target.value === "") {
       return;
     } else {
@@ -734,7 +745,7 @@ export class IPAddress extends Component {
     }
   };
 
-  validateMacAddress = e => {
+  validateMacAddress = (e) => {
     let regDots = /^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$/;
     let reg = /^([0-9A-Fa-f]{2}){5}([0-9A-Fa-f]{2})$/;
     if (
@@ -748,96 +759,93 @@ export class IPAddress extends Component {
     }
   };
 
-  changePbxPort = e => {
+  changePbxPort = (e) => {
     this.setState({
       pbx: {
         ...this.state.pbx,
-        port: e.target.value
-      }
+        port: e.target.value,
+      },
     });
     this.props.changeObjectIAD("pbx", "port", e.target.value);
   };
 
-  changePbxAddress = e => {
+  changePbxAddress = (e) => {
     this.setState({
       pbx: {
         ...this.state.pbx,
-        ipAddress: e.target.value
-      }
+        ipAddress: e.target.value,
+      },
     });
     this.props.changeObjectIAD("pbx", "ipAddress", e.target.value);
   };
 
-  changeIPv4Netmask = e => {
+  changeIPv4Netmask = (e) => {
     this.setState({
       ip1: {
         ...this.state.ip1,
-        ipv4Netmask: e.target.value
-      }
+        ipv4Netmask: e.target.value,
+      },
     });
     this.props.changeObjectIAD("ip1", "ipv4Netmask", e.target.value);
   };
 
-  changeIPv6Netmask = e => {
+  changeIPv6Netmask = (e) => {
     this.setState({
       ip1: {
         ...this.state.ip1,
-        ipv6Netmask: e.target.value
-      }
+        ipv6Netmask: e.target.value,
+      },
     });
     this.props.changeObjectIAD("ip1", "ipv6Netmask", e.target.value);
   };
 
-  changeIPv4Address = e => {
+  changeIPv4Address = (e) => {
     this.setState({
       ip1: {
         ...this.state.ip1,
-        ipv4Address: e.target.value
-      }
+        ipv4Address: e.target.value,
+      },
     });
     this.props.changeObjectIAD("ip1", "ipv4Address", e.target.value);
   };
 
-  changeIPv6Address = e => {
+  changeIPv6Address = (e) => {
     this.setState({
       ip1: {
         ...this.state.ip1,
-        ipv6Address: e.target.value
-      }
+        ipv6Address: e.target.value,
+      },
     });
     this.props.changeObjectIAD("ip1", "ipv6Address", e.target.value);
   };
 
-  changeIPMode = e => {
+  changeIPMode = (e) => {
     this.setState({
       ip1: {
         ...this.state.ip1,
-        mode: e.target.value
-      }
+        mode: e.target.value,
+      },
     });
     this.props.changeObjectIAD("ip1", "mode", e.target.value);
   };
 
-  changeTransportMode = e => {
+  changeTransportMode = (e) => {
     this.setState({
-      transportMode: e.target.value
+      transportMode: e.target.value,
     });
 
     this.props.changeIAD("changeObjectIAD", e.target.value);
   };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   iad: state.iad,
   config: state.config,
-  group: state.group
+  group: state.group,
 });
 
 const mapDispatchToProps = { changeIAD, fetchPutUpdateIAD, changeObjectIAD };
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(IPAddress)
+  connect(mapStateToProps, mapDispatchToProps)(IPAddress)
 );
