@@ -222,53 +222,55 @@ export class index extends Component {
             </div>
           </Col>
         </Row>
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <FormattedMessage
-                id="virtualSite"
-                defaultMessage="Virtual Site"
-              />
-            </div>
-            <div className={"margin-right-1 flex"}>
-              <FormGroup className={"margin-0 flex"}>
-                <Radio
-                  className={"margin-0 flex margin-right-2"}
-                  name="isVirtualSite"
-                  checked={this.state.group.virtual}
-                  disabled
-                  onChange={(e) =>
-                    this.setState({
-                      group: {
-                        ...this.state.group,
-                        virtual: e.target.checked,
-                      },
-                    })
-                  }
-                >
-                  <div className="font-weight-bold flex">
-                    <FormattedMessage id="yes" defaultMessage="Yes" />
-                  </div>
-                </Radio>
-                <Radio
-                  className={"margin-0 flex margin-right-2"}
-                  name="isVirtualSite"
-                  checked={!this.state.group.virtual}
-                  disabled
-                  onChange={(e) =>
-                    this.setState({
-                      virtual: false,
-                    })
-                  }
-                >
-                  <div className="font-weight-bold flex">
-                    <FormattedMessage id="no" defaultMessage="No" />
-                  </div>
-                </Radio>
-              </FormGroup>
-            </div>
-          </Col>
-        </Row>
+        {group.accessType === "COAX" || group.accessType === "VDSL" ? null : (
+          <Row className={"margin-top-1"}>
+            <Col md={12} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-16"}>
+                <FormattedMessage
+                  id="virtualSite"
+                  defaultMessage="Virtual Site"
+                />
+              </div>
+              <div className={"margin-right-1 flex"}>
+                <FormGroup className={"margin-0 flex"}>
+                  <Radio
+                    className={"margin-0 flex margin-right-2"}
+                    name="isVirtualSite"
+                    checked={this.state.group.virtual}
+                    disabled
+                    onChange={(e) =>
+                      this.setState({
+                        group: {
+                          ...this.state.group,
+                          virtual: e.target.checked,
+                        },
+                      })
+                    }
+                  >
+                    <div className="font-weight-bold flex">
+                      <FormattedMessage id="yes" defaultMessage="Yes" />
+                    </div>
+                  </Radio>
+                  <Radio
+                    className={"margin-0 flex margin-right-2"}
+                    name="isVirtualSite"
+                    checked={!this.state.group.virtual}
+                    disabled
+                    onChange={(e) =>
+                      this.setState({
+                        virtual: false,
+                      })
+                    }
+                  >
+                    <div className="font-weight-bold flex">
+                      <FormattedMessage id="no" defaultMessage="No" />
+                    </div>
+                  </Radio>
+                </FormGroup>
+              </div>
+            </Col>
+          </Row>
+        )}
         {!this.state.isDisabled && (
           <Row>
             <Col md={12}>
