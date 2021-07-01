@@ -29,7 +29,8 @@ export class AddPhoneNumber extends Component {
     status: "preActive",
     numbers: [{ phoneNumber: "" }],
     disableAddButton: false,
-    countNumbersError: false
+    countNumbersError: false,
+    zipCode: "",
   };
   render() {
     return (
@@ -65,9 +66,9 @@ export class AddPhoneNumber extends Component {
                         name="transportMode"
                         value={state.value}
                         checked={state.value === this.state.status}
-                        onChange={e =>
+                        onChange={(e) =>
                           this.setState({
-                            status: e.target.value
+                            status: e.target.value,
                           })
                         }
                       >
@@ -82,7 +83,24 @@ export class AddPhoneNumber extends Component {
             </Row>
             <Row className={"margin-top-1"}>
               <Col md={6} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex flex-basis-33"}>
+                <div className={"flex flex-basis-33"}>Zip Code</div>
+                <div className={"margin-right-1 flex flex-basis-66"}>
+                  <FormControl
+                    type="text"
+                    value={this.state.zipCode}
+                    placeholder={"Zip Code"}
+                    onChange={(e) => {
+                      this.setState({
+                        zipCode: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={6} className={"flex align-items-center"}>
+                <div className={"margin-right-2 flex flex-basis-33"}>
                   Array of numbers
                 </div>
                 <div className={"margin-right-1"}>From</div>
@@ -93,10 +111,10 @@ export class AddPhoneNumber extends Component {
                     placeholder={"From phone number"}
                     onKeyDown={validateInputPhoneNumber}
                     onBlur={this.validateCountOfPhoneNumber}
-                    onChange={e => {
+                    onChange={(e) => {
                       this.setState({
                         arrayFrom: e.target.value,
-                        countNumbersError: false
+                        countNumbersError: false,
                       });
                     }}
                   />
@@ -111,10 +129,10 @@ export class AddPhoneNumber extends Component {
                     placeholder={"To phone number"}
                     onKeyDown={validateInputPhoneNumber}
                     onBlur={this.validateCountOfPhoneNumber}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState({
                         arrayTo: e.target.value,
-                        countNumbersError: false
+                        countNumbersError: false,
                       })
                     }
                   />
@@ -136,13 +154,14 @@ export class AddPhoneNumber extends Component {
                         placeholder={"Phone number"}
                         onKeyDown={validateInputPhoneNumber}
                         onBlur={this.validateCountOfPhoneNumber}
-                        onChange={e => {
+                        onChange={(e) => {
                           const val = e.target.value;
-                          this.setState(curState => {
+                          this.setState((curState) => {
                             const numbers = [...curState.numbers];
                             numbers[i] = {
                               ...numbers[i],
-                              phoneNumber: val
+                              phoneNumber: val,
+                              zipCode: this.state.zipCode,
                             };
                             return { numbers, countNumbersError: false };
                           });
@@ -216,7 +235,7 @@ export class AddPhoneNumber extends Component {
 
   validateCountOfPhoneNumber = () => {
     const { numbers, arrayFrom, arrayTo } = this.state;
-    const countSingleNumber = numbers.filter(el => el.phoneNumber).length;
+    const countSingleNumber = numbers.filter((el) => el.phoneNumber).length;
     if (Number(arrayTo) - Number(arrayFrom) + 1 + countSingleNumber > 100) {
       this.setState({ countNumbersError: true });
     } else {
@@ -230,7 +249,7 @@ export class AddPhoneNumber extends Component {
     this.setState({ numbers });
   };
 
-  removeNumberFromArray = i => {
+  removeNumberFromArray = (i) => {
     const numbers = this.state.numbers;
     numbers.splice(i, 1);
     this.setState({ numbers }, () => this.validateCountOfPhoneNumber());
@@ -243,11 +262,11 @@ export class AddPhoneNumber extends Component {
   };
 
   addPhoneNumbers = () => {
-    const { numbers, arrayFrom, arrayTo, status } = this.state;
+    const { numbers, arrayFrom, arrayTo, status, zipCode } = this.state;
     const data = {
       numbers,
       status,
-      range: { minPhoneNumber: arrayFrom, maxPhoneNumber: arrayTo }
+      range: { minPhoneNumber: arrayFrom, maxPhoneNumber: arrayTo, zipCode },
     };
     const clearData = removeEmpty(data);
     this.setState({ disableAddButton: true }, () =>
@@ -258,7 +277,7 @@ export class AddPhoneNumber extends Component {
           clearData
         )
         .then(
-          res =>
+          (res) =>
             res === "success" &&
             this.props.history.push(
               `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/#numbers`
@@ -271,9 +290,4 @@ export class AddPhoneNumber extends Component {
 
 const mapDispatchToProps = { fetchPostAssignPhoneNumbersToGroup };
 
-export default withRouter(
-  connect(
-    null,
-    mapDispatchToProps
-  )(AddPhoneNumber)
-);
+export default withRouter(connect(null, mapDispatchToProps)(AddPhoneNumber));

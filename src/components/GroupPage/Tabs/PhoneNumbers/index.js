@@ -356,6 +356,16 @@ export class PhoneNumbersTab extends Component {
                       />
                     </th>
                     <th />
+                    <th style={{ width: "12%" }}>
+                      <FormattedMessage
+                        id="zipCode"
+                        defaultMessage="ZIP Code"
+                      />
+                      <Glyphicon
+                        glyph="glyphicon glyphicon-sort"
+                        onClick={this.sortByZipCode}
+                      />
+                    </th>
                     <th>
                       <FormattedMessage
                         id="mainNumber"
@@ -734,6 +744,27 @@ export class PhoneNumbersTab extends Component {
         {
           phoneNumbers: phonesSorted,
           sortedBy: "maintenance_number",
+        },
+        () => this.pagination()
+      );
+    }
+  };
+
+  sortBy = () => {
+    const { phoneNumbers, sortedBy } = this.state;
+    if (sortedBy === "zipCode") {
+      const phonesSorted = phoneNumbers.reverse();
+      this.setState({ phoneNumbers: phonesSorted }, () => this.pagination());
+    } else {
+      const phonesSorted = phoneNumbers.sort((a, b) => {
+        if (a.zipCode > b.zipCode) return -1;
+        if (a.zipCode < b.zipCode) return 1;
+        return 0;
+      });
+      this.setState(
+        {
+          phoneNumbers: phonesSorted,
+          sortedBy: "zipCode",
         },
         () => this.pagination()
       );

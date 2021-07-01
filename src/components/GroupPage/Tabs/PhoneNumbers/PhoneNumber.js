@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Checkbox from "react-bootstrap/lib/Checkbox";
+import FormControl from "react-bootstrap/lib/FormControl";
 
 import DeleteModal from "./DeleteModal";
 
@@ -94,6 +95,14 @@ export default class PhoneNumber extends Component {
           ) : (
             <td />
           )}
+          <td>
+            <FormControl
+              type="text"
+              value={number.zipCode}
+              placeholder={"Zip code"}
+            />
+            {}
+          </td>
           <td>{number.main_number ? "Yes" : "No"}</td>
           <td>{number.maintenance_number ? "Yes" : "No"}</td>
           {isAllowed(
