@@ -250,6 +250,20 @@ export class PhoneNumbersTab extends Component {
                       />
                     </Button>
                   ) : null}
+                  {isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.group_numbers_refresh_all
+                  ) ? (
+                    <Button
+                      onClick={this.updateZipCodes}
+                      className={"btn-primary margin-right-1"}
+                    >
+                      <FormattedMessage
+                        id="updateZipCodes"
+                        defaultMessage="Update zip codes"
+                      />
+                    </Button>
+                  ) : null}
                 </div>
                 <Modal show={this.state.showRefreshAllDialog}>
                   <Modal.Header>
@@ -371,22 +385,12 @@ export class PhoneNumbersTab extends Component {
                         id="mainNumber"
                         defaultMessage="Main Number"
                       />
-                      <Glyphicon
-                        glyph="glyphicon glyphicon-sort"
-                        onClick={this.sortByMainNumber}
-                      />
-                    </th>
-                    <th>
+                      {" / "}
                       <FormattedMessage
                         id="maintenanceNumber"
                         defaultMessage="Maintenance Number"
                       />
-                      <Glyphicon
-                        glyph="glyphicon glyphicon-sort"
-                        onClick={this.sortByMaintenanceNumber}
-                      />
                     </th>
-
                     <th />
                   </tr>
                 </thead>
@@ -410,6 +414,7 @@ export class PhoneNumbersTab extends Component {
                         handleSingleCheckboxClickInRange={
                           this.handleSingleCheckboxClickInRange
                         }
+                        handleChangeZipCode={this.handleChangeZipCode}
                         page={page}
                         onReload={() => this.fetchGetNumbers()}
                       />
@@ -575,6 +580,62 @@ export class PhoneNumbersTab extends Component {
         )
         .then(() => this.setState({ disabledUpdateStatusActive: false }));
     allPreActiveNumbers.length &&
+      this.props
+        .fetchPutUpdateNumbersStatus(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          preActiveData
+        )
+        .then(() => this.setState({ disabledUpdateStatusPreActive: false }));
+  };
+
+  updateZipCodes = () => {
+    const newZipNumbers = [];
+    this.state.phoneNumbers.forEach((phone) => {
+      if (phone.phoneNumbers) {
+        phone.phoneNumbers.forEach((number) => {
+          if (number.isChanged) {
+            newZipNumbers.push({
+              active: number.active,
+              preActive: number.preActive,
+              phoneNumber: number.phoneNumber,
+              zipCode: number.zipCode,
+            });
+          }
+        });
+      } else {
+        if (phone.isChanged) {
+          newZipNumbers.push({
+            active: phone.active,
+            preActive: phone.preActive,
+            phoneNumber: phone.phoneNumber,
+            zipCode: phone.zipCode,
+          });
+        }
+      }
+    });
+
+    const activeData = {
+      numbers: newZipNumbers.filter((number) => number.active),
+      status: "active",
+    };
+    const preActiveData = {
+      numbers: newZipNumbers.filter((number) => number.preActive),
+      status: "preActive",
+    };
+    this.setState({
+      disabledUpdateStatusActive: activeData.numbers.length,
+      disabledUpdateStatusPreActive: preActiveData.numbers.length,
+    });
+    activeData.numbers.length &&
+      this.props
+        .fetchPutUpdateNumbersStatus(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          activeData
+        )
+        .then(() => this.setState({ disabledUpdateStatusActive: false }));
+    preActiveData.numbers.length &&
       this.props
         .fetchPutUpdateNumbersStatus(
           this.props.match.params.tenantId,
@@ -1028,6 +1089,50 @@ export class PhoneNumbersTab extends Component {
     this.setState({ phoneNumbers: newArr, selectAllActive: false }, () =>
       this.pagination()
     );
+  };
+
+  handleChangeZipCode = (phone, newZipCode, inRange) => {
+    let newArr = [];
+    const incomingPhone = phone;
+    if (inRange) {
+      newArr = this.state.phoneNumbers.map((number) => {
+        if (
+          number.rangeStart <= incomingPhone &&
+          incomingPhone <= number.rangeEnd
+        ) {
+          return {
+            ...number,
+            phoneNumbers: number.phoneNumbers.map((el) => ({
+              ...el,
+              zipCode:
+                el.phoneNumber === incomingPhone ? newZipCode : el.zipCode,
+              isChanged: el.phoneNumber === incomingPhone ? true : el.isChanged,
+            })),
+          };
+        } else {
+          return number;
+        }
+      });
+    } else {
+      newArr = this.state.phoneNumbers.map((el) => {
+        if (el.phoneNumber === incomingPhone) {
+          return {
+            ...el,
+            zipCode: newZipCode,
+            isChanged: true,
+            phoneNumbers:
+              el.phoneNumbers &&
+              el.phoneNumbers.map((phone) => ({
+                ...phone,
+                zipCode: newZipCode,
+                isChanged: true,
+              })),
+          };
+        }
+        return el;
+      });
+    }
+    this.setState({ phoneNumbers: newArr }, () => this.pagination());
   };
 }
 

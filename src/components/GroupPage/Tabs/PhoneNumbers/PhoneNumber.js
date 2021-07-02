@@ -100,11 +100,19 @@ export default class PhoneNumber extends Component {
               type="text"
               value={number.zipCode}
               placeholder={"Zip code"}
+              onChange={(e) => {
+                this.props.handleChangeZipCode(
+                  number.phoneNumber,
+                  e.target.value,
+                  number.inRange
+                );
+              }}
             />
             {}
           </td>
-          <td>{number.main_number ? "Yes" : "No"}</td>
-          <td>{number.maintenance_number ? "Yes" : "No"}</td>
+          <td>{`${number.main_number ? "Yes" : "No"}/${
+            number.maintenance_number ? "Yes" : "No"
+          }`}</td>
           {isAllowed(
             localStorage.getItem("userProfile"),
             pages.group_numbers_other_actions
@@ -144,6 +152,7 @@ export default class PhoneNumber extends Component {
               handleSingleCheckboxClickActive={
                 this.props.handleSingleCheckboxClickActive
               }
+              handleChangeZipCode={this.props.handleChangeZipCode}
               handleSingleCheckboxClickPreActive={
                 this.props.handleSingleCheckboxClickPreActive
               }
