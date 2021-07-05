@@ -257,6 +257,10 @@ export class PhoneNumbersTab extends Component {
                     <Button
                       onClick={this.updateZipCodes}
                       className={"btn-primary margin-right-1"}
+                      disabled={
+                        this.state.disabledUpdateStatusActive ||
+                        this.state.disabledUpdateStatusPreActive
+                      }
                     >
                       <FormattedMessage
                         id="updateZipCodes"
