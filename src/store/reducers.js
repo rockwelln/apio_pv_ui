@@ -194,6 +194,7 @@ function mainReducer(state = initialState, action) {
               phone.maintenance_number &&
             arrPN[arrPN.length - 1].preActive === phone.preActive &&
             arrPN[arrPN.length - 1].active === phone.active &&
+            arrPN[arrPN.length - 1].zipCode === phone.zipCode &&
             count !== 100
           ) {
             if (count === 1) {
@@ -539,7 +540,9 @@ function mainReducer(state = initialState, action) {
             arrPN[arrPN.length - 1].maintenance_number ===
               phone.maintenance_number &&
             arrPN[arrPN.length - 1].preActive === phone.preActive &&
-            arrPN[arrPN.length - 1].active === phone.active
+            arrPN[arrPN.length - 1].active === phone.active &&
+            arrPN[arrPN.length - 1].zipCode === phone.zipCode &&
+            count !== 100
           ) {
             if (count === 1) {
               arrPN[arrPN.length - 1] = {
