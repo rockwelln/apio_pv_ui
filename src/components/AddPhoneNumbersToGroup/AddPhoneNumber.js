@@ -11,6 +11,7 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Radio from "react-bootstrap/lib/Radio";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import Alert from "react-bootstrap/lib/Alert";
+import HelpBlock from "react-bootstrap/lib/HelpBlock";
 
 import { STATENUMBERS } from "../../constants";
 
@@ -86,6 +87,8 @@ export class AddPhoneNumber extends Component {
                 <div className={"flex flex-basis-33"}>Zip Code</div>
                 <div className={"margin-right-1 flex flex-basis-66"}>
                   <FormControl
+                    title="If nothing is specified the Zip Code of the Site will be
+                    used"
                     type="text"
                     value={this.state.zipCode}
                     placeholder={"Zip Code"}
