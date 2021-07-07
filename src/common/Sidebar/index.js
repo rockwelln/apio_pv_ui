@@ -13,7 +13,7 @@ import "./styles.css";
 
 export class Sidebar extends Component {
   state = {
-    activeKey: 0
+    activeKey: 0,
   };
 
   render() {
@@ -73,22 +73,22 @@ export class Sidebar extends Component {
               </NavItem>
             </LinkContainer>
           ) : null}
-          {/* <LinkContainer
+          <LinkContainer
             to={`/provisioning/${this.props.match.params.gwName}/statistics`}
             className={"li-width"}
           >
             <NavItem eventKey={4} className={"text-align-center"}>
               STATISTICS
             </NavItem>
-          </LinkContainer> */}
+          </LinkContainer>
         </Nav>
       </React.Fragment>
     );
   }
-  handleSelect = selectedKey => {
+  handleSelect = (selectedKey) => {
     this.setState({ activeKey: selectedKey });
   };
-  handleSelectTemplate = selectedKey => {
+  handleSelectTemplate = (selectedKey) => {
     this.setState({ activeKeyTemplate: selectedKey });
   };
 }

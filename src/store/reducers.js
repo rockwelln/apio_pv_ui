@@ -12,7 +12,7 @@ const initialState = {
   createdTenant: {},
   createdGroup: {},
   addedNumbersToGroup: {},
-  iads: { iads: [], praByIad: {} },
+  iads: { iads: [], praByIad: {}, iadType: "None" },
   config: {
     tenant: {
       group: { iad: { iadType: [] } },
@@ -42,6 +42,7 @@ const initialState = {
   validationGroup: {},
   validationGroupError: "",
   iadSpecialCustomTags: [],
+  statistics: {},
 };
 
 function mainReducer(state = initialState, action) {
@@ -437,6 +438,12 @@ function mainReducer(state = initialState, action) {
         ...state,
         iadSpecialCustomTagsComment: action.data.comment,
         iadSpecialCustomTags: action.data.customTags,
+      };
+    }
+    case actionType.GET_STATISTICS: {
+      return {
+        ...state,
+        statistics: action.data,
       };
     }
     case actionType.POST_CREATE_IAD: {

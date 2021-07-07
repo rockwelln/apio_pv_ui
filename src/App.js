@@ -10,7 +10,7 @@ import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect
+  Redirect,
 } from "react-router-dom";
 import NotificationSystem from "react-notification-system";
 
@@ -22,13 +22,13 @@ import {
   fetch_get,
   checkStatus,
   parseJSON,
-  NotificationsManager
+  NotificationsManager,
 } from "./utils";
 import {
   isAllowed,
   pages,
   encryptionUserProfile,
-  decodingUserProfile
+  decodingUserProfile,
 } from "./utils/user";
 import { ResetPasswordPage, RESET_PASSWORD_PREFIX } from "./reset_password";
 
@@ -48,6 +48,7 @@ import AddReconciliationTeam from "./components/AddReconciliationTeam";
 import ReconciliationTeamPage from "./components/ReconciliationTeamPage";
 import Reconciliations from "./components/Reconciliations";
 import MassIADReboot from "./components/MassIADReboot";
+import Statistics from "./components/Statistics";
 
 import GroupPage from "./components/GroupPage";
 
@@ -62,7 +63,7 @@ const Loading = () => (
         position: "absolute",
         top: "50%",
         left: "50%",
-        transform: "translate(-50%, -50%)"
+        transform: "translate(-50%, -50%)",
       }}
     >
       <img src={loading} width="200" height="200" alt="please wait..." />
@@ -95,7 +96,7 @@ class App extends Component {
     this.state = {
       auth_token,
       user_info: undefined,
-      error_msg: undefined
+      error_msg: undefined,
     };
     this._notificationSystem = React.createRef();
     NotificationsManager.setRef(this._notificationSystem);
@@ -107,7 +108,7 @@ class App extends Component {
 
   getUserInfo(auth_token) {
     fetch_get("/api/v01/system/users/local")
-      .then(data => {
+      .then((data) => {
         this.setState({ user_info: data });
         localStorage.setItem(
           "userProfile",
@@ -115,8 +116,11 @@ class App extends Component {
         );
         this.props.onLanguageUpdate(data.language);
       })
-      .catch(error => {
-        if (error.response !== undefined && (error.response.status === 401 || error.response.status === 403)) {
+      .catch((error) => {
+        if (
+          error.response !== undefined &&
+          (error.response.status === 401 || error.response.status === 403)
+        ) {
           // unauthorized
           auth_token && this.logout();
         } else {
@@ -126,7 +130,7 @@ class App extends Component {
                 id="app.no_connection"
                 defaultMessage="Connection issue: Refresh the page or contact the site admin."
               />
-            )
+            ),
           });
         }
       });
@@ -135,7 +139,7 @@ class App extends Component {
   getDatabaseStatus() {
     fetch_get("/api/v01/system/database/status")
       .then(
-        data =>
+        (data) =>
           (!this.state.database_status ||
             data.is_master !== this.state.database_status.is_master) &&
           this.setState({ database_status: data })
@@ -164,7 +168,7 @@ class App extends Component {
     this.setState({ auth_token: token, error_msg: undefined });
     this.props.cookies.set("auth_token", token, {
       expires: tomorrow,
-      path: "/"
+      path: "/",
     }); // maxAge = 24hours
     this.props.cookies.set("auth_sso", sso_auth ? "1" : "0", { path: "/" }); // maxAge = 24hours
   }
@@ -189,18 +193,18 @@ class App extends Component {
       content_type: "application/json",
       body: JSON.stringify({
         token_type: user.token_type,
-        access_token: user.access_token
-      })
+        access_token: user.access_token,
+      }),
     })
       .then(checkStatus)
       .then(parseJSON)
-      .then(r => {
+      .then((r) => {
         const internal_token = r.token;
         console.log("got access token");
         this.updateToken(internal_token, true);
         return r;
       })
-      .then(r => this.getUserInfo(r.token))
+      .then((r) => this.getUserInfo(r.token))
       .catch(console.error);
   }
 
@@ -277,7 +281,7 @@ class App extends Component {
             <Switch>
               <Route
                 path="/dashboard"
-                component={props => (
+                component={(props) => (
                   <div
                     auth_token={auth_token}
                     notifications={this._notificationSystem.current}
@@ -288,7 +292,7 @@ class App extends Component {
               />
               <Route
                 path="/provisioning/:gwName/tenants"
-                component={props =>
+                component={(props) =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.access_common_page
@@ -302,7 +306,7 @@ class App extends Component {
               />
               <Route
                 path="/provisioning/:gwName/configs"
-                component={props =>
+                component={(props) =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.access_config_pages
@@ -316,7 +320,7 @@ class App extends Component {
               />
               <Route
                 path="/provisioning/:gwName/reconciliations"
-                component={props =>
+                component={(props) =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.access_reconciliations
@@ -330,7 +334,7 @@ class App extends Component {
               />
               <Route
                 path="/provisioning/:gwName/iadreboot"
-                component={props =>
+                component={(props) =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.access_iad_reboot_pages
@@ -343,8 +347,22 @@ class App extends Component {
                 exact
               />
               <Route
+                path="/provisioning/:gwName/statistics"
+                component={(props) =>
+                  isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.access_iad_reboot_pages
+                  ) ? (
+                    <Statistics />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
                 path="/provisioning/:gwName/reconciliations/:anomalyHash"
-                component={props =>
+                component={(props) =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.access_common_page
@@ -358,7 +376,7 @@ class App extends Component {
               />
               <Route
                 path="/provisioning/:gwName/configs/addteam"
-                component={props =>
+                component={(props) =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.add_config_reconciliation_team
@@ -372,7 +390,7 @@ class App extends Component {
               />
               <Route
                 path="/provisioning/:gwName/configs/reconciliationteam/:teamName"
-                component={props =>
+                component={(props) =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.access_common_page
@@ -386,7 +404,7 @@ class App extends Component {
               />
               <Route
                 path="/provisioning/:gwName/tenants/add"
-                component={props =>
+                component={(props) =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.add_enterprises
@@ -400,7 +418,7 @@ class App extends Component {
               />
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId"
-                component={props =>
+                component={(props) =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.access_common_page
@@ -414,7 +432,7 @@ class App extends Component {
               />
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/addgroup"
-                component={props =>
+                component={(props) =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.create_group
@@ -428,7 +446,7 @@ class App extends Component {
               />
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId"
-                component={props =>
+                component={(props) =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.access_common_page
@@ -442,7 +460,7 @@ class App extends Component {
               />
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/addiad"
-                component={props =>
+                component={(props) =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.create_iad
@@ -456,7 +474,7 @@ class App extends Component {
               />
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/addphone"
-                component={props =>
+                component={(props) =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.group_numbers_other_actions
@@ -470,7 +488,7 @@ class App extends Component {
               />
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/addenterprisetrunk"
-                component={props =>
+                component={(props) =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.create_group_routing_number
@@ -484,7 +502,7 @@ class App extends Component {
               />
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/iad/:iadId"
-                component={props =>
+                component={(props) =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.access_common_page
@@ -498,7 +516,7 @@ class App extends Component {
               />
               <Route
                 path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/enterprisetrunk/:entTrunkId"
-                component={props =>
+                component={(props) =>
                   isAllowed(
                     localStorage.getItem("userProfile"),
                     pages.access_common_page

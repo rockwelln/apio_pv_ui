@@ -135,6 +135,11 @@ export const getIadSpecialCustomTags = (data) => ({
   data,
 });
 
+export const getStatistics = (data) => ({
+  type: actionType.GET_STATISTICS,
+  data,
+});
+
 export const postCreateTenant = (data) => ({
   type: actionType.POST_CREATE_TENANT,
   data,
@@ -749,6 +754,26 @@ export function fetchGetIADSpecialCustomTags(
         );
       })
       .finally(() => callback && callback(false));
+  };
+}
+
+export function fetchGetStatistics() {
+  /////////////////////////////////
+  return function (dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/statistics/`
+    )
+      .then((data) => dispatch(getStatistics(data)))
+      .catch((error) => {
+        dispatch(getStatistics({}));
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-statistics-failed"
+            defaultMessage="Failed to fetch statistics!"
+          />,
+          error.message
+        );
+      });
   };
 }
 
