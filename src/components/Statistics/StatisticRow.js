@@ -19,8 +19,6 @@ const labels = {
 };
 
 const StatisticRow = (props) => {
-  console.log(props);
-
   return (
     <div className={"margin-left-1"}>
       {typeof props.statistics[props.objKey] === "object" ? (

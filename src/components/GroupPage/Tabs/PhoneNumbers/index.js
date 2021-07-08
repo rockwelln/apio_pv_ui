@@ -990,7 +990,6 @@ export class PhoneNumbersTab extends Component {
       });
     }
     this.setState({ phoneNumbers: newArr, selectAll: false }, () => {
-      console.log(this.state.phoneNumbers);
       this.pagination();
     });
   };
