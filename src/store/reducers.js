@@ -441,9 +441,10 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.GET_STATISTICS: {
+      const { _record_internal_id, ...statistics } = action.data;
       return {
         ...state,
-        statistics: action.data,
+        statistics,
       };
     }
     case actionType.POST_CREATE_IAD: {

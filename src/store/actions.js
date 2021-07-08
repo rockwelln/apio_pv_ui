@@ -757,14 +757,19 @@ export function fetchGetIADSpecialCustomTags(
   };
 }
 
-export function fetchGetStatistics() {
+export function fetchGetStatistics(callback) {
+  callback(true);
   /////////////////////////////////
   return function (dispatch) {
     return fetch_get(
       `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/statistics/`
     )
-      .then((data) => dispatch(getStatistics(data)))
+      .then((data) => {
+        callback(false);
+        dispatch(getStatistics(data));
+      })
       .catch((error) => {
+        callback(false);
         dispatch(getStatistics({}));
         NotificationsManager.error(
           <FormattedMessage

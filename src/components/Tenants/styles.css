@@ -120,6 +120,10 @@
   padding-left: 10px;
 }
 
+.padding-1 {
+  padding: 10px;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
