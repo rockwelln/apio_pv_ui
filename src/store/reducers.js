@@ -43,6 +43,7 @@ const initialState = {
   validationGroupError: "",
   iadSpecialCustomTags: [],
   statistics: {},
+  numbersAsCSV: { content: "" },
 };
 
 function mainReducer(state = initialState, action) {
@@ -445,6 +446,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         statistics,
+      };
+    }
+    case actionType.GET_DOWNLOAD_NUMBERS_AS_CSV: {
+      return {
+        ...state,
+        numbersAsCSV: action.data,
       };
     }
     case actionType.POST_CREATE_IAD: {

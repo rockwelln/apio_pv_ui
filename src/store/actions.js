@@ -140,6 +140,11 @@ export const getStatistics = (data) => ({
   data,
 });
 
+export const getDownloadNumbersAsCSV = (data) => ({
+  type: actionType.GET_DOWNLOAD_NUMBERS_AS_CSV,
+  data,
+});
+
 export const postCreateTenant = (data) => ({
   type: actionType.POST_CREATE_TENANT,
   data,
@@ -758,23 +763,51 @@ export function fetchGetIADSpecialCustomTags(
 }
 
 export function fetchGetStatistics(callback) {
-  callback(true);
+  callback && callback(true);
   /////////////////////////////////
   return function (dispatch) {
     return fetch_get(
       `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/statistics/`
     )
       .then((data) => {
-        callback(false);
+        callback && callback(false);
         dispatch(getStatistics(data));
       })
       .catch((error) => {
-        callback(false);
+        callback && callback(false);
         dispatch(getStatistics({}));
         NotificationsManager.error(
           <FormattedMessage
             id="fetch-statistics-failed"
             defaultMessage="Failed to fetch statistics!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchGetDownloadNumbersAsCSV(
+  tenantId,
+  groupId,
+  callback,
+  catchCallback
+) {
+  callback && callback(true);
+  return function (dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/numbers_as_csv/`
+    )
+      .then((data) => {
+        callback && callback(false);
+        dispatch(getDownloadNumbersAsCSV(data));
+      })
+      .catch((error) => {
+        catchCallback && catchCallback(false);
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-download-numbers"
+            defaultMessage="Failed to download numbers!"
           />,
           error.message
         );

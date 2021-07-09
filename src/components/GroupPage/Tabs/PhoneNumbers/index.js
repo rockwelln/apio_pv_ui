@@ -24,6 +24,7 @@ import {
   fetchGetPhoneNumbersByGroupId,
   fetchPutUpdateNumbersStatus,
   fetchGetPhoneNumbersWithRefreshDB,
+  fetchGetDownloadNumbersAsCSV,
 } from "../../../../store/actions";
 
 import Loading from "../../../../common/Loading";
@@ -57,6 +58,7 @@ export class PhoneNumbersTab extends Component {
     disabledUpdateStatusActive: false,
     disabledUpdateStatusPreActive: false,
     disableRefresInfo: false,
+    isDownloadingCSV: false,
   };
 
   fetchGetNumbers() {
@@ -252,7 +254,7 @@ export class PhoneNumbersTab extends Component {
                   ) : null}
                   {isAllowed(
                     localStorage.getItem("userProfile"),
-                    pages.group_numbers_refresh_all
+                    pages.group_numbers_other_actions
                   ) ? (
                     <Button
                       onClick={this.updateZipCodes}
@@ -268,6 +270,12 @@ export class PhoneNumbersTab extends Component {
                       />
                     </Button>
                   ) : null}
+                  <Button
+                    onClick={this.downloadNumbers}
+                    className={"btn-primary margin-right-1"}
+                  >
+                    <FormattedMessage id="download" defaultMessage="Download" />
+                  </Button>
                 </div>
                 <Modal show={this.state.showRefreshAllDialog}>
                   <Modal.Header>
@@ -450,6 +458,45 @@ export class PhoneNumbersTab extends Component {
       </React.Fragment>
     );
   }
+
+  downloadNumbers = () => {
+    const callback = (value) => {
+      this.setState({ isDownloadingCSV: value });
+    };
+
+    const catchCallback = (value) => {
+      this.setState({ isDownloadingCSV: value, failedDownload: true });
+    };
+
+    const downloadFunc = () => {
+      const pom = document.createElement("a");
+      const csvContent = atob(this.props.numbersAsCSV.content);
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      pom.href = url;
+      pom.setAttribute(
+        "download",
+        `numbers_${this.props.tenantId}_${
+          this.props.groupId
+        }_${new Date().toString()}`
+      );
+      pom.click();
+    };
+
+    this.props
+      .fetchGetDownloadNumbersAsCSV(
+        this.props.tenantId,
+        this.props.groupId,
+        callback,
+        catchCallback
+      )
+      .then(() => {
+        console.log(this.props.numbersAsCSV);
+        if (!this.state.failedDownload) {
+          downloadFunc();
+        }
+      });
+  };
 
   refreshAll = () => {
     this.setState({ disableDialogButtons: true }, () =>
@@ -1141,12 +1188,14 @@ export class PhoneNumbersTab extends Component {
 
 const mapStateToProps = (state) => ({
   phoneNumbers: state.phoneNumbersByGroup,
+  numbersAsCSV: state.numbersAsCSV,
 });
 
 const mapDispatchToProps = {
   fetchGetPhoneNumbersByGroupId,
   fetchPutUpdateNumbersStatus,
   fetchGetPhoneNumbersWithRefreshDB,
+  fetchGetDownloadNumbersAsCSV,
 };
 
 export default withRouter(
