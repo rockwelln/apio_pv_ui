@@ -73,14 +73,19 @@ export class Sidebar extends Component {
               </NavItem>
             </LinkContainer>
           ) : null}
-          <LinkContainer
-            to={`/provisioning/${this.props.match.params.gwName}/statistics`}
-            className={"li-width"}
-          >
-            <NavItem eventKey={4} className={"text-align-center"}>
-              STATISTICS
-            </NavItem>
-          </LinkContainer>
+          {isAllowed(
+            localStorage.getItem("userProfile"),
+            pages.access_statistics
+          ) ? (
+            <LinkContainer
+              to={`/provisioning/${this.props.match.params.gwName}/statistics`}
+              className={"li-width"}
+            >
+              <NavItem eventKey={4} className={"text-align-center"}>
+                STATISTICS
+              </NavItem>
+            </LinkContainer>
+          ) : null}
         </Nav>
       </React.Fragment>
     );

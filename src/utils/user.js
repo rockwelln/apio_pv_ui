@@ -15,7 +15,7 @@ export const pages = Object.freeze({
   system: 21, // Base APIO Core
   ///////////////// PRA : Access to main pages
   access_common_page: 50, // Access to the commane base pages i.e. the Enterprises and sub-pages
-  access_statistics : 51,
+  access_statistics: 51,
   access_iad_reboot_pages: 52, // Access to IAD Reboot page (and menu entry)
   access_reconciliations: 53, // Access to the Reconciliation pages
   access_config_pages: 54, // Config page (and menu entry)
@@ -32,8 +32,8 @@ export const pages = Object.freeze({
   edit_group_channels_number_of_channels: 206, // Edit Group, Channels tab, Number of Channels field
   edit_group_channels_other_fields: 207, // Edit Group, Channels tab, all fields except Number of Channels field
   edit_group_services: 208, // Edit Group, Services tab
-  edit_group_number_formating_tab: 209,// Edit Group, Number Formating tab
-  create_group_routing_number: 210,  // Edit Group, Numbers Routing tab, allow create
+  edit_group_number_formating_tab: 209, // Edit Group, Number Formating tab
+  create_group_routing_number: 210, // Edit Group, Numbers Routing tab, allow create
   delete_group_routing_number: 211, // Edit Group, Numbers Routing tab, allow delete
   edit_group_routing_numbers_rex_red: 212, // Edit Group, Numbers Routing tab, Config tab, Route Exhausted parameters
   edit_group_routing_numbers_other: 213, // Edit Group, Numbers Routing tab, Config tab, all other parameters
@@ -59,7 +59,7 @@ export const pages = Object.freeze({
   edit_iad_advanced_customized_tags: 314, // Group, IAD, Adanced tab, Customized Tags tab (new feature still to develop)
   access_iad_advanced_destination_numbers: 315, // Group, IAD, Adanced tab, access to Destination numbers tab
   ///////////////// PRA: Other pages
-  delete_reconciliation_anomaly:400, // Reconciliation, Anomalies, can delete
+  delete_reconciliation_anomaly: 400, // Reconciliation, Anomalies, can delete
   add_config_reconciliation_team: 401, //Config , Reconciliation team, can create
   delete_config_reconciliation_team: 402, //Config , Reconciliation team, can delete
   //////////////// PRA: Following settings are no more used with the new defintion of the rights and the associated checked in the code
@@ -76,26 +76,16 @@ export const pages = Object.freeze({
   //edit_group_iad_advanced_dual_power: 1124,
   //edit_group_iad_transportMode: 1125,
 
-
-
   //////////////////////////////////////////////////
 
-
-
-
-
   //
-
-
-
-
 });
 
 export const privileges = Object.freeze({});
 
 export const access_levels = Object.freeze({
   read: 0,
-  modify: 1 // include read
+  modify: 1, // include read
 });
 
 const definition = {
@@ -108,10 +98,11 @@ const definition = {
   user: {
     [pages.data]: true,
     [pages.requests]: true,
-    [pages.requests_nprequests]: true
+    [pages.requests_nprequests]: true,
   },
 
-  HelpDesk1: { // Read Only
+  HelpDesk1: {
+    // Read Only
     ///////////////// Base APIO Core
     [pages.not_common_page]: false,
     ///////////////// PRA : Access to main pages
@@ -119,7 +110,7 @@ const definition = {
     [pages.access_reconciliations]: false,
     [pages.access_config_pages]: false,
     [pages.access_iad_reboot_pages]: false,
-    [pages.access_statistics]: true,
+    [pages.access_statistics]: false,
     ///////////////// PRA : Entreprise related
     [pages.add_enterprises]: false,
     [pages.edit_enterprise]: false,
@@ -165,7 +156,8 @@ const definition = {
     [pages.delete_config_reconciliation_team]: false,
   },
 
-  HelpDesk2: { // Tech Support User. From now same as HelpDesk3. Warning both MUST be kept in synch.
+  HelpDesk2: {
+    // Tech Support User. From now same as HelpDesk3. Warning both MUST be kept in synch.
     ///////////////// Base APIO Core
     [pages.not_common_page]: true,
     ///////////////// PRA : Access to main pages
@@ -173,7 +165,7 @@ const definition = {
     [pages.access_reconciliations]: true,
     [pages.access_config_pages]: false,
     [pages.access_iad_reboot_pages]: false,
-    [pages.access_statistics]: true,
+    [pages.access_statistics]: false,
     ///////////////// PRA : Entreprise related
     [pages.add_enterprises]: false,
     [pages.edit_enterprise]: true,
@@ -231,7 +223,8 @@ const definition = {
     //[pages.edit_group_iad_transportMode]: true,
   },
 
-  HelpDesk3: { // Tech Support User. From now HelpDesk2 is a copy of HelpDesk3. Warning both MUST be kept in synch.
+  HelpDesk3: {
+    // Tech Support User. From now HelpDesk2 is a copy of HelpDesk3. Warning both MUST be kept in synch.
     ///////////////// Base APIO Core
     [pages.not_common_page]: true,
     ///////////////// PRA : Access to main pages
@@ -239,7 +232,7 @@ const definition = {
     [pages.access_reconciliations]: true,
     [pages.access_config_pages]: false,
     [pages.access_iad_reboot_pages]: false,
-    [pages.access_statistics]: true,
+    [pages.access_statistics]: false,
     ///////////////// PRA : Entreprise related
     [pages.add_enterprises]: false,
     [pages.edit_enterprise]: true,
@@ -297,7 +290,8 @@ const definition = {
     //[pages.edit_group_iad_transportMode]: true,
   },
 
-  CPM: { // Admin User
+  CPM: {
+    // Admin User
     ///////////////// Base APIO Core
     [pages.not_common_page]: true,
     ///////////////// PRA : Access to main pages
@@ -305,7 +299,7 @@ const definition = {
     [pages.access_reconciliations]: true,
     [pages.access_config_pages]: false,
     [pages.access_iad_reboot_pages]: false,
-    [pages.access_statistics]: true,
+    [pages.access_statistics]: false,
     ///////////////// PRA : Entreprise related
     [pages.add_enterprises]: true,
     [pages.edit_enterprise]: true,
@@ -363,7 +357,8 @@ const definition = {
     //[pages.edit_group_iad_transportMode]: true,
   },
 
-  VoiceOps: { // Super Admin Users, now same as VoiceEng. Warning both MUST be kept in synch.
+  VoiceOps: {
+    // Super Admin Users, now same as VoiceEng. Warning both MUST be kept in synch.
     ///////////////// Base APIO Core
     [pages.not_common_page]: true,
     ///////////////// PRA : Access to main pages
@@ -430,7 +425,8 @@ const definition = {
     //[pages.edit_group_iad_transportMode]: true,
   },
 
-  VoiceEng: { // Super Admin Users, now VoiceOps is a copy of VoiceEng. Warning both MUST be kept in synch.
+  VoiceEng: {
+    // Super Admin Users, now VoiceOps is a copy of VoiceEng. Warning both MUST be kept in synch.
     ///////////////// Base APIO Core
     [pages.not_common_page]: true,
     ///////////////// PRA : Access to main pages
@@ -496,7 +492,6 @@ const definition = {
     //[pages.edit_group_iad_advanced_dual_power]: true,
     //[pages.edit_group_iad_transportMode]: true,
   },
-
 };
 
 export function isAllowed(
