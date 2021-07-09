@@ -101,7 +101,6 @@ export class Channels extends Component {
     if (this.state.isLoading || !this.props.iads.iadType) {
       return <Loading />;
     }
-    console.log(this.state.group.serviceType);
 
     return (
       <React.Fragment>
