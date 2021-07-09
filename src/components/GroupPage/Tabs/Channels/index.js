@@ -101,6 +101,7 @@ export class Channels extends Component {
     if (this.state.isLoading || !this.props.iads.iadType) {
       return <Loading />;
     }
+    console.log(this.state.group.serviceType);
 
     return (
       <React.Fragment>
@@ -143,11 +144,19 @@ export class Channels extends Component {
                       id="numberOfPRA"
                       defaultMessage="Number of PRA"
                     />
-                  ) : (
+                  ) : this.state.group.pbxType === "SIP" ||
+                    this.state.group.pbxType === "SIP_PRA" ? (
                     <FormattedMessage
                       id="numberOfChannels"
                       defaultMessage="Number of Channels"
                     />
+                  ) : (
+                    this.state.group.pbxType === "BRA" && (
+                      <FormattedMessage
+                        id="numberOfBA"
+                        defaultMessage="Number of BA"
+                      />
+                    )
                   )}
                 </ControlLabel>
               </div>
@@ -220,6 +229,14 @@ export class Channels extends Component {
                             {type.label}
                           </option>
                         ))
+                    : this.state.group.pbxType === "BRA"
+                    ? this.props.config.tenant.group.capacity[
+                        this.state.group.accessType
+                      ].BRA[this.props.iads.iadType].map((type, i) => (
+                        <option key={i} value={type.value}>
+                          {type.label}
+                        </option>
+                      ))
                     : null}
                 </FormControl>
               </div>
