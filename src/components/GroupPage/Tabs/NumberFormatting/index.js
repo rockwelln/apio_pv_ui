@@ -15,7 +15,7 @@ import { removeEmpty } from "../../../remuveEmptyInObject";
 import {
   fetchGetConfig,
   fetchGetGroupById,
-  fetchPutUpdateGroupDetails
+  fetchPutUpdateGroupDetails,
 } from "../../../../store/actions";
 
 import RebootWindow from "../../RebootWindow";
@@ -27,7 +27,7 @@ export class NumberFormatting extends Component {
     isLoading: true,
     group: {},
     disableButton: false,
-    showRebootDialog: false
+    showRebootDialog: false,
   };
 
   fetchReq = () => {
@@ -60,8 +60,8 @@ export class NumberFormatting extends Component {
                   this.props.config.tenant.group.sip_nat_src[0].value,
                 sip_int_src:
                   this.state.group.sip_int_src ||
-                  this.props.config.tenant.group.sip_int_src[0].value
-              }
+                  this.props.config.tenant.group.sip_int_src[0].value,
+              },
             })
           )
         )
@@ -90,11 +90,14 @@ export class NumberFormatting extends Component {
       <React.Fragment>
         {(this.state.group.pbxType === "PRA" ||
           this.state.group.pbxType === "PRA_SIP" ||
-          this.state.group.pbxType === "SIP_PRA") && (
+          this.state.group.pbxType === "SIP_PRA" ||
+          this.state.group.pbxType === "BRA") && (
           <React.Fragment>
             <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
-                <div className={"margin-right-1 flex font-24"}>PRA</div>
+                <div className={"margin-right-1 flex font-24"}>
+                  {this.state.group.pbxType === "BRA" ? "BRA" : "PRA"}
+                </div>
               </Col>
             </Row>
             <Row className={"margin-top-1"}>
@@ -111,12 +114,12 @@ export class NumberFormatting extends Component {
                   <FormControl
                     componentClass="select"
                     value={this.state.group.pra_nat_dst}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState({
                         group: {
                           ...this.state.group,
-                          pra_nat_dst: e.target.value
-                        }
+                          pra_nat_dst: e.target.value,
+                        },
                       })
                     }
                     disabled={
@@ -149,12 +152,12 @@ export class NumberFormatting extends Component {
                   <FormControl
                     componentClass="select"
                     value={this.state.group.pra_nat_src}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState({
                         group: {
                           ...this.state.group,
-                          pra_nat_src: e.target.value
-                        }
+                          pra_nat_src: e.target.value,
+                        },
                       })
                     }
                     disabled={
@@ -187,12 +190,12 @@ export class NumberFormatting extends Component {
                   <FormControl
                     componentClass="select"
                     value={this.state.group.pra_int_src}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState({
                         group: {
                           ...this.state.group,
-                          pra_int_src: e.target.value
-                        }
+                          pra_int_src: e.target.value,
+                        },
                       })
                     }
                     disabled={
@@ -236,12 +239,12 @@ export class NumberFormatting extends Component {
                   <FormControl
                     componentClass="select"
                     value={this.state.group.sip_nat_dst}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState({
                         group: {
                           ...this.state.group,
-                          sip_nat_dst: e.target.value
-                        }
+                          sip_nat_dst: e.target.value,
+                        },
                       })
                     }
                     disabled={
@@ -274,12 +277,12 @@ export class NumberFormatting extends Component {
                   <FormControl
                     componentClass="select"
                     value={this.state.group.sip_nat_src}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState({
                         group: {
                           ...this.state.group,
-                          sip_nat_src: e.target.value
-                        }
+                          sip_nat_src: e.target.value,
+                        },
                       })
                     }
                     disabled={
@@ -312,12 +315,12 @@ export class NumberFormatting extends Component {
                   <FormControl
                     componentClass="select"
                     value={this.state.group.sip_int_src}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.setState({
                         group: {
                           ...this.state.group,
-                          sip_int_src: e.target.value
-                        }
+                          sip_int_src: e.target.value,
+                        },
                       })
                     }
                     disabled={
@@ -378,7 +381,7 @@ export class NumberFormatting extends Component {
       pra_int_src,
       sip_nat_dst,
       sip_nat_src,
-      sip_int_src
+      sip_int_src,
     } = this.state.group;
     const data = {
       pra_nat_dst,
@@ -386,7 +389,7 @@ export class NumberFormatting extends Component {
       pra_int_src,
       sip_nat_dst,
       sip_nat_src,
-      sip_int_src
+      sip_int_src,
     };
     this.setState({ disableButton: true });
     const clearData = removeEmpty(data);
@@ -401,7 +404,7 @@ export class NumberFormatting extends Component {
       this.setState({
         showRebootDialog: true,
         data: clearData,
-        disableButton: false
+        disableButton: false,
       });
       return;
     }
@@ -415,17 +418,17 @@ export class NumberFormatting extends Component {
   };
 }
 
-const mapStateToProps = state => ({ group: state.group, config: state.config });
+const mapStateToProps = (state) => ({
+  group: state.group,
+  config: state.config,
+});
 
 const mapDispatchToProps = {
   fetchGetConfig,
   fetchGetGroupById,
-  fetchPutUpdateGroupDetails
+  fetchPutUpdateGroupDetails,
 };
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(NumberFormatting)
+  connect(mapStateToProps, mapDispatchToProps)(NumberFormatting)
 );

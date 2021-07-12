@@ -16,7 +16,7 @@ import { removeEmpty } from "../../../remuveEmptyInObject";
 import {
   fetchGetConfig,
   fetchGetGroupById,
-  fetchPutUpdateGroupDetails
+  fetchPutUpdateGroupDetails,
 } from "../../../../store/actions";
 
 import { isAllowed, pages } from "../../../../utils/user";
@@ -28,7 +28,7 @@ export class Service extends Component {
     group: {},
     disableButton: false,
     data: {},
-    showRebootDialog: false
+    showRebootDialog: false,
   };
 
   fetchReq = () => {
@@ -56,8 +56,8 @@ export class Service extends Component {
                 clip: this.state.group.clip || false,
                 clir: this.state.group.clir || false,
                 colr: this.state.group.colr || false,
-                colp: this.state.group.colp || false
-              }
+                colp: this.state.group.colp || false,
+              },
             })
           )
         )
@@ -95,12 +95,12 @@ export class Service extends Component {
               <FormControl
                 componentClass="select"
                 value={this.state.group.ncos}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
                     group: {
                       ...this.state.group,
-                      ncos: e.target.value
-                    }
+                      ncos: e.target.value,
+                    },
                   })
                 }
                 disabled={
@@ -128,12 +128,12 @@ export class Service extends Component {
                 className={"margin-0 flex margin-right-2"}
                 name="clip"
                 checked={this.state.group.clip}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
                     group: {
                       ...this.state.group,
-                      clip: true
-                    }
+                      clip: true,
+                    },
                   })
                 }
                 disabled={
@@ -151,12 +151,12 @@ export class Service extends Component {
                 className={"margin-0 flex margin-right-2"}
                 name="clip"
                 checked={!this.state.group.clip}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
                     group: {
                       ...this.state.group,
-                      clip: false
-                    }
+                      clip: false,
+                    },
                   })
                 }
                 disabled={
@@ -179,12 +179,12 @@ export class Service extends Component {
                 className={"margin-0 flex margin-right-2"}
                 name="clir"
                 checked={this.state.group.clir}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
                     group: {
                       ...this.state.group,
-                      clir: true
-                    }
+                      clir: true,
+                    },
                   })
                 }
                 disabled={
@@ -202,12 +202,12 @@ export class Service extends Component {
                 className={"margin-0 flex margin-right-2"}
                 name="clir"
                 checked={!this.state.group.clir}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
                     group: {
                       ...this.state.group,
-                      clir: false
-                    }
+                      clir: false,
+                    },
                   })
                 }
                 disabled={
@@ -230,12 +230,12 @@ export class Service extends Component {
                 className={"margin-0 flex margin-right-2"}
                 name="colr"
                 checked={this.state.group.colr}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
                     group: {
                       ...this.state.group,
-                      colr: true
-                    }
+                      colr: true,
+                    },
                   })
                 }
                 disabled={
@@ -253,12 +253,12 @@ export class Service extends Component {
                 className={"margin-0 flex margin-right-2"}
                 name="colr"
                 checked={!this.state.group.colr}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
                     group: {
                       ...this.state.group,
-                      colr: false
-                    }
+                      colr: false,
+                    },
                   })
                 }
                 disabled={
@@ -281,12 +281,12 @@ export class Service extends Component {
                 className={"margin-0 flex margin-right-2"}
                 name="colp"
                 checked={this.state.group.colp}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
                     group: {
                       ...this.state.group,
-                      colp: true
-                    }
+                      colp: true,
+                    },
                   })
                 }
                 disabled={
@@ -304,12 +304,12 @@ export class Service extends Component {
                 className={"margin-0 flex margin-right-2"}
                 name="colp"
                 checked={!this.state.group.colp}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
                     group: {
                       ...this.state.group,
-                      colp: false
-                    }
+                      colp: false,
+                    },
                   })
                 }
                 disabled={
@@ -326,7 +326,8 @@ export class Service extends Component {
         </Row>
         {(this.state.group.pbxType === "PRA" ||
           this.state.group.pbxType === "PRA_SIP" ||
-          this.state.group.pbxType === "SIP_PRA") && (
+          this.state.group.pbxType === "SIP_PRA" ||
+          this.state.group.pbxType === "BRA") && (
           <Row className={"margin-top-1"}>
             <Col md={12} className={"flex align-items-center"}>
               <div className={"margin-right-1 flex flex-basis-16"}>
@@ -338,12 +339,13 @@ export class Service extends Component {
                 <FormControl
                   componentClass="select"
                   value={this.state.group.aoc}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.setState({
                       group: {
                         ...this.state.group,
-                        aoc: e.target.value === "false" ? false : e.target.value
-                      }
+                        aoc:
+                          e.target.value === "false" ? false : e.target.value,
+                      },
                     })
                   }
                   disabled={
@@ -378,12 +380,12 @@ export class Service extends Component {
                 <FormControl
                   componentClass="select"
                   value={this.state.group.dtmf}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.setState({
                       group: {
                         ...this.state.group,
-                        dtmf: e.target.value
-                      }
+                        dtmf: e.target.value,
+                      },
                     })
                   }
                   disabled={
@@ -447,7 +449,7 @@ export class Service extends Component {
       clip,
       clir,
       colr,
-      colp
+      colp,
     };
     this.setState({ disableButton: true });
     const clearData = removeEmpty(data);
@@ -459,7 +461,7 @@ export class Service extends Component {
       this.setState({
         showRebootDialog: true,
         data: clearData,
-        disableButton: false
+        disableButton: false,
       });
       return;
     }
@@ -474,17 +476,17 @@ export class Service extends Component {
   };
 }
 
-const mapStateToProps = state => ({ group: state.group, config: state.config });
+const mapStateToProps = (state) => ({
+  group: state.group,
+  config: state.config,
+});
 
 const mapDispatchToProps = {
   fetchGetConfig,
   fetchGetGroupById,
-  fetchPutUpdateGroupDetails
+  fetchPutUpdateGroupDetails,
 };
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Service)
+  connect(mapStateToProps, mapDispatchToProps)(Service)
 );
