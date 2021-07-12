@@ -470,7 +470,7 @@ export class PhoneNumbersTab extends Component {
 
     const downloadFunc = () => {
       const pom = document.createElement("a");
-      const csvContent = atob(this.props.numbersAsCSV.content);
+      const csvContent = Buffer.from(this.props.numbersAsCSV.content, "base64");
       const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
       pom.href = url;
