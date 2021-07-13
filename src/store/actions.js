@@ -910,7 +910,12 @@ export function fetchPostCreateIAD(tenantId, groupId, data) {
   };
 }
 
-export function fetchPostAssignPhoneNumbersToGroup(tenantId, groupId, data) {
+export function fetchPostAssignPhoneNumbersToGroup(
+  tenantId,
+  groupId,
+  data,
+  callback
+) {
   //////////////////////////////////////////////////
   return function (dispatch) {
     return fetch_post(
@@ -922,15 +927,7 @@ export function fetchPostAssignPhoneNumbersToGroup(tenantId, groupId, data) {
         dispatch(postAssignPhoneNumbersToGroup(data));
         return "success";
       })
-      .catch((error) => {
-        NotificationsManager.error(
-          <FormattedMessage
-            id="failed-to-add-phonenumbers"
-            defaultMessage="Failed to add phone numbers!"
-          />,
-          error.message
-        );
-      });
+      .finally(() => callback && callback());
   };
 }
 

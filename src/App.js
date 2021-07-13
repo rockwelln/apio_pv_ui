@@ -49,6 +49,7 @@ import ReconciliationTeamPage from "./components/ReconciliationTeamPage";
 import Reconciliations from "./components/Reconciliations";
 import MassIADReboot from "./components/MassIADReboot";
 import Statistics from "./components/Statistics";
+import InfoAddedNumber from "./components/InfoAddedNumbers";
 
 import GroupPage from "./components/GroupPage";
 
@@ -480,6 +481,20 @@ class App extends Component {
                     pages.group_numbers_other_actions
                   ) ? (
                     <AddPhoneToGroup />
+                  ) : (
+                    <NotAllowed />
+                  )
+                }
+                exact
+              />
+              <Route
+                path="/provisioning/:gwName/tenants/:tenantId/groups/:groupId/added-phones-info"
+                component={(props) =>
+                  isAllowed(
+                    localStorage.getItem("userProfile"),
+                    pages.group_numbers_other_actions
+                  ) ? (
+                    <InfoAddedNumber />
                   ) : (
                     <NotAllowed />
                   )

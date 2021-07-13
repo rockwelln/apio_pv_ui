@@ -272,20 +272,26 @@ export class AddPhoneNumber extends Component {
       range: { minPhoneNumber: arrayFrom, maxPhoneNumber: arrayTo, zipCode },
     };
     const clearData = removeEmpty(data);
+    const callback = () => {
+      this.props.history.push(
+        `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/added-phones-info`
+      );
+    };
     this.setState({ disableAddButton: true }, () =>
       this.props
         .fetchPostAssignPhoneNumbersToGroup(
           this.props.match.params.tenantId,
           this.props.match.params.groupId,
-          clearData
+          clearData,
+          callback
         )
-        .then(
-          (res) =>
-            res === "success" &&
-            this.props.history.push(
-              `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/#numbers`
-            )
-        )
+        // .then(
+        //   (res) =>
+        //     res === "success" &&
+        //     this.props.history.push(
+        //       `/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${this.props.match.params.groupId}/#numbers`
+        //     )
+        // )
         .then(() => this.setState({ disableAddButton: false }))
     );
   };

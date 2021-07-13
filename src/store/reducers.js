@@ -44,6 +44,11 @@ const initialState = {
   iadSpecialCustomTags: [],
   statistics: {},
   numbersAsCSV: { content: "" },
+  addedNumbers: {
+    warning: [],
+    added: [],
+    rejected: [],
+  },
 };
 
 function mainReducer(state = initialState, action) {
@@ -482,7 +487,7 @@ function mainReducer(state = initialState, action) {
       );
       return {
         ...state,
-        addedNumbersToGroup: {
+        addedNumbers: {
           warning,
           added,
           rejected,
