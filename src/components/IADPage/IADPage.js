@@ -29,6 +29,7 @@ import SR from "./Tabs/SR";
 import IPAddress from "./Tabs/IpAddress";
 import Advanced from "./Tabs/Advanced";
 import PraInfo from "./Tabs/PraInfo";
+import BraInfo from "./Tabs/BraInfo";
 import Loading from "../../common/Loading";
 import DeleteModal from "./DeleteModal";
 import RebootWindow from "./RebootWindow";
@@ -171,6 +172,14 @@ export class IADPage extends Component {
                 />
               </Tab>
             )}
+            {this.props.iad.protocolMode === "BRA" && (
+              <Tab eventKey={6} title="BRA lines configuration">
+                <BraInfo
+                  isLoading={this.state.isLoading}
+                  setKey={this.setAdvancedSettingsKey}
+                />
+              </Tab>
+            )}
           </Tabs>
         </div>
         <RebootWindow
@@ -199,6 +208,9 @@ export class IADPage extends Component {
       case 5:
         this.props.history.push("#praLinesConfiguration");
         break;
+      case 6:
+        this.props.history.push("#braLinesConfiguration");
+        break;
     }
   };
 
@@ -214,6 +226,8 @@ export class IADPage extends Component {
         return 4;
       case "#praLinesConfiguration":
         return 5;
+      case "#braLinesConfiguration":
+        return 6;
       default:
         return 1;
     }
