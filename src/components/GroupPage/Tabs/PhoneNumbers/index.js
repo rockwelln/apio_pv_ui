@@ -478,7 +478,7 @@ export class PhoneNumbersTab extends Component {
         "download",
         `numbers_${this.props.tenantId}_${
           this.props.groupId
-        }_${new Date().toString()}`
+        }_${new Date().toLocaleString()}.csv`
       );
       pom.click();
     };
