@@ -44,7 +44,7 @@ export class AddGroup extends Component {
     this.props.fetchGetConfig().then(() =>
       this.setState({
         isLoading: false,
-        typeOfIad: this.props.config.tenant.group.pbxType[0].value,
+        typeOfIad: this.props.config.tenant.group.pbxTypeForCreate[0].value,
         typeOfAccess:
           this.props.config.tenant.group.accessTypeForCreate[0].value,
         serviceType: this.props.config.tenant.group.serviceType[0].value,
@@ -258,11 +258,13 @@ export class AddGroup extends Component {
                       this.setState({ typeOfIad: e.target.value })
                     }
                   >
-                    {this.props.config.tenant.group.pbxType.map((type, i) => (
-                      <option key={i} value={type.value}>
-                        {type.label}
-                      </option>
-                    ))}
+                    {this.props.config.tenant.group.pbxTypeForCreate.map(
+                      (type, i) => (
+                        <option key={i} value={type.value}>
+                          {type.label}
+                        </option>
+                      )
+                    )}
                   </FormControl>
                 </div>
               </Col>
