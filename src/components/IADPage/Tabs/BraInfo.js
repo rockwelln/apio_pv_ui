@@ -53,7 +53,7 @@ export class BraInfo extends Component {
       if (Object.keys(braByIad).length < this.props.iad.bra_needed) {
         braByIad = {
           ...braByIad,
-          [i + 5]: { port_mode: "P2P", enabled: "" },
+          [i + 5]: { port_mode: "P2P", enabled: "", braID: "" },
         };
       }
     }
@@ -338,6 +338,8 @@ export class BraInfo extends Component {
         },
       };
     });
+
+    delete bra_info[""];
     const data = { bra_info };
     const clearData = removeEmpty(data);
 
