@@ -318,16 +318,16 @@ export class BraInfo extends Component {
     let bra_info = {};
     Object.keys(braByIad).forEach((key) => {
       if (braByIad[key].braID === 0) {
-        NotificationsManager.error(
-          <FormattedMessage
-            id="bra-not-updated"
-            defaultMessage="BRA not updated"
-          />,
-          <FormattedMessage
-            id="you-need-to-provide-bra-ports"
-            defaultMessage="You need to provide bra ports"
-          />
-        );
+        // NotificationsManager.error(
+        //   <FormattedMessage
+        //     id="bra-not-updated"
+        //     defaultMessage="BRA not updated"
+        //   />,
+        //   <FormattedMessage
+        //     id="you-need-to-provide-bra-ports"
+        //     defaultMessage="You need to provide bra ports"
+        //   />
+        // );
         return;
       }
       bra_info = {
