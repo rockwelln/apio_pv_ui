@@ -927,6 +927,19 @@ export function fetchPostAssignPhoneNumbersToGroup(
         dispatch(postAssignPhoneNumbersToGroup(data));
         return "success";
       })
+      .catch((error) => {
+        if (error.response.status === 400 && error.body.result) {
+          dispatch(postAssignPhoneNumbersToGroup(error.body));
+          return "success";
+        }
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-add-phone-numbers"
+            defaultMessage="Failed to add phone numbers!"
+          />,
+          error.message
+        );
+      })
       .finally(() => callback && callback());
   };
 }

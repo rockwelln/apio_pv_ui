@@ -9,11 +9,24 @@ export const API_BASE_URL = "/api/v01/p5";
 function getCookie(name) {
   var value = "; " + document.cookie;
   var parts = value.split("; " + name + "=");
-  if (parts.length === 2)
-    return parts
-      .pop()
-      .split(";")
-      .shift();
+  if (parts.length === 2) return parts.pop().split(";").shift();
+}
+
+class ApiError extends Error {
+  constructor(message = "bar", body) {
+    // Pass remaining arguments (including vendor specific ones) to parent constructor
+    super(message);
+
+    // Maintains proper stack trace for where our error was thrown (only available on V8)
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, ApiError);
+    }
+
+    this.name = "ApiError";
+    // Custom debugging information
+    this.body = body || {};
+    this.date = new Date();
+  }
 }
 
 class ProvisioningProxies {
@@ -21,8 +34,8 @@ class ProvisioningProxies {
 
   fetchConfiguration(auth_token) {
     return fetch_get("/api/v01/apio/provisioning/gateways", auth_token).then(
-      data =>
-        (ProvisioningProxies.proxies = data.gateways.map(g => {
+      (data) =>
+        (ProvisioningProxies.proxies = data.gateways.map((g) => {
           g.id = g.name.toLowerCase().replace(/[. ]/g, "");
           return g;
         }))
@@ -52,7 +65,7 @@ class NotificationsHandler {
       NotificationsHandler.rootRef.current.addNotification({
         title: title,
         message: message,
-        level: "error"
+        level: "error",
       });
   }
 
@@ -61,7 +74,7 @@ class NotificationsHandler {
       NotificationsHandler.rootRef.current.addNotification({
         title: title,
         message: message,
-        level: "success"
+        level: "success",
       });
   }
 }
@@ -77,7 +90,7 @@ const getErrorMessage = (errorsArray, response) => {
   const actualError = errorsArray[0];
 
   if (!actualError.hasOwnProperty("details")) {
-      return `${actualError.message}. Status Code: ${response.status}`;
+    return `${actualError.message}. Status Code: ${response.status}`;
   }
   return `${actualError.details.reason || actualError.message}. Status Code: ${
     response.status
@@ -92,9 +105,9 @@ export function checkStatus(response) {
   }
   const contentType = response.headers.get("content-type");
   if (contentType && contentType.indexOf("application/json") !== -1) {
-    return response.json().then(function(json) {
+    return response.json().then(function (json) {
       const message = getErrorMessage(json.errors, response); //Task - [PROV GUI] Provide more clear error codes
-      let error = new Error(message);
+      let error = new ApiError(message, json);
       error.response = response;
       if (json.errors) {
         error.errors = json.errors;
@@ -103,7 +116,7 @@ export function checkStatus(response) {
     });
   }
 
-  let error = new Error(response.statusText);
+  let error = new ApiError(response.statusText);
   error.response = response;
   throw error;
 }
@@ -123,8 +136,8 @@ export function fetch_get(url) {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${getCookie("auth_token")}`
-    }
+      Authorization: `Bearer ${getCookie("auth_token")}`,
+    },
   })
     .then(checkStatus)
     .then(parseJSON);
@@ -141,9 +154,9 @@ export function fetch_put(url, body) {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${getCookie("auth_token")}`
+      Authorization: `Bearer ${getCookie("auth_token")}`,
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   }).then(checkStatus);
 }
 
@@ -158,7 +171,7 @@ export function fetch_post_raw(url, raw_body, content_type) {
     ? url
     : API_URL_PREFIX + url;
   let headers = {
-    Authorization: `Bearer ${getCookie("auth_token")}`
+    Authorization: `Bearer ${getCookie("auth_token")}`,
   };
   if (content_type) {
     headers["content-type"] = content_type;
@@ -166,7 +179,7 @@ export function fetch_post_raw(url, raw_body, content_type) {
   return fetch(full_url, {
     method: "POST",
     headers: headers,
-    body: raw_body
+    body: raw_body,
   }).then(checkStatus);
 }
 
@@ -179,8 +192,8 @@ export function fetch_delete(url, body, token) {
   return fetch(full_url, {
     method: "DELETE",
     headers: {
-      Authorization: `Bearer ${getCookie("auth_token")}`
+      Authorization: `Bearer ${getCookie("auth_token")}`,
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   }).then(checkStatus);
 }
