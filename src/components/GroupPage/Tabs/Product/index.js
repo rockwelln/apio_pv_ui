@@ -136,10 +136,22 @@ export class Product extends Component {
                     },
                   })
                 }
-                disabled
+                disabled={
+                  this.state.group.pbxType !== "PRA_SIP" &&
+                  this.state.group.pbxType !== "SIP_PRA"
+                }
               >
                 {this.props.config.tenant.group.pbxType.map((el, i) => (
-                  <option key={i} value={el.value}>
+                  <option
+                    key={i}
+                    value={el.value}
+                    disabled={
+                      (this.state.group.pbxType === "PRA_SIP" &&
+                        el.value !== "SIP_PRA") ||
+                      (this.state.group.pbxType === "SIP_PRA" &&
+                        el.value !== "PRA_SIP")
+                    }
+                  >
                     {el.label}
                   </option>
                 ))}
@@ -362,12 +374,8 @@ export class Product extends Component {
   };
 
   updateProduct = () => {
-    const {
-      pbxType,
-      accessType,
-      serviceType,
-      np1Redundancy,
-    } = this.state.group;
+    const { pbxType, accessType, serviceType, np1Redundancy } =
+      this.state.group;
     const data = {
       //pbxType,
       //accessType,

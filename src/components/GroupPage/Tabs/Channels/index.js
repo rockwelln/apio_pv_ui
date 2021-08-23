@@ -174,69 +174,31 @@ export class Channels extends Component {
                     )
                   }
                 >
-                  {this.state.group.pbxType === "PRA" ||
-                  this.state.group.pbxType === "PRA_SIP"
-                    ? ~this.props.config.tenant.group.iad[
-                        "2EDUsForServiceTypes"
-                      ].indexOf(this.state.group.serviceType)
-                      ? this.props.config.tenant.group.capacity[
-                          this.state.group.accessType
-                        ].PRA[
-                          this.state.group.accessType === "FIBER"
-                            ? "redundant"
-                            : this.props.iads.iadType
-                        ].map((type, i) => (
-                          <option key={i} value={type.value}>
-                            {type.label}
-                          </option>
-                        ))
-                      : this.props.config.tenant.group.capacity[
-                          this.state.group.accessType
-                        ].PRA[
-                          this.state.group.accessType === "FIBER"
-                            ? "nonRedundant"
-                            : this.props.iads.iadType
-                        ].map((type, i) => (
-                          <option key={i} value={type.value}>
-                            {type.label}
-                          </option>
-                        ))
-                    : this.state.group.pbxType === "SIP" ||
-                      this.state.group.pbxType === "SIP_PRA"
-                    ? ~this.props.config.tenant.group.iad[
-                        "2EDUsForServiceTypes"
-                      ].indexOf(this.state.group.serviceType)
-                      ? this.props.config.tenant.group.capacity[
-                          this.state.group.accessType
-                        ].SIP[
-                          this.state.group.accessType === "FIBER"
-                            ? "redundant"
-                            : this.props.iads.iadType
-                        ].map((type, i) => (
-                          <option key={i} value={type.value}>
-                            {type.label}
-                          </option>
-                        ))
-                      : this.props.config.tenant.group.capacity[
-                          this.state.group.accessType
-                        ].SIP[
-                          this.state.group.accessType === "FIBER"
-                            ? "nonRedundant"
-                            : this.props.iads.iadType
-                        ].map((type, i) => (
-                          <option key={i} value={type.value}>
-                            {type.label}
-                          </option>
-                        ))
-                    : this.state.group.pbxType === "BRA"
+                  {~this.props.config.tenant.group.iad[
+                    "2EDUsForServiceTypes"
+                  ].indexOf(this.state.group.serviceType)
                     ? this.props.config.tenant.group.capacity[
                         this.state.group.accessType
-                      ].BRA[this.props.iads.iadType].map((type, i) => (
+                      ][this.state.group.pbxType][
+                        this.state.group.accessType === "FIBER"
+                          ? "redundant"
+                          : this.props.iads.iadType
+                      ].map((type, i) => (
                         <option key={i} value={type.value}>
                           {type.label}
                         </option>
                       ))
-                    : null}
+                    : this.props.config.tenant.group.capacity[
+                        this.state.group.accessType
+                      ][this.state.group.pbxType][
+                        this.state.group.accessType === "FIBER"
+                          ? "nonRedundant"
+                          : this.props.iads.iadType
+                      ].map((type, i) => (
+                        <option key={i} value={type.value}>
+                          {type.label}
+                        </option>
+                      ))}
                 </FormControl>
               </div>
             </Col>
