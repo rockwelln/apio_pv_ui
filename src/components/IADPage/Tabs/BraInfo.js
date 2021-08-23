@@ -340,6 +340,7 @@ export class BraInfo extends Component {
     });
 
     delete bra_info[""];
+    delete bra_info["undefined"];
     const data = { bra_info };
     const clearData = removeEmpty(data);
 
