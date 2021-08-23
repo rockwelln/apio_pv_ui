@@ -17,11 +17,14 @@ export class Rejected extends Component {
           <Table hover>
             <thead>
               <tr>
-                <th style={{ width: "50%" }}>
+                <th style={{ width: "33%" }}>
                   <FormattedMessage id="Number" defaultMessage="Number" />
                 </th>
-                <th style={{ width: "50%" }}>
+                <th style={{ width: "33%" }}>
                   <FormattedMessage id="Status" defaultMessage="Status" />
+                </th>
+                <th style={{ width: "33%" }}>
+                  <FormattedMessage id="Reason" defaultMessage="Reason" />
                 </th>
               </tr>
             </thead>
@@ -30,6 +33,7 @@ export class Rejected extends Component {
                 <tr key={i + ""}>
                   <td>{number.phoneNumber}</td>
                   <td>{number.status}</td>
+                  <td>{number.message}</td>
                 </tr>
               ))}
             </tbody>
