@@ -377,7 +377,7 @@ export class Product extends Component {
     const { pbxType, accessType, serviceType, np1Redundancy } =
       this.state.group;
     const data = {
-      //pbxType,
+      pbxType: pbxType !== this.props.group.pbxType ? pbxType : "",
       //accessType,
       serviceType,
       //np1Redundancy
