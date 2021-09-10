@@ -188,6 +188,10 @@
   word-break: break-word;
 }
 
+.word-break-all {
+  word-break: break-all;
+}
+
 .limits-row {
   display: flex;
   flex-direction: row;

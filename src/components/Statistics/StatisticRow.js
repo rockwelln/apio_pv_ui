@@ -35,7 +35,7 @@ const StatisticRow = (props) => {
           ))}
         </>
       ) : (
-        <Row className={"margin-left-1 margin-top-1"}>
+        <Row className={"margin-left-1 margin-top-1 word-break-all"}>
           <Col md={2}>{labels[props.objKey] || props.objKey}</Col>
           <Col md={8}>{props.statistics[props.objKey]}</Col>
         </Row>
