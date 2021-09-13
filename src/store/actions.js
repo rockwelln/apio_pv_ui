@@ -145,6 +145,11 @@ export const getDownloadNumbersAsCSV = (data) => ({
   data,
 });
 
+export const getCertifiedPBX = (data) => ({
+  type: actionType.GET_CERTIFIED_PBX,
+  data,
+});
+
 export const postCreateTenant = (data) => ({
   type: actionType.POST_CREATE_TENANT,
   data,
@@ -808,6 +813,28 @@ export function fetchGetDownloadNumbersAsCSV(
           <FormattedMessage
             id="failed-to-download-numbers"
             defaultMessage="Failed to download numbers!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchGetCertifiedPBX() {
+  /////////////////////////////////
+  return function (dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/certified_pbx/`
+    )
+      .then((data) => {
+        dispatch(getCertifiedPBX(data));
+      })
+      .catch((error) => {
+        dispatch(getStatistics({ certifiedPBX: [] }));
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-certified-pbx-failed"
+            defaultMessage="Failed to fetch certified pbx!"
           />,
           error.message
         );

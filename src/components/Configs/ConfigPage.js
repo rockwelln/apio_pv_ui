@@ -7,6 +7,7 @@ import Tab from "react-bootstrap/lib/Tab";
 
 import ZipToRouting from "./Tabs/ZTR/ZipToRouting";
 import ReconciliationTeams from "./Tabs/ReconciliationTeams/ReconciliationTeams";
+import CertifiedPBXs from "./Tabs/CertifiedPBXs/CertifiedPBXs";
 
 export class ConfigPage extends Component {
   render() {
@@ -20,7 +21,7 @@ export class ConfigPage extends Component {
             id="tenant_tabs"
             activeKey={this.returnActiveKey()}
             id="enterprice_tabs"
-            onSelect={key => this.tabRouting(key)}
+            onSelect={(key) => this.tabRouting(key)}
           >
             <Tab eventKey={0} title="ZIP to Routing">
               <ZipToRouting />
@@ -28,19 +29,25 @@ export class ConfigPage extends Component {
             <Tab eventKey={1} title="Reconciliation Teams">
               <ReconciliationTeams />
             </Tab>
+            <Tab eventKey={2} title="Certified PBXs">
+              <CertifiedPBXs />
+            </Tab>
           </Tabs>
         </div>
       </React.Fragment>
     );
   }
 
-  tabRouting = key => {
+  tabRouting = (key) => {
     switch (key) {
       case 0:
         this.props.history.push("#zipToRouting");
         break;
       case 1:
         this.props.history.push("#reconciliationTeams");
+        break;
+      case 2:
+        this.props.history.push("#certifiedPBXs");
         break;
     }
   };
@@ -51,19 +58,18 @@ export class ConfigPage extends Component {
         return 0;
       case "#reconciliationTeams":
         return 1;
+      case "#certifiedPBXs":
+        return 2;
       default:
         return 0;
     }
   };
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = {};
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(ConfigPage)
+  connect(mapStateToProps, mapDispatchToProps)(ConfigPage)
 );
