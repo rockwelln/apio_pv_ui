@@ -18,7 +18,10 @@ import { countsPerPages } from "../../../../constants";
 import PBX from "./PBX";
 import Loading from "../../../../common/Loading";
 
-import { fetchGetCertifiedPBX } from "../../../../store/actions";
+import {
+  fetchGetCertifiedPBX,
+  fetchPostUpdateCertifiedPBXList,
+} from "../../../../store/actions";
 
 const CertifiedPBXs = (props) => {
   const [certifiedPBX, setCertifiedPBX] = useState([]);
@@ -28,12 +31,12 @@ const CertifiedPBXs = (props) => {
   const [page, setPage] = useState(0);
   const [paginatedCertifiedPBX, setPaginatedCertifiedPBX] = useState([]);
   const [countPages, setCountPages] = useState(null);
+  const [inputFileKey, setInputFileKey] = useState(Date.now() + Math.random());
   const dispatch = useDispatch();
   const propsCertifiedPBX = useSelector((state) => state.certifiedPBX);
 
   useEffect(() => {
-    setIsLoading(true);
-    dispatch(fetchGetCertifiedPBX());
+    fetchReq();
   }, []);
 
   useEffect(() => {
@@ -44,13 +47,22 @@ const CertifiedPBXs = (props) => {
       return 0;
     });
     setCertifiedPBX(pbx);
-    setIsLoading(false);
-    setSortedBy("brand");
+    setSortedBy(sortedBy || "brand");
   }, [propsCertifiedPBX]);
 
   useEffect(() => {
     pagination();
-  }, [certifiedPBX]);
+  }, [certifiedPBX, countPerPage]);
+
+  const fetchReq = () => {
+    const setStartLoading = () => {
+      setIsLoading(true);
+    };
+    const setEndLoading = () => {
+      setIsLoading(false);
+    };
+    dispatch(fetchGetCertifiedPBX(setStartLoading, setEndLoading));
+  };
 
   const pagination = () => {
     const tmp = [...certifiedPBX];
@@ -92,6 +104,56 @@ const CertifiedPBXs = (props) => {
     }
   };
 
+  const filterBySearchValue = (searchValue) => {
+    const searchArray = [...propsCertifiedPBX].filter(
+      (pbx) =>
+        pbx.brand.toLowerCase().includes(searchValue.toLowerCase()) ||
+        pbx.version.toLowerCase().includes(searchValue.toLowerCase()) ||
+        pbx.iad_type.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setCertifiedPBX(searchArray);
+  };
+
+  const changeCoutOnPage = (e) => {
+    setCountPerPage(Number(e.target.value));
+    setPage(0);
+  };
+
+  const incrementPage = () => {
+    if (page >= countPages - 1) {
+      return;
+    }
+    setPage(page + 1);
+  };
+
+  const decrementPage = () => {
+    if (page === 0) {
+      return;
+    }
+    setPage(page - 1);
+  };
+
+  const uploadFile = (e) => {
+    const target = e.target;
+    if (!target.files.length) {
+      return;
+    }
+
+    toBase64(target.files[0]).then((res) => {
+      const b64 = res.replace(/^data:.+;base64,/, "");
+      dispatch(fetchPostUpdateCertifiedPBXList({ csv: b64 }));
+      setInputFileKey(Date.now() + Math.random());
+    });
+  };
+
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+
   if (isLoading) {
     return <Loading />;
   }
@@ -108,16 +170,8 @@ const CertifiedPBXs = (props) => {
               {(placeholder) => (
                 <FormControl
                   type="text"
-                  //value={this.state.searchValue}
                   placeholder={placeholder}
-                  // onChange={e =>
-                  //   this.setState(
-                  //     {
-                  //       searchValue: e.target.value
-                  //     },
-                  //     () => this.filterBySearchValue()
-                  //   )
-                  // }
+                  onChange={(e) => filterBySearchValue(e.target.value)}
                 />
               )}
             </FormattedMessage>
@@ -127,20 +181,38 @@ const CertifiedPBXs = (props) => {
       <Row>
         <Col md={11}>
           <div className="flex flex-row flex-end-center indent-top-bottom-1">
-            <div>Item per page</div>
-            <FormControl
-              componentClass="select"
-              //defaultValue={this.state.countPerPage}
-              style={{ display: "inline", width: "auto" }}
-              className={"margin-left-1"}
-              //onChange={this.changeCoutOnPage}
-            >
-              {countsPerPages.map((counts) => (
-                <option key={counts.value} value={counts.value}>
-                  {counts.title}
-                </option>
-              ))}
-            </FormControl>
+            <label htmlFor="contained-button-file" className={"margin-0"}>
+              <input
+                id="contained-button-file"
+                key={inputFileKey}
+                type="file"
+                style={{ display: "none" }}
+                accept="text/csv"
+                onChange={uploadFile}
+              />
+              <div className={"fake-button btn-primary margin-right-1"}>
+                <FormattedMessage
+                  id="add_or_replace_by_csv"
+                  defaultMessage="Add or Replace by CSV"
+                />
+              </div>
+            </label>
+            <>
+              <div>Item per page</div>
+              <FormControl
+                componentClass="select"
+                defaultValue={countPerPage}
+                style={{ display: "inline", width: "auto" }}
+                className={"margin-left-1"}
+                onChange={changeCoutOnPage}
+              >
+                {countsPerPages.map((counts) => (
+                  <option key={counts.value} value={counts.value}>
+                    {counts.title}
+                  </option>
+                ))}
+              </FormControl>
+            </>
           </div>
         </Col>
       </Row>
@@ -150,7 +222,7 @@ const CertifiedPBXs = (props) => {
             <Col mdOffset={1} md={10}>
               <Table hover responsive>
                 <thead>
-                  <tr>
+                  <tr className="no-wrap">
                     <th>
                       <FormattedMessage id="brand" defaultMessage="Brand" />
                       <Glyphicon
@@ -347,13 +419,9 @@ const CertifiedPBXs = (props) => {
             <Col md={11}>
               <div className="flex flex-row flex-end-center">
                 <Pagination className={"indent-top-bottom-1"}>
-                  <Pagination.Prev
-                  //onClick={this.decrementPage}
-                  />
+                  <Pagination.Prev onClick={decrementPage} />
                   <Pagination.Item>{page + 1}</Pagination.Item>
-                  <Pagination.Next
-                  //onClick={this.incrementPage}
-                  />
+                  <Pagination.Next onClick={incrementPage} />
                 </Pagination>
               </div>
             </Col>

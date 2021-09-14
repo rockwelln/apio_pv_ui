@@ -190,6 +190,11 @@ export const postAddIADSpecialCustomTags = (data) => ({
   data,
 });
 
+export const postUpdateCertifiedPBXList = (data) => ({
+  type: actionType.POST_UPDATE_CERTIFIED_PBX_LIST,
+  data,
+});
+
 export const putUpdateEnterpriseTrunk = (data) => ({
   type: actionType.PUT_UPDATE_ENTERPRISE_TRNUK,
   data,
@@ -820,17 +825,20 @@ export function fetchGetDownloadNumbersAsCSV(
   };
 }
 
-export function fetchGetCertifiedPBX() {
+export function fetchGetCertifiedPBX(setStartLoading, setEndLoading) {
   /////////////////////////////////
+  setStartLoading && setStartLoading();
   return function (dispatch) {
     return fetch_get(
       `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/certified_pbx/`
     )
       .then((data) => {
         dispatch(getCertifiedPBX(data));
+        setEndLoading && setEndLoading();
       })
       .catch((error) => {
         dispatch(getStatistics({ certifiedPBX: [] }));
+        setEndLoading && setEndLoading();
         NotificationsManager.error(
           <FormattedMessage
             id="fetch-certified-pbx-failed"
@@ -1082,6 +1090,36 @@ export function fetchPostAddIADSpecialCustomTags(
           error.message
         );
         errorCallback && errorCallback();
+      });
+  };
+}
+
+export function fetchPostUpdateCertifiedPBXList(data) {
+  //////////////////////////////////////////////////
+  return function (dispatch) {
+    return fetch_post(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/certified_pbx/`,
+      data
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        dispatch(postUpdateCertifiedPBXList(data));
+        NotificationsManager.success(
+          <FormattedMessage
+            id="successful-update-certified-pbx"
+            defaultMessage="Successful certified pbx update"
+          />,
+          "Updated"
+        );
+      })
+      .catch((error) => {
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-update-certified-pbx"
+            defaultMessage="Failed to update certified pbx!"
+          />,
+          error.message
+        );
       });
   };
 }

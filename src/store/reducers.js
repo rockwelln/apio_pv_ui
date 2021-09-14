@@ -594,6 +594,11 @@ function mainReducer(state = initialState, action) {
         ...state,
       };
     }
+    case actionType.POST_UPDATE_CERTIFIED_PBX_LIST: {
+      return {
+        ...state,
+      };
+    }
     case actionType.PUT_UPDATE_IAD: {
       return {
         ...state,
