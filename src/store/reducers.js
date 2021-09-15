@@ -774,6 +774,11 @@ function mainReducer(state = initialState, action) {
         ...state,
       };
     }
+    case actionType.DELETE_CERTIFIED_PBX: {
+      return {
+        ...state,
+      };
+    }
     case actionType.CHANGE_IAD_FOR_UPDATE: {
       return {
         ...state,

@@ -287,6 +287,10 @@ export const deleteSpecialCustomTag = (data) => ({
   data,
 });
 
+export const deleteCertifiedPBX = () => ({
+  type: actionType.DELETE_CERTIFIED_PBX,
+});
+
 export const changeIAD = (field, value) => ({
   type: actionType.CHANGE_IAD_FOR_UPDATE,
   field,
@@ -1637,6 +1641,34 @@ export function fetchDeleteSpecialCustomTags(
         );
         errorCallback && errorCallback();
         return "failed";
+      });
+  };
+}
+
+export function fetchDeleteCertifiedPBX(
+  brand,
+  version,
+  callback,
+  catchCallback
+) {
+  /////////////////////////////////
+  return function (dispatch) {
+    return fetch_delete(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}telenet_pra/certified_pbx/${brand}/${version}`
+    )
+      .then((data) => {
+        dispatch(deleteSpecialCustomTag(data));
+        callback && callback();
+      })
+      .catch((error) => {
+        catchCallback && catchCallback();
+        NotificationsManager.error(
+          <FormattedMessage
+            id="failed-to-delete-certified-pbx"
+            defaultMessage="Failed to delete special custom tag!"
+          />,
+          error.message
+        );
       });
   };
 }

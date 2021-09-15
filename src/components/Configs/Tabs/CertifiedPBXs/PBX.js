@@ -1,15 +1,15 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { withRouter } from "react-router";
 
-import { Link } from "react-router-dom";
 import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
-//import DeleteModal from "./DeleteModal";
+import DeleteModal from "./DeleteModal";
 
 import { isAllowed, pages } from "../../../../utils/user";
 
 const PBX = (props) => {
+  const [showDelete, setShowDelete] = useState(false);
   const { pbx } = props;
   //   const dispatch = useDispatch();
   //   const propsCertifiedPBX = useSelector((state) => state.certifiedPBX);
@@ -41,7 +41,20 @@ const PBX = (props) => {
       <td>{pbx.blindcalltransferwithrefer}</td>
       <td>{pbx.aoc}</td>
       <td>{pbx.fax}</td>
-      <td></td>
+      <td>
+        <ButtonToolbar>
+          <Glyphicon
+            glyph="glyphicon glyphicon-remove"
+            onClick={() => setShowDelete(true)}
+          />
+        </ButtonToolbar>
+      </td>
+      <DeleteModal
+        show={showDelete}
+        onClose={() => setShowDelete(false)}
+        pbxBrand={pbx.brand}
+        pbxVersion={pbx.version}
+      />
     </tr>
   );
 };
