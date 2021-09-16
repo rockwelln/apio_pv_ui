@@ -62,6 +62,8 @@ export const pages = Object.freeze({
   delete_reconciliation_anomaly: 400, // Reconciliation, Anomalies, can delete
   add_config_reconciliation_team: 401, //Config , Reconciliation team, can create
   delete_config_reconciliation_team: 402, //Config , Reconciliation team, can delete
+  delete_config_certified_pbx: 403, //Config , Certified pbx, can delete
+  add_config_certified_pbx: 404, //Config , Certified pbx, can create
   //////////////// PRA: Following settings are no more used with the new defintion of the rights and the associated checked in the code
   //edit_group_iad_advanced_clock_master: 1100,
   //edit_group_iad_ip1_mode: 1112,
@@ -154,6 +156,8 @@ const definition = {
     [pages.delete_reconciliation_anomaly]: false,
     [pages.add_config_reconciliation_team]: false,
     [pages.delete_config_reconciliation_team]: false,
+    [pages.delete_config_certified_pbx]: false,
+    [pages.add_config_certified_pbx]: false,
   },
 
   HelpDesk2: {
@@ -209,6 +213,8 @@ const definition = {
     [pages.delete_reconciliation_anomaly]: false,
     [pages.add_config_reconciliation_team]: false,
     [pages.delete_config_reconciliation_team]: false,
+    [pages.delete_config_certified_pbx]: false,
+    [pages.add_config_certified_pbx]: false,
     //////////////// PRA: Following settings are no more used with the new defintion of the rights and the associated checked in the code
     //[pages.edit_group_iad_ip1_mode]: true,
     //[pages.edit_group_iad_ip1_ipv4Address]: true,
@@ -276,6 +282,8 @@ const definition = {
     [pages.delete_reconciliation_anomaly]: false,
     [pages.add_config_reconciliation_team]: false,
     [pages.delete_config_reconciliation_team]: false,
+    [pages.delete_config_certified_pbx]: false,
+    [pages.add_config_certified_pbx]: false,
     //////////////// PRA: Following settings are no more used with the new defintion of the rights and the associated checked in the code
     //[pages.edit_group_iad_ip1_mode]: true,
     //[pages.edit_group_iad_ip1_ipv4Address]: true,
@@ -343,6 +351,8 @@ const definition = {
     [pages.delete_reconciliation_anomaly]: true,
     [pages.add_config_reconciliation_team]: true,
     [pages.delete_config_reconciliation_team]: false,
+    [pages.delete_config_certified_pbx]: false,
+    [pages.add_config_certified_pbx]: true,
     //////////////// PRA: Following settings are no more used with the new definition of the rights and the associated checked in the code
     //[pages.edit_group_iad_ip1_mode]: true,
     //[pages.edit_group_iad_ip1_ipv4Address]: true,
@@ -410,6 +420,8 @@ const definition = {
     [pages.delete_reconciliation_anomaly]: true,
     [pages.add_config_reconciliation_team]: true,
     [pages.delete_config_reconciliation_team]: true,
+    [pages.delete_config_certified_pbx]: true,
+    [pages.add_config_certified_pbx]: true,
     //////////////// PRA: Following settings are no more used with the new defintion of the rights and the associated checked in the code
     //[pages.edit_group_iad_advanced_clock_master]: true,
     //[pages.edit_group_iad_ip1_mode]: true,
@@ -478,6 +490,8 @@ const definition = {
     [pages.delete_reconciliation_anomaly]: true,
     [pages.add_config_reconciliation_team]: true,
     [pages.delete_config_reconciliation_team]: true,
+    [pages.delete_config_certified_pbx]: true,
+    [pages.add_config_certified_pbx]: true,
     //////////////// PRA: Following settings are no more used with the new defintion of the rights and the associated checked in the code
     //[pages.edit_group_iad_advanced_clock_master]: true,
     //[pages.edit_group_iad_ip1_mode]: true,

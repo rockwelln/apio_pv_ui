@@ -5,8 +5,6 @@ import { withRouter } from "react-router";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
 import FormControl from "react-bootstrap/lib/FormControl";
-import Panel from "react-bootstrap/lib/Panel";
-import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import InputGroup from "react-bootstrap/lib/InputGroup";
 import Table from "react-bootstrap/lib/Table";
@@ -17,6 +15,8 @@ import { FormattedMessage } from "react-intl";
 import { countsPerPages } from "../../../../constants";
 import PBX from "./PBX";
 import Loading from "../../../../common/Loading";
+
+import { isAllowed, pages } from "../../../../utils/user";
 
 import {
   fetchGetCertifiedPBX,
@@ -181,22 +181,27 @@ const CertifiedPBXs = (props) => {
       <Row>
         <Col md={11}>
           <div className="flex flex-row flex-end-center indent-top-bottom-1">
-            <label htmlFor="contained-button-file" className={"margin-0"}>
-              <input
-                id="contained-button-file"
-                key={inputFileKey}
-                type="file"
-                style={{ display: "none" }}
-                accept="text/csv"
-                onChange={uploadFile}
-              />
-              <div className={"fake-button btn-primary margin-right-1"}>
-                <FormattedMessage
-                  id="add_or_replace_by_csv"
-                  defaultMessage="Add or Replace by CSV"
+            {isAllowed(
+              localStorage.getItem("userProfile"),
+              pages.add_config_certified_pbx
+            ) && (
+              <label htmlFor="contained-button-file" className={"margin-0"}>
+                <input
+                  id="contained-button-file"
+                  key={inputFileKey}
+                  type="file"
+                  style={{ display: "none" }}
+                  accept="text/csv"
+                  onChange={uploadFile}
                 />
-              </div>
-            </label>
+                <div className={"fake-button btn-primary margin-right-1"}>
+                  <FormattedMessage
+                    id="add_or_replace_by_csv"
+                    defaultMessage="Add or Replace by CSV"
+                  />
+                </div>
+              </label>
+            )}
             <>
               <div>Item per page</div>
               <FormControl

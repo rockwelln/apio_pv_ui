@@ -47,12 +47,17 @@ const PBX = (props) => {
       <td>{pbx.aoc}</td>
       <td>{pbx.fax}</td>
       <td>
-        <ButtonToolbar>
-          <Glyphicon
-            glyph="glyphicon glyphicon-remove"
-            onClick={() => setShowDelete(true)}
-          />
-        </ButtonToolbar>
+        {isAllowed(
+          localStorage.getItem("userProfile"),
+          pages.delete_config_certified_pbx
+        ) && (
+          <ButtonToolbar>
+            <Glyphicon
+              glyph="glyphicon glyphicon-remove"
+              onClick={() => setShowDelete(true)}
+            />
+          </ButtonToolbar>
+        )}
       </td>
       <DeleteModal
         show={showDelete}
