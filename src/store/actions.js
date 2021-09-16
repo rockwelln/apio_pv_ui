@@ -1098,7 +1098,7 @@ export function fetchPostAddIADSpecialCustomTags(
   };
 }
 
-export function fetchPostUpdateCertifiedPBXList(data) {
+export function fetchPostUpdateCertifiedPBXList(data, callback) {
   //////////////////////////////////////////////////
   return function (dispatch) {
     return fetch_post(
@@ -1115,6 +1115,7 @@ export function fetchPostUpdateCertifiedPBXList(data) {
           />,
           "Updated"
         );
+        callback && callback();
       })
       .catch((error) => {
         NotificationsManager.error(
@@ -1124,6 +1125,7 @@ export function fetchPostUpdateCertifiedPBXList(data) {
           />,
           error.message
         );
+        callback && callback();
       });
   };
 }
@@ -1654,7 +1656,7 @@ export function fetchDeleteCertifiedPBX(
   /////////////////////////////////
   return function (dispatch) {
     return fetch_delete(
-      `${ProvProxiesManager.getCurrentUrlPrefix()}telenet_pra/certified_pbx/${brand}/${version}`
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/certified_pbx/${brand}/${version}/`
     )
       .then((data) => {
         dispatch(deleteSpecialCustomTag(data));

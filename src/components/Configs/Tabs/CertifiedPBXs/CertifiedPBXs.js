@@ -141,7 +141,7 @@ const CertifiedPBXs = (props) => {
 
     toBase64(target.files[0]).then((res) => {
       const b64 = res.replace(/^data:.+;base64,/, "");
-      dispatch(fetchPostUpdateCertifiedPBXList({ csv: b64 }));
+      dispatch(fetchPostUpdateCertifiedPBXList({ csv: b64 }, fetchReq));
       setInputFileKey(Date.now() + Math.random());
     });
   };
@@ -405,11 +405,7 @@ const CertifiedPBXs = (props) => {
                 </thead>
                 <tbody>
                   {paginatedCertifiedPBX[page].map((pbx) => (
-                    <PBX
-                      key={pbx.brand}
-                      pbx={pbx}
-                      //onReload={() => this.fetchReq()}
-                    />
+                    <PBX key={pbx.brand} pbx={pbx} onReload={fetchReq} />
                   ))}
                 </tbody>
               </Table>

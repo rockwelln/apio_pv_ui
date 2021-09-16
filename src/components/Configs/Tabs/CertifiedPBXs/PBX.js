@@ -10,13 +10,18 @@ import { isAllowed, pages } from "../../../../utils/user";
 
 const PBX = (props) => {
   const [showDelete, setShowDelete] = useState(false);
-  const { pbx } = props;
+  const { pbx, onReload } = props;
   //   const dispatch = useDispatch();
   //   const propsCertifiedPBX = useSelector((state) => state.certifiedPBX);
 
   //   useEffect(() => {
   //     dispatch(fetchGetCertifiedPBX());
   //   }, []);
+
+  const onClose = () => {
+    onReload();
+    setShowDelete(false);
+  };
 
   return (
     <tr>
@@ -51,7 +56,7 @@ const PBX = (props) => {
       </td>
       <DeleteModal
         show={showDelete}
-        onClose={() => setShowDelete(false)}
+        onClose={onClose}
         pbxBrand={pbx.brand}
         pbxVersion={pbx.version}
       />
