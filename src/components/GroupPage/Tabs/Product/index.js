@@ -11,11 +11,13 @@ import Button from "react-bootstrap/lib/Button";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import HelpBlock from "react-bootstrap/lib/HelpBlock";
 import Alert from "react-bootstrap/lib/Alert";
+import Modal from "react-bootstrap/lib/Modal";
 
 import { FormattedMessage } from "react-intl";
 import Loading from "../../../../common/Loading";
 import { removeEmpty } from "../../../remuveEmptyInObject";
 import { get } from "../../../get";
+import CertifiedPBXs from "./CertifiedPBXs";
 
 import { isAllowed, pages } from "../../../../utils/user";
 
@@ -26,16 +28,20 @@ import {
   fetchGetIADs,
   fetchGetValidateGroupUpdate,
   clearValidationGroup,
+  fetchGetCertifiedPBX,
 } from "../../../../store/actions";
 
 export class Product extends Component {
   state = {
     isLoading: true,
+    isLoadingPBX: false,
     group: {},
     disableButton: false,
     seviceTypeError: null,
     textSerivceTypeError: "",
     updatingButton: false,
+    newPBXModel: "",
+    showPBXList: false,
   };
 
   fetchReq = () => {
@@ -61,7 +67,13 @@ export class Product extends Component {
                   this.state.group.serviceType ||
                   this.props.config.tenant.group.serviceType[0].value,
                 np1Redundancy: this.state.group.np1Redundancy || false,
+                pbxModel: this.state.group.pbxCertified
+                  ? this.state.group.pbxModel || "None"
+                  : "Not a certified PBX",
               },
+              newPBXModel: this.props.group.pbxCertified
+                ? ""
+                : this.props.group.pbxModel,
               isRedundant: ~this.props.config.tenant.group.iad[
                 "2EDUsForServiceTypes"
               ].indexOf(this.state.group.serviceType)
@@ -71,6 +83,11 @@ export class Product extends Component {
           )
         )
       );
+    this.setState({ isLoadingPBX: true }, () =>
+      this.props
+        .fetchGetCertifiedPBX()
+        .then(() => this.setState({ isLoadingPBX: false }))
+    );
   };
 
   componentDidMount() {
@@ -83,7 +100,7 @@ export class Product extends Component {
     }
   }
   render() {
-    if (this.state.isLoading) {
+    if (this.state.isLoading || this.state.isLoadingPBX) {
       return (
         <div>
           <Loading />
@@ -308,6 +325,77 @@ export class Product extends Component {
             </Col>
           </Row>
         )}
+        <Row className={"margin-top-1"}>
+          <Col md={12} className={"flex align-items-center"}>
+            <div className={"margin-right-1 flex flex-basis-16"}>
+              <ControlLabel>
+                <FormattedMessage id="PBXModel" defaultMessage="PBX Model" />
+              </ControlLabel>
+            </div>
+            <div className={"margin-right-1 flex flex-basis-33"}>
+              <FormControl
+                componentClass="select"
+                className={"margin-right-1"}
+                value={this.state.group.pbxModel}
+                onChange={(e) =>
+                  this.setState({
+                    group: {
+                      ...this.state.group,
+                      pbxModel: e.target.value,
+                    },
+                    newPBXModel:
+                      e.target.value !== "Not a certified PBX"
+                        ? ""
+                        : this.state.newPBXModel,
+                  })
+                }
+              >
+                {[
+                  { brand: "None", version: "" },
+                  { brand: "Not a certified PBX", version: "" },
+                  ...this.props.certifiedPBX,
+                ].map((el, i) => (
+                  <option key={i} value={el.brand}>
+                    {`${el.brand} ${el.version}`}
+                  </option>
+                ))}
+              </FormControl>
+              <Button
+                className={"btn-primary"}
+                onClick={() => this.setState({ showPBXList: true })}
+              >
+                <FormattedMessage
+                  id="show_detail"
+                  defaultMessage="Show details"
+                />
+              </Button>
+            </div>
+          </Col>
+        </Row>
+        {this.state.group.pbxModel === "Not a certified PBX" && (
+          <Row className={"margin-top-1"}>
+            <Col md={12} className={"flex align-items-center"}>
+              <div className={"margin-right-1 flex flex-basis-16"}>
+                <ControlLabel>
+                  <FormattedMessage
+                    id="new_pbx_model"
+                    defaultMessage="New PBX Model"
+                  />
+                </ControlLabel>
+              </div>
+              <div className={"margin-right-1 flex-basis-33"}>
+                <FormControl
+                  type="text"
+                  placeholder={"New PBX Model"}
+                  value={this.state.newPBXModel}
+                  onChange={(e) =>
+                    this.setState({ newPBXModel: e.target.value })
+                  }
+                />
+              </div>
+            </Col>
+          </Row>
+        )}
         <Row>
           <div className="button-row">
             <div className="pull-right">
@@ -339,6 +427,25 @@ export class Product extends Component {
             </div>
           </div>
         </Row>
+        {this.state.showPBXList && (
+          <Modal
+            show={this.state.showPBXList}
+            onHide={() => this.setState({ showPBXList: false })}
+            backdrop={false}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>
+                <FormattedMessage
+                  id="list_of_certified_pbx"
+                  defaultMessage="List of certified PBX"
+                />
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <CertifiedPBXs selectedPBX={this.props.group.pbxModel} />
+            </Modal.Body>
+          </Modal>
+        )}
       </React.Fragment>
     );
   }
@@ -374,12 +481,14 @@ export class Product extends Component {
   };
 
   updateProduct = () => {
-    const { pbxType, accessType, serviceType, np1Redundancy } =
+    const { pbxType, accessType, serviceType, np1Redundancy, pbxModel } =
       this.state.group;
     const data = {
       pbxType: pbxType !== this.props.group.pbxType ? pbxType : "",
       //accessType,
       serviceType,
+      pbxModel: this.state.newPBXModel ? this.state.newPBXModel : pbxModel,
+      pbxCertified: this.state.newPBXModel ? false : true,
       //np1Redundancy
     };
     const clearData = removeEmpty(data);
@@ -406,6 +515,7 @@ const mapStateToProps = (state) => ({
   config: state.config,
   validationGroup: state.validationGroup,
   validationGroupError: state.validationGroupError,
+  certifiedPBX: state.certifiedPBX,
 });
 
 const mapDispatchToProps = {
@@ -415,6 +525,7 @@ const mapDispatchToProps = {
   fetchGetIADs,
   fetchGetValidateGroupUpdate,
   clearValidationGroup,
+  fetchGetCertifiedPBX,
 };
 
 export default withRouter(

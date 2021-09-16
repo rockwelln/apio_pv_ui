@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { useDispatch } from "react-redux";
 
@@ -16,11 +15,6 @@ const DeleteModal = (props) => {
 
   const [deleting, setDeleting] = useState(false);
   const dispatch = useDispatch();
-  //   const propsCertifiedPBX = useSelector((state) => state.certifiedPBX);
-
-  //   useEffect(() => {
-  //     dispatch(fetchGetCertifiedPBX());
-  //   }, []);
 
   const onDelete = () => {
     setDeleting(true);

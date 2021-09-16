@@ -59,7 +59,7 @@ function mainReducer(state = initialState, action) {
         const iadType = state.config.tenant.group.iad.iadType.filter(
           (type) => type.value === el.iadType
         );
-        return { ...el, type: iadType[0].label };
+        return { ...el, type: iadType[0] ? iadType[0].label : "" };
       });
       return {
         ...state,

@@ -4,21 +4,13 @@ import { withRouter } from "react-router";
 import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
-import DeleteModal from "./DeleteModal";
-
 import { isAllowed, pages } from "../../../../utils/user";
 
 const PBX = (props) => {
-  const [showDelete, setShowDelete] = useState(false);
-  const { pbx, onReload } = props;
-
-  const onClose = () => {
-    onReload();
-    setShowDelete(false);
-  };
+  const { pbx, selectedPBX } = props;
 
   return (
-    <tr>
+    <tr className={`${selectedPBX === pbx.brand ? "selected-pbx" : ""}`}>
       <td>{pbx.brand}</td>
       <td>{pbx.version}</td>
       <td>{pbx.iad_type}</td>
@@ -40,25 +32,6 @@ const PBX = (props) => {
       <td>{pbx.blindcalltransferwithrefer}</td>
       <td>{pbx.aoc}</td>
       <td>{pbx.fax}</td>
-      <td>
-        {isAllowed(
-          localStorage.getItem("userProfile"),
-          pages.delete_config_certified_pbx
-        ) && (
-          <ButtonToolbar>
-            <Glyphicon
-              glyph="glyphicon glyphicon-remove"
-              onClick={() => setShowDelete(true)}
-            />
-          </ButtonToolbar>
-        )}
-      </td>
-      <DeleteModal
-        show={showDelete}
-        onClose={onClose}
-        pbxBrand={pbx.brand}
-        pbxVersion={pbx.version}
-      />
     </tr>
   );
 };
