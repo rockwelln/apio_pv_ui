@@ -70,6 +70,7 @@ export class Product extends Component {
                 pbxModel: this.state.group.pbxCertified
                   ? this.state.group.pbxModel || "None"
                   : "Not a certified PBX",
+                pbxVersion: this.state.group.pbxVersion || "",
               },
               newPBXModel: this.props.group.pbxCertified
                 ? ""
@@ -107,6 +108,7 @@ export class Product extends Component {
         </div>
       );
     }
+
     return (
       <React.Fragment>
         {((get(this.props, "validationGroup.warnings") &&
@@ -336,26 +338,37 @@ export class Product extends Component {
               <FormControl
                 componentClass="select"
                 className={"margin-right-1"}
-                value={this.state.group.pbxModel}
-                onChange={(e) =>
+                value={JSON.stringify({
+                  brand: this.state.group.pbxModel,
+                  version: this.state.group.pbxVersion,
+                })}
+                onChange={(e) => {
+                  console.log(e.target.name);
                   this.setState({
                     group: {
                       ...this.state.group,
-                      pbxModel: e.target.value,
+                      pbxModel: JSON.parse(e.target.value).brand,
+                      pbxVersion: JSON.parse(e.target.value).version,
                     },
                     newPBXModel:
-                      e.target.value !== "Not a certified PBX"
+                      JSON.parse(e.target.value).brand !== "Not a certified PBX"
                         ? ""
                         : this.state.newPBXModel,
-                  })
-                }
+                  });
+                }}
               >
                 {[
                   { brand: "None", version: "" },
                   { brand: "Not a certified PBX", version: "" },
                   ...this.props.certifiedPBX,
                 ].map((el, i) => (
-                  <option key={i} value={el.brand}>
+                  <option
+                    key={i}
+                    value={JSON.stringify({
+                      brand: el.brand,
+                      version: el.version,
+                    })}
+                  >
                     {`${el.brand} ${el.version}`}
                   </option>
                 ))}
@@ -481,14 +494,21 @@ export class Product extends Component {
   };
 
   updateProduct = () => {
-    const { pbxType, accessType, serviceType, np1Redundancy, pbxModel } =
-      this.state.group;
+    const {
+      pbxType,
+      accessType,
+      serviceType,
+      np1Redundancy,
+      pbxModel,
+      pbxVersion,
+    } = this.state.group;
     const data = {
       pbxType: pbxType !== this.props.group.pbxType ? pbxType : "",
       //accessType,
       serviceType,
       pbxModel: this.state.newPBXModel ? this.state.newPBXModel : pbxModel,
       pbxCertified: this.state.newPBXModel ? false : true,
+      pbxVersion: this.state.newPBXModel ? "" : pbxVersion,
       //np1Redundancy
     };
     const clearData = removeEmpty(data);
