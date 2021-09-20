@@ -182,7 +182,13 @@ export class Channels extends Component {
                       ][this.state.group.pbxType][
                         this.state.group.accessType === "FIBER"
                           ? "redundant"
-                          : this.props.iads.iadType
+                          : Object.keys(
+                              this.props.config.tenant.group.capacity[
+                                this.state.group.accessType
+                              ][this.state.group.pbxType]
+                            ).includes(this.props.iads.iadType)
+                          ? this.props.iads.iadType
+                          : "None"
                       ].map((type, i) => (
                         <option key={i} value={type.value}>
                           {type.label}
@@ -192,8 +198,14 @@ export class Channels extends Component {
                         this.state.group.accessType
                       ][this.state.group.pbxType][
                         this.state.group.accessType === "FIBER"
-                          ? "nonRedundant"
-                          : this.props.iads.iadType
+                          ? "redundant"
+                          : Object.keys(
+                              this.props.config.tenant.group.capacity[
+                                this.state.group.accessType
+                              ][this.state.group.pbxType]
+                            ).includes(this.props.iads.iadType)
+                          ? this.props.iads.iadType
+                          : "None"
                       ].map((type, i) => (
                         <option key={i} value={type.value}>
                           {type.label}
