@@ -198,7 +198,7 @@ export class Channels extends Component {
                         this.state.group.accessType
                       ][this.state.group.pbxType][
                         this.state.group.accessType === "FIBER"
-                          ? "redundant"
+                          ? "nonRedundant"
                           : Object.keys(
                               this.props.config.tenant.group.capacity[
                                 this.state.group.accessType
