@@ -150,6 +150,11 @@ export const getCertifiedPBX = (data) => ({
   data,
 });
 
+export const getNumbersAvailableRoutes = (data) => ({
+  type: actionType.GET_NUMBERS_AVAILABLE_ROUTES,
+  data,
+});
+
 export const postCreateTenant = (data) => ({
   type: actionType.POST_CREATE_TENANT,
   data,
@@ -847,6 +852,35 @@ export function fetchGetCertifiedPBX(setStartLoading, setEndLoading) {
           <FormattedMessage
             id="fetch-certified-pbx-failed"
             defaultMessage="Failed to fetch certified pbx!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchGetNumbersAvailableRoutes(tenantId, groupId, callback) {
+  /////////////////////////////////
+  return function (dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/numbers/available_routes/`
+    )
+      .then((data) => {
+        dispatch(getNumbersAvailableRoutes(data));
+        callback && callback();
+      })
+      .catch((error) => {
+        dispatch(
+          getNumbersAvailableRoutes({
+            default: { ports: [], trunkGroups: [] },
+            configured: { ports: [], trunkGroups: [] },
+          })
+        );
+        callback && callback();
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-available-routes-failed"
+            defaultMessage="Failed to fetch available routes!"
           />,
           error.message
         );

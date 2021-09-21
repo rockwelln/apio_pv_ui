@@ -12,10 +12,14 @@ import Radio from "react-bootstrap/lib/Radio";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import Alert from "react-bootstrap/lib/Alert";
 import HelpBlock from "react-bootstrap/lib/HelpBlock";
+import Loading from "../../common/Loading";
 
 import { STATENUMBERS } from "../../constants";
 
-import { fetchPostAssignPhoneNumbersToGroup } from "../../store/actions";
+import {
+  fetchPostAssignPhoneNumbersToGroup,
+  fetchGetNumbersAvailableRoutes,
+} from "../../store/actions";
 
 import { removeEmpty } from "../remuveEmptyInObject";
 import { validateInputPhoneNumber } from "../validateInputPhoneNumber";
@@ -32,8 +36,26 @@ export class AddPhoneNumber extends Component {
     disableAddButton: false,
     countNumbersError: false,
     zipCode: "",
+    route: "",
+    isLoading: false,
   };
+
+  componentDidMount() {
+    this.props.group.pbxType === "BRA" &&
+      this.setState({ isLoading: true }, () =>
+        this.props.fetchGetNumbersAvailableRoutes(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          () => this.setState({ isLoading: false })
+        )
+      );
+  }
+
   render() {
+    if (this.state.isLoading) {
+      return <Loading />;
+    }
+
     return (
       <React.Fragment>
         <Panel className={"margin-0"}>
@@ -98,6 +120,37 @@ export class AddPhoneNumber extends Component {
                       });
                     }}
                   />
+                </div>
+              </Col>
+            </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={6} className={"flex align-items-center"}>
+                <div className={"flex flex-basis-33"}>Route</div>
+                <div className={"margin-right-1 flex flex-basis-66"}>
+                  <FormControl
+                    componentClass="select"
+                    value={this.state.route}
+                    placeholder={"Route"}
+                    onChange={(e) => {
+                      this.setState({
+                        route: e.target.value,
+                      });
+                    }}
+                  >
+                    <option value="">{"None"}</option>
+                    {this.props.avaliableRoutes.default.ports.map((el) => (
+                      <option value={el} key={el}>
+                        {el}
+                      </option>
+                    ))}
+                    {this.props.avaliableRoutes.default.trunkGroups.map(
+                      (el) => (
+                        <option value={el} key={el}>
+                          {el}
+                        </option>
+                      )
+                    )}
+                  </FormControl>
                 </div>
               </Col>
             </Row>
@@ -265,11 +318,16 @@ export class AddPhoneNumber extends Component {
   };
 
   addPhoneNumbers = () => {
-    const { numbers, arrayFrom, arrayTo, status, zipCode } = this.state;
+    const { numbers, arrayFrom, arrayTo, status, zipCode, route } = this.state;
     const data = {
       numbers,
       status,
-      range: { minPhoneNumber: arrayFrom, maxPhoneNumber: arrayTo, zipCode },
+      range: {
+        minPhoneNumber: arrayFrom,
+        maxPhoneNumber: arrayTo,
+        zipCode,
+        route: this.props.group.pbxType === "BRA" ? route : "",
+      },
     };
     const clearData = removeEmpty(data);
     const callback = () => {
@@ -297,6 +355,16 @@ export class AddPhoneNumber extends Component {
   };
 }
 
-const mapDispatchToProps = { fetchPostAssignPhoneNumbersToGroup };
+const mapStateToProps = (state) => ({
+  avaliableRoutes: state.avaliableRoutes,
+  group: state.group,
+});
 
-export default withRouter(connect(null, mapDispatchToProps)(AddPhoneNumber));
+const mapDispatchToProps = {
+  fetchPostAssignPhoneNumbersToGroup,
+  fetchGetNumbersAvailableRoutes,
+};
+
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(AddPhoneNumber)
+);

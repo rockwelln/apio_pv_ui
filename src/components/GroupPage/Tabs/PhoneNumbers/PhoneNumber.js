@@ -15,7 +15,7 @@ export default class PhoneNumber extends Component {
   state = { showDelete: false, showRange: false };
 
   render() {
-    const { number, onReload, index, style } = this.props;
+    const { number, onReload, style, pbxType } = this.props;
     const { showDelete, showRange } = this.state;
     return (
       <React.Fragment>
@@ -108,11 +108,38 @@ export default class PhoneNumber extends Component {
                 );
               }}
             />
-            {}
           </td>
           <td>{`${number.main_number ? "Yes" : "No"}/${
             number.maintenance_number ? "Yes" : "No"
           }`}</td>
+          {pbxType === "BRA" && (
+            <td>
+              <FormControl
+                componentClass="select"
+                value={number.route}
+                placeholder={"Route"}
+                onChange={(e) => {
+                  this.props.handleChangeRoute(
+                    number.phoneNumber,
+                    e.target.value,
+                    number.inRange
+                  );
+                }}
+              >
+                <option value="">{"None"}</option>
+                {this.props.avaliableRoutes.default.ports.map((el) => (
+                  <option value={el} key={el}>
+                    {el}
+                  </option>
+                ))}
+                {this.props.avaliableRoutes.default.trunkGroups.map((el) => (
+                  <option value={el} key={el}>
+                    {el}
+                  </option>
+                ))}
+              </FormControl>
+            </td>
+          )}
           {isAllowed(
             localStorage.getItem("userProfile"),
             pages.group_numbers_other_actions
@@ -147,12 +174,15 @@ export default class PhoneNumber extends Component {
               index={i}
               key={i}
               number={number}
+              pbxType={this.props.group.pbxType}
+              avaliableRoutes={this.props.avaliableRoutes}
               showWithStatus={this.props.showWithStatus}
               handleSingleCheckboxClick={this.props.handleSingleCheckboxClick}
               handleSingleCheckboxClickActive={
                 this.props.handleSingleCheckboxClickActive
               }
               handleChangeZipCode={this.props.handleChangeZipCode}
+              handleChangeRoute={this.props.handleChangeRoute}
               handleSingleCheckboxClickPreActive={
                 this.props.handleSingleCheckboxClickPreActive
               }

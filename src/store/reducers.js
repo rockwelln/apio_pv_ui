@@ -50,6 +50,10 @@ const initialState = {
     rejected: [],
   },
   certifiedPBX: [],
+  avaliableRoutes: {
+    default: { ports: [], trunkGroups: [] },
+    configured: { ports: [], trunkGroups: [] },
+  },
 };
 
 function mainReducer(state = initialState, action) {
@@ -127,6 +131,7 @@ function mainReducer(state = initialState, action) {
             arrPN[arrPN.length - 1].preActive === phone.preActive &&
             arrPN[arrPN.length - 1].active === phone.active &&
             arrPN[arrPN.length - 1].zipCode === phone.zipCode &&
+            arrPN[arrPN.length - 1].route === phone.route &&
             count !== 100
           ) {
             if (count === 1) {
@@ -203,6 +208,7 @@ function mainReducer(state = initialState, action) {
             arrPN[arrPN.length - 1].preActive === phone.preActive &&
             arrPN[arrPN.length - 1].active === phone.active &&
             arrPN[arrPN.length - 1].zipCode === phone.zipCode &&
+            arrPN[arrPN.length - 1].route === phone.route &&
             count !== 100
           ) {
             if (count === 1) {
@@ -466,6 +472,12 @@ function mainReducer(state = initialState, action) {
         certifiedPBX: action.data.certifiedPBX,
       };
     }
+    case actionType.GET_NUMBERS_AVAILABLE_ROUTES: {
+      return {
+        ...state,
+        avaliableRoutes: action.data,
+      };
+    }
     case actionType.POST_CREATE_IAD: {
       return {
         ...state,
@@ -574,6 +586,7 @@ function mainReducer(state = initialState, action) {
             arrPN[arrPN.length - 1].preActive === phone.preActive &&
             arrPN[arrPN.length - 1].active === phone.active &&
             arrPN[arrPN.length - 1].zipCode === phone.zipCode &&
+            arrPN[arrPN.length - 1].route === phone.route &&
             count !== 100
           ) {
             if (count === 1) {

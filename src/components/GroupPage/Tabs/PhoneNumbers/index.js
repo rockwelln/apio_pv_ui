@@ -25,6 +25,7 @@ import {
   fetchPutUpdateNumbersStatus,
   fetchGetPhoneNumbersWithRefreshDB,
   fetchGetDownloadNumbersAsCSV,
+  fetchGetNumbersAvailableRoutes,
 } from "../../../../store/actions";
 
 import Loading from "../../../../common/Loading";
@@ -59,6 +60,7 @@ export class PhoneNumbersTab extends Component {
     disabledUpdateStatusPreActive: false,
     disableRefresInfo: false,
     isDownloadingCSV: false,
+    isLoadingRoutes: false,
   };
 
   fetchGetNumbers() {
@@ -76,6 +78,14 @@ export class PhoneNumbersTab extends Component {
             sortedBy: "rangeStart",
           },
           () => this.pagination()
+        )
+      );
+    this.props.group.pbxType === "BRA" &&
+      this.setState({ isLoadingRoutes: true }, () =>
+        this.props.fetchGetNumbersAvailableRoutes(
+          this.props.match.params.tenantId,
+          this.props.match.params.groupId,
+          () => this.setState({ isLoadingRoutes: false })
         )
       );
   }
@@ -106,12 +116,12 @@ export class PhoneNumbersTab extends Component {
       numbersForDelete,
       showDelete,
       countPerPage,
-      pagination,
       paginationPhoneNumbers,
       page,
+      isLoadingRoutes,
     } = this.state;
 
-    if (isLoading && pagination) {
+    if (isLoading || isLoadingRoutes) {
       return <Loading />;
     }
 
@@ -266,7 +276,9 @@ export class PhoneNumbersTab extends Component {
                     >
                       <FormattedMessage
                         id="updateZipCodes"
-                        defaultMessage="Update zip codes"
+                        defaultMessage={`Update zip codes${
+                          this.props.group.pbxType === "BRA" ? "/Routes" : ""
+                        }`}
                       />
                     </Button>
                   ) : null}
@@ -403,6 +415,11 @@ export class PhoneNumbersTab extends Component {
                         defaultMessage="Maintenance Number"
                       />
                     </th>
+                    {this.props.group.pbxType === "BRA" && (
+                      <th style={{ width: "12%" }}>
+                        <FormattedMessage id="route" defaultMessage="Route" />
+                      </th>
+                    )}
                     <th />
                   </tr>
                 </thead>
@@ -413,6 +430,8 @@ export class PhoneNumbersTab extends Component {
                         index={i}
                         key={i}
                         number={number}
+                        pbxType={this.props.group.pbxType}
+                        avaliableRoutes={this.props.avaliableRoutes}
                         showWithStatus={this.state.showWithStatus}
                         handleSingleCheckboxClick={
                           this.handleSingleCheckboxClick
@@ -427,6 +446,7 @@ export class PhoneNumbersTab extends Component {
                           this.handleSingleCheckboxClickInRange
                         }
                         handleChangeZipCode={this.handleChangeZipCode}
+                        handleChangeRoute={this.handleChangeRoute}
                         page={page}
                         onReload={() => this.fetchGetNumbers()}
                       />
@@ -651,6 +671,7 @@ export class PhoneNumbersTab extends Component {
               preActive: number.preActive,
               phoneNumber: number.phoneNumber,
               zipCode: number.zipCode,
+              route: this.props.group.pbxType === "BRA" ? number.route : "",
             });
           }
         });
@@ -661,6 +682,7 @@ export class PhoneNumbersTab extends Component {
             preActive: phone.preActive,
             phoneNumber: phone.phoneNumber,
             zipCode: phone.zipCode,
+            route: this.props.group.pbxType === "BRA" ? phone.route : "",
           });
         }
       }
@@ -1184,11 +1206,56 @@ export class PhoneNumbersTab extends Component {
     }
     this.setState({ phoneNumbers: newArr }, () => this.pagination());
   };
+
+  handleChangeRoute = (phone, newRoute, inRange) => {
+    let newArr = [];
+    const incomingPhone = phone;
+    if (inRange) {
+      newArr = this.state.phoneNumbers.map((number) => {
+        if (
+          number.rangeStart <= incomingPhone &&
+          incomingPhone <= number.rangeEnd
+        ) {
+          return {
+            ...number,
+            phoneNumbers: number.phoneNumbers.map((el) => ({
+              ...el,
+              route: el.phoneNumber === incomingPhone ? newRoute : el.route,
+              isChanged: el.phoneNumber === incomingPhone ? true : el.isChanged,
+            })),
+          };
+        } else {
+          return number;
+        }
+      });
+    } else {
+      newArr = this.state.phoneNumbers.map((el) => {
+        if (el.phoneNumber === incomingPhone) {
+          return {
+            ...el,
+            route: newRoute,
+            isChanged: true,
+            phoneNumbers:
+              el.phoneNumbers &&
+              el.phoneNumbers.map((phone) => ({
+                ...phone,
+                route: newRoute,
+                isChanged: true,
+              })),
+          };
+        }
+        return el;
+      });
+    }
+    this.setState({ phoneNumbers: newArr }, () => this.pagination());
+  };
 }
 
 const mapStateToProps = (state) => ({
   phoneNumbers: state.phoneNumbersByGroup,
   numbersAsCSV: state.numbersAsCSV,
+  avaliableRoutes: state.avaliableRoutes,
+  group: state.group,
 });
 
 const mapDispatchToProps = {
@@ -1196,6 +1263,7 @@ const mapDispatchToProps = {
   fetchPutUpdateNumbersStatus,
   fetchGetPhoneNumbersWithRefreshDB,
   fetchGetDownloadNumbersAsCSV,
+  fetchGetNumbersAvailableRoutes,
 };
 
 export default withRouter(
