@@ -9,8 +9,11 @@ import { isAllowed, pages } from "../../../../utils/user";
 const PBX = (props) => {
   const { pbx, selectedPBX } = props;
 
+  const isSelected =
+    selectedPBX.brand === pbx.brand && selectedPBX.version === pbx.version;
+
   return (
-    <tr className={`${selectedPBX === pbx.brand ? "selected-pbx" : ""}`}>
+    <tr className={`${isSelected ? "selected-pbx" : ""}`}>
       <td>{pbx.brand}</td>
       <td>{pbx.version}</td>
       <td>{pbx.iad_type}</td>

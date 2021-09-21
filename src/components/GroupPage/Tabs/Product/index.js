@@ -455,7 +455,12 @@ export class Product extends Component {
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <CertifiedPBXs selectedPBX={this.props.group.pbxModel} />
+              <CertifiedPBXs
+                selectedPBX={{
+                  brand: this.props.group.pbxModel,
+                  version: this.props.group.pbxVersion,
+                }}
+              />
             </Modal.Body>
           </Modal>
         )}

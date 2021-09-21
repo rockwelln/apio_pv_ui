@@ -182,6 +182,53 @@ export class BraInfo extends Component {
                 </div>
               </Col>
             </Row>
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  <ControlLabel>
+                    <FormattedMessage
+                      id="trunkGroup"
+                      defaultMessage="Trunk group"
+                    />
+                  </ControlLabel>
+                </div>
+                <div className={"margin-right-1 flex-basis-33"}>
+                  <FormControl
+                    componentClass="select"
+                    value={this.state.braByIad[bra].trkgrp}
+                    onChange={(e) =>
+                      this.setState(
+                        {
+                          braByIad: {
+                            ...this.state.braByIad,
+                            [bra]: {
+                              ...this.state.braByIad[bra],
+                              trkgrp: e.target.value,
+                            },
+                          },
+                        },
+                        () => this.storeUpdate()
+                      )
+                    }
+                    disabled={
+                      !isAllowed(
+                        localStorage.getItem("userProfile"),
+                        pages.edit_iad_pra_info_tpid
+                      ) ||
+                      this.props.iad.virtual ||
+                      !this.state.braByIad[bra].braID
+                    }
+                  >
+                    <option value="">{"None"}</option>
+                    {this.props.config.tenant.group.dialPlan.map((el) => (
+                      <option key={el.value} value={el.value}>
+                        {el.label}
+                      </option>
+                    ))}
+                  </FormControl>
+                </div>
+              </Col>
+            </Row>
             {/* <Row className={"margin-top-1"}>
               <Col md={12} className={"flex align-items-center"}>
                 <div className={"margin-right-1 flex flex-basis-16"}>
@@ -307,6 +354,7 @@ export class BraInfo extends Component {
         [braByIad[key].braID]: {
           port_mode: braByIad[key].port_mode,
           enabled: braByIad[key].enabled,
+          trkgrp: braByIad[key].trkgrp,
         },
       };
     });
@@ -335,6 +383,7 @@ export class BraInfo extends Component {
         [braByIad[key].braID]: {
           port_mode: braByIad[key].port_mode,
           enabled: braByIad[key].enabled,
+          trkgrp: braByIad[key].trkgrp,
         },
       };
     });
@@ -372,7 +421,7 @@ export class BraInfo extends Component {
   };
 }
 
-const mapStateToProps = (state) => ({ iad: state.iad });
+const mapStateToProps = (state) => ({ iad: state.iad, config: state.config });
 
 const mapDispatchToProps = { changeIAD, fetchPutUpdateIAD };
 
