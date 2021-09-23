@@ -4,6 +4,7 @@ import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Checkbox from "react-bootstrap/lib/Checkbox";
 import FormControl from "react-bootstrap/lib/FormControl";
+import FormGroup from "react-bootstrap/lib/FormGroup";
 
 import DeleteModal from "./DeleteModal";
 
@@ -114,30 +115,57 @@ export default class PhoneNumber extends Component {
           }`}</td>
           {pbxType === "BRA" && (
             <td>
-              <FormControl
-                componentClass="select"
-                value={number.route}
-                placeholder={"Route"}
-                onChange={(e) => {
-                  this.props.handleChangeRoute(
-                    number.phoneNumber,
-                    e.target.value,
-                    number.inRange
-                  );
-                }}
+              <FormGroup
+                validationState={
+                  !this.props.avaliableRoutes.default.ports.includes(
+                    +number.route
+                  ) &&
+                  !this.props.avaliableRoutes.default.trunkGroups.includes(
+                    number.route
+                  ) &&
+                  number.route !== ""
+                    ? "error"
+                    : null
+                }
               >
-                <option value="">{"None"}</option>
-                {this.props.avaliableRoutes.default.ports.map((el) => (
-                  <option value={el} key={el}>
-                    {el}
-                  </option>
-                ))}
-                {this.props.avaliableRoutes.default.trunkGroups.map((el) => (
-                  <option value={el} key={el}>
-                    {el}
-                  </option>
-                ))}
-              </FormControl>
+                <FormControl
+                  componentClass="select"
+                  value={number.route}
+                  placeholder={"Route"}
+                  onChange={(e) => {
+                    this.props.handleChangeRoute(
+                      number.phoneNumber,
+                      e.target.value,
+                      number.inRange
+                    );
+                  }}
+                >
+                  {!this.props.avaliableRoutes.default.ports.includes(
+                    +number.route
+                  ) &&
+                    !this.props.avaliableRoutes.default.trunkGroups.includes(
+                      number.route
+                    ) && (
+                      <option
+                        value={number.route ? number.route : null}
+                        disabled
+                      >
+                        {"Error"}
+                      </option>
+                    )}
+                  <option value="">{"None"}</option>
+                  {[1, 2, 3].map((el) => (
+                    <option value={el} key={el}>
+                      {el}
+                    </option>
+                  ))}
+                  {this.props.avaliableRoutes.default.trunkGroups.map((el) => (
+                    <option value={el} key={el}>
+                      {el}
+                    </option>
+                  ))}
+                </FormControl>
+              </FormGroup>
             </td>
           )}
           {isAllowed(
@@ -174,7 +202,7 @@ export default class PhoneNumber extends Component {
               index={i}
               key={i}
               number={number}
-              pbxType={this.props.group.pbxType}
+              pbxType={this.props.pbxType}
               avaliableRoutes={this.props.avaliableRoutes}
               showWithStatus={this.props.showWithStatus}
               handleSingleCheckboxClick={this.props.handleSingleCheckboxClick}

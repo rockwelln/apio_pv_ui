@@ -36,7 +36,6 @@ import { countsPerPages } from "../../../../constants";
 import { isAllowed, pages } from "../../../../utils/user";
 
 import "./styles.css";
-
 export class PhoneNumbersTab extends Component {
   state = {
     searchValue: "",
@@ -666,6 +665,24 @@ export class PhoneNumbersTab extends Component {
       if (phone.phoneNumbers) {
         phone.phoneNumbers.forEach((number) => {
           if (number.isChanged) {
+            if (
+              !this.props.avaliableRoutes.default.ports.includes(
+                +number.route
+              ) &&
+              !this.props.avaliableRoutes.default.trunkGroups.includes(
+                number.route
+              ) &&
+              number.route !== ""
+            ) {
+              NotificationsManager.error(
+                <FormattedMessage
+                  id="notCorrectPorts"
+                  defaultMessage="Numbers is not updated"
+                />,
+                "Please select corrects ports"
+              );
+              return;
+            }
             newZipNumbers.push({
               active: number.active,
               preActive: number.preActive,
@@ -677,6 +694,22 @@ export class PhoneNumbersTab extends Component {
         });
       } else {
         if (phone.isChanged) {
+          if (
+            !this.props.avaliableRoutes.default.ports.includes(+phone.route) &&
+            !this.props.avaliableRoutes.default.trunkGroups.includes(
+              phone.route
+            ) &&
+            phone.route !== ""
+          ) {
+            NotificationsManager.error(
+              <FormattedMessage
+                id="notCorrectPorts"
+                defaultMessage="Not correct ports"
+              />,
+              "Please select corrects ports"
+            );
+            return;
+          }
           newZipNumbers.push({
             active: phone.active,
             preActive: phone.preActive,
