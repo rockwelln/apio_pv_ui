@@ -155,6 +155,11 @@ export const getNumbersAvailableRoutes = (data) => ({
   data,
 });
 
+export const getNumbersForwarding = (data) => ({
+  type: actionType.GET_NUMBERS_FORWARDING,
+  data,
+});
+
 export const postCreateTenant = (data) => ({
   type: actionType.POST_CREATE_TENANT,
   data,
@@ -250,6 +255,10 @@ export const putUpdateIADCustomTagsComment = () => ({
 
 export const putUpdateIADCustomTag = () => ({
   type: actionType.PUT_UPDATE_IAD_CUSTOM_TAG,
+});
+
+export const putUpdateNumbersForwarding = () => ({
+  type: actionType.PUT_UPDATE_NUMBERS_FORWARDING,
 });
 
 export const deleteTenant = (data) => ({
@@ -888,6 +897,34 @@ export function fetchGetNumbersAvailableRoutes(tenantId, groupId, callback) {
   };
 }
 
+export function fetchGetNumbersForwarding(tenantId, groupId, callback) {
+  /////////////////////////////////
+  return function (dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/numbers_forwarding/`
+    )
+      .then((data) => {
+        dispatch(getNumbersForwarding(data));
+        callback && callback();
+      })
+      .catch((error) => {
+        dispatch(
+          getNumbersForwarding({
+            forwardingNumbers: [],
+          })
+        );
+        callback && callback();
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-available-routes-failed"
+            defaultMessage="Failed to fetch available routes!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
 export function fetchPostEmergencyRouting(data) {
   /////////////////////////////////////
   return function (dispatch) {
@@ -1484,6 +1521,40 @@ export function fetchPutUpdateIADCustomTag(
         );
         errorCallback && errorCallback();
         return "failed";
+      });
+  };
+}
+
+export function fetchPutUpdateNumbersForwarding(
+  tenantId,
+  groupId,
+  data,
+  callback
+) {
+  /////////////////////////////////
+  return function (dispatch) {
+    return fetch_put(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/numbers_forwarding/`,
+      data
+    )
+      .then((data) => {
+        dispatch(putUpdateNumbersForwarding(data));
+        callback && callback();
+      })
+      .catch((error) => {
+        dispatch(
+          putUpdateNumbersForwarding({
+            forwardingNumbers: [],
+          })
+        );
+        callback && callback();
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-available-routes-failed"
+            defaultMessage="Failed to fetch available routes!"
+          />,
+          error.message
+        );
       });
   };
 }

@@ -13,6 +13,7 @@ import Channels from "./Tabs/Channels";
 import Service from "./Tabs/Service";
 import NumberFormatting from "./Tabs/NumberFormatting";
 import RoutingNumber from "./Tabs/RoutingNumber";
+import CallForwarding from "./Tabs/CallForwarding";
 
 import IADs from "./Tabs/IADs";
 
@@ -123,6 +124,11 @@ class TenantPage extends Component {
             <Tab eventKey={6} title="Routing Number">
               <RoutingNumber />
             </Tab>
+            {this.props.group.pbxType === "BRA" && (
+              <Tab eventKey={7} title="Call Forwarding">
+                <CallForwarding />
+              </Tab>
+            )}
           </Tabs>
         </div>
       </React.Fragment>
@@ -152,6 +158,9 @@ class TenantPage extends Component {
       case 6:
         this.props.history.push("#routingNumbers");
         break;
+      case 7:
+        this.props.history.push("#callForwarding");
+        break;
     }
   };
 
@@ -171,6 +180,8 @@ class TenantPage extends Component {
         return 5;
       case "#routingNumbers":
         return 6;
+      case "#callForwarding":
+        return 7;
       default:
         return 0;
     }

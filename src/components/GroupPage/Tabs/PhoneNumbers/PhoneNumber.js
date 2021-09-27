@@ -154,7 +154,7 @@ export default class PhoneNumber extends Component {
                       </option>
                     )}
                   <option value="">{"None"}</option>
-                  {[1, 2, 3].map((el) => (
+                  {this.props.avaliableRoutes.default.ports.map((el) => (
                     <option value={el} key={el}>
                       {el}
                     </option>

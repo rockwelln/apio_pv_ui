@@ -138,12 +138,12 @@ export class AddPhoneNumber extends Component {
                     }}
                   >
                     <option value="">{"None"}</option>
-                    {this.props.avaliableRoutes.default.ports.map((el) => (
+                    {this.props.avaliableRoutes.configured.ports.map((el) => (
                       <option value={el} key={el}>
                         {el}
                       </option>
                     ))}
-                    {this.props.avaliableRoutes.default.trunkGroups.map(
+                    {this.props.avaliableRoutes.configured.trunkGroups.map(
                       (el) => (
                         <option value={el} key={el}>
                           {el}

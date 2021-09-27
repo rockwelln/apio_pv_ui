@@ -54,6 +54,7 @@ const initialState = {
     default: { ports: [], trunkGroups: [] },
     configured: { ports: [], trunkGroups: [] },
   },
+  forwardingNumbers: [],
 };
 
 function mainReducer(state = initialState, action) {
@@ -476,6 +477,12 @@ function mainReducer(state = initialState, action) {
       return {
         ...state,
         avaliableRoutes: action.data,
+      };
+    }
+    case actionType.GET_NUMBERS_FORWARDING: {
+      return {
+        ...state,
+        forwardingNumbers: action.data.forwardingNumbers,
       };
     }
     case actionType.POST_CREATE_IAD: {
