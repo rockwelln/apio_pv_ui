@@ -666,10 +666,10 @@ export class PhoneNumbersTab extends Component {
         phone.phoneNumbers.forEach((number) => {
           if (number.isChanged) {
             if (
-              !this.props.avaliableRoutes.default.ports.includes(
+              !this.props.avaliableRoutes.configured.ports.includes(
                 +number.route
               ) &&
-              !this.props.avaliableRoutes.default.trunkGroups.includes(
+              !this.props.avaliableRoutes.configured.trunkGroups.includes(
                 number.route
               ) &&
               number.route !== ""
@@ -695,8 +695,10 @@ export class PhoneNumbersTab extends Component {
       } else {
         if (phone.isChanged) {
           if (
-            !this.props.avaliableRoutes.default.ports.includes(+phone.route) &&
-            !this.props.avaliableRoutes.default.trunkGroups.includes(
+            !this.props.avaliableRoutes.configured.ports.includes(
+              +phone.route
+            ) &&
+            !this.props.avaliableRoutes.configured.trunkGroups.includes(
               phone.route
             ) &&
             phone.route !== ""

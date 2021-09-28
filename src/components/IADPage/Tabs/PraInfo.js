@@ -46,10 +46,18 @@ export class PraInfo extends Component {
     });
     for (let i = 0; i < this.props.iad.pra_needed; i++) {
       if (Object.keys(praByIad).length < this.props.iad.pra_needed) {
-        praByIad = {
-          ...praByIad,
-          [i + 5]: { tpid: "", circuit_id: "", praID: "", enabled: "" },
-        };
+        if (!praByIad[i + 1]) {
+          praByIad[i + 1] = {
+            tpid: "",
+            circuit_id: "",
+            praID: "",
+            enabled: "",
+          };
+        }
+        // praByIad = {
+        //   ...praByIad,
+        //   [i + 5]: { tpid: "", circuit_id: "", praID: "", enabled: "" },
+        // };
       }
     }
     this.setState({ praByIad, arrayOfPraId, selectedID });

@@ -51,10 +51,13 @@ export class BraInfo extends Component {
     });
     for (let i = 0; i < this.props.iad.bra_needed; i++) {
       if (Object.keys(braByIad).length < this.props.iad.bra_needed) {
-        braByIad = {
-          ...braByIad,
-          [i + 5]: { port_mode: "P2P", enabled: "", braID: "" },
-        };
+        if (!braByIad[i + 1]) {
+          braByIad[i + 1] = { port_mode: "P2P", enabled: "", braID: "" };
+        }
+        // braByIad = {
+        //   ...braByIad,
+        //   [i + 5]: { port_mode: "P2P", enabled: "", braID: "" },
+        // };
       }
     }
     this.setState({ braByIad, arrayOfBraId, selectedID });

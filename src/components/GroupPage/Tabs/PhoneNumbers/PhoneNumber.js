@@ -117,10 +117,10 @@ export default class PhoneNumber extends Component {
             <td>
               <FormGroup
                 validationState={
-                  !this.props.avaliableRoutes.default.ports.includes(
+                  !this.props.avaliableRoutes.configured.ports.includes(
                     +number.route
                   ) &&
-                  !this.props.avaliableRoutes.default.trunkGroups.includes(
+                  !this.props.avaliableRoutes.configured.trunkGroups.includes(
                     number.route
                   ) &&
                   number.route !== ""
@@ -140,10 +140,10 @@ export default class PhoneNumber extends Component {
                     );
                   }}
                 >
-                  {!this.props.avaliableRoutes.default.ports.includes(
+                  {!this.props.avaliableRoutes.configured.ports.includes(
                     +number.route
                   ) &&
-                    !this.props.avaliableRoutes.default.trunkGroups.includes(
+                    !this.props.avaliableRoutes.configured.trunkGroups.includes(
                       number.route
                     ) && (
                       <option
@@ -154,16 +154,18 @@ export default class PhoneNumber extends Component {
                       </option>
                     )}
                   <option value="">{"None"}</option>
-                  {this.props.avaliableRoutes.default.ports.map((el) => (
+                  {this.props.avaliableRoutes.configured.ports.map((el) => (
                     <option value={el} key={el}>
                       {el}
                     </option>
                   ))}
-                  {this.props.avaliableRoutes.default.trunkGroups.map((el) => (
-                    <option value={el} key={el}>
-                      {el}
-                    </option>
-                  ))}
+                  {this.props.avaliableRoutes.configured.trunkGroups.map(
+                    (el) => (
+                      <option value={el} key={el}>
+                        {el}
+                      </option>
+                    )
+                  )}
                 </FormControl>
               </FormGroup>
             </td>
