@@ -29,13 +29,13 @@ const CallForwarding = (props) => {
           props.match.params.groupId
         )
       );
-    dispatch(
-      fetchPutUpdateNumbersForwarding(
-        props.match.params.tenantId,
-        props.match.params.groupId,
-        [{ phoneNumber: "+3250000200", frwdPort: 1 }]
-      )
-    );
+    // dispatch(
+    //   fetchPutUpdateNumbersForwarding(
+    //     props.match.params.tenantId,
+    //     props.match.params.groupId,
+    //     [{ phoneNumber: "+3250000200", frwdPort: 1 }]
+    //   )
+    // );
   }, []);
 
   return <React.Fragment>CallForwarding</React.Fragment>;
