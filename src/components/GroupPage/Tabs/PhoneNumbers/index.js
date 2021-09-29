@@ -430,7 +430,7 @@ export class PhoneNumbersTab extends Component {
                         key={i}
                         number={number}
                         pbxType={this.props.group.pbxType}
-                        avaliableRoutes={this.props.avaliableRoutes}
+                        availableRoutes={this.props.availableRoutes}
                         showWithStatus={this.state.showWithStatus}
                         handleSingleCheckboxClick={
                           this.handleSingleCheckboxClick
@@ -666,10 +666,10 @@ export class PhoneNumbersTab extends Component {
         phone.phoneNumbers.forEach((number) => {
           if (number.isChanged) {
             if (
-              !this.props.avaliableRoutes.configured.ports.includes(
+              !this.props.availableRoutes.configured.ports.includes(
                 +number.route
               ) &&
-              !this.props.avaliableRoutes.configured.trunkGroups.includes(
+              !this.props.availableRoutes.configured.trunkGroups.includes(
                 number.route
               ) &&
               number.route !== ""
@@ -695,10 +695,10 @@ export class PhoneNumbersTab extends Component {
       } else {
         if (phone.isChanged) {
           if (
-            !this.props.avaliableRoutes.configured.ports.includes(
+            !this.props.availableRoutes.configured.ports.includes(
               +phone.route
             ) &&
-            !this.props.avaliableRoutes.configured.trunkGroups.includes(
+            !this.props.availableRoutes.configured.trunkGroups.includes(
               phone.route
             ) &&
             phone.route !== ""
@@ -1289,7 +1289,7 @@ export class PhoneNumbersTab extends Component {
 const mapStateToProps = (state) => ({
   phoneNumbers: state.phoneNumbersByGroup,
   numbersAsCSV: state.numbersAsCSV,
-  avaliableRoutes: state.avaliableRoutes,
+  availableRoutes: state.availableRoutes,
   group: state.group,
 });
 

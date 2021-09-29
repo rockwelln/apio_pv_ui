@@ -117,10 +117,10 @@ export default class PhoneNumber extends Component {
             <td>
               <FormGroup
                 validationState={
-                  !this.props.avaliableRoutes.configured.ports.includes(
+                  !this.props.availableRoutes.configured.ports.includes(
                     +number.route
                   ) &&
-                  !this.props.avaliableRoutes.configured.trunkGroups.includes(
+                  !this.props.availableRoutes.configured.trunkGroups.includes(
                     number.route
                   ) &&
                   number.route !== ""
@@ -140,10 +140,10 @@ export default class PhoneNumber extends Component {
                     );
                   }}
                 >
-                  {!this.props.avaliableRoutes.configured.ports.includes(
+                  {!this.props.availableRoutes.configured.ports.includes(
                     +number.route
                   ) &&
-                    !this.props.avaliableRoutes.configured.trunkGroups.includes(
+                    !this.props.availableRoutes.configured.trunkGroups.includes(
                       number.route
                     ) && (
                       <option
@@ -154,12 +154,12 @@ export default class PhoneNumber extends Component {
                       </option>
                     )}
                   <option value="">{"None"}</option>
-                  {this.props.avaliableRoutes.configured.ports.map((el) => (
+                  {this.props.availableRoutes.configured.ports.map((el) => (
                     <option value={el} key={el}>
                       {el}
                     </option>
                   ))}
-                  {this.props.avaliableRoutes.configured.trunkGroups.map(
+                  {this.props.availableRoutes.configured.trunkGroups.map(
                     (el) => (
                       <option value={el} key={el}>
                         {el}
@@ -205,7 +205,7 @@ export default class PhoneNumber extends Component {
               key={i}
               number={number}
               pbxType={this.props.pbxType}
-              avaliableRoutes={this.props.avaliableRoutes}
+              availableRoutes={this.props.availableRoutes}
               showWithStatus={this.props.showWithStatus}
               handleSingleCheckboxClick={this.props.handleSingleCheckboxClick}
               handleSingleCheckboxClickActive={

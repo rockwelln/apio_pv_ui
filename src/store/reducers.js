@@ -50,11 +50,12 @@ const initialState = {
     rejected: [],
   },
   certifiedPBX: [],
-  avaliableRoutes: {
+  availableRoutes: {
     default: { ports: [], trunkGroups: [] },
     configured: { ports: [], trunkGroups: [] },
   },
   forwardingNumbers: [],
+  availableNumbers: [],
 };
 
 function mainReducer(state = initialState, action) {
@@ -474,15 +475,31 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.GET_NUMBERS_AVAILABLE_ROUTES: {
+      console.log(1111, state.availableRoutes);
       return {
         ...state,
-        avaliableRoutes: action.data,
+        availableRoutes: {
+          configured: {
+            ...state.availableRoutes.configured,
+            ...action.data.configured,
+          },
+          default: {
+            ...state.availableRoutes.default,
+            ...action.data.default,
+          },
+        },
       };
     }
     case actionType.GET_NUMBERS_FORWARDING: {
       return {
         ...state,
         forwardingNumbers: action.data.forwardingNumbers,
+      };
+    }
+    case actionType.GET_NUMBERS_FORWARDING: {
+      return {
+        ...state,
+        availableNumbers: action.data.availableNumbers,
       };
     }
     case actionType.POST_CREATE_IAD: {

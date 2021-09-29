@@ -138,12 +138,12 @@ export class AddPhoneNumber extends Component {
                     }}
                   >
                     <option value="">{"None"}</option>
-                    {this.props.avaliableRoutes.configured.ports.map((el) => (
+                    {this.props.availableRoutes.configured.ports.map((el) => (
                       <option value={el} key={el}>
                         {el}
                       </option>
                     ))}
-                    {this.props.avaliableRoutes.configured.trunkGroups.map(
+                    {this.props.availableRoutes.configured.trunkGroups.map(
                       (el) => (
                         <option value={el} key={el}>
                           {el}
@@ -356,7 +356,7 @@ export class AddPhoneNumber extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  avaliableRoutes: state.avaliableRoutes,
+  availableRoutes: state.availableRoutes,
   group: state.group,
 });
 

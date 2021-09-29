@@ -12,9 +12,22 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import {
   fetchGetNumbersForwarding,
   fetchPutUpdateNumbersForwarding,
+  fetchGetAvailableNumbers,
 } from "../../../../store/actions";
 import { removeEmpty } from "../../../remuveEmptyInObject";
 import { FormattedMessage } from "react-intl";
+import ForwardNumber from "./ForwardNumber";
+
+const forwardNumbers = [
+  {
+    phoneNumber: "+3228000006",
+    frwdPort: 1,
+  },
+  {
+    phoneNumber: "+3228000008",
+    frwdPort: 3,
+  },
+];
 
 const CallForwarding = (props) => {
   const dispatch = useDispatch();
@@ -29,16 +42,32 @@ const CallForwarding = (props) => {
           props.match.params.groupId
         )
       );
+    dispatch(
+      fetchGetAvailableNumbers(
+        props.match.params.tenantId,
+        props.match.params.groupId
+      )
+    );
     // dispatch(
     //   fetchPutUpdateNumbersForwarding(
     //     props.match.params.tenantId,
     //     props.match.params.groupId,
-    //     [{ phoneNumber: "+3250000200", frwdPort: 1 }]
+    //     { forwardingNumbers: [{ phoneNumber: "+3250001712", frwdPort: 4 }] }
     //   )
     // );
   }, []);
 
-  return <React.Fragment>CallForwarding</React.Fragment>;
+  return (
+    <React.Fragment>
+      <div className={"margin-top-1 flex"}>
+        <div className={"flex-basis-33 margin-right-1"}>Forward Number</div>
+        <div className={"flex-basis-33"}>Forward port</div>
+      </div>
+      {forwardNumbers.map((el) => (
+        <ForwardNumber forwardNumber={el} key={el.phoneNumber} />
+      ))}
+    </React.Fragment>
+  );
 };
 
 export default withRouter(CallForwarding);

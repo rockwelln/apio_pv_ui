@@ -160,6 +160,11 @@ export const getNumbersForwarding = (data) => ({
   data,
 });
 
+export const getAvailableNumbers = (data) => ({
+  type: actionType.GET_AVAILABLE_NUMBERS,
+  data,
+});
+
 export const postCreateTenant = (data) => ({
   type: actionType.POST_CREATE_TENANT,
   data,
@@ -916,8 +921,36 @@ export function fetchGetNumbersForwarding(tenantId, groupId, callback) {
         callback && callback();
         NotificationsManager.error(
           <FormattedMessage
-            id="fetch-available-routes-failed"
-            defaultMessage="Failed to fetch available routes!"
+            id="fetch-forwarding-numbers-failed"
+            defaultMessage="Failed to fetch forwarding numbers!"
+          />,
+          error.message
+        );
+      });
+  };
+}
+
+export function fetchGetAvailableNumbers(tenantId, groupId, callback) {
+  /////////////////////////////////
+  return function (dispatch) {
+    return fetch_get(
+      `${ProvProxiesManager.getCurrentUrlPrefix()}/telenet_pra/tenants/${tenantId}/groups/${groupId}/numbers_forwarding/available_numbers/`
+    )
+      .then((data) => {
+        dispatch(getAvailableNumbers(data));
+        callback && callback();
+      })
+      .catch((error) => {
+        dispatch(
+          getAvailableNumbers({
+            availableNumbers: [],
+          })
+        );
+        callback && callback();
+        NotificationsManager.error(
+          <FormattedMessage
+            id="fetch-available-numbers-failed"
+            defaultMessage="Failed to fetch available number!"
           />,
           error.message
         );
