@@ -475,7 +475,6 @@ function mainReducer(state = initialState, action) {
       };
     }
     case actionType.GET_NUMBERS_AVAILABLE_ROUTES: {
-      console.log(1111, state.availableRoutes);
       return {
         ...state,
         availableRoutes: {

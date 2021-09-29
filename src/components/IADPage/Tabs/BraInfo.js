@@ -156,6 +156,7 @@ export class BraInfo extends Component {
                 </div>
                 <div className={"margin-right-1 flex-basis-33"}>
                   <FormControl
+                    componentClass="select"
                     type="text"
                     value={this.state.braByIad[bra].port_mode}
                     placeholder={"Port mode"}
@@ -181,7 +182,10 @@ export class BraInfo extends Component {
                       this.props.iad.virtual ||
                       !this.state.braByIad[bra].braID
                     }
-                  />
+                  >
+                    <option value="P2P">P2P</option>
+                    <option value="P2MP">P2MP</option>
+                  </FormControl>
                 </div>
               </Col>
             </Row>

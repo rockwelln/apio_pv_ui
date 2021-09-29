@@ -510,7 +510,6 @@ export class PhoneNumbersTab extends Component {
         catchCallback
       )
       .then(() => {
-        console.log(this.props.numbersAsCSV);
         if (!this.state.failedDownload) {
           downloadFunc();
         }
