@@ -18,30 +18,41 @@ import { removeEmpty } from "../../../remuveEmptyInObject";
 import { FormattedMessage } from "react-intl";
 
 const ForwardNumber = (props) => {
-  const { forwardNumber } = props;
+  const { forwardingNumber, availableNumbers, forwardingNumbers, ports } =
+    props;
+
+  console.log(ports);
 
   return (
     <div className={"margin-top-1"}>
       <div className={"margin-top-1 flex"}>
         <FormControl
           className={"flex-basis-33 margin-right-1"}
-          value={forwardNumber.number}
+          value={forwardingNumber.phoneNumber}
           componentClass="select"
         >
-          <option value={forwardNumber.phoneNumber}>
-            {forwardNumber.phoneNumber}
-          </option>
-          <option value={forwardNumber.phoneNumber}>
-            {forwardNumber.phoneNumber + 1}
-          </option>
+          {availableNumbers.map((number) => (
+            <option
+              key={number}
+              value={number}
+              disabled={forwardingNumbers.some(
+                (el) => el.phoneNumber === number
+              )}
+            >
+              {number}
+            </option>
+          ))}
         </FormControl>
-        <FormControl className={"flex-basis-33"} componentClass="select">
-          <option value={forwardNumber.frwdPort}>
-            {forwardNumber.frwdPort}
-          </option>
-          <option value={forwardNumber.frwdPort + 1}>
-            {forwardNumber.frwdPort + 1}
-          </option>
+        <FormControl
+          className={"flex-basis-33"}
+          componentClass="select"
+          value={forwardingNumber.frwdPort}
+        >
+          {ports.map((el) => (
+            <option key={el} value={el}>
+              {el}
+            </option>
+          ))}
         </FormControl>
       </div>
     </div>

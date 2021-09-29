@@ -17,45 +17,46 @@ import {
 import { removeEmpty } from "../../../remuveEmptyInObject";
 import { FormattedMessage } from "react-intl";
 import ForwardNumber from "./ForwardNumber";
-
-const forwardNumbers = [
-  {
-    phoneNumber: "+3228000006",
-    frwdPort: 1,
-  },
-  {
-    phoneNumber: "+3228000008",
-    frwdPort: 3,
-  },
-];
+import Loading from "../../../../common/Loading";
 
 const CallForwarding = (props) => {
   const dispatch = useDispatch();
+  const [isLoadingNumbersForwarding, setIsLoadingNumbersForwarding] =
+    useState(false);
+  const [isLoadingAvailableNumbers, setIsLoadingAvailableNumbers] =
+    useState(false);
+
+  console.log(props);
 
   const group = useSelector((state) => state.group);
+  const forwardingNumbers = useSelector((state) => state.forwardingNumbers);
+  const availableNumbers = useSelector((state) => state.availableNumbers);
+  const availableRoutes = useSelector((state) => state.availableRoutes);
 
   useEffect(() => {
-    group.pbxType === "BRA" &&
+    if (group.pbxType === "BRA") {
+      setIsLoadingNumbersForwarding(true);
+      setIsLoadingAvailableNumbers(true);
       dispatch(
         fetchGetNumbersForwarding(
           props.match.params.tenantId,
-          props.match.params.groupId
+          props.match.params.groupId,
+          () => setIsLoadingNumbersForwarding(false)
         )
       );
-    dispatch(
-      fetchGetAvailableNumbers(
-        props.match.params.tenantId,
-        props.match.params.groupId
-      )
-    );
-    // dispatch(
-    //   fetchPutUpdateNumbersForwarding(
-    //     props.match.params.tenantId,
-    //     props.match.params.groupId,
-    //     { forwardingNumbers: [{ phoneNumber: "+3250001712", frwdPort: 4 }] }
-    //   )
-    // );
-  }, []);
+      dispatch(
+        fetchGetAvailableNumbers(
+          props.match.params.tenantId,
+          props.match.params.groupId,
+          () => setIsLoadingAvailableNumbers(false)
+        )
+      );
+    }
+  }, [props.location.hash]);
+
+  if (isLoadingNumbersForwarding || isLoadingAvailableNumbers) {
+    return <Loading />;
+  }
 
   return (
     <React.Fragment>
@@ -63,8 +64,14 @@ const CallForwarding = (props) => {
         <div className={"flex-basis-33 margin-right-1"}>Forward Number</div>
         <div className={"flex-basis-33"}>Forward port</div>
       </div>
-      {forwardNumbers.map((el) => (
-        <ForwardNumber forwardNumber={el} key={el.phoneNumber} />
+      {forwardingNumbers.map((el) => (
+        <ForwardNumber
+          forwardingNumber={el}
+          key={el.phoneNumber}
+          availableNumbers={availableNumbers}
+          forwardingNumbers={forwardingNumbers}
+          ports={availableRoutes.configured.ports}
+        />
       ))}
     </React.Fragment>
   );

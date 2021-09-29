@@ -495,7 +495,7 @@ function mainReducer(state = initialState, action) {
         forwardingNumbers: action.data.forwardingNumbers,
       };
     }
-    case actionType.GET_NUMBERS_FORWARDING: {
+    case actionType.GET_AVAILABLE_NUMBERS: {
       return {
         ...state,
         availableNumbers: action.data.availableNumbers,
