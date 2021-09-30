@@ -21,17 +21,17 @@ import Loading from "../../../../common/Loading";
 
 const CallForwarding = (props) => {
   const dispatch = useDispatch();
-  const [isLoadingNumbersForwarding, setIsLoadingNumbersForwarding] =
-    useState(false);
-  const [isLoadingAvailableNumbers, setIsLoadingAvailableNumbers] =
-    useState(false);
-
-  console.log(props);
 
   const group = useSelector((state) => state.group);
   const forwardingNumbers = useSelector((state) => state.forwardingNumbers);
   const availableNumbers = useSelector((state) => state.availableNumbers);
   const availableRoutes = useSelector((state) => state.availableRoutes);
+
+  const [isLoadingNumbersForwarding, setIsLoadingNumbersForwarding] =
+    useState(false);
+  const [isLoadingAvailableNumbers, setIsLoadingAvailableNumbers] =
+    useState(false);
+  const [stateForwardingNumbers, setStateForwardingNumbers] = useState([]);
 
   useEffect(() => {
     if (group.pbxType === "BRA") {
@@ -54,25 +54,82 @@ const CallForwarding = (props) => {
     }
   }, [props.location.hash]);
 
+  useEffect(() => {
+    setStateForwardingNumbers(forwardingNumbers);
+  }, [forwardingNumbers]);
+
+  const deleteForwardNumber = (index) => {
+    const newForwardingNumbers = [...stateForwardingNumbers];
+    newForwardingNumbers.splice(index, 1);
+    setStateForwardingNumbers(newForwardingNumbers);
+  };
+
+  const handleUpdateForwardingNumbers = () => {
+    setIsLoadingNumbersForwarding(true);
+    dispatch(
+      fetchPutUpdateNumbersForwarding(
+        props.match.params.tenantId,
+        props.match.params.groupId,
+        { forwardingNumbers: stateForwardingNumbers },
+        () => setIsLoadingNumbersForwarding(false)
+      )
+    );
+  };
+
+  const handleAddForwardingNumber = () => {
+    const newForwardingNumbers = [...stateForwardingNumbers];
+    newForwardingNumbers.push({ phoneNumber: "", frwdPort: "" });
+    setStateForwardingNumbers(newForwardingNumbers);
+  };
+
+  const handleChangeForwardingNumber = (index, key, value) => {
+    const newForwardingNumbers = [...stateForwardingNumbers];
+    newForwardingNumbers[index][key] = value;
+    setStateForwardingNumbers(newForwardingNumbers);
+  };
+
   if (isLoadingNumbersForwarding || isLoadingAvailableNumbers) {
     return <Loading />;
   }
 
   return (
     <React.Fragment>
+      <div className="margin-top-1 flex flex-end-center">
+        <Button
+          bsStyle="primary"
+          onClick={handleUpdateForwardingNumbers}
+          disabled={stateForwardingNumbers.some(
+            (el) => el.phoneNumber === "" || el.frwdPort === ""
+          )}
+        >
+          Update Forwarding Numbers
+        </Button>
+      </div>
       <div className={"margin-top-1 flex"}>
         <div className={"flex-basis-33 margin-right-1"}>Forward Number</div>
         <div className={"flex-basis-33"}>Forward port</div>
       </div>
-      {forwardingNumbers.map((el) => (
+      {stateForwardingNumbers.map((el, index) => (
         <ForwardNumber
           forwardingNumber={el}
+          index={index}
           key={el.phoneNumber}
           availableNumbers={availableNumbers}
-          forwardingNumbers={forwardingNumbers}
+          forwardingNumbers={stateForwardingNumbers}
           ports={availableRoutes.configured.ports}
+          deleteForwardNumber={deleteForwardNumber}
+          handleChangeForwardingNumber={handleChangeForwardingNumber}
         />
       ))}
+      <div className={"margin-top-1 flex justify-center width-66p"}>
+        <Button
+          bsStyle="primary"
+          disabled={stateForwardingNumbers.length >= 50}
+          onClick={handleAddForwardingNumber}
+        >
+          Add
+        </Button>
+      </div>
     </React.Fragment>
   );
 };

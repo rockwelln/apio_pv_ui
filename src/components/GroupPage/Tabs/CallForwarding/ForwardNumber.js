@@ -8,6 +8,7 @@ import FormControl from "react-bootstrap/lib/FormControl";
 import Panel from "react-bootstrap/lib/Panel";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
+import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 
 import {
   fetchGetNumbersForwarding,
@@ -18,10 +19,15 @@ import { removeEmpty } from "../../../remuveEmptyInObject";
 import { FormattedMessage } from "react-intl";
 
 const ForwardNumber = (props) => {
-  const { forwardingNumber, availableNumbers, forwardingNumbers, ports } =
-    props;
-
-  console.log(ports);
+  const {
+    forwardingNumber,
+    availableNumbers,
+    forwardingNumbers,
+    ports,
+    index,
+    deleteForwardNumber,
+    handleChangeForwardingNumber,
+  } = props;
 
   return (
     <div className={"margin-top-1"}>
@@ -29,8 +35,16 @@ const ForwardNumber = (props) => {
         <FormControl
           className={"flex-basis-33 margin-right-1"}
           value={forwardingNumber.phoneNumber}
+          onChange={(e) =>
+            handleChangeForwardingNumber(index, "phoneNumber", e.target.value)
+          }
           componentClass="select"
         >
+          {forwardingNumber.phoneNumber === "" && (
+            <option value={""} disabled>
+              Select Forward Number
+            </option>
+          )}
           {availableNumbers.map((number) => (
             <option
               key={number}
@@ -44,16 +58,30 @@ const ForwardNumber = (props) => {
           ))}
         </FormControl>
         <FormControl
-          className={"flex-basis-33"}
+          className={"flex-basis-33 margin-right-1"}
           componentClass="select"
           value={forwardingNumber.frwdPort}
+          onChange={(e) =>
+            handleChangeForwardingNumber(index, "frwdPort", +e.target.value)
+          }
         >
+          {forwardingNumber.frwdPort === "" && (
+            <option value={""} disabled>
+              Select Forward Port
+            </option>
+          )}
           {ports.map((el) => (
             <option key={el} value={el}>
               {el}
             </option>
           ))}
         </FormControl>
+        <ButtonToolbar className={"flex-basis-33 flex align-items-center"}>
+          <Glyphicon
+            glyph="glyphicon glyphicon-remove"
+            onClick={() => deleteForwardNumber(index)}
+          />
+        </ButtonToolbar>
       </div>
     </div>
   );

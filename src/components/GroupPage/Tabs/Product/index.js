@@ -343,7 +343,6 @@ export class Product extends Component {
                   version: this.state.group.pbxVersion,
                 })}
                 onChange={(e) => {
-                  console.log(e.target.name);
                   this.setState({
                     group: {
                       ...this.state.group,
