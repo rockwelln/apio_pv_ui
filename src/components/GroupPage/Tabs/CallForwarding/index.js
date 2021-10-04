@@ -113,7 +113,7 @@ const CallForwarding = (props) => {
         <ForwardNumber
           forwardingNumber={el}
           index={index}
-          key={el.phoneNumber}
+          key={index}
           availableNumbers={availableNumbers}
           forwardingNumbers={stateForwardingNumbers}
           ports={availableRoutes.configured.ports}
