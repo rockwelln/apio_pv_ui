@@ -104,7 +104,8 @@ export class Options extends Component {
         )}
         {(this.props.iad.protocolMode === "PRA" ||
           this.props.iad.protocolMode === "PRA_SIP" ||
-          this.props.iad.protocolMode === "SIP_PRA") && (
+          this.props.iad.protocolMode === "SIP_PRA" ||
+          this.props.iad.protocolMode === "BRA") && (
           <Row className={"margin-top-1"}>
             <Col md={12} className={"flex align-items-center"}>
               <div className={"margin-right-1 flex flex-basis-16"}>
