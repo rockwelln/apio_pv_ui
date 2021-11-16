@@ -638,7 +638,7 @@ export class IPAddress extends Component {
   updateIAD = () => {
     const { transportMode, ip1, pbx } = this.state;
     const checkedIp =
-      ip1.mode === "disabled"
+      ip1.mode === "Disabled"
         ? { mode: ip1.mode }
         : ip1.mode === "IPv4"
         ? {
