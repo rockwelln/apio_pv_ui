@@ -512,7 +512,7 @@ export class Product extends Component {
       serviceType,
       pbxModel: this.state.newPBXModel ? this.state.newPBXModel : pbxModel,
       pbxCertified: this.state.newPBXModel ? false : true,
-      pbxVersion: this.state.newPBXModel ? "" : pbxVersion,
+      pbxVersion: this.state.newPBXModel || pbxModel === "None" ? "UNKNOWN" : pbxVersion,
       //np1Redundancy
     };
     const clearData = removeEmpty(data);
