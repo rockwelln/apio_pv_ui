@@ -327,64 +327,71 @@ export class Product extends Component {
             </Col>
           </Row>
         )}
-        <Row className={"margin-top-1"}>
-          <Col md={12} className={"flex align-items-center"}>
-            <div className={"margin-right-1 flex flex-basis-16"}>
-              <ControlLabel>
-                <FormattedMessage id="PBXModel" defaultMessage="PBX Model" />
-              </ControlLabel>
-            </div>
-            <div className={"margin-right-1 flex flex-basis-33"}>
-              <FormControl
-                componentClass="select"
-                className={"margin-right-1"}
-                value={JSON.stringify({
-                  brand: this.state.group.pbxModel,
-                  version: this.state.group.pbxVersion,
-                })}
-                onChange={(e) => {
-                  this.setState({
-                    group: {
-                      ...this.state.group,
-                      pbxModel: JSON.parse(e.target.value).brand,
-                      pbxVersion: JSON.parse(e.target.value).version,
-                    },
-                    newPBXModel:
-                      JSON.parse(e.target.value).brand !== "Not a certified PBX"
-                        ? ""
-                        : this.state.newPBXModel,
-                  });
-                }}
-              >
-                {[
-                  { brand: "None", version: "" },
-                  { brand: "Not a certified PBX", version: "" },
-                  ...this.props.certifiedPBX,
-                ].map((el, i) => (
-                  <option
-                    key={i}
+        {(this.state.group.pbxType === "SIP" ||
+          this.state.group.pbxType === "PRA_SIP" ||
+          this.state.group.pbxType === "SIP_PRA") && (
+            <Row className={"margin-top-1"}>
+              <Col md={12} className={"flex align-items-center"}>
+                <div className={"margin-right-1 flex flex-basis-16"}>
+                  <ControlLabel>
+                    <FormattedMessage id="PBXModel" defaultMessage="PBX Model" />
+                  </ControlLabel>
+                </div>
+                <div className={"margin-right-1 flex flex-basis-33"}>
+                  <FormControl
+                    componentClass="select"
+                    className={"margin-right-1"}
                     value={JSON.stringify({
-                      brand: el.brand,
-                      version: el.version,
+                      brand: this.state.group.pbxModel,
+                      version: this.state.group.pbxVersion,
                     })}
+                    onChange={(e) => {
+                      this.setState({
+                        group: {
+                          ...this.state.group,
+                          pbxModel: JSON.parse(e.target.value).brand,
+                          pbxVersion: JSON.parse(e.target.value).version,
+                        },
+                        newPBXModel:
+                          JSON.parse(e.target.value).brand !== "Not a certified PBX"
+                            ? ""
+                            : this.state.newPBXModel,
+                      });
+                    }}
                   >
-                    {`${el.brand} ${el.version}`}
-                  </option>
-                ))}
-              </FormControl>
-              <Button
-                className={"btn-primary"}
-                onClick={() => this.setState({ showPBXList: true })}
-              >
-                <FormattedMessage
-                  id="show_detail"
-                  defaultMessage="Show details"
-                />
-              </Button>
-            </div>
-          </Col>
-        </Row>
-        {this.state.group.pbxModel === "Not a certified PBX" && (
+                    {[
+                      { brand: "None", version: "" },
+                      { brand: "Not a certified PBX", version: "" },
+                      ...this.props.certifiedPBX,
+                    ].map((el, i) => (
+                      <option
+                        key={i}
+                        value={JSON.stringify({
+                          brand: el.brand,
+                          version: el.version,
+                        })}
+                      >
+                        {`${el.brand} ${el.version}`}
+                      </option>
+                    ))}
+                  </FormControl>
+                  <Button
+                    className={"btn-primary"}
+                    onClick={() => this.setState({ showPBXList: true })}
+                  >
+                    <FormattedMessage
+                      id="show_detail"
+                      defaultMessage="Show details"
+                    />
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+        )}
+        {(this.state.group.pbxType === "SIP" ||
+          this.state.group.pbxType === "PRA_SIP" ||
+          this.state.group.pbxType === "SIP_PRA") &&
+          this.state.group.pbxModel === "Not a certified PBX" && (
           <Row className={"margin-top-1"}>
             <Col md={12} className={"flex align-items-center"}>
               <div className={"margin-right-1 flex flex-basis-16"}>
