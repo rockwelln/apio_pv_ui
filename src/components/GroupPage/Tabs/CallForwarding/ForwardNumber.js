@@ -24,6 +24,7 @@ const ForwardNumber = (props) => {
     availableNumbers,
     forwardingNumbers,
     ports,
+    trunkGroups,
     index,
     deleteForwardNumber,
     handleChangeForwardingNumber,
@@ -70,7 +71,7 @@ const ForwardNumber = (props) => {
               Select Forward Port
             </option>
           )}
-          {ports.map((el) => (
+          {ports.filter((port) => {if (trunkGroups[ports.indexOf(port)] === "FORWARDING") return port;}).map((el) => (
             <option key={el} value={el}>
               {el}
             </option>

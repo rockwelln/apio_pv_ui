@@ -117,6 +117,7 @@ const CallForwarding = (props) => {
           availableNumbers={availableNumbers}
           forwardingNumbers={stateForwardingNumbers}
           ports={availableRoutes.configured.ports}
+          trunkGroups={availableRoutes.configured.trunkGroups}
           deleteForwardNumber={deleteForwardNumber}
           handleChangeForwardingNumber={handleChangeForwardingNumber}
         />
