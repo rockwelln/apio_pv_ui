@@ -31,6 +31,7 @@ export class BraInfo extends Component {
     selectedID: [],
     data: {},
     showRebootDialog: false,
+    showForwardingChangeWarning: false,
   };
 
   componentDidMount() {
@@ -319,7 +320,19 @@ export class BraInfo extends Component {
         <RebootWindow
           data={this.state.data}
           show={this.state.showRebootDialog}
-          onClose={() => this.setState({ showRebootDialog: false })}
+          onClose={() => {
+            if (this.state.showForwardingChangeWarning) {
+              NotificationsManager.warning(
+                <FormattedMessage
+                  id="fwding-change-warn"
+                  defaultMessage="Verify call forwarding"
+                />,
+                "Please check your Dial Plan and Call Forwarding settings to verify if they are still valid"
+              );
+            }
+            this.setState({ showRebootDialog: false });
+          }
+        }
         />
         <Row>
           <Col md={12}>
@@ -393,6 +406,10 @@ export class BraInfo extends Component {
           trkgrp: braByIad[key].trkgrp,
         },
       };
+      if (braByIad[key].trkgrp !== this.props.iad.bra_info[key].trkgrp
+          && this.props.iad.bra_info[key].trkgrp === "FORWARDING") {
+        this.setState({ showForwardingChangeWarning: true });
+      }
     });
 
     delete bra_info[""];
