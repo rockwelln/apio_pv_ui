@@ -69,6 +69,15 @@ class NotificationsHandler {
       });
   }
 
+  warning(title, message) {
+    NotificationsHandler.rootRef &&
+      NotificationsHandler.rootRef.current.addNotification({
+        title: title,
+        message: message,
+        level: "warning",
+      });
+  }
+
   success(title, message) {
     NotificationsHandler.rootRef &&
       NotificationsHandler.rootRef.current.addNotification({
