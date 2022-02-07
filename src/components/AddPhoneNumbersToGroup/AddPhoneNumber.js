@@ -218,6 +218,7 @@ export class AddPhoneNumber extends Component {
                               ...numbers[i],
                               phoneNumber: val,
                               zipCode: this.state.zipCode,
+                              route: this.state.route,
                             };
                             return { numbers, countNumbersError: false };
                           });
