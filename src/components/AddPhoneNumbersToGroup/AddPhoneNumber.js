@@ -325,8 +325,8 @@ export class AddPhoneNumber extends Component {
       range: {
         minPhoneNumber: arrayFrom,
         maxPhoneNumber: arrayTo,
-        zipCode,
-        route: this.props.group.pbxType === "BRA" ? route : "",
+        zipCode: arrayFrom ? zipCode : "",
+        route: arrayFrom ? (this.props.group.pbxType === "BRA" ? route : "") : "",
       },
     };
     const clearData = removeEmpty(data);
