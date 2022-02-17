@@ -195,7 +195,7 @@ export class IPAddress extends Component {
                         <HelpBlock bsClass="color-error">
                           <FormattedMessage
                             id="errorIpAdress"
-                            defaultMessage="Invalide IP address"
+                            defaultMessage="Invalid IP address"
                           />
                         </HelpBlock>
                       </div>
@@ -250,7 +250,7 @@ export class IPAddress extends Component {
                         <HelpBlock bsClass="color-error">
                           <FormattedMessage
                             id="errorNetMask"
-                            defaultMessage="Invalide Net Mask"
+                            defaultMessage="Invalid Net Mask"
                           />
                         </HelpBlock>
                       </div>
@@ -309,7 +309,7 @@ export class IPAddress extends Component {
                         <HelpBlock bsClass="color-error">
                           <FormattedMessage
                             id="errorIpAdress"
-                            defaultMessage="Invalide IP address"
+                            defaultMessage="Invalid IP address"
                           />
                         </HelpBlock>
                       </div>
@@ -364,7 +364,7 @@ export class IPAddress extends Component {
                         <HelpBlock bsClass="color-error">
                           <FormattedMessage
                             id="errorNetMask"
-                            defaultMessage="Invalide Net Mask"
+                            defaultMessage="Invalid Net Mask"
                           />
                         </HelpBlock>
                       </div>
@@ -473,7 +473,7 @@ export class IPAddress extends Component {
                       <HelpBlock bsClass="color-error">
                         <FormattedMessage
                           id="errorIpAdress"
-                          defaultMessage="Invalide IP address"
+                          defaultMessage="Invalid IP address"
                         />
                       </HelpBlock>
                     </div>
@@ -580,7 +580,7 @@ export class IPAddress extends Component {
                       <HelpBlock bsClass="color-error">
                         <FormattedMessage
                           id="errorIpAdress"
-                          defaultMessage="Invalide IP address"
+                          defaultMessage="Invalid IP address"
                         />
                       </HelpBlock>
                     </div>

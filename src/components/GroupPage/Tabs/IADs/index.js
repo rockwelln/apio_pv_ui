@@ -96,7 +96,7 @@ export class IADs extends Component {
             ) : (
               <FormattedMessage
                 id="lessIads"
-                defaultMessage={`This site as the expected amount of IADs. You cannot create additional IADs`}
+                defaultMessage={`This site has the expected amount of IADs. You cannot create additional IADs`}
               />
             )}
           </Col>

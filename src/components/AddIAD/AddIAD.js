@@ -315,7 +315,7 @@ export class AddIAD extends Component {
                       <HelpBlock bsClass="color-error">
                         <FormattedMessage
                           id="errorMacAddress"
-                          defaultMessage="Invalide MAC address"
+                          defaultMessage="Invalid MAC address"
                         />
                       </HelpBlock>
                     </div>
@@ -1179,7 +1179,7 @@ export class AddIAD extends Component {
                             <HelpBlock bsClass="color-error">
                               <FormattedMessage
                                 id="errorIpAdress"
-                                defaultMessage="Invalide IP address"
+                                defaultMessage="Invalid IP address"
                               />
                             </HelpBlock>
                           </div>
@@ -1234,7 +1234,7 @@ export class AddIAD extends Component {
                             <HelpBlock bsClass="color-error">
                               <FormattedMessage
                                 id="errorNetMask"
-                                defaultMessage="Invalide Net Mask"
+                                defaultMessage="Invalid Net Mask"
                               />
                             </HelpBlock>
                           </div>
@@ -1293,7 +1293,7 @@ export class AddIAD extends Component {
                             <HelpBlock bsClass="color-error">
                               <FormattedMessage
                                 id="errorIpAdress"
-                                defaultMessage="Invalide IP address"
+                                defaultMessage="Invalid IP address"
                               />
                             </HelpBlock>
                           </div>
@@ -1348,7 +1348,7 @@ export class AddIAD extends Component {
                             <HelpBlock bsClass="color-error">
                               <FormattedMessage
                                 id="errorNetMask"
-                                defaultMessage="Invalide Net Mask"
+                                defaultMessage="Invalid Net Mask"
                               />
                             </HelpBlock>
                           </div>
@@ -1455,7 +1455,7 @@ export class AddIAD extends Component {
                         <HelpBlock bsClass="color-error">
                           <FormattedMessage
                             id="errorIpAdress"
-                            defaultMessage="Invalide IP address"
+                            defaultMessage="Invalid IP address"
                           />
                         </HelpBlock>
                       </div>

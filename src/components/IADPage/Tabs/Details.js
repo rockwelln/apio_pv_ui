@@ -162,7 +162,7 @@ export class Details extends Component {
                   <HelpBlock bsClass="color-error">
                     <FormattedMessage
                       id="errorMacAddress"
-                      defaultMessage="Invalide MAC address"
+                      defaultMessage="Invalid MAC address"
                     />
                   </HelpBlock>
                 </div>
