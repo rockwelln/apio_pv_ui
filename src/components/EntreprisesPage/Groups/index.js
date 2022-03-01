@@ -81,7 +81,7 @@ export class GroupsTab extends Component {
           <Col mdOffset={1} md={10}>
             <InputGroup className={"margin-left-negative-4"}>
               <InputGroup.Addon>
-                <Glyphicon glyph="lyphicon glyphicon-search" />
+                <Glyphicon glyph="glyphicon glyphicon-search" />
               </InputGroup.Addon>
               <FormattedMessage
                 id="search_placeholder"
