@@ -919,14 +919,14 @@ export class AddIAD extends Component {
                         <ControlLabel>
                           <FormattedMessage
                             id="tpid"
-                            defaultMessage="Tina Product ID"
+                            defaultMessage="IAD ID"
                           />
                         </ControlLabel>
                       </div>
                       <div className={"margin-right-1 flex-basis-33"}>
                         <FormControl
                           type="text"
-                          placeholder={"Tina Product ID"}
+                          placeholder={"IAD ID"}
                           disabled={
                             !this.state.praByIad[pra].praID //||
                             //!isAllowed(

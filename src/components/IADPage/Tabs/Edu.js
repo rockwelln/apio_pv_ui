@@ -412,7 +412,7 @@ export class Edu extends Component {
           <Col md={6} className={"flex align-items-center"}>
             <div className={"margin-right-1 flex flex-basis-33"}>
               <ControlLabel>
-                <FormattedMessage id="tpid" defaultMessage="Tina Product ID" />
+                <FormattedMessage id="tpid" defaultMessage="IAD ID" />
               </ControlLabel>
             </div>
             <div className={"margin-right-1 flex-basis-66"}>
@@ -429,7 +429,7 @@ export class Edu extends Component {
                 <ControlLabel>
                   <FormattedMessage
                     id="tpid"
-                    defaultMessage="Tina Product ID"
+                    defaultMessage="IAD ID"
                   />
                 </ControlLabel>
               </div>

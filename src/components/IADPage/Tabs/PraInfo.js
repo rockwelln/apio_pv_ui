@@ -150,7 +150,7 @@ export class PraInfo extends Component {
                   <ControlLabel>
                     <FormattedMessage
                       id="tpid"
-                      defaultMessage="Tina Product ID"
+                      defaultMessage="IAD ID"
                     />
                   </ControlLabel>
                 </div>
@@ -158,7 +158,7 @@ export class PraInfo extends Component {
                   <FormControl
                     type="text"
                     value={this.state.praByIad[pra].tpid}
-                    placeholder={"Tina Product ID"}
+                    placeholder={"IAD ID"}
                     onChange={(e) =>
                       this.setState(
                         {
