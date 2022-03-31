@@ -329,6 +329,7 @@ export class BraInfo extends Component {
                 />,
                 "Please check your Dial Plan and Call Forwarding settings to verify if they are still valid"
               );
+              this.setState({ showForwardingChangeWarning: false });
             }
             this.setState({ showRebootDialog: false });
           }
