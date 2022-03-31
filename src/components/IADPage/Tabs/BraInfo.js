@@ -406,8 +406,9 @@ export class BraInfo extends Component {
           trkgrp: braByIad[key].trkgrp,
         },
       };
-      if (braByIad[key].trkgrp !== this.props.iad.bra_info[key].trkgrp
-          && this.props.iad.bra_info[key].trkgrp === "FORWARDING") {
+      if (this.props.iad.bra_info[key]
+          && this.props.iad.bra_info[key].trkgrp === "FORWARDING"
+          && braByIad[key].trkgrp !== this.props.iad.bra_info[key].trkgrp) {
         this.setState({ showForwardingChangeWarning: true });
       }
     });
