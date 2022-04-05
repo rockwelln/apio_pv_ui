@@ -417,16 +417,11 @@ export class BraInfo extends Component {
     delete bra_info[""];
     delete bra_info["undefined"];
     const data = { bra_info };
-    const clearData = removeEmpty(data);
+    this.setState({data: data, showRebootDialog: true});
 
-    if (Object.keys(clearData).length) {
-      this.setState({ data: clearData, showRebootDialog: true });
-      return;
-    }
-
-    this.setState({ disabledButton: true }, () =>
-      this.setState({ disabledButton: false })
-    );
+    // this.setState({ disabledButton: true }, () =>
+    //   this.setState({ disabledButton: false })
+    // );
 
     // if (Object.keys(clearData).length) {
     //   this.setState({ disabledButton: true }, () =>

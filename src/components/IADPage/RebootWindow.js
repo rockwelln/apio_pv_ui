@@ -188,7 +188,11 @@ class RebootWindow extends Component {
         requestedTime: time
       }
     };
-    const clearData = removeEmpty(dataForUpdate);
+    let clearData = removeEmpty(dataForUpdate);
+    if ('bra_info' in data && !('bra_info' in clearData)) {
+      // restore empty bra_info to allow BRA config reset
+      clearData['bra_info'] = data['bra_info'];
+    }
     this.setState({ disableOkButton: true }, () =>
       this.props
         .fetchPutUpdateIAD(
