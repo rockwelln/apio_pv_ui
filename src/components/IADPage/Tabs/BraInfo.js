@@ -18,6 +18,8 @@ import { FormattedMessage } from "react-intl";
 
 import { isAllowed, pages } from "../../../utils/user";
 
+import deepEqual from "../../deepEqual";
+
 const BRA_PORT_MODES = [
   { value: "P2P", label: "P2P" },
   { value: "P2PM", label: "P2PM" },
@@ -32,6 +34,7 @@ export class BraInfo extends Component {
     data: {},
     showRebootDialog: false,
     showForwardingChangeWarning: false,
+    showRouteChangeWarning: false,
   };
 
   componentDidMount() {
@@ -331,6 +334,16 @@ export class BraInfo extends Component {
               );
               this.setState({ showForwardingChangeWarning: false });
             }
+            if (this.state.showRouteChangeWarning) {
+              NotificationsManager.warning(
+                <FormattedMessage
+                  id="fwding-change-warn"
+                  defaultMessage="Verify routing"
+                />,
+                "Please check numbers routing and update it to fix errors, if any"
+              );
+              this.setState({ showRouteChangeWarning: false });
+            }
             this.setState({ showRebootDialog: false });
           }
         }
@@ -418,6 +431,11 @@ export class BraInfo extends Component {
     delete bra_info["undefined"];
     const data = { bra_info };
     this.setState({data: data, showRebootDialog: true});
+
+    if (Object.keys(this.props.iad.bra_info).length
+        && !deepEqual(removeEmpty(bra_info), this.props.iad.bra_info)) {
+      this.setState({showRouteChangeWarning: true});
+    }
 
     // this.setState({ disabledButton: true }, () =>
     //   this.setState({ disabledButton: false })
