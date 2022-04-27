@@ -75,7 +75,7 @@ export class IADs extends Component {
     const { isLoading, countPerPage, paginationIads, page } = this.state;
     const { group } = this.props;
 
-    const showAddButton = !(group.accessType === "COAX");
+    const showAddButton = !(group.accessType === "COAX" || group.accessType === "VDSL");
 
     if (isLoading) {
       return <Loading />;
