@@ -166,7 +166,7 @@ export class Numbers extends Component {
                           />
                         </td>
                         <td className={"flex space-between align-items-center"}>
-                          {num.phoneNumber}
+                          {num.phoneNumber}{num.entTrunk ? " - " + num.entTrunk : ""}
                         </td>
                       </tr>
                     ))
