@@ -756,7 +756,10 @@ export class Edu extends Component {
   updateIAD = () => {
     const { edu1, edu2, normLocalUpdate } = this.state;
     const data = { edu1, edu2, normLocalUpdate };
-    const clearData = removeEmpty(data);
+    const clearData = removeEmpty({ ...data,
+      edu1: { ...data.edu1, name: data.edu1.name.trim(), srName: data.edu1.srName.trim()},
+      edu2: { ...data.edu2, name: data.edu2.name.trim(), srName: data.edu2.srName.trim()},
+    });
     if (Object.keys(clearData).length) {
       this.setState({ disabledButton: true }, () =>
         this.props

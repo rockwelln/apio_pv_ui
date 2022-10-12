@@ -1778,19 +1778,19 @@ export class AddIAD extends Component {
       cliPhoneNumber,
       macAddress,
       edu1: {
-        name: nameEDUA,
+        name: nameEDUA.trim(),
         lanPort: lanPortA,
         wanPort: wanPortA,
-        srName: srNameA,
+        srName: srNameA.trim(),
         srSap: srSAPA,
         vlan: eduVLANIDA,
       },
       edu2: secondEDU
         ? {
-            name: nameEDUB,
+            name: nameEDUB.trim(),
             lanPort: lanPortB,
             wanPort: wanPortB,
-            srName: srNameB,
+            srName: srNameB.trim(),
             srSap: srSAPB,
             vlan: eduVLANIDB,
           }
