@@ -155,6 +155,7 @@ export class RoutingNumbers extends Component {
                       <Trunk
                         key={i + ""}
                         trunk={trunk}
+                        groups={this.props.tenant.groups.map((group) => group.groupId)}
                         //onReload={() => this.fetchReq()}
                       />
                     ))}

@@ -230,7 +230,7 @@ class TenantPage extends Component {
                         />
                       }
                     >
-                      <RoutingNumbers />
+                      <RoutingNumbers {...this.props} />
                     </Tab>
                   </Tabs>
                 </Col>

@@ -10,11 +10,13 @@ class Trunk extends Component {
     return (
       <tr style={style}>
         <td>
+          {this.props.groups.includes(trunk.groupId) ? (
           <Link
             to={`/provisioning/${this.props.match.params.gwName}/tenants/${this.props.match.params.tenantId}/groups/${trunk.groupId}/enterprisetrunk/${trunk.entTrunk}`}
           >
             {trunk.entTrunk}
           </Link>
+          ) : trunk.entTrunk}
         </td>
         <td>{trunk.groupId}</td>
         <td>{trunk.groupName}</td>
